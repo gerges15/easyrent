@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- خاصية العرض للأجهزة المحمولة -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Finish signing up</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+    />
+    <style>
+      /* القواعد العامة */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+      }
+      body {
+        background: #fff;
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        min-height: 100vh;
+        color: #333;
+        padding: 10px;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+
+      .container {
+        width: 100%;
+        flex: 1;
+        max-width: 420px;
+        margin: 0 auto;
+      }
+      /* عنوان الصفحة */
+      .title {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin: 1.5rem 0;
+        text-align: left;
+      }
+      /* حاوية الإدخالات */
+      .form-group {
+        margin-bottom: 1.2rem;
+      }
+      .form-group label {
+        display: block;
+        font-size: 0.95rem;
+        margin-bottom: 0.3rem;
+        color: #444;
+        font-weight: 500;
+      }
+      .form-group input {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 0.95rem;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        outline: none;
+      }
+      .input-group {
+        margin-bottom: 1rem;
+      }
+      .input-group label {
+        display: block;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        color: #444;
+      }
+      .input-group select {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 0.95rem;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        outline: none;
+      }
+      /* ملاحظة توضيحية تحت حقل الاسم */
+      .sub-note {
+        font-size: 0.85rem;
+        color: #666;
+        line-height: 1.4;
+        margin: 0.3rem 0 1rem 0;
+      }
+      /* تاريخ الميلاد */
+      .date-note {
+        font-size: 0.85rem;
+        color: #666;
+        line-height: 1.4;
+        margin-bottom: 1rem;
+      }
+      /* حقل البريد */
+      /* حقل كلمة المرور مع زر إظهار */
+      .password-container {
+        position: relative;
+        margin-bottom: 1.8rem;
+      }
+      .password-container input {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 0.95rem;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        outline: none;
+      }
+      .password-container label {
+        display: block;
+        font-size: 0.95rem;
+        margin-bottom: 0.3rem;
+
+        color: #444;
+        font-weight: 700;
+      }
+      .show-password {
+        position: absolute;
+        right: 10px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #0554a9; /* لون قريب من أزرق الروابط */
+        font-size: 0.9rem;
+        cursor: pointer;
+      }
+      .btnbook {
+        background-color: rgb(30, 156, 160);
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        width: 20%;
+        border: none;
+        padding: 0.5rem;
+        margin: 0.3rem;
+        border-radius: 4px;
+        transition: all 0.3s ease-in-out;
+      }
+      .btnbook:hover {
+        transform: scale(1.05);
+      }
+      /* تنسيق القسم السفلي (الموافقة على الشروط) */
+      .foot :terms-note {
+        font-size: 0.8rem;
+        color: #fffbfb;
+        line-height: 1.4;
+        margin-bottom: 1.5rem;
+        justify-content: left;
+      }
+
+      .footer {
+        width: 100%;
+        text-align: center;
+        background: rgba(28, 27, 27, 0.8);
+        color: #fff;
+        padding: 10px;
+        justify-content: left;
+        font-size: 20px;
+      }
+      /* زر الإكمال */
+      .btn-submit {
+        width: 60%;
+        padding: 0.8rem;
+        font-size: 1rem;
+        background: rgb(52, 218, 212); /* لون قريب من الوردي/الأحمر */
+        color: #1d1143;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
+      }
+      .btn-submit:hover {
+        background: rgb(24, 182, 179);
+        transform: scale(1.05);
+      }
+      /* تحسين العرض على الشاشات الصغيرة */
+      @media (max-width: 320px) {
+        .title {
+          font-size: 1.1rem;
+        }
+        .form-group label {
+          font-size: 0.85rem;
+        }
+        .form-group input {
+          padding: 0.65rem;
+          font-size: 0.85rem;
+        }
+        .sub-note,
+        .date-note,
+        .terms-note {
+          font-size: 0.75rem;
+        }
+        .btn-submit {
+          font-size: 0.9rem;
+          padding: 0.7rem;
+        }
+        .show-password {
+          font-size: 0.8rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- العنوان الرئيسي -->
+      <h1 class="title">Finish signing up</h1>
+
+      <div class="form-group">
+        <label for="firstNameID">User Name </label>
+        <input type="text" id="firstNameID" placeholder="Full name" />
+      </div>
+      <div class="sub-note">
+        Make sure this matches the name on your government ID. If you go by
+        another name, you can add a preferred first name.
+      </div>
+
+      <div class="input-group">
+        <label for="university">Select your university</label>
+        <select id="university" name="university" required>
+          <option value="" disabled selected>Choose your university</option>
+          <option value="1">Minia University</option>
+          <option value="2">Minia National University</option>
+          <option value="4">
+            Higher Institute of Engineering and Technology
+          </option>
+          <option value="5">Languages Institute</option>
+        </select>
+      </div>
+      <div class="input-group">
+        <label for="faculty">Select your faculty</label>
+        <select id="faculty" name="faculty" required>
+          <option value="" disabled selected>Choose your faculty</option>
+          <option value="Faculty of Medicine">Faculty of Medicine</option>
+          <option value="Faculty of Engineering">Faculty of Engineering</option>
+          <option value="Faculty of Pharmacy">Faculty of Pharmacy</option>
+          <option value="Faculty of Dentistry">Faculty of Dentistry</option>
+          <option value="Faculty of Science">Faculty of Science</option>
+          <option value="Faculty of Nursing">Faculty of Nursing</option>
+          <option value="Faculty of Agriculture">Faculty of Agriculture</option>
+          <option value="Faculty of Fine Arts">Faculty of Fine Arts</option>
+          <option value="Faculty of Education">Faculty of Education</option>
+          <option value="Faculty of Specific Education">
+            Faculty of Specific Education
+          </option>
+          <option value="Faculty of Physical Education">
+            Faculty of Physical Education
+          </option>
+          <option value="Faculty of Al-Alsun">Faculty of Al-Alsun</option>
+          <option value="Faculty of Arts">Faculty of Arts</option>
+          <option value="Faculty of Dar Al-Uloom">
+            Faculty of Dar Al-Uloom
+          </option>
+          <option value="Faculty of Tourism and Hotels">
+            Faculty of Tourism and Hotels
+          </option>
+          <option value="Faculty of Computers and Information">
+            Faculty of Computers and Information
+          </option>
+          <option value="Faculty of Early Childhood Education">
+            Faculty of Early Childhood Education
+          </option>
+          <option value="Faculty of Law">Faculty of Law</option>
+
+          <option value="Faculty of Physical Therapy">
+            Faculty of Physical Therapy
+          </option>
+          <option value="Faculty of Engineering">Faculty of Engineering</option>
+
+          <option value="Faculty of Artificial Intelligence">
+            Faculty of Artificial Intelligence
+          </option>
+
+          <option value="Faculty of Business Administration">
+            Faculty of Business Administration
+          </option>
+          <option value="Faculty of civil Engineering">
+            Faculty of civil Engineering
+          </option>
+
+          <option value="Faculty of Electronics and Communication Engineering">
+            Faculty of Electronics and Communication Engineering
+          </option>
+          <option value="Faculty of Electrical Power and Machines Engineering">
+            Electrical Power and Machines Engineering
+          </option>
+          <option value="Faculty of English Language">
+            Faculty of English Language
+          </option>
+          <option value="Faculty of German Language">
+            Faculty of German Language
+          </option>
+          <option value="Faculty of French Language">
+            Faculty of French Language
+          </option>
+        </select>
+      </div>
+      <div class="sub-note">Make sure this University</div>
+
+      <!-- تاريخ الميلاد -->
+      <div class="form-group">
+        <label for="birthdate">Date of birth</label>
+        <input type="date" id="birthdate" />
+      </div>
+      <div class="date-note">
+        To sign up, you need to be at least 18. Your birthday won't be shared
+        with other people who use Easy rent.
+      </div>
+      <div class="form-group">
+        <label for="phone">Phone number</label>
+        <input type="text" id="phone" placeholder="Enter your phone number" />
+      </div>
+      <!-- البريد الإلكتروني -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" placeholder="user@gmail.com" />
+      </div>
+
+      <!-- كلمة المرور -->
+ 
+<div class="password-container">
+  <label for="signup-password">Password</label>
+  <input
+    type="password"
+    id="signup-password"
+    placeholder="Enter your password"
+    oninput="checkPasswordStrength()"
+  />
+  <button type="button" class="show-password" id="togglePasswordBtn">
+    Show
+  </button>
+  <div id="password-strength-meter" style="margin-top: 8px;">
+    <div style="display: flex; height: 4px; margin-bottom: 4px;">
+      <div id="strength-bar-1" style="flex: 1; background: #e0e0e0; margin: 0 2px; border-radius: 2px;"></div>
+      <div id="strength-bar-2" style="flex: 1; background: #e0e0e0; margin: 0 2px; border-radius: 2px;"></div>
+      <div id="strength-bar-3" style="flex: 1; background: #e0e0e0; margin: 0 2px; border-radius: 2px;"></div>
+      <div id="strength-bar-4" style="flex: 1; background: #e0e0e0; margin: 0 2px; border-radius: 2px;"></div>
+    </div>
+    <div id="password-strength-text" style="font-size: 0.8rem; color: #666;"></div>
+  </div>
+</div>
+
+<div class="password-suggestion" style="margin-bottom: 1.2rem;">
+  <div style="display: flex; gap: 8px; margin-bottom: 4px;">
+    <input 
+      type="text" 
+      id="password-suggestion" 
+      placeholder="Click generate for a strong password" 
+      readonly
+      style="flex: 1; padding: 0.75rem; border: 1px solid #ccc; border-radius: 6px;"
+    />
+    <button 
+      type="button" 
+      id="generate-password" 
+      class="btnbook"
+      style="width: auto; padding: 0.5rem 1rem;"
+    >
+      Generate
+    </button>
+  </div>
+  <div class="sub-note" style="font-size: 0.8rem;">
+    <i class="fas fa-lightbulb" style="color: #ffc107;"></i> Strong passwords contain uppercase, lowercase, numbers and special characters
+  </div>
+</div>
+
+<button class="btn-submit">Agree and continue</button>
+<script>
+  // Get all elements once at the beginning
+  const passwordInput = document.getElementById("signup-password");
+  const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+  const generatePasswordBtn = document.getElementById('generate-password');
+  const suggestionField = document.getElementById('password-suggestion');
+  const strengthText = document.getElementById('password-strength-text');
+  const bars = [
+    document.getElementById('strength-bar-1'),
+    document.getElementById('strength-bar-2'),
+    document.getElementById('strength-bar-3'),
+    document.getElementById('strength-bar-4')
+  ];
+
+  // Toggle password visibility
+  togglePasswordBtn.addEventListener("click", () => {
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+      togglePasswordBtn.textContent = "Hide";
+    } else {
+      passwordInput.type = "password";
+      togglePasswordBtn.textContent = "Show";
+    }
+  });
+
+  // Generate strong password
+  generatePasswordBtn.addEventListener('click', function() {
+    const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+    const lowercase = 'abcdefghijklmnopqrstuvwxyz';
+    const numbers = '0123456789';
+    const symbols = '!@#$%^&*()_+-=';
+    
+    let password = '';
+    // Ensure at least one character from each category
+    password += uppercase[Math.floor(Math.random() * uppercase.length)];
+    password += lowercase[Math.floor(Math.random() * lowercase.length)];
+    password += numbers[Math.floor(Math.random() * numbers.length)];
+    password += symbols[Math.floor(Math.random() * symbols.length)];
+    
+    // Fill remaining characters randomly
+    const allChars = uppercase + lowercase + numbers + symbols;
+    for (let i = 0; i < 8; i++) {
+      password += allChars[Math.floor(Math.random() * allChars.length)];
+    }
+    
+    // Shuffle the password
+    password = password.split('').sort(() => 0.5 - Math.random()).join('');
+    
+    suggestionField.value = password;
+    
+    // Auto-fill the password field and trigger strength check
+    passwordInput.value = password;
+    passwordInput.type = "text";
+    togglePasswordBtn.textContent = "Hide";
+    checkPasswordStrength();
+  });
+
+  // Password strength checker
+  function checkPasswordStrength() {
+    const password = passwordInput.value;
+    
+    // Reset all bars
+    bars.forEach(bar => {
+      bar.style.background = '#e0e0e0';
+    });
+    
+    if (password.length === 0) {
+      strengthText.textContent = '';
+      return;
+    }
+    
+    let strength = 0;
+    
+    // Length check
+    if (password.length >= 8) strength += 1;
+    if (password.length >= 12) strength += 1;
+    
+    // Complexity checks
+    if (/[A-Z]/.test(password)) strength += 1;
+    if (/[a-z]/.test(password)) strength += 1;
+    if (/[0-9]/.test(password)) strength += 1;
+    if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+    
+    // Update UI
+    const strengthLevel = Math.min(Math.floor(strength / 2), 4);
+    const colors = ['#ff4444', '#ffbb33', '#00C851', '#00C851'];
+    const messages = [
+      'Very Weak',
+      'Weak',
+      'Good',
+      'Strong',
+      'Very Strong'
+    ];
+    
+    for (let i = 0; i < strengthLevel; i++) {
+      bars[i].style.background = colors[strengthLevel - 1];
+    }
+    
+    strengthText.textContent = messages[strengthLevel];
+    strengthText.style.color = colors[strengthLevel - 1];
+  }
+  
+  // Auto-fill when suggestion is clicked
+  suggestionField.addEventListener('click', function() {
+    if (this.value) {
+      passwordInput.value = this.value;
+      checkPasswordStrength();
+      this.select();
+      try {
+        document.execCommand('copy');
+        // Optional: Show a tooltip or brief message that password was copied
+      } catch (err) {
+        console.log('Copy failed');
+      }
+    }
+  });
+
+  
+  // Function to save form data to localStorage
+  function saveFormData() {
+    const formData = {
+      userName: document.getElementById('firstNameID').value,
+      university: document.getElementById('university').value,
+      faculty: document.getElementById('faculty').value,
+      birthdate: document.getElementById('birthdate').value,
+      phone: document.getElementById('phone').value,
+      email: document.getElementById('email').value,
+      password: document.getElementById('signup-password').value
+    };
+    
+    localStorage.setItem('userRegistrationData', JSON.stringify(formData));
+    return true;
+  }
+
+  // Function to validate form before submission
+  function validateForm() {
+    const requiredFields = [
+      'firstNameID', 'university', 'faculty', 
+      'birthdate', 'phone', 'email', 'signup-password'
+    ];
+    
+    for (const fieldId of requiredFields) {
+      const field = document.getElementById(fieldId);
+      if (!field.value) {
+        alert(`Please fill in ${field.placeholder || field.name || 'this field'}`);
+        field.focus();
+        return false;
+      }
+    }
+    
+    // Additional validation for password strength
+    const password = document.getElementById('signup-password').value;
+    if (password.length < 8) {
+      alert('Password must be at least 8 characters long');
+      return false;
+    }
+    
+    return true;
+  }
+
+  // Add event listener to submit button
+  document.querySelector('.btn-submit').addEventListener('click', function(e) {
+    e.preventDefault(); // Prevent form submission for demo
+    
+    if (validateForm() && saveFormData()) {
+      alert('Registration completed successfully!');
+      // Optional: Redirect to another page after successful registration
+      // window.location.href = 'welcome.html';
+    }
+  });
+
+  // Optional: Load saved data if exists (for demo purposes)
+  window.addEventListener('DOMContentLoaded', () => {
+    const savedData = localStorage.getItem('userRegistrationData');
+    if (savedData) {
+      const formData = JSON.parse(savedData);
+      document.getElementById('firstNameID').value = formData.userName || '';
+      document.getElementById('university').value = formData.university || '';
+      document.getElementById('faculty').value = formData.faculty || '';
+      document.getElementById('birthdate').value = formData.birthdate || '';
+      document.getElementById('phone').value = formData.phone || '';
+      document.getElementById('email').value = formData.email || '';
+      document.getElementById('signup-password').value = formData.password || '';
+    }
+  });
+
+</script>
+  </body>
+</html>
