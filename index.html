@@ -1,0 +1,485 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet" href="styles.css" />
+    <title>Website eayrent</title>
+  </head>
+  <body>
+    <nav>
+    
+      <div class="nav__bar">
+        <div class="nav__header">
+          <div class="logo nav__logo">
+            <div>E</div>
+            <span>EASY<br />RENT</span>
+          </div>
+
+          <div class="nav__menu__btn" id="menu-btn">
+            <i id="i" class="ri-menu-line"></i>
+             <i id="i" class="ri-user-line"></i>
+          </div>
+          <ul class="nav__links" id="nav-links">
+            ...
+          </ul>
+        </div>
+        <ul class="nav__links" id="nav__links">
+          <li><a href="#home">Home</a></li>
+          <li><a href="#aboute">About</a></li>
+          <li><a href="#units">Units</a></li>
+          <li><a href="#Proparties">Properities</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="singnupst.html">Sign Up</a></li>
+           <li><a href="choses.html">Add Properity</a></li>
+          
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+      
+ 
+    <header class="header" id="home">
+      <div class="section__container header__container">
+        <p class="section__subheader">ABOUTt US</p>
+        <h1>The perfect <br />Base for you</h1>
+        <button class="btn">Get Units</button>
+      </div>
+    </header>
+
+    <section class="booking">
+      <div class="section__container booking__container">
+        <form action="/">
+          <div class="input__group">
+            <label for="arrival">Arrival Date</label>
+            <input type="text" placeholder="Your Arrival Date" />
+          </div>
+          <div class="input__group">
+            <label for="departure">Departure Date</label>
+            <input type="text" placeholder="Your Departure Date" />
+          </div>
+          <div class="input__group">
+            <label for="gusts">Guests Date</label>
+            <input type="text" placeholder="Your Guests Date" />
+          </div>
+          <button class="btn">check Availability</button>
+        </form>
+      </div>
+    </section>
+ <section class="about" id="about">
+  <div class="section__container about__container">
+    <div class="about__grid">
+      <!-- الصف الأول -->
+      <div class="about__card about__card--team">
+        <div class="about__card-icon">
+          <i class="ri-team-line"></i>
+        </div>
+        <div class="about__card-content">
+          <h3>Strong Team</h3>
+          <p>Unlocking Hospitality Excellence And Ensures Your Perfect Stay</p>
+        </div>
+      </div>
+      
+      <!-- الصورة الأولى -->
+      <div class="about__image about__image--main">
+        <img src="/istockphoto-2093684615-612x612.webp" alt="Our luxury underground rooms" />
+      </div>
+      
+      <!-- الصف الثاني -->
+      <div class="about__card about__card--luxury">
+        <div class="about__card-icon">
+          <i class="ri-hotel-bed-line"></i>
+        </div>
+        <div class="about__card-content">
+          <h3>Luxury Room</h3>
+          <p>Experience Unrivaled Luxury at our Exquisite Rooms</p>
+        </div>
+      </div>
+      
+      <!-- الصورة الثانية -->
+      <div class="about__image about__image--secondary">
+        <img src="/brick-wall.jpg" alt="Underground hotel architecture" />
+      </div>
+    </div>
+
+    <!-- محتوى النص -->
+    <div class="about__content">
+      <p class="section__subheader">ABOUT US</p>
+      <h2 class="section__header">Discover Our Underground</h2>
+      <p class="section__description">
+        Welcome to a hidden realm of extraordinary accommodation where luxury, comfort, and adventure converge. 
+        Our underground rooms offer an unparalleled escape from the ordinary, inviting you to explore a 
+        subterranean world of wonder.
+      </p>
+      <button class="btn">BOOK NOW</button>
+    </div>
+  </div>
+</section>
+<section class="room__container" id="units">
+  <p class="section__subheader">Units</p>
+  <h2 class="section__header">Hand picked Units</h2>
+  <div class="room__grid">
+    <!-- Single Room -->
+    <div class="room__card" data-room-id="single-room" onclick="window.location.href='single-room.html'">
+      <div class="room__image-container">
+        <img src="./تصميم-غرف-نوم-مودرن.webp" alt="Modern single bedroom" class="room__image" />
+        <div class="room__overlay">
+          <span class="room__view-btn">View Details</span>
+        </div>
+      </div>
+      <div class="room__card__details">
+        <div class="room__info">
+          <h4>Single Room</h4>
+          <div class="room__features">
+            <span><i class="ri-user-line"></i> 1 Guest</span>
+            <span><i class="ri-ruler-line"></i> 25 m²</span>
+          </div>
+          <p>Well-appointed rooms with modern amenities and luxurious decor</p>
+        </div>
+        <div class="room__price">
+          <h3>€15,000<span>/year</span></h3>
+          <button class="btn btn--small" onclick="event.stopPropagation();">Book Now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Double Room -->
+    <div class="room__card" data-room-id="double-room" onclick="window.location.href='double-room.html'">
+      <div class="room__image-container">
+        <img src="./واقعيةdd68711618c0.jpg" alt="Luxury double bedroom" class="room__image" />
+        <div class="room__overlay">
+          <span class="room__view-btn">View Details</span>
+        </div>
+      </div>
+      <div class="room__card__details">
+        <div class="room__info">
+          <h4>Double Room</h4>
+          <div class="room__features">
+            <span><i class="ri-user-line"></i> 2 Guests</span>
+            <span><i class="ri-ruler-line"></i> 35 m²</span>
+          </div>
+          <p>Spacious room with premium amenities for couples</p>
+        </div>
+        <div class="room__price">
+          <h3>€7,500<span>/day</span></h3>
+          <button class="btn btn--small" onclick="event.stopPropagation();">Book Now</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Triple Room -->
+    <div class="room__card" data-room-id="triple-room" onclick="window.location.href='triple-room.html'">
+      <div class="room__image-container">
+        <img src="./SZC08-2.webp" alt="Comfortable triple bedroom" class="room__image" />
+        <div class="room__overlay">
+          <span class="room__view-btn">View Details</span>
+        </div>
+      </div>
+      <div class="room__card__details">
+        <div class="room__info">
+          <h4>Triple Room</h4>
+          <div class="room__features">
+            <span><i class="ri-user-line"></i> 3 Guests</span>
+            <span><i class="ri-ruler-line"></i> 45 m²</span>
+          </div>
+          <p>Perfect for small groups or families with three single beds</p>
+        </div>
+        <div class="room__price">
+          <h3>€5,000<span>/year</span></h3>
+          <button class="btn btn--small" onclick="event.stopPropagation();">Book Now</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+    <section class="intro">
+      <div class="section__contanier intro__contanier">
+        <div class="intro__content">
+          <p class="section__subheader">INTRO VIDEO</p>
+          <h2 class="section__header" style="color:white;">Meet With Our Rooms</h2>
+          <p class="section__description">
+            A well-made bed with cloud-like pillows beckons for a peaceful nap,
+            Every detail—from the soft rug underfoot to the
+            tasteful artwork on the walls—makes this space feel like a personal
+            retreat, designed purely for relaxation and comfort.
+          </p>
+          <button class="btn">BOOK NOW</button>
+        </div>
+        <div class="intro__video">
+          <video src="./video.mp4" autoplay muted loop></video>
+        </div>
+      </div>
+    </section>
+
+
+    <section class="section__contanier feature__contanier" id="feature">
+      <p class="section__subheader">FACILTIES</p>
+      <h2 class="section__header">Core Feature</h2>
+      <div class="feature__grid">
+        <div class="feature__card" data-page="feature1.html">
+          <span><i class="ri-thumb-up-line"></i></span>
+          <h4>Have High Rating</h4>
+          <p>
+            we take pride in curating a selection of hooms that consistanily
+            recive high rating and positive revivews.
+          </p>
+        </div>
+
+        <div class="feature__card" data-page="feature2.html">
+          <span><i class="ri-time-line"></i></span>
+          <h4>Quite Hours</h4>
+          <p>
+            we understand that paeace and uniterupted rest are essintial for a
+            rejuvenating experience.
+          </p>
+        </div>
+
+        <div class="feature__card" data-page="feature3.html">
+          <span><i class="ri-map-pin-line"></i></span>
+          <h4>Best Location</h4>
+          <p>
+            At our EasyRent website,wetake a period of offering accommandations
+            in the most prime and south-after locations.
+          </p>
+        </div>
+
+        <div class="feature__card" data-page="feature4.html">
+          <span><i class="ri-close-circle-line"></i></span>
+          <h4>free Cancellation</h4>
+          <p>
+            we understand that room can change unexpectedly.which is why we
+            offeer the flexibility of free cancelling.
+          </p>
+        </div>
+
+        <div class="feature__card" data-page="feature5.html">
+          <span><i class="ri-wallet-line"></i></span>
+          <h4>Pyment Option</h4>
+          <p>
+            Oour EasyRent website offer a range of convenient payment option to
+            suit yoour perferences
+          </p>
+        </div>
+
+        <div class="feature__card" data-page="feature6.html">
+          <span><i class="ri-coupon-line"></i></span>
+          <h4>Special Offers</h4>
+          <p>whether you are planning a .</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="menu">
+
+        <ul class="menu__banner">
+          <li>
+            <span><i class="ri-file-text-line"></i></span>
+            <h4>70K</h4>
+            <p>project are compleated</p>
+          </li>
+          <li>
+            <span><i class="ri-user-line"></i></span>
+            <h4>10M</h4>
+            <p>Active around Minya</p>
+          </li>
+          <li>
+            <span><i class="ri-function-line"></i></span>
+            <h4>02K</h4>
+            <p>categories served</p>
+          </li>
+          <li>
+            <span><i class="ri-lightbulb-flash-line"></i></span>
+            <h4>50M</h4>
+            <p>Ides Raised funds</p>
+          </li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Add this section after the booking section and before the about section -->
+    <section class="property-section" id="Proparties">
+        <div class="section-header">
+            <h2>Explore Property</h2>
+        </div>
+        
+        <div class="search-filters">
+            <div class="filter-group">
+                <label for="location">Location</label>
+                <select id="location">
+                <option value="all">All Locations</option>
+                <option value="antalya">Minya taha_hessen</option>
+                <option value="antalya">adnan</option>
+                <option value="antalya">alhseny</option>
+                <option value="antalya">New Minya city</option>
+                <option value="antalya">Abo-helal</option>
+                <option value="antalya">shalby</option>
+                <option value="antalya">elAmery</option>
+              </select>
+            </div>
+            <div class="filter-group">
+                <label for="price">Price</label>
+                <select id="price">
+                    <option value="all">Any Price</option>
+                <option value="3000-2000">€2000- €3000</option>
+                <option value="10000-13000">€10000 - €13000</option>
+                <option value="13000+">€13000+</option>
+              </select>
+            </div>
+            <div class="filter-group">
+                <label for="type">Property Type</label>
+                <select id="type">
+                    <option value="all">All Types</option>
+                <option value="apartment">Single</option>
+                <option value="apartment">Double</option>
+                <option value="apartment">Trible</option>
+              </select>
+            </div>
+            <button class="search-btn" id="search-btn">Search Now</button>
+          </div>
+        </div>
+
+        <div class="property-grid" id="property-grid">
+  <!-- Property 1 -->  
+  <div class="property-card">
+    <div class="property-image" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80')"></div>
+    <div class="property-price">€2,850</div>
+    <div class="property-details">
+      <h3>Unit no. 411 Admiral Elite Premium Residence</h3>
+      <p class="property-location">
+        <i class="ri-map-pin-line"></i> Adnan, Minya, Egypt
+      </p>
+      <div class="property-type">
+        <span class="property-bed-icon">
+          <i class="ri-hotel-bed-line"></i> 1
+        </span>
+        APARTMENTS
+      </div>
+      <div class="property-size">899 sq feet</div>
+    </div>
+  </div>
+
+          <!-- Property 2 -->
+          <div class="property-card">
+          <div class="property-image" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80')"></div>
+            <div class="property-price">€ 9000</div>
+            <div class="property-details">
+              <h3>Unit no. 410 Admiral Elite Premium Residence</h3>
+              <p class="property-location">
+                <i class="ri-map-pin-line"></i> New Minya City, Eygpt
+              </p>
+              <div class="property-type">APARTMENTS</div>
+              <div class="property-size">1237 sq feet</div>
+            </div>
+          </div>
+
+          <!-- Property 3 -->
+          <div class="property-card">
+            <div class="property-image" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80')"></div>
+            <div class="property-price">€ 900</div>
+            <div class="property-details">
+              <h3>Unit no. 409 Admiral Elite Premium Residence</h3>
+              <p class="property-location">
+                <i class="ri-map-pin-line"></i> medan balas, Minya, Eygpt
+              </p>
+              <div class="property-type">APARTMENTS</div>
+              <div class="property-size">473 sq feet</div>
+            </div>
+          </div>
+          <div class="property-grid">
+      <!-- البطاقات سيتم إضافتها ديناميكيًا عبر JavaScript -->
+      <!-- نموذج للبطاقة (لأغراض التصميم فقط، سيتم استبدالها) -->
+      <div class="property-card">
+        <div class="property-image" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80')"></div>
+        <div class="property-price">€ 12000</div>
+        <div class="property-details">
+          <h3>Unit no. 411 Admiral Elite Premium Residence</h3>
+          <p class="property-location">
+            <i class="ri-map-pin-line"></i> Taha-Heseen, Minya, Eygpt
+          </p>
+        <div class="property-type">APARTMENTS</div>
+         <div class="property-features">
+    <span class="feature-item">
+      <i class="ri-bed-line"></i>
+      <span class="feature-value">3</span>
+    </span>
+      <span class="property-size">
+        <i class="ri-ruler-line"></i> 473 sq feet
+      </span>
+      </div>
+      </div>
+    
+      <div class="property-grid" id="property-grid">
+        <!-- سيتم ملء هذا القسم تلقائيًا عبر JavaScript -->
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="section__contanier footer__contanier">
+    <div class="footer__col">
+    
+    <div class="logo footer__logo">
+      <div>E</div>
+      <span >EASY <br />RENT</span>
+    </div>
+    <p class="section__description">
+      Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum eius itaque quod expedita labore est quibusdam incidunt! Harum expedita mollitia ea, magnam ratione aut consectetur. Soluta ipsum sapiente provident dicta.
+    </p>
+    <ul class="footer__socials">
+      <li><a href="#" target="_blank"><i class="ri-facebook-line"></i></a></li>
+      <li><a href="#" target="_blank"><i class="ri-instagram-line"></i></a></li>
+      <li><a href="#" target="_blank"><i class="ri-linkedin-line"></i></a></li>
+    </ul>
+  </div>
+  <div class="footer__col">
+    <h4>Services </h4>
+    <div class="footer__links">
+      <li ><a href="#">Online Booking</a></li>
+      <li ><a href="#"> Spical offer</a></li>
+      <li ><a href="#">Room Customization</a></li>
+      <li ><a href="#">Customer Support</a></li>
+    </div>
+  </div>
+  <div class="footer__col">
+    <h4>Contact Us</h4>
+    <div class="footer__links">
+      <li>
+        <span><i class="ri-phone-fill"></i></span>
+        <div>
+          <h5>Phone Number</h5>
+          <p>+20 1224170048</p>
+        </div>
+      </li>
+      <li>
+         <span><i class="ri-record-mail-line"></i></span>
+        <div>
+          <h5>Emailr</h5>
+          <p>info@easyrent15.com</p>
+        </div>
+      </li>
+      <li>
+         <span><i class="ri-map-pin-2-fill"></i></span>
+        <div>
+          <h5>Location</h5>
+          <p>Minya st. Taha-Hessien</p>
+        </div>
+      </li>
+    </div>
+  </div>
+  </div>
+  <div class="footer__bar">
+    EasyRent copyright  2025 web Design .All rights reserved.
+  </div>
+</footer>
+    <script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
+    <script src="https://unpkg.com/scrollreveal"></script>
+    <script src="main.js"></script>
+  </body>
+</html>
