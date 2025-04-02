@@ -1,0 +1,183 @@
+<nav>
+  <div class="nav__bar">
+    <div class="nav__header">
+      <div class="logo nav__logo">
+        <div>E</div>
+        <span>EASY<br />RENT</span>
+      </div>
+      
+      <div class="nav__menu__btn" id="menu-btn">
+        <i class="ri-menu-line menu-icon"></i>
+        <i class="ri-user-line user-icon"></i>
+      </div>
+    </div>
+
+      
+      <ul class="desktop-links">
+        <li><a href="#home" class="nav-link">Home</a></li>
+        <li><a href="#about" class="nav-link">About</a></li>
+        <li><a href="#units" class="nav-link">Units</a></li>
+        <li><a href="#properties" class="nav-link">Properties</a></li>
+      </ul>
+      
+      <ul class="auth-links">
+        <li><a href="login.html" class="auth-link">Login</a></li>
+        <li><a href="singnupst.html" class="auth-link signup-btn">Sign Up</a></li>
+        <li><a href="#chose.html" class="auth-link highlight-btn">Add property</a></li>
+      </ul>
+    </div>
+    
+    <ul class="mobile-links" id="mobile-links">
+      <li><a href="#home" class="mobile-link">Home</a></li>
+      <li><a href="#about" class="mobile-link">About</a></li>
+      <li><a href="#units" class="mobile-link">Units</a></li>
+      <li><a href="#properties" class="mobile-link">Properties</a></li>
+      <li><a href="login.html" class="mobile-link">Login</a></li>
+      <li><a href="singnupst.html" class="mobile-link">Sign Up</a></li>
+      <li><a href="#chose.html" class="mobile-link highlight">Add property</a></li>
+      <li><a href="#contact" class="mobile-link">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<style>
+  /* أنماط زر الترجمة */
+  .language-switcher {
+    position: relative;
+    margin-right: 1rem;
+  }
+  
+  .language-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: none;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: var(--extra-light);
+  }
+  
+  .language-btn:hover {
+    background-color: var(--border-color);
+  }
+  
+  .language-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 180px;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 0;
+    z-index: 1000;
+    display: none;
+    animation: fadeIn 0.3s ease-out;
+  }
+  
+  .language-dropdown.active {
+    display: block;
+  }
+  
+  .language-option {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+  
+  .language-option:hover {
+    background-color: var(--extra-light);
+  }
+  
+  .language-option.active {
+    color: var(--secondary-color);
+  }
+  
+  .language-option.active i {
+    display: block;
+  }
+  
+  .language-option i {
+    display: none;
+    color: var(--secondary-color);
+  }
+  
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  
+  /* تعديلات التنسيق للشريط */
+  @media (max-width: 992px) {
+    .language-switcher {
+      margin-right: auto;
+      margin-left: 1rem;
+      order: -1;
+    }
+    
+    .language-dropdown {
+      right: auto;
+      left: 0;
+    }
+  }
+</style>
+
+<script>
+  // تفعيل زر الترجمة
+  const languageBtn = document.getElementById('languageBtn');
+  const languageDropdown = document.getElementById('languageDropdown');
+  const languageOptions = document.querySelectorAll('.language-option');
+  
+  // تبديل عرض قائمة اللغات
+  languageBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    languageDropdown.classList.toggle('active');
+  });
+  
+  // اختيار لغة
+  languageOptions.forEach(option => {
+    option.addEventListener('click', function() {
+      const lang = this.getAttribute('data-lang');
+      
+      // تحديث الواجهة
+      languageOptions.forEach(opt => opt.classList.remove('active'));
+      this.classList.add('active');
+      
+      // تحديث الزر الرئيسي
+      languageBtn.querySelector('span').textContent = lang.toUpperCase();
+      
+      // إغلاق القائمة
+      languageDropdown.classList.remove('active');
+      
+      // هنا يمكنك إضافة كود تغيير لغة الموقع
+      console.log('تم اختيار اللغة:', this.querySelector('span').textContent);
+      
+      // تغيير اتجاه الصفحة للغة العربية
+      if(lang === 'ar') {
+        document.documentElement.setAttribute('dir', 'rtl');
+        document.documentElement.setAttribute('lang', 'ar');
+      } else {
+        document.documentElement.setAttribute('dir', 'ltr');
+        document.documentElement.setAttribute('lang', lang);
+      }
+    });
+  });
+  
+  // إغلاق القائمة عند النقر خارجها
+  document.addEventListener('click', function() {
+    languageDropdown.classList.remove('active');
+  });
+  
+  // منع إغلاق القائمة عند النقر عليها
+  languageDropdown.addEventListener('click', function(e) {
+    e.stopPropagation();
+  });
+</script>
+</body>
+</html>
