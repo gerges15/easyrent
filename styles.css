@@ -19,7 +19,7 @@
 /* Dark mode variables */
 [data-theme="dark"] {
   --primary-color: #44b0a5;
-  --secondary-color: #96e3f4;
+  --secondary-color: #edf1f1;
   --text-dark: #f8fafc;
   --text-light: #f1f0f0;
   --extra-light: #1a1a1a;
@@ -1017,6 +1017,7 @@ nav {
   }
 
   .nav__bar {
+    width: 100%;
     max-width: var(--max-width);
     margin: auto;
     padding: 1rem 2rem;

@@ -3,6 +3,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
       href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
@@ -27,12 +28,27 @@
            <i id="i" class="ri-user-line"></i>
           </div>
                 <!-- From Uiverse.io by JustCode14 --> 
+
+</label>
+        </div>
+        <ul class="nav__links" id="nav__links">
+          <li><a href="#contact">Contact</a></li> 
+          <li><a href="choses.html">Add Properity</a></li>   
+          <li><a href="singnupst.html">Sign Up</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="#Proparties">Properities</a></li>
+          <li><a href="#units">Units</a></li> 
+            <li><a href="#About US">About US</a></li>
+            <li><a href="#home">Home</a></li>
+        </ul>
+
 <label class="switch">
   <input checked="true" id="checkbox" type="checkbox" />
   <span class="slider">
     <div class="star star_1"></div>
-    <div class="star star_2"></div>
     <div class="star star_3"></div>
+    <div class="star star_2"></div>
+    
     <svg viewBox="0 0 16 16" class="cloud_1 cloud">
       <path
         transform="matrix(.77976 0 0 .78395-299.99-418.63)"
@@ -41,22 +57,8 @@
       ></path>
     </svg>
   </span>
-</label>
-        </div>
-        <ul class="nav__links" id="nav__links">
-          <li><a href="#home">Home</a></li>
-          <li><a href="#aboute">About</a></li>
-          <li><a href="#units">Units</a></li>
-          <li><a href="#Proparties">Properities</a></li>
-          <li><a href="login.html">Login</a></li>
-          <li><a href="singnupst.html">Sign Up</a></li>
-          <li><a href="choses.html">Add Properity</a></li>
-          
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-      
-
-</div>
+  </label>
+  </div>
     </nav>
       
  
@@ -80,14 +82,14 @@
             <input type="text" placeholder="Your Departure Date" />
           </div>
           <div class="input__group">
-            <label for="gusts">Guests Date</label>
-            <input type="text" placeholder="Your Guests Date" />
+            <label for="gusts">Guests Number</label>
+            <input type="text" placeholder="Your Guests Number" />
           </div>
           <button class="btn">check Availability</button>
         </form>
       </div>
     </section>
- <section class="about" id="about">
+ <section class="about" id="About US">
   <div class="section__container about__container">
     <div class="about__grid">
       <!-- الصف الأول -->
@@ -153,7 +155,7 @@
           <h4>Single Room</h4>
           <div class="room__features">
             <span><i class="ri-user-line"></i> 1 Guest</span>
-            <span><i class="ri-ruler-line"></i> 25 m²</span>
+            <span><i class="ri-ruler-line"></i> 25 feet square</span>
           </div>
           <p>Well-appointed rooms with modern amenities and luxurious decor</p>
         </div>
@@ -177,12 +179,12 @@
           <h4>Double Room</h4>
           <div class="room__features">
             <span><i class="ri-user-line"></i> 2 Guests</span>
-            <span><i class="ri-ruler-line"></i> 35 m²</span>
+            <span><i class="ri-ruler-line"></i> 35 feet square </span>
           </div>
           <p>Spacious room with premium amenities for couples</p>
         </div>
         <div class="room__price">
-          <h3>€7,500<span>/day</span></h3>
+          <h3>€ 7,500<span>/day</span></h3>
           <button class="btn btn--small" onclick="event.stopPropagation();">Book Now</button>
         </div>
       </div>
@@ -228,7 +230,7 @@
           <button class="btn">BOOK NOW</button>
         </div>
         <div class="intro__video">
-          <video src="./video.mp4" autoplay muted loop></video>
+          <video src="https://www.pinterest.com/pin/68328119340352789/" autoplay muted loop></video>
         </div>
       </div>
     </section>
@@ -436,7 +438,7 @@
   </div>
 </section>
 
-<footer class="footer">
+<footer class="footer" id="contact">
   <div class="section__contanier footer__contanier">
     <div class="footer__col">
     
@@ -457,6 +459,7 @@
     <h4>Services </h4>
     <div class="footer__links">
       <li ><a href="#">Online Booking</a></li>
+       <li><a href="privacypolicy.html">Privacy Policy</a></li>
       <li ><a href="#"> Spical offer</a></li>
       <li ><a href="#">Room Customization</a></li>
       <li ><a href="#">Customer Support</a></li>
@@ -473,14 +476,14 @@
         </div>
       </li>
       <li>
-         <span><i class="ri-record-mail-line"></i></span>
+        <span><i class="ri-record-mail-line"></i></span>
         <div>
           <h5>Emailr</h5>
           <p>info@easyrent15.com</p>
         </div>
       </li>
       <li>
-         <span><i class="ri-map-pin-2-fill"></i></span>
+        <span><i class="ri-map-pin-2-fill"></i></span>
         <div>
           <h5>Location</h5>
           <p>Minya st. Taha-Hessien</p>
@@ -493,6 +496,76 @@
     EasyRent copyright  2025 web Design .All rights reserved.
   </div>
 </footer>
+<!-- Cookie Consent Banner -->
+<div id="cookieConsent" class="cookie-card">
+  <p class="cookie-heading">We Use Cookies</p>
+  <p class="cookie-description">
+    This website uses cookies to ensure you get the best experience. 
+    <a href="privacypolicy.html">Learn more</a>
+  </p>
+  <button class="accept-button" onclick="acceptCookies()">I Accept</button>
+   <button class="accept-button" onclick="acceptCookies()">I Reject</button>
+</div>
+
+<style>
+  .cookie-card {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    max-width: 320px;
+    padding: 20px;
+    background: linear-gradient(to right, #5d3be6, #8c6bff);
+    color: white;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    z-index: 9999;
+    font-family: 'Arial', sans-serif;
+    display: none;
+    animation: slideUp 0.5s ease-out;
+  }
+  
+  @keyframes slideUp {
+    from { transform: translateY(100px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  
+  .cookie-heading {
+    font-weight: 600;
+    margin-bottom: 10px;
+  }
+  
+  .accept-button {
+    padding: 8px 16px;
+    background: white;
+    color: #5d3be6;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+    font-weight: 600;
+  }
+  .accept-button:hover {
+  background-color: #6a52c1;
+  transition-duration: .2s;
+}
+</style>
+
+<script>
+  // Show cookie consent if not already accepted
+  document.addEventListener('DOMContentLoaded', function() {
+    if (!localStorage.getItem('cookiesAccepted')) {
+      setTimeout(() => {
+        document.getElementById('cookieConsent').style.display = 'block';
+      }, 1000);
+    }
+  });
+
+  function acceptCookies() {
+    localStorage.setItem('cookiesAccepted', 'true');
+    document.getElementById('cookieConsent').style.display = 'none';
+    // Load cookie-dependent services here (e.g., Google Analytics)
+  }
+</script>
     <script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
     <script src="https://unpkg.com/scrollreveal"></script>
     <script src="main.js"></script>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log in or sign up</title>
+    <!-- أيقونات Font Awesome لأزرار وسائل التواصل -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+
+    <style>
+      /* إعادة ضبط أساسية */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+          sans-serif;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        background: #fff;
+        color: #333;
+      }
+      header {
+        background: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        padding: 10px 20px;
+      }
+      .header-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+      }
+      .logo img {
+        width: 50px;
+        height: 50px;
+      }
+      .logo span {
+        font-size: 28px;
+        font-weight: bold;
+        color: #f97316;
+        margin-left: 10px;
+      }
+      nav {
+        display: flex;
+        gap: 15px;
+      }
+      nav a {
+        text-decoration: none;
+        color: #333;
+        font-size: 16px;
+      }
+      .container {
+        width: 90%;
+        max-width: 400px;
+        margin: auto;
+      }
+      h1 {
+        font-size: 40px;
+        font-weight: bold;
+      }
+      /* عنوان الصفحة */
+      .title {
+        text-align: center;
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 1.5rem;
+      }
+
+      /* صندوق المدخلات */
+      .input-group {
+        margin-bottom: 1rem;
+      }
+
+      .input-group label {
+        display: block;
+        font-size: 0.9rem;
+        margin-bottom: 0.5rem;
+        color: #444;
+      }
+
+      select,
+      input[type="text"],
+      input[type="tel"] {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 0.95rem;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        outline: none;
+        appearance: none; /* لإخفاء سهم select في بعض المتصفحات */
+      }
+
+      /* الملاحظة أسفل حقل رقم الهاتف */
+      .note {
+        font-size: 0.8rem;
+        color: #666;
+        margin-bottom: 1.5rem;
+        line-height: 1.4;
+      }
+
+      /* زر المتابعة */
+      .btn-primary {
+        width: 100%;
+        background: rgb(119, 206, 210); /* لون قريب من الوردي في الصورة */
+        color: #262463;
+        border: none;
+        border-radius: 6px;
+        padding: 0.9rem;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-bottom: 1.5rem;
+      }
+
+      .btn-primary:hover {
+        background: rgb(66, 177, 166);
+      }
+      .separator {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin: 1.5rem 0;
+      }
+
+      .separator .line {
+        flex: 1;
+        height: 1px;
+        background-color: #ccc;
+      }
+
+      .separator .separator-text {
+        padding: 0 1rem;
+        color: #666;
+        font-size: 0.9rem;
+      }
+
+      /* الأزرار الأخرى (التسجيل بالبريد، Apple، Google، Facebook) */
+      .btn-outline {
+        width: 100%;
+        border: 1px solid #ccc;
+        background: #fff;
+        color: #333;
+        border-radius: 6px;
+        padding: 0.9rem;
+        font-size: 1rem;
+        cursor: pointer;
+        margin-bottom: 0.8rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .btn-outline:hover {
+        background: #f8f8f8;
+      }
+
+      .btn-icon {
+        font-size: 1.1rem;
+      }
+
+      /* تمييز زر Apple باللون الأسود */
+      .btn-apple {
+        border: 1px solid #333;
+        background: #000;
+        color: #fff;
+      }
+
+      .btn-apple:hover {
+        background: #333;
+      }
+
+      /* تمييز زر Facebook بالأزرق */
+      .btn-facebook {
+        border: 1px solid #4267b2;
+        background: #4267b2;
+        color: #fff;
+      }
+
+      .btn-facebook:hover {
+        background: #365899;
+      }
+
+      .btnbook {
+        background-color: var(--secondry-color);
+        color: #fff;
+        font-size: 20px;
+        cursor: pointer;
+        width: 20%;
+        border: none;
+        padding: 0.5rem;
+        margin: 0.3rem;
+        border-radius: 4px;
+      }
+      .footer {
+        text-align: center;
+        background: rgba(28, 27, 27, 0.8);
+        color: #fff;
+        padding: 10px;
+        font-size: 20px;
+      }
+
+      /* تحسين للخطوط الصغيرة في الشاشات الضيقة */
+      @media (max-width: 320px) {
+        .btn-primary,
+        .btn-outline {
+          font-size: 0.9rem;
+          padding: 0.7rem;
+        }
+        .title {
+          font-size: 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- اختيار الدولة ورقم الهاتف -->
+    <div class="container">
+      <h1 class="title">Log in or sign up</h1>
+      <!-- اختيار الدولة ورقم الهاتف -->
+      <div class="input-group">
+        <label for="country">Country/Region</label>
+        <select id="country" name="country" required>
+          <option value="" disabled selected>Select your country</option>
+          <option value="eg">Egypt (+20)</option>
+          <option value="AF">Afghanistan (+93)</option>
+          <option value="AX">Åland Islands (+358)</option>
+          <option value="AL">Albania (+355)</option>
+          <option value="DZ">Algeria (+213)</option>
+          <option value="AS">American Samoa (+1-684)</option>
+          <option value="AD">Andorra (+376)</option>
+          <option value="AO">Angola (+244)</option>
+          <option value="AI">Anguilla (+1-264)</option>
+          <option value="AG">Antigua and Barbuda (+1-268)</option>
+          <option value="AR">Argentina (+54)</option>
+          <option value="AM">Armenia (+374)</option>
+          <option value="AW">Aruba (+297)</option>
+          <option value="AU">Australia (+61)</option>
+          <option value="AT">Austria (+43)</option>
+          <option value="AZ">Azerbaijan (+994)</option>
+          <option value="BS">Bahamas (+1-242)</option>
+          <option value="BH">Bahrain (+973)</option>
+          <option value="BD">Bangladesh (+880)</option>
+          <option value="BB">Barbados (+1-246)</option>
+          <option value="BY">Belarus (+375)</option>
+          <option value="BE">Belgium (+32)</option>
+          <option value="BZ">Belize (+501)</option>
+          <option value="BJ">Benin (+229)</option>
+          <option value="BM">Bermuda (+1-441)</option>
+          <option value="BT">Bhutan (+975)</option>
+          <option value="BO">Bolivia (+591)</option>
+          <option value="BA">Bosnia and Herzegovina (+387)</option>
+          <option value="BW">Botswana (+267)</option>
+          <option value="BR">Brazil (+55)</option>
+          <option value="IO">British Indian Ocean Territory (+246)</option>
+          <option value="BN">Brunei Darussalam (+673)</option>
+          <option value="BG">Bulgaria (+359)</option>
+          <option value="BF">Burkina Faso (+226)</option>
+          <option value="BI">Burundi (+257)</option>
+          <option value="KH">Cambodia (+855)</option>
+          <option value="CM">Cameroon (+237)</option>
+          <option value="CA">Canada (+1)</option>
+          <option value="CV">Cape Verde (+238)</option>
+          <option value="KY">Cayman Islands (+1-345)</option>
+          <option value="CF">Central African Republic (+236)</option>
+          <option value="TD">Chad (+235)</option>
+          <option value="CL">Chile (+56)</option>
+          <option value="CN">China (+86)</option>
+          <option value="CX">Christmas Island (+61)</option>
+          <option value="CC">Cocos (Keeling) Islands (+61)</option>
+          <option value="CO">Colombia (+57)</option>
+          <option value="KM">Comoros (+269)</option>
+          <option value="CG">Congo (+242)</option>
+          <option value="CD">
+            Congo, the Democratic Republic of the (+243)
+          </option>
+          <option value="CK">Cook Islands (+682)</option>
+          <option value="CR">Costa Rica (+506)</option>
+          <option value="CI">Côte d'Ivoire (+225)</option>
+          <option value="HR">Croatia (+385)</option>
+          <option value="CU">Cuba (+53)</option>
+          <option value="CY">Cyprus (+357)</option>
+          <option value="CZ">Czech Republic (+420)</option>
+          <option value="DK">Denmark (+45)</option>
+          <option value="DJ">Djibouti (+253)</option>
+          <option value="DM">Dominica (+1-767)</option>
+          <option value="DO">
+            Dominican Republic (+1-809, +1-829, +1-849)
+          </option>
+          <option value="EC">Ecuador (+593)</option>
+          <option value="EG">Egypt (+20)</option>
+          <option value="SV">El Salvador (+503)</option>
+          <option value="GQ">Equatorial Guinea (+240)</option>
+          <option value="ER">Eritrea (+291)</option>
+          <option value="EE">Estonia (+372)</option>
+          <option value="ET">Ethiopia (+251)</option>
+          <option value="FK">Falkland Islands (Malvinas) (+500)</option>
+          <option value="FO">Faroe Islands (+298)</option>
+          <option value="FJ">Fiji (+679)</option>
+          <option value="FI">Finland (+358)</option>
+          <option value="FR">France (+33)</option>
+          <option value="GF">French Guiana (+594)</option>
+          <option value="PF">French Polynesia (+689)</option>
+
+          <!-- باقي الدول -->
+        </select>
+      </div>
+
+      <!-- حقل إدخال رقم الهاتف أو البريد الإلكتروني -->
+      <div class="input-group">
+        <label for="phone">Phone number or email</label>
+        <input
+          type="text"
+          id="phone"
+          placeholder="Enter your phone number or email"
+        />
+      </div>
+
+      <p class="note">
+        We'll call or text to confirm your number. Standard message and data
+        rates apply.
+      </p>
+
+      <button class="btn-primary" onclick="window.location.href='ss.html'">
+        Continue
+      </button>
+
+      <div class="separator">
+        <div class="line"></div>
+        <span class="separator-text">or</span>
+        <div class="line"></div>
+      </div>
+
+      <!-- أزرار طرق التسجيل الأخرى -->
+      <button class="btn-outline btn-apple">
+        <i class="fa-brands fa-apple btn-icon"></i>
+        Continue with Apple
+      </button>
+
+      <button class="btn-outline">
+        <i class="fa-brands fa-google btn-icon"></i>
+        Continue with Google
+      </button>
+
+      <button class="btn-outline btn-facebook">
+        <i class="fa-brands fa-facebook-f btn-icon"></i>
+        Continue with Facebook
+      </button>
+    </div>
+
+    <script>
+      // تحقق بسيط من الإدخال
+      document
+        .querySelector(".btn-primary")
+        .addEventListener("click", function (event) {
+          const input = document.getElementById("phone").value;
+          const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input); // تحقق من البريد الإلكتروني
+          const isPhone = /^\d{10,}$/.test(input); // تحقق من رقم الهاتف (10 أرقام أو أكثر)
+
+          if (!isEmail && !isPhone) {
+            alert("Please enter a valid phone number or email.");
+            event.preventDefault(); // إيقاف الإرسال إذا كانت البيانات غير صحيحة
+          }
+        });
+    </script>
+  </body>
+</html>
