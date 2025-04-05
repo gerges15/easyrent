@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forgot Password - Google Accounts</title>
+    <style>
+      body {
+        font-family: "Google Sans", Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #fff;
+        color: #202124;
+        font-size: 14px;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      .container {
+        max-width: 450px;
+        margin: 0 auto;
+        padding: 20px;
+        text-align: center;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      .logo {
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+        font-weight: 400;
+        margin-bottom: 16px;
+      }
+
+      .subtitle {
+        color: #5f6368;
+        font-size: 16px;
+        margin-bottom: 24px;
+      }
+
+      .email-display {
+        font-size: 16px;
+        font-weight: 500;
+        margin-bottom: 24px;
+        padding: 12px;
+        background-color: #f8f9fa;
+        border-radius: 4px;
+      }
+
+      .input-container {
+        margin-bottom: 24px;
+        text-align: left;
+      }
+
+      .input-field {
+        width: 100%;
+        padding: 13px 15px;
+        font-size: 16px;
+        border: 1px solid #dadce0;
+        border-radius: 4px;
+        box-sizing: border-box;
+      }
+
+      .input-field:focus {
+        border-color: #1a73e8;
+        outline: none;
+        box-shadow: 0 0 0 2px #e8f0fe;
+      }
+
+      .next-btn {
+        background-color: #1a73e8;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        padding: 10px 24px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        width: 100%;
+        height: 40px;
+      }
+
+      .next-btn:hover {
+        background-color: #1765cc;
+      }
+
+      .next-btn:disabled {
+        background-color: #f1f3f4;
+        color: #bdc1c6;
+        cursor: default;
+      }
+
+      .try-another-way {
+        color: #1a73e8;
+        font-weight: 500;
+        margin-top: 16px;
+        display: inline-block;
+        cursor: pointer;
+      }
+
+      .try-another-way:hover {
+        text-decoration: underline;
+      }
+
+      .footer {
+        background-color: #f8f9fa;
+        padding: 24px;
+        text-align: center;
+        color: #5f6368;
+        font-size: 12px;
+        border-top: 1px solid #dadce0;
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-top: 8px;
+      }
+
+      .footer-links a {
+        color: #5f6368;
+        text-decoration: none;
+      }
+
+      .footer-links a:hover {
+        text-decoration: underline;
+      }
+
+      .error-message {
+        color: #d93025;
+        font-size: 12px;
+        margin-top: 8px;
+        text-align: left;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 272 92"
+          width="75"
+          height="24"
+        >
+          <!-- Google logo SVG -->
+          <path
+            d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"
+            fill="#EA4335"
+          />
+          <path
+            d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"
+            fill="#FBBC05"
+          />
+          <path
+            d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.26 21.25-22.26 5.29 0 9.49 2.35 11.68 4.96h.34v-3.61h9.25zm-8.56 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z"
+            fill="#4285F4"
+          />
+          <path d="M225 3v65h-9.5V3h9.5z" fill="#34A853" />
+          <path
+            d="M262.02 54.48l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.65 12.28c2.27 4.45 5.8 6.72 10.75 6.72 4.96 0 8.4-2.44 10.92-6.14zm-23.27-7.98l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z"
+            fill="#EA4335"
+          />
+          <path
+            d="M35.29 41.41V32H67c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C16.32 69.35.36 54.3.36 39 .36 23.7 16.32 8.65 32.35 8.65 39c0 6.66 5.96 15.71 14.85 23.2 9.82 8.23 18.8 8.23 22.01 8.23 6.3 0 10.75-1.01 15.45-3.06 5.03-2.3 9.41-5.71 12.66-10.75l-13.51-8.73c-3.27 4.79-6.72 7.06-11.51 7.06-3.44 0-6.14-1.26-8.23-3.44-1.72-1.93-2.77-4.37-3.19-7.38h39.47l-.24-2.5z"
+            fill="#4285F4"
+          />
+        </svg>
+      </div>
+
+      <h1>Forgot password?</h1>
+      <div class="subtitle">
+        Enter the verification code sent to your recovery email
+      </div>
+
+      <div class="email-display" id="displayEmail">r*******n@gmail.com</div>
+
+      <div class="input-container">
+        <input
+          type="text"
+          class="input-field"
+          id="verificationCode"
+          placeholder="Enter 6-digit code"
+          maxlength="6"
+        />
+        <div class="error-message" id="errorMessage">
+          Invalid verification code. Please try again.
+        </div>
+      </div>
+
+      <button class="next-btn" id="nextBtn" disabled>Next</button>
+
+      <div class="try-another-way" id="tryAnotherWay">Didn't get the code?</div>
+    </div>
+
+    <div class="footer">
+      <div class="footer-links">
+        <a href="#">Help</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+      <div class="language-selector">English (United States)</div>
+    </div>
+
+    <script>
+      // DOM Elements
+      const verificationCodeInput = document.getElementById("verificationCode");
+      const nextBtn = document.getElementById("nextBtn");
+      const tryAnotherWay = document.getElementById("tryAnotherWay");
+      const errorMessage = document.getElementById("errorMessage");
+      const displayEmail = document.getElementById("displayEmail");
+
+      // Get email from URL parameters or use default
+      const urlParams = new URLSearchParams(window.location.search);
+      const email = urlParams.get("email") || "recoveryemail@gmail.com";
+
+      // Display masked email
+      displayEmail.textContent = maskEmail(email);
+
+      // Enable/disable Next button based on input
+      verificationCodeInput.addEventListener("input", function () {
+        const code = this.value.trim();
+        nextBtn.disabled = code.length !== 6;
+
+        // Hide error message when user types
+        if (errorMessage.style.display === "block") {
+          errorMessage.style.display = "none";
+          this.classList.remove("error");
+        }
+      });
+
+      // Handle Next button click
+      nextBtn.addEventListener("click", function () {
+        const code = verificationCodeInput.value.trim();
+
+        // Simulate verification (replace with actual verification logic)
+        if (code === "123456") {
+          // Example valid code
+          console.log("Verification successful!");
+          alert("Verification successful! Redirecting to password reset...");
+          // window.location.href = 'reset-password.html?email=' + encodeURIComponent(email);
+        } else {
+          showError("Invalid verification code. Please try again.");
+        }
+      });
+
+      // Handle Try Another Way click
+      tryAnotherWay.addEventListener("click", function () {
+        console.log("Trying another recovery method for:", email);
+        // window.location.href = 'try-another-way.html?email=' + encodeURIComponent(email);
+        alert("Redirecting to alternative recovery methods...");
+      });
+
+      // Helper function to mask email
+      function maskEmail(email) {
+        const [username, domain] = email.split("@");
+        const maskedUsername =
+          username.charAt(0) +
+          "*".repeat(username.length - 2) +
+          username.charAt(username.length - 1);
+        return maskedUsername + "@" + domain;
+      }
+
+      // Helper function to show error
+      function showError(message) {
+        errorMessage.textContent = message;
+        errorMessage.style.display = "block";
+        verificationCodeInput.classList.add("error");
+        verificationCodeInput.focus();
+      }
+    </script>
+  </body>
+</html>
