@@ -3,7 +3,7 @@
 /* Light mode variables (default) */
 :root {
   --primary-color: #0f1a2c;
-  --secondary-color: #44b0a5;
+  --secondary-color: #ec8bb7;
   --text-dark: #0f172a;
   --text-light: #aaa9a9;
   --extra-light: #f8fafc;
@@ -18,7 +18,7 @@
 
 /* Dark mode variables */
 [data-theme="dark"] {
-  --primary-color: #44b0a5;
+  --primary-color: #f78bb6;
   --secondary-color: #edf1f1;
   --text-dark: #f8fafc;
   --text-light: #f1f0f0;
@@ -90,7 +90,7 @@ body {
 }
 
 .btn:hover {
-  background-color: #198e8a;
+  background-color: #b13082;
 }
 
 .section__nav {

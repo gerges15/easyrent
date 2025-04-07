@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Add Property - HomesGlobe</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+      body {
+        margin: 0;
+        display: flex;
+        background: #f0f4f8; /* جديد */
+        color: #1a1a1a; /* جديد */
+      }
+      .sidebar {
+        width: 220px;
+        background-color: #ebe6e6;
+        height: 100vh;
+        padding: 20px;
+        border-right: 1px solid #ddd;
+      }
+      .sidebar h2 {
+        color: #f892c7; /* جديد */
+        font-size: 20px;
+        margin-bottom: 30px;
+      }
+      .sidebar ul {
+        list-style: none;
+        padding: 0;
+      }
+      .sidebar li {
+        margin: 15px 0;
+        cursor: pointer;
+      }
+      .main {
+        flex: 1;
+        padding: 30px;
+      }
+      .header {
+        background-color: #260f45; /* جديد */
+        color: #fff;
+        padding: 10px 20px;
+        margin: -30px -30px 30px;
+        border-radius: 0 0 8px 8px;
+      }
+      .form-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      .form-section {
+        background: #ffffff;
+        padding: 20px;
+        flex: 1;
+        min-width: 500px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      }
+      .form-section h3 {
+        margin-bottom: 15px;
+        color: #873b6e; /* جديد */
+      }
+      .form-group {
+        margin-bottom: 15px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+      }
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid #b0bec5; /* جديد */
+        border-radius: 5px;
+      }
+      .image-upload {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        border: 2px dashed #b0bec5; /* جديد */
+        padding: 20px;
+        height: 200px;
+        border-radius: 8px;
+        text-align: center;
+      }
+      .image-upload input {
+        display: none;
+      }
+      .image-upload label {
+        cursor: pointer;
+        padding: 8px 16px;
+        background-color: #d57cc5; /* جديد */
+        color: white;
+        border-radius: 4px;
+        margin-top: 10px;
+      }
+      .submit-btn {
+        margin-top: 20px;
+        padding: 12px 20px;
+        background-color: #ed91dc; /* جديد */
+        color: #fff;
+        border: none;
+        border-radius: 6px;
+        font-size: 16px;
+        cursor: pointer;
+      }
+      .submit-btn:hover {
+        background-color: #cb81bb; /* Hover لون أدكن */
+      }
+      .row {
+        display: flex;
+        gap: 10px;
+      }
+      .row .form-group {
+        flex: 1;
+      }
+      #preview {
+        margin-top: 10px;
+        max-height: 150px;
+        display: none;
+        border-radius: 6px;
+        object-fit: cover;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <h2>Easy<span style="color: #ee91c9">Rent</span></h2>
+      <ul>
+        <li>🏠 Dashboard</li>
+        <li>➕ Add Property</li>
+        <li>📋 My Properties</li>
+        <li>📥 Inbox</li>
+        <li>❤️ Favorite</li>
+        <li>⚙️ Profile Settings</li>
+        <li>🚪 Logout</li>
+      </ul>
+    </div>
+
+    <div class="main">
+      <div class="header">
+        <strong>🏗 Easy Rent: Evolution in Progress!</strong> — We’re building
+        something amazing—exciting improvements are on the way!
+      </div>
+
+      <form class="form-container">
+        <div class="form-section">
+          <h3>Property Info</h3>
+          <div class="row">
+            <div class="form-group">
+              <label>Price *</label>
+              <input type="number" placeholder="Enter Price" required />
+            </div>
+            <div class="form-group">
+              <label>Type *</label>
+              <select required>
+                <option value="">Choose Type</option>
+                <option>Sale</option>
+                <option>Rent</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label>Property Name *</label>
+              <input type="text" placeholder="Enter Property Name" required />
+            </div>
+            <div class="form-group">
+              <label>Home Type *</label>
+              <input type="text" placeholder="Home Type" required />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Description *</label>
+            <textarea
+              rows="3"
+              placeholder="Write About Property"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label>Property Size *</label>
+            <input type="text" placeholder="Enter Property Size" required />
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label>Bedrooms</label>
+              <input type="number" placeholder="No." />
+            </div>
+            <div class="form-group">
+              <label>Bathrooms</label>
+              <input type="number" placeholder="No." />
+            </div>
+            <div class="form-group">
+              <label>Kitchens</label>
+              <input type="number" placeholder="No." />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Additional Features</label>
+            <input type="text" placeholder="Search and select features" />
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label>Country *</label>
+              <input
+                type="text"
+                placeholder="Enter Property Country"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label>State *</label>
+              <input type="text" placeholder="Enter Property State" required />
+            </div>
+          </div>
+          <div class="row">
+            <div class="form-group">
+              <label>City *</label>
+              <input type="text" placeholder="Enter Property City" required />
+            </div>
+            <div class="form-group">
+              <label>Zip/Postal Code *</label>
+              <input type="text" placeholder="Enter Zip/Postal Code" required />
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h3>Property Image</h3>
+          <div class="image-upload">
+            <span>📷 Drop your files here</span>
+            <label for="imageUpload">Choose File</label>
+            <input type="file" id="imageUpload" accept="image/*" />
+            <img id="preview" />
+          </div>
+
+          <div class="form-group">
+            <label>Contact No. *</label>
+            <input type="tel" placeholder="+20..." required />
+          </div>
+
+          <div class="form-group">
+            <label>WhatsApp No.</label>
+            <input type="tel" placeholder="+20..." />
+          </div>
+
+          <div class="form-group">
+            <label>Email *</label>
+            <input type="email" placeholder="Enter Property Email" required />
+          </div>
+
+          <button class="submit-btn" type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
+    <script>
+      const form = document.querySelector("form");
+      const imageInput = document.getElementById("imageUpload");
+      const preview = document.getElementById("preview");
+
+      imageInput.addEventListener("change", function () {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            preview.src = e.target.result;
+            preview.style.display = "block";
+
+            // ✅ تخزين الصورة في localStorage
+            localStorage.setItem("propertyImage", e.target.result);
+          };
+          reader.readAsDataURL(file);
+        }
+      });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+
+        const data = {};
+        form.querySelectorAll("input, textarea, select").forEach((el) => {
+          if (el.type === "file") return;
+          const key = el.previousElementSibling?.innerText
+            ?.replace("*", "")
+            .trim();
+          data[key] = el.value;
+        });
+
+        localStorage.setItem("propertyData", JSON.stringify(data));
+
+        alert("✅ تم حفظ بيانات العقار!");
+
+        // إعادة ضبط النموذج
+        form.reset();
+        preview.style.display = "none";
+
+        // إعادة التوجيه لصفحة العرض
+        window.location.href = "view.html";
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>عرض العقار - HomesGlobe</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Inter", sans-serif;
+        background: #f0f4f8;
+        padding: 40px;
+        color: #1a1a1a;
+      }
+      .container {
+        max-width: 800px;
+        margin: auto;
+        background: #fff;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 30px;
+      }
+      h2 {
+        text-align: center;
+        color: #2e7d32;
+        margin-bottom: 20px;
+      }
+      .property-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+      .property-info div {
+        background: #f7f9fa;
+        padding: 10px 15px;
+        border-radius: 6px;
+      }
+      .label {
+        font-weight: 600;
+        color: #2e7d32;
+      }
+      .image-preview {
+        text-align: center;
+        margin-top: 30px;
+      }
+      .image-preview img {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 6px;
+      }
+      .back-btn {
+        margin-top: 30px;
+        display: inline-block;
+        padding: 10px 20px;
+        background-color: #4caf50;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+      }
+      .back-btn:hover {
+        background-color: #388e3c;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h2>📄 بيانات العقار</h2>
+      <div class="property-info" id="propertyDetails"></div>
+
+      <div class="image-preview">
+        <h4>📸 صورة المعاينة</h4>
+        <img id="imageDisplay" src="" alt="No Image" />
+      </div>
+
+      <a href="index.html" class="back-btn">🔙 الرجوع إلى صفحة الإدخال</a>
+    </div>
+
+    <script>
+      const data = JSON.parse(localStorage.getItem("propertyData"));
+      const propertyDetails = document.getElementById("propertyDetails");
+
+      if (data) {
+        for (const key in data) {
+          const div = document.createElement("div");
+          div.innerHTML = `<span class="label">${key}:</span><br>${data[key]}`;
+          propertyDetails.appendChild(div);
+        }
+      } else {
+        propertyDetails.innerHTML = "<p>🚫 لا توجد بيانات محفوظة.</p>";
+      }
+
+      // عرض صورة إذا كانت محفوظة
+      const imageData = localStorage.getItem("propertyImage");
+      if (imageData) {
+        document.getElementById("imageDisplay").src = imageData;
+      } else {
+        document.getElementById("imageDisplay").style.display = "none";
+      }
+    </script>
+  </body>
+</html>
