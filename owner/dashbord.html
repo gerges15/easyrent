@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="ar">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pink Dashboard</title>
+    <!-- Font Awesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <!-- Chart.js CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+      :root {
+        --primary-color: #82c9ff;
+        --secondary-color: #6c757d;
+        --light-gray: #f8f9fa;
+        --border-color: #dee2e6;
+        --success-color: #20115b;
+      }
+      * {
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+      body {
+        margin: 0;
+        display: flex;
+        background: #f0f4f8;
+        color: #1a1a1a;
+      }
+      .sidebar {
+        width: 220px;
+        background-color: #f0eded;
+        padding: 20px;
+        min-height: 100vh;
+      }
+      .sidebar h2 {
+        margin-top: 0;
+        padding: 15px;
+        color: var(--success-color);
+        font-size: 30px;
+      }
+
+      .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        margin: 10px 0;
+        text-decoration: none;
+        color: white;
+        background-color: #89c8f8;
+        border-radius: 5px;
+        font-size: 16px;
+        gap: 10px;
+        transition: background 0.3s;
+      }
+      .sidebar a:hover {
+        background-color: #82c9ff;
+      }
+
+      .nav-menu {
+        list-style: none;
+      }
+
+      .nav-item {
+        margin-bottom: 15px;
+      }
+
+      .nav-item a {
+        text-decoration: none;
+        color: var(--secondary-color);
+        display: block;
+        padding: 8px 10px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+      }
+
+      .nav-item a:hover,
+      .nav-item.active a {
+        background-color: var(--light-gray);
+        color: var(--primary-color);
+      }
+
+      .sidebar li {
+        margin: 15px 0;
+        cursor: pointer;
+      }
+      .main {
+        flex: 1;
+        padding: 30px;
+      }
+      .header {
+        background-color: #260f45;
+        color: #fff;
+        padding: 10px 20px;
+        margin: -30px -30px 30px;
+        border-radius: 0 0 8px 8px;
+      }
+      .form-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+
+      .content {
+        flex: 1;
+        padding: 20px;
+      }
+      .dashboard-cards {
+        display: flex;
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+      .card {
+        background-color: #b4dcfb;
+        padding: 20px;
+        border-radius: 10px;
+        flex: 1;
+        box-shadow: 0 0 10px rgba(187, 182, 255, 0.5);
+      }
+      .card:hover {
+        box-shadow: 0 0 20px rgba(197, 182, 255, 0.5);
+        color: #82c9ff;
+      }
+      .card h3 {
+        margin: 0 0 10px 0;
+      }
+      .chart {
+        background-color: #fff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 0 10px rgba(116, 128, 194, 0.3);
+      }
+      canvas {
+        max-width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="sidebar">
+        <h2><i class="fas fa-house-chimney"></i> Easy Rent</h2>
+        <a href="dashbord.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+        <a href="createrooms.html"><i class="fas fa-plus"></i> Add Property</a>
+        <a href="#"><i class="fas fa-building"></i> My Properties</a>
+        <a href="#"><i class="fas fa-envelope"></i> Inbox</a>
+        <a href="setting.html"><i class="fas fa-user"></i> Profile Settings</a>
+        <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
+    </div>
+
+    <div class="main">
+      <div class="header">
+        <strong>🏗 Easy Rent: Evolution in Progress!</strong> — We're building
+        something amazing—exciting improvements are on the way!
+      </div>
+
+      <div class="content">
+        <h1>Dashboard</h1>
+        <div class="dashboard-cards">
+          <div class="card">
+            <h3><i class="fas fa-home"></i> Total Properties</h3>
+            <div class="stat-value total-property" id="total-property">0</div>
+          </div>
+          <div class="card">
+            <h3><i class="fas fa-key"></i> Available for Rent</h3>
+            <div class="to-rent">To Rent: <span id="to-rent">0</span></div>
+          </div>
+        </div>
+        <div class="chart" id="chartContainer">
+          <h3><i class="fas fa-chart-bar"></i> Properties Per Month</h3>
+          <canvas id="propertiesChart" height="100"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // لو مفيش بيانات محفوظة في localStorage نحط صفرات كبداية
+      const sampleRentData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+      if (!localStorage.getItem("rentData")) {
+        localStorage.setItem("rentData", JSON.stringify(sampleRentData));
+      }
+
+      const rentData = JSON.parse(localStorage.getItem("rentData")) || [];
+
+      // تحديث الأرقام
+      const totalRent = rentData.reduce((a, b) => a + b, 0);
+      document.getElementById("total-property").innerText = totalRent;
+      document.getElementById("to-rent").innerText = totalRent;
+
+      // عرض رسالة بدل الجراف لو مفيش بيانات
+      if (totalRent === 0) {
+        document.getElementById("chartContainer").innerHTML = `
+          <h3><i class="fas fa-chart-bar"></i> Properties Per Month</h3>
+          <p style="color: #999; font-size: 16px;">There is no data yet, no apartments are being added for rent.</p>
+        `;
+      } else {
+        const ctx = document.getElementById("propertiesChart").getContext("2d");
+        new Chart(ctx, {
+          type: "bar",
+          data: {
+            labels: [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+            ],
+            datasets: [
+              {
+                label: "property rent",
+                data: rentData,
+                backgroundColor: "#ff69b4",
+              },
+            ],
+          },
+          options: {
+            responsive: true,
+            scales: {
+              y: {
+                beginAtZero: true,
+                ticks: {
+                  stepSize: 1,
+                },
+              },
+            },
+          },
+        });
+      }
+
+      // Load data from localStorage or initialize if not exists
+      let dashboardData = JSON.parse(localStorage.getItem("dashboardData")) || {
+        totalProperty: 0,
+        toSale: 0,
+        toRent: 0,
+        availableRent: 0,
+        monthlyData: [100, 75, 90, 25, 0, 0, 0, 0, 0, 0, 0, 0],
+        cookiesAccepted: false,
+      };
+
+      // DOM elements
+      const totalPropertyEl = document.getElementById("total-property");
+      const toRentEl = document.getElementById("to-rent");
+
+      // Initialize UI
+      function initUI() {
+        totalPropertyEl.textContent = dashboardData.totalProperty;
+        toRentEl.textContent = dashboardData.toRent;
+      }
+
+      // Initialize the UI when page loads
+      document.addEventListener("DOMContentLoaded", initUI);
+    </script>
+  </body>
+</html>

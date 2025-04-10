@@ -6,10 +6,11 @@
       name="viewport"
       content="width=1200, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
     />
-    <title>OWnersigning up</title>
+    <title>Owner Signing Up</title>
+
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
     <style>
       /* القواعد العامة */
@@ -123,7 +124,7 @@
         width: 60%;
         padding: 10px; /* هوامش ثابتة */
         font-size: 16px; /* حجم ثابت */
-        background: rgb(35, 184, 189);
+        background: rgb(162, 190, 251);
         color: #fff;
         border: none;
         border-radius: 6px;
@@ -131,8 +132,16 @@
         transition: all 0.3s ease-in-out;
       }
       .btn-submit:hover {
-        background: rgb(9, 154, 159);
+        background: rgb(145, 175, 240);
         transform: scale(1.05);
+      }
+
+      /* رسالة الخطأ */
+      .error-message {
+        color: #dc3545;
+        font-size: 14px;
+        margin-top: 5px;
+        display: none;
       }
     </style>
   </head>
@@ -143,16 +152,22 @@
         <h1 class="title">Finish signing up</h1>
 
         <div class="form-group">
-          <label for="firstNameID">Legal Name</label>
-          <input type="text" id="firstNameID" placeholder="First name on ID" />
+          <label for="legalName">Legal Name</label>
+          <input type="text" id="legalName" placeholder="First name on ID" />
+          <div class="error-message" id="legalNameError">
+            Please enter your legal name
+          </div>
         </div>
         <div class="sub-note">
           Make sure this matches the name on your government ID. If you go by
           another name, you can add a preferred first name.
         </div>
         <div class="form-group">
-          <label for="firstNameID"> UserName</label>
-          <input type="text" id="firstNameID" placeholder="First username" />
+          <label for="username">Username</label>
+          <input type="text" id="username" placeholder="Choose a username" />
+          <div class="error-message" id="usernameError">
+            Please choose a username
+          </div>
         </div>
 
         <div class="date-note">
@@ -164,16 +179,22 @@
         <div class="form-group">
           <label for="email">Email</label>
           <input type="email" id="email" placeholder="user@gmail.com" />
+          <div class="error-message" id="emailError">
+            Please enter a valid email
+          </div>
         </div>
 
         <!-- كلمة المرور -->
         <div class="password-container">
-          <label for="signup-password">Password</label>
+          <label for="password">Password</label>
           <input
             type="password"
-            id="signup-password"
+            id="password"
             placeholder="Enter your password"
           />
+          <div class="error-message" id="passwordError">
+            Password must be at least 6 characters
+          </div>
           <button type="button" class="show-password" id="togglePasswordBtn">
             Show
           </button>
@@ -182,20 +203,26 @@
         <div class="form-group">
           <label for="phone">Phone number</label>
           <input type="text" id="phone" placeholder="Enter your phone number" />
+          <div class="error-message" id="phoneError">
+            Please enter a valid phone number
+          </div>
         </div>
         <!-- الموقع -->
         <div class="form-group">
           <label for="location">Location</label>
           <input type="text" id="location" placeholder="Enter your location" />
+          <div class="error-message" id="locationError">
+            Please enter your location
+          </div>
         </div>
-        <button class="btn-submit">Agree and continue</button>
+        <button class="btn-submit" id="submitBtn">Agree and continue</button>
       </div>
-      <!-- الملاحظة الخاصة بالشروط -->
 
       <script>
         // كود إظهار/إخفاء كلمة المرور
-        const passwordInput = document.getElementById("signup-password");
+        const passwordInput = document.getElementById("password");
         const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+        const submitBtn = document.getElementById("submitBtn");
 
         togglePasswordBtn.addEventListener("click", () => {
           if (passwordInput.type === "password") {
@@ -206,6 +233,88 @@
             togglePasswordBtn.textContent = "Show";
           }
         });
+
+        // Function to validate email
+        function isValidEmail(email) {
+          const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          return re.test(email);
+        }
+
+        // Function to validate form
+        function validateForm() {
+          let isValid = true;
+
+          // Reset error messages
+          document.querySelectorAll(".error-message").forEach((el) => {
+            el.style.display = "none";
+          });
+
+          // Validate legal name
+          const legalName = document.getElementById("legalName").value.trim();
+          if (legalName === "") {
+            document.getElementById("legalNameError").style.display = "block";
+            isValid = false;
+          }
+
+          // Validate username
+          const username = document.getElementById("username").value.trim();
+          if (username === "") {
+            document.getElementById("usernameError").style.display = "block";
+            isValid = false;
+          }
+
+          // Validate email
+          const email = document.getElementById("email").value.trim();
+          if (email === "" || !isValidEmail(email)) {
+            document.getElementById("emailError").style.display = "block";
+            isValid = false;
+          }
+
+          // Validate password
+          const password = document.getElementById("password").value;
+          if (password.length < 6) {
+            document.getElementById("passwordError").style.display = "block";
+            isValid = false;
+          }
+
+          // Validate phone
+          const phone = document.getElementById("phone").value.trim();
+          if (phone === "") {
+            document.getElementById("phoneError").style.display = "block";
+            isValid = false;
+          }
+
+          // Validate location
+          const location = document.getElementById("location").value.trim();
+          if (location === "") {
+            document.getElementById("locationError").style.display = "block";
+            isValid = false;
+          }
+
+          return isValid;
+        }
+
+        // Save data and redirect
+        submitBtn.addEventListener("click", () => {
+          if (validateForm()) {
+            // Collect form data
+            const userData = {
+              legalName: document.getElementById("legalName").value.trim(),
+              username: document.getElementById("username").value.trim(),
+              email: document.getElementById("email").value.trim(),
+              password: document.getElementById("password").value,
+              phone: document.getElementById("phone").value.trim(),
+              location: document.getElementById("location").value.trim(),
+            };
+
+            // Save to localStorage
+            localStorage.setItem("userData", JSON.stringify(userData));
+
+            // Redirect to createroom page
+            window.location.href = "createrooms.html";
+          }
+        });
+        const userData = JSON.parse(localStorage.getItem("userData"));
       </script>
     </main>
   </body>

@@ -8,7 +8,19 @@
       href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
     <style>
+      :root {
+        --primary-color: #82c9ff;
+        --secondary-color: #6c757d;
+        --light-gray: #f8f9fa;
+        --border-color: #dee2e6;
+        --success-color: #20115b;
+      }
       * {
         box-sizing: border-box;
         font-family: "Inter", sans-serif;
@@ -21,20 +33,56 @@
       }
       .sidebar {
         width: 220px;
-        background-color: #ebe6e6;
-        height: 100vh;
+        background-color: #f0eded;
         padding: 20px;
-        border-right: 1px solid #ddd;
+        min-height: 100vh;
       }
       .sidebar h2 {
-        color: #f892c7; /* جديد */
-        font-size: 20px;
-        margin-bottom: 30px;
+        margin-top: 0;
+        padding: 15px;
+        color: var(--success-color);
+        font-size: 30px;
       }
-      .sidebar ul {
+      .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        margin: 10px 0;
+        text-decoration: none;
+        color: white;
+        background-color: #82c9ff;
+        border-radius: 5px;
+        font-size: 16px;
+        gap: 10px;
+        transition: background 0.3s;
+      }
+      .sidebar a:hover {
+        background-color: #59b6fe;
+      }
+
+      .nav-menu {
         list-style: none;
-        padding: 0;
       }
+
+      .nav-item {
+        margin-bottom: 15px;
+      }
+
+      .nav-item a {
+        text-decoration: none;
+        color: var(--secondary-color);
+        display: block;
+        padding: 8px 10px;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+      }
+
+      .nav-item a:hover,
+      .nav-item.active a {
+        background-color: var(--light-gray);
+        color: var(--primary-color);
+      }
+
       .sidebar li {
         margin: 15px 0;
         cursor: pointer;
@@ -64,8 +112,10 @@
         box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
       }
       .form-section h3 {
-        margin-bottom: 15px;
-        color: #873b6e; /* جديد */
+        margin: 0;
+        margin-bottom: 10px;
+        color: #258cdb; /* جديد */
+        font-size: 24px;
       }
       .form-group {
         margin-bottom: 15px;
@@ -100,7 +150,7 @@
       .image-upload label {
         cursor: pointer;
         padding: 8px 16px;
-        background-color: #d57cc5; /* جديد */
+        background-color: #3baaff; /* جديد */
         color: white;
         border-radius: 4px;
         margin-top: 10px;
@@ -108,15 +158,14 @@
       .submit-btn {
         margin-top: 20px;
         padding: 12px 20px;
-        background-color: #ed91dc; /* جديد */
-        color: #fff;
+        background-color: #67b7f4;
         border: none;
         border-radius: 6px;
         font-size: 16px;
         cursor: pointer;
       }
       .submit-btn:hover {
-        background-color: #cb81bb; /* Hover لون أدكن */
+        background-color: #279bf4;
       }
       .row {
         display: flex;
@@ -132,20 +181,22 @@
         border-radius: 6px;
         object-fit: cover;
       }
+      canvas {
+        max-width: 100%;
+      }
     </style>
   </head>
   <body>
-    <div class="sidebar">
-      <h2>Easy<span style="color: #ee91c9">Rent</span></h2>
-      <ul>
-        <li>🏠 Dashboard</li>
-        <li>➕ Add Property</li>
-        <li>📋 My Properties</li>
-        <li>📥 Inbox</li>
-        <li>❤️ Favorite</li>
-        <li>⚙️ Profile Settings</li>
-        <li>🚪 Logout</li>
-      </ul>
+    <div class="container">
+      <div class="sidebar">
+        <h2><i class="fas fa-house-chimney"></i> Easy Rent</h2>
+        <a href="dashbord.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+        <a href="createrooms.html"><i class="fas fa-plus"></i> Add Property</a>
+        <a href="#"><i class="fas fa-building"></i> My Properties</a>
+        <a href="#"><i class="fas fa-envelope"></i> Inbox</a>
+        <a href="setting.html"><i class="fas fa-user"></i> Profile Settings</a>
+        <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+      </div>
     </div>
 
     <div class="main">
@@ -156,7 +207,7 @@
 
       <form class="form-container">
         <div class="form-section">
-          <h3>Property Info</h3>
+          <h3 style="padding: 0.7rem">Property Info</h3>
           <div class="row">
             <div class="form-group">
               <label>Price *</label>
@@ -166,8 +217,9 @@
               <label>Type *</label>
               <select required>
                 <option value="">Choose Type</option>
-                <option>Sale</option>
-                <option>Rent</option>
+                <option>Rent Month</option>
+                <option>Rent Year</option>
+                <option>Rent Day</option>
               </select>
             </div>
           </div>

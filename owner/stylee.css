@@ -3,7 +3,7 @@
 /* Light mode variables (default) */
 :root {
   --primary-color: #0f1a2c;
-  --secondary-color: #ec8bb7;
+  --secondary-color: #78c2f4;
   --text-dark: #0f172a;
   --text-light: #aaa9a9;
   --extra-light: #f8fafc;
@@ -18,7 +18,7 @@
 
 /* Dark mode variables */
 [data-theme="dark"] {
-  --primary-color: #f78bb6;
+  --primary-color: #78c2f4;
   --secondary-color: #edf1f1;
   --text-dark: #f8fafc;
   --text-light: #f1f0f0;
@@ -90,7 +90,7 @@ body {
 }
 
 .btn:hover {
-  background-color: #b13082;
+  background-color: #62a1cb;
 }
 
 .section__nav {
@@ -702,7 +702,7 @@ nav {
 }
 
 .search-btn:hover {
-  background-color: #198e8a;
+  background-color: #55a5da;
   transform: translateY(-2px);
 }
 
