@@ -252,3 +252,24 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 });
+
+function toggleSection(header) {
+  const section = header.parentElement;
+  const content = section.querySelector(".filter-content");
+  const arrow = section.querySelector(".arrow");
+
+  header.classList.toggle("collapsed");
+
+  if (content.style.maxHeight) {
+    content.style.maxHeight = null;
+    content.classList.remove("collapsed");
+  } else {
+    content.style.maxHeight = content.scrollHeight + "px";
+    content.classList.add("collapsed");
+  }
+}
+
+// Initialize all sections as expanded
+document.querySelectorAll(".filter-content").forEach((content) => {
+  content.style.maxHeight = content.scrollHeight + "px";
+});
