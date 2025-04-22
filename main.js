@@ -325,3 +325,10 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 });
+$(document).ready(function () {
+  $(document).on("click", function (e) {
+    if (!$(e.target).closest(".more-content, .more-label").length) {
+      $("#more-toggle").prop("checked", false);
+    }
+  });
+});

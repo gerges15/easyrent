@@ -1043,11 +1043,12 @@ nav {
   background: #fff;
   padding: 20px;
   border-radius: 8px;
+  pointer-events: auto;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 400px;
 }
-.btn-apply {
+.apply-btn {
   padding: 12px 25px;
   border-radius: 6px;
   background-color: var(--secondary-color);
@@ -1066,6 +1067,18 @@ nav {
   display: block;
 }
 
+.button-group a {
+  padding: 10px 15px;
+  color: #221af9;
+  text-decoration: none;
+  border-radius: 6px;
+  transition: background-color 0.3s;
+}
+
+.button-group a:hover {
+  background-color: #f0f0f0;
+  color: rgb(90, 4, 169);
+}
 /* Responsive Design */
 @media (min-width: 768px) {
   nav {

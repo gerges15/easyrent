@@ -369,74 +369,72 @@
     <!-- كل الفلاتر الإضافية هنا -->
     <h4>More Details</h4>
 
-      <div class="size-options">
+       <div class="size-options">
       <div class="filter-group">
-        <label>Property Size</label>     
-                <div class="size-option">
-                    <label>Select Min</label>
-                      <select id="minSize">
-                    <option value="1"></option>
-                    <option value="2">70</option>
-                    <option value="3">150</option>
-                    <option value="4">200</option>
-                    <option value="5">350</option>
-                    <option value="6">450</option>
-                    <option value="7">500</option>
-                    <option value="8">600</option>
-                    <option value="9">1000</option>
-                    <option value="10">2000</option>
-                    <option value="11">2500</option>
-                    <option value="12">5000</option>
-                    <option value="13">10000</option>
-                    <option value="14">12000</option>
-                    
-                  </select>
-      <div class="filter-group">
-        <label>&nbsp;</label>
-                </div>
-                <div class="size-option">
-                    <label>Select Max</label>
-                      <select id="maxSize">
-                    <option value="1"></option>
-                    <option value="2">70</option>
-                    <option value="3">150</option>
-                    <option value="4">200</option>
-                    <option value="5">350</option>
-                    <option value="6">450</option>
-                    <option value="7">500</option>
-                    <option value="8">600</option>
-                    <option value="9">1000</option>
-                    <option value="10">2000</option>
-                    <option value="11">2500</option>
-                    <option value="12">5000</option>
-                    <option value="13">10000</option>
-                    <option value="14">12000</option>
-                    
-                  </select>
-                </div>
-            </div>
+        <label>Property Size</label>
+        <div class="size-row" style="display: flex; gap: 10px;">
+          <div class="size-option" style="flex: 1;">
+            <label>Select Min</label>
+            <select id="minSize" style="width: 100%;">
+              <option value="1"></option>
+              <option value="2">70</option>
+              <option value="3">150</option>
+              <option value="4">200</option>
+              <option value="5">350</option>
+              <option value="6">450</option>
+              <option value="7">500</option>
+              <option value="8">600</option>
+              <option value="9">1000</option>
+              <option value="10">2000</option>
+              <option value="11">2500</option>
+              <option value="12">5000</option>
+              <option value="13">10000</option>
+              <option value="14">12000</option>
+            </select>
+          </div>
+          <div class="size-option" style="flex: 1;">
+            <label>Select Max</label>
+            <select id="maxSize" style="width: 100%;">
+              <option value="1"></option>
+              <option value="2">70</option>
+              <option value="3">150</option>
+              <option value="4">200</option>
+              <option value="5">350</option>
+              <option value="6">450</option>
+              <option value="7">500</option>
+              <option value="8">600</option>
+              <option value="9">1000</option>
+              <option value="10">2000</option>
+              <option value="11">2500</option>
+              <option value="12">5000</option>
+              <option value="13">10000</option>
+              <option value="14">12000</option>
+            </select>
+          </div>
         </div>
-        
-        <div class="currency-area">
-            <div class="filter-group">
-                <label>Currency</label>
-                <select id="currency">
-                  <option value="all"></option>
-                    <option value="euro">€</option>
-                    <option value="usd">$</option>
-                    <option value="gbp">£</option>
-                </select>
-            </div>
-            
-            <div class="filter-group">
-                <label>Property Area</label>
-                <select id="areaUnit">
-                    <option value="sqft">sq feet</option>
-                    <option value="meters"> meters</option>
-                    <option value="sq yard">sq yard</option>
-                    <option value="feed"> feed</option>
-                </select>
-            </div>
+    
+        </div>
+        <div class="currency-area" style="display: flex; gap: 10px;">
+      <div class="filter-group" style="flex: 1;">
+        <label>Currency</label>
+        <select id="currency" style="width: 100%;">
+          <option value="all"></option>
+          <option value="euro">€</option>
+          <option value="usd">$</option>
+          <option value="gbp">£</option>
+        </select>
+      </div>
+      
+      <div class="filter-group" style="flex: 1;">
+        <label>Property Area</label>
+        <select id="areaUnit" style="width: 100%;">
+          <option value="sqft">sq feet</option>
+          <option value="meters"> meters</option>
+          <option value="sq yard">sq yard</option>
+          <option value="feed"> feed</option>
+        </select>
+      </div>
+      </div>
       
         
         <div class="filter-group">
@@ -469,16 +467,14 @@
                 <option value="2">2</option>
             </select>
             </div>
-        
-          <div class="button-group">
-        <a href="#">Reset Filter</a>
-      <button class="apply-btn" id="apply-btn" >Apply</button>
-    </div>
+        <div class="button-group">
+      <a href="#">Reset Filter</a>
+      <button class="apply-btn" id="apply-btn">Apply</button>
+      </div>
   </div>
 </div>
-            <button class="search-btn" id="search-btn">Search Now</button>
-          </div>
-        
+            </div>
+            </div>
 
         <div class="property-grid" id="property-grid">
   <!-- Property 1 -->  
