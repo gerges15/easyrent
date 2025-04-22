@@ -215,70 +215,68 @@
 
       /* Footer Styles */
       .footer {
-        width: 100%;
-        background: var(--primary-color);
-        color: white;
-        padding: 2rem 0;
-        margin-top: auto;
+        background: #1a193f;
       }
 
-      .footer__container {
-        max-width: 1200px;
-        margin: 0 auto;
+      .footer__contanier {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: 1fr 1fr 1fr; /* 3 أعمدة */
         gap: 4rem 2rem;
       }
 
       .footer__logo {
-        margin-bottom: 1rem;
-        color: white;
-        display: flex;
-        color: var(--secondary-color);
-        gap: 0.5rem;
+        margin-bottom: 2rem;
+        color: #82c9ff;
       }
       .footer__logo span {
-        font-size: 2rem;
-        font-family: var(--header-font);
-      }
-
-      .footer__logo div {
-        font-size: 2rem;
+        line-height: 1.2;
+        font-family: "playfair Display", serif;
+        font-size: 26px;
         font-weight: bold;
-        color: var(--secondary-color);
-        background-color: var(--white);
-        padding: 0.5rem;
+        color: #82c9ff;
+      }
+      .footer__logo div {
+        background: #82c9ff;
+        color: #1a193f;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0px;
+        font-weight: bold;
+        font-size: 24px;
       }
 
       .footer__socials {
         list-style: none;
+        margin-top: 2rem;
         display: flex;
-        gap: 1rem;
         align-items: center;
-        margin-top: 1rem;
+        gap: 1rem;
       }
 
       .footer__socials a {
         padding: 6px 10px;
         font-size: 1.25rem;
         color: var(--text-light);
-        background-color: var(--white);
+        background-color: azure;
         border-radius: 100%;
         cursor: pointer;
         transition: 0.3s;
       }
 
       .footer__socials a:hover {
-        color: var(--white);
-        background-color: var(--secondary-color);
+        color: #f8f8f8;
+        background-color: #9cb5ff;
       }
 
       .footer__col h4 {
-        margin-bottom: 1rem;
-        font-size: 1.2rem;
+        margin-bottom: 2.5rem;
+        font-size: 1.25rem;
         font-weight: 800;
-        font-family: var(--header-font);
-        color: var(--white);
+        font-family: "playfair Display", serif;
+        color: #f8f8f8;
       }
 
       .footer__links {
@@ -292,37 +290,45 @@
       }
 
       .footer__links a {
-        color: var(--text-light);
-        text-decoration: none;
+        color: #fff;
+        transition: 0.3s;
+        gap: 1rem;
+      }
+
+      .footer__links a:hover {
+        color: #82c9ff;
+      }
+
+      .footer__col:last-child .footer__links li {
+        margin-bottom: 2rem;
       }
 
       .footer__links span {
         font-size: 2rem;
-        color: var(--secondary-color);
+        color: #82c9ff;
       }
-      .footer__col:last-child .footer__links li {
-        margin-bottom: 2rem;
-      }
-      .footer__links a:hover {
-        color: var(--secondary-color);
-      }
+
       .footer__links h5 {
         margin-bottom: 0.5rem;
         font-size: 1rem;
         font-weight: 800;
-        font-family: var(--header-font);
-        color: var(--white);
+        font-family: "playfair Display", serif;
+        color: #fff;
       }
+
       .footer__links p {
-        color: var(--text-light);
+        color: #fff;
       }
+
       .footer__bar {
         padding: 1rem;
         font-size: 0.8rem;
-        color: var(--text-light);
+        color: white;
         text-align: center;
       }
-
+      .section__description {
+        color: #fcfcfc;
+      }
       @media (max-width: 375px) {
         body {
           padding: 15px;
@@ -343,8 +349,12 @@
           font-size: 15px;
         }
 
-        .footer__container {
-          grid-template-columns: 1fr;
+        .footer__contanier {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .footer__col:first-child {
+          grid-column: 1/3;
         }
       }
     </style>
@@ -547,14 +557,42 @@
       <button class="btn-submit">Agree and continue</button>
     </div>
 
-    <footer class="footer">
-      <div class="footer__container">
+    <footer class="footer" id="contact">
+      <div class="section__contanier footer__contanier">
         <div class="footer__col">
-          <div class="footer__logo">
-            <div>E</div>
-            <span>EASY <br />RENT</span>
+          <div
+            class="logo footer__logo"
+            style="display: flex; align-items: center; gap: 10px"
+          >
+            <div
+              style="
+                background: #82c9ff;
+                color: #1a193f;
+                width: 40px;
+                height: 40px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                border-radius: 8px;
+                font-weight: bold;
+                font-size: 24px;
+              "
+            >
+              E
+            </div>
+            <span
+              style="
+                font-size: 20px;
+                font-weight: bold;
+                color: #82c9ff;
+
+                line-height: 1.2;
+              "
+              >EASY<br />
+              RENT</span
+            >
           </div>
-          <p>
+          <p class="section__description">
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum eius
             itaque quod expedita labore est quibusdam incidunt! Harum expedita
             mollitia ea, magnam ratione aut consectetur. Soluta ipsum sapiente
@@ -562,30 +600,29 @@
           </p>
           <ul class="footer__socials">
             <li>
-              <a href="#"><i class="ri-facebook-line"></i></a>
+              <a href="#" target="_blank"><i class="ri-facebook-line"></i></a>
             </li>
             <li>
-              <a href="#"><i class="ri-instagram-line"></i></a>
+              <a href="#" target="_blank"><i class="ri-instagram-line"></i></a>
             </li>
             <li>
-              <a href="#"><i class="ri-linkedin-line"></i></a>
+              <a href="#" target="_blank"><i class="ri-linkedin-line"></i></a>
             </li>
           </ul>
         </div>
-
         <div class="footer__col">
           <h4>Services</h4>
-          <ul class="footer__links">
+          <div class="footer__links">
             <li><a href="#">Online Booking</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Special offer</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="#"> Spical offer</a></li>
             <li><a href="#">Room Customization</a></li>
             <li><a href="#">Customer Support</a></li>
-          </ul>
+          </div>
         </div>
         <div class="footer__col">
           <h4>Contact Us</h4>
-          <ul class="footer__links">
+          <div class="footer__links">
             <li>
               <span><i class="ri-phone-fill"></i></span>
               <div>
@@ -594,7 +631,7 @@
               </div>
             </li>
             <li>
-              <span><i class="ri-mail-line"></i></span>
+              <span><i class="ri-record-mail-line"></i></span>
               <div>
                 <h5>Email</h5>
                 <p>info@easyrent15.com</p>
@@ -607,11 +644,11 @@
                 <p>Minya st. Taha-Hessien</p>
               </div>
             </li>
-          </ul>
+          </div>
         </div>
       </div>
       <div class="footer__bar">
-        EasyRent copyright 2025 web Design. All rights reserved.
+        EasyRent copyright 2025 web Design .All rights reserved.
       </div>
     </footer>
 

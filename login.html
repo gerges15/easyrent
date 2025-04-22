@@ -9,6 +9,10 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
 
     <style>
       /* إعادة ضبط أساسية */
@@ -194,7 +198,7 @@
       }
 
       .btnbook {
-        background-color: var(--secondry-color);
+        background-color: #82c9ff;
         color: #fff;
         font-size: 20px;
         cursor: pointer;
@@ -204,12 +208,114 @@
         margin: 0.3rem;
         border-radius: 4px;
       }
+
+      /* Footer Styles */
       .footer {
-        text-align: center;
-        background: rgba(28, 27, 27, 0.8);
+        background: #1a193f;
+      }
+
+      .footer__contanier {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr; /* 3 أعمدة */
+        gap: 4rem 2rem;
+      }
+
+      .footer__logo {
+        margin-bottom: 2rem;
+        color: #82c9ff;
+      }
+
+      .footer__logo span {
+        font-size: 2rem;
+        font-family: "playfair Display", serif;
+      }
+
+      .footer__logo div {
+        font-size: 2rem;
+        color: #82c9ff;
+        background-color: #fcfcfc;
+      }
+
+      .footer__socials {
+        list-style: none;
+        margin-top: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .footer__socials a {
+        padding: 6px 10px;
+        font-size: 1.25rem;
+        color: #aaa9a9;
+        background-color: azure;
+        border-radius: 100%;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .footer__socials a:hover {
+        color: #f8f8f8;
+        background-color: #9cb5ff;
+      }
+
+      .footer__col h4 {
+        margin-bottom: 2.5rem;
+        font-size: 1.25rem;
+        font-weight: 800;
+        font-family: "playfair Display", serif;
+        color: #f8f8f8;
+      }
+
+      .footer__links {
+        list-style: none;
+      }
+
+      .footer__links li {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .footer__links a {
         color: #fff;
-        padding: 10px;
-        font-size: 20px;
+        transition: 0.3s;
+        gap: 1rem;
+      }
+
+      .footer__links a:hover {
+        color: #82c9ff;
+      }
+
+      .footer__col:last-child .footer__links li {
+        margin-bottom: 2rem;
+      }
+
+      .footer__links span {
+        font-size: 2rem;
+        color: #82c9ff;
+      }
+
+      .footer__links h5 {
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        font-weight: 800;
+        font-family: sans-serif;
+        color: #fff;
+      }
+
+      .footer__links p {
+        color: #fff;
+      }
+
+      .footer__bar {
+        padding: 1rem;
+        font-size: 0.8rem;
+        color: white;
+        text-align: center;
+      }
+      .section__description {
+        color: #fcfcfc;
       }
 
       /* تحسين للخطوط الصغيرة في الشاشات الضيقة */
@@ -359,6 +465,73 @@
         Continue with Facebook
       </button>
     </div>
+
+    <footer class="footer" id="contact">
+      <div class="section__contanier footer__contanier">
+        <div class="footer__col">
+          <div class="logo footer__logo">
+            <div>E</div>
+            <span>EASY <br />RENT</span>
+          </div>
+          <p class="section__description">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum eius
+            itaque quod expedita labore est quibusdam incidunt! Harum expedita
+            mollitia ea, magnam ratione aut consectetur. Soluta ipsum sapiente
+            provident dicta.
+          </p>
+          <ul class="footer__socials">
+            <li>
+              <a href="#" target="_blank"><i class="ri-facebook-line"></i></a>
+            </li>
+            <li>
+              <a href="#" target="_blank"><i class="ri-instagram-line"></i></a>
+            </li>
+            <li>
+              <a href="#" target="_blank"><i class="ri-linkedin-line"></i></a>
+            </li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Services</h4>
+          <div class="footer__links">
+            <li><a href="#">Online Booking</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="#"> Spical offer</a></li>
+            <li><a href="#">Room Customization</a></li>
+            <li><a href="#">Customer Support</a></li>
+          </div>
+        </div>
+        <div class="footer__col">
+          <h4>Contact Us</h4>
+          <div class="footer__links">
+            <li>
+              <span><i class="ri-phone-fill"></i></span>
+              <div>
+                <h5>Phone Number</h5>
+                <p>+20 1224170048</p>
+              </div>
+            </li>
+            <li>
+              <span><i class="ri-record-mail-line"></i></span>
+              <div>
+                <h5>Email</h5>
+                <p>info@easyrent15.com</p>
+              </div>
+            </li>
+            <li>
+              <span><i class="ri-map-pin-2-fill"></i></span>
+              <div>
+                <h5>Location</h5>
+                <p>Minya st. Taha-Hessien</p>
+              </div>
+            </li>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bar">
+        EasyRent copyright 2025 web Design .All rights reserved.
+      </div>
+    </footer>
 
     <script>
       // تحقق بسيط من الإدخال

@@ -273,3 +273,55 @@ function toggleSection(header) {
 document.querySelectorAll(".filter-content").forEach((content) => {
   content.style.maxHeight = content.scrollHeight + "px";
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Get all filter elements
+  const forRentSelect = document.getElementById("forRent");
+  const currencySelect = document.getElementById("currency");
+  const areaUnitSelect = document.getElementById("areaUnit");
+  const bathroomSelect = document.getElementById("bathroomCount");
+  const bedroomSelect = document.getElementById("bedroomCount");
+  const kitchenSelect = document.getElementById("kitchenCount");
+  const resetBtn = document.getElementById("resetFilter");
+  const applyBtn = document.getElementById("applyFilter");
+
+  // Reset button functionality
+  resetBtn.addEventListener("click", function () {
+    forRentSelect.value = "rent";
+    currencySelect.value = "euro";
+    areaUnitSelect.value = "sqft";
+    bathroomSelect.value = "";
+    bedroomSelect.value = "";
+    kitchenSelect.value = "";
+  });
+
+  // Apply button functionality
+  applyBtn.addEventListener("click", function () {
+    const filters = {
+      purpose: forRentSelect.value,
+      currency: currencySelect.value,
+      areaUnit: areaUnitSelect.value,
+      bathroomCount: bathroomSelect.value,
+      bedroomCount: bedroomSelect.value,
+      kitchenCount: kitchenSelect.value,
+      minSize: 150,
+      maxSize: 250,
+    };
+
+    console.log("Applied Filters:", filters);
+    alert("Filters applied! Check console for details.");
+    // Here you would typically send these filters to your backend
+    // or use them to filter properties on the frontend
+  });
+
+  // Size option selection
+  const sizeOptions = document.querySelectorAll(".size-option");
+  sizeOptions.forEach((option) => {
+    option.addEventListener("click", function () {
+      this.querySelector(".checkmark").style.display =
+        this.querySelector(".checkmark").style.display === "none"
+          ? "flex"
+          : "none";
+    });
+  });
+});

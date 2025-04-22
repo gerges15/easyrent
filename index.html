@@ -39,7 +39,7 @@
           <li><a href="./owner/choses.html">Add Properity</a></li>   
           <li><a href="singnupst.html">Sign Up</a></li>
           <li><a href="login.html">Login</a></li>
-          <li><a href="#singnupst.html">Properities</a></li>
+          <li><a href="#Properties">Properties</a></li>
           <li><a href="#units">Units</a></li> 
             <li><a href="#About US">About US</a></li>
             <li><a href="#home">Home</a></li>
@@ -361,10 +361,124 @@
                 <option value="apartment">Trible</option>
               </select>
             </div>
+<div class="filter-group more-filter">
+  <input type="checkbox" id="more-toggle" class="more-toggle" hidden>
+  <label for="more-toggle" class="more-label">More Details</label>
+
+  <div class="more-content">
+    <!-- كل الفلاتر الإضافية هنا -->
+    <h4>More Details</h4>
+
+      <div class="size-options">
+      <div class="filter-group">
+        <label>Property Size</label>     
+                <div class="size-option">
+                    <label>Select Min</label>
+                      <select id="minSize">
+                    <option value="1"></option>
+                    <option value="2">70</option>
+                    <option value="3">150</option>
+                    <option value="4">200</option>
+                    <option value="5">350</option>
+                    <option value="6">450</option>
+                    <option value="7">500</option>
+                    <option value="8">600</option>
+                    <option value="9">1000</option>
+                    <option value="10">2000</option>
+                    <option value="11">2500</option>
+                    <option value="12">5000</option>
+                    <option value="13">10000</option>
+                    <option value="14">12000</option>
+                    
+                  </select>
+      <div class="filter-group">
+        <label>&nbsp;</label>
+                </div>
+                <div class="size-option">
+                    <label>Select Max</label>
+                      <select id="maxSize">
+                    <option value="1"></option>
+                    <option value="2">70</option>
+                    <option value="3">150</option>
+                    <option value="4">200</option>
+                    <option value="5">350</option>
+                    <option value="6">450</option>
+                    <option value="7">500</option>
+                    <option value="8">600</option>
+                    <option value="9">1000</option>
+                    <option value="10">2000</option>
+                    <option value="11">2500</option>
+                    <option value="12">5000</option>
+                    <option value="13">10000</option>
+                    <option value="14">12000</option>
+                    
+                  </select>
+                </div>
+            </div>
+        </div>
+        
+        <div class="currency-area">
+            <div class="filter-group">
+                <label>Currency</label>
+                <select id="currency">
+                  <option value="all"></option>
+                    <option value="euro">€</option>
+                    <option value="usd">$</option>
+                    <option value="gbp">£</option>
+                </select>
+            </div>
             
+            <div class="filter-group">
+                <label>Property Area</label>
+                <select id="areaUnit">
+                    <option value="sqft">sq feet</option>
+                    <option value="meters"> meters</option>
+                    <option value="sq yard">sq yard</option>
+                    <option value="feed"> feed</option>
+                </select>
+            </div>
+      
+        
+        <div class="filter-group">
+            <label>Bathroom</label>
+            <select id="bathroomCount">
+                <option value="">Select Count</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select>
+        </div>
+        
+        <div class="filter-group">
+            <label>Bedroom</label>
+            <select id="bedroomCount">
+                <option value="">Select Count</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                
+            </select>
+        </div>
+        
+          <div class="filter-group">
+            <label>Kitchen</label>
+            <select id="kitchenCount">
+                <option value="">Select Count</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+            </select>
+            </div>
+        
+          <div class="button-group">
+        <a href="#">Reset Filter</a>
+      <button class="apply-btn" id="apply-btn" >Apply</button>
+    </div>
+  </div>
+</div>
             <button class="search-btn" id="search-btn">Search Now</button>
           </div>
-        </div>
+        
 
         <div class="property-grid" id="property-grid">
   <!-- Property 1 -->  
@@ -414,8 +528,6 @@
             </div>
           </div>
           <div class="property-grid">
-      <!-- البطاقات سيتم إضافتها ديناميكيًا عبر JavaScript -->
-      <!-- نموذج للبطاقة (لأغراض التصميم فقط، سيتم استبدالها) -->
       <div class="property-card">
         <div class="property-image" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80')"></div>
         <div class="property-price">€ 12000</div>
@@ -482,7 +594,7 @@
       <li>
         <span><i class="ri-record-mail-line"></i></span>
         <div>
-          <h5>Emailr</h5>
+          <h5>Email</h5>
           <p>info@easyrent15.com</p>
         </div>
       </li>
