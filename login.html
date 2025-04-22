@@ -16,9 +16,7 @@
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-          sans-serif;
+        font-family: Arial, sans-serif;
       }
       body {
         display: flex;
@@ -68,20 +66,22 @@
         margin: auto;
       }
       h1 {
-        font-size: 40px;
+        font-size: 50px;
         font-weight: bold;
       }
       /* عنوان الصفحة */
       .title {
         text-align: center;
-        font-size: 1.5rem;
+        font-size: 1.7rem;
         font-weight: bold;
         margin-bottom: 1.5rem;
+        color: #1a193f;
       }
 
       /* صندوق المدخلات */
       .input-group {
         margin-bottom: 1rem;
+        font-size: 0.6rem;
       }
 
       .input-group label {
@@ -96,7 +96,7 @@
       input[type="tel"] {
         width: 100%;
         padding: 0.75rem;
-        font-size: 0.95rem;
+        font-size: 0.99rem;
         border: 1px solid #ccc;
         border-radius: 6px;
         outline: none;
@@ -111,21 +111,21 @@
         line-height: 1.4;
       }
 
-      /* زر المتابعة */
       .btn-primary {
         width: 100%;
-        background: rgb(142, 177, 251); /* لون قريب من الوردي في الصورة */
-        color: #262463;
+        background: rgb(127, 163, 241);
+        color: #1a193f;
         border: none;
+        font-weight: bold;
         border-radius: 6px;
         padding: 0.9rem;
-        font-size: 1rem;
+        font-size: 1.5rem;
         cursor: pointer;
-        margin-bottom: 1.5rem;
+        margin-bottom: 1.2rem;
       }
 
       .btn-primary:hover {
-        background: rgb(89, 155, 247);
+        background: rgb(141, 183, 240);
       }
       .separator {
         display: flex;
@@ -333,7 +333,7 @@
         rates apply.
       </p>
 
-      <button class="btn-primary" onclick="window.location.href='ss.html'">
+      <button class="btn-primary" onclick="window.location.href='index.html'">
         Continue
       </button>
 

@@ -2,211 +2,355 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- خاصية العرض للأجهزة المحمولة -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
     <title>Finish signing up</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
     />
+
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
     <style>
-      /* القواعد العامة */
+      @import url("https://fonts.googleapis.com/css2?family=playfair+Display:wght@100..400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
+      :root {
+        --primary-color: #1d1143;
+        --secondary-color: #4b96d0;
+        --white: #ffffff;
+        --text-light: #d1d5db;
+        --header-font: "playfair Display", serif;
+      }
+
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-          sans-serif;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
       }
+
       body {
         background: #fff;
         display: flex;
-        justify-content: center;
-        align-items: flex-start;
+        flex-direction: column;
         min-height: 100vh;
         color: #333;
-        padding: 10px;
-        justify-content: center;
-        align-items: center;
-        flex-direction: column;
+        padding: 20px;
+        margin: 0;
       }
 
       .container {
         width: 100%;
-        flex: 1;
         max-width: 420px;
         margin: 0 auto;
+        flex: 1;
       }
-      /* عنوان الصفحة */
+
       .title {
-        font-size: 1.5rem;
+        font-size: 24px;
         font-weight: bold;
-        margin: 1.5rem 0;
+        margin: 15px 0;
         text-align: left;
+        color: #1d1143;
       }
-      /* حاوية الإدخالات */
+
       .form-group {
-        margin-bottom: 1.2rem;
+        margin-bottom: 16px;
       }
+
       .form-group label {
         display: block;
-        font-size: 0.95rem;
-        margin-bottom: 0.3rem;
+        font-size: 14px;
+        margin-bottom: 6px;
         color: #444;
         font-weight: 500;
       }
+
       .form-group input {
         width: 100%;
-        padding: 0.75rem;
-        font-size: 0.95rem;
+        padding: 12px;
+        font-size: 16px;
         border: 1px solid #ccc;
-        border-radius: 6px;
+        border-radius: 8px;
         outline: none;
       }
+
       .input-group {
-        margin-bottom: 1rem;
+        margin-bottom: 16px;
       }
+
       .input-group label {
         display: block;
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
+        font-size: 14px;
+        margin-bottom: 6px;
         color: #444;
       }
+
       .input-group select {
         width: 100%;
-        padding: 0.75rem;
-        font-size: 0.95rem;
+        padding: 12px;
+        font-size: 16px;
         border: 1px solid #ccc;
-        border-radius: 6px;
+        border-radius: 8px;
         outline: none;
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        background-size: 16px;
       }
-      /* ملاحظة توضيحية تحت حقل الاسم */
+
       .sub-note {
-        font-size: 0.85rem;
+        font-size: 12px;
         color: #666;
         line-height: 1.4;
-        margin: 0.3rem 0 1rem 0;
+        margin: 6px 0 16px 0;
       }
-      /* تاريخ الميلاد */
+
       .date-note {
-        font-size: 0.85rem;
+        font-size: 12px;
         color: #666;
         line-height: 1.4;
-        margin-bottom: 1rem;
+        margin-bottom: 16px;
       }
-      /* حقل البريد */
-      /* حقل كلمة المرور مع زر إظهار */
+
       .password-container {
         position: relative;
-        margin-bottom: 1.8rem;
+        margin-bottom: 20px;
       }
+
       .password-container input {
         width: 100%;
-        padding: 0.75rem;
-        font-size: 0.95rem;
+        padding: 12px;
+        font-size: 16px;
         border: 1px solid #ccc;
-        border-radius: 6px;
+        border-radius: 8px;
         outline: none;
+        appearance: none;
       }
+
       .password-container label {
         display: block;
-        font-size: 0.95rem;
-        margin-bottom: 0.3rem;
-
+        font-size: 14px;
+        margin-bottom: 6px;
         color: #444;
         font-weight: 700;
       }
+
       .show-password {
         position: absolute;
-        right: 10px;
-        top: 50%;
-        transform: translateY(-50%);
+        right: 12px;
+        top: 42px;
         background: none;
         border: none;
-        color: #4b96d0; /* لون قريب من أزرق الروابط */
-        font-size: 0.9rem;
+        color: #4b96d0;
+        font-size: 14px;
         cursor: pointer;
+        padding: 4px 8px;
       }
+
       .btnbook {
         background-color: rgb(111, 163, 247);
         color: #fff;
-        font-size: 20px;
+        font-size: 16px;
         cursor: pointer;
-        width: 20%;
+        width: auto;
         border: none;
-        padding: 0.5rem;
-        margin: 0.3rem;
-        border-radius: 4px;
+        padding: 8px 12px;
+        margin: 0;
+        border-radius: 6px;
         transition: all 0.3s ease-in-out;
       }
+
       .btnbook:hover {
         transform: scale(1.05);
       }
-      /* تنسيق القسم السفلي (الموافقة على الشروط) */
-      .foot :terms-note {
-        font-size: 0.8rem;
-        color: #fffbfb;
-        line-height: 1.4;
-        margin-bottom: 1.5rem;
-        justify-content: left;
-      }
 
-      .footer {
-        width: 100%;
-        text-align: center;
-        background: rgba(28, 27, 27, 0.8);
-        color: #fff;
-        padding: 10px;
-        justify-content: left;
-        font-size: 20px;
-      }
-      /* زر الإكمال */
       .btn-submit {
-        width: 60%;
-        padding: 0.8rem;
-        font-size: 1rem;
-        background: rgb(138, 170, 244); /* لون قريب من الوردي/الأحمر */
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+        background: rgb(138, 170, 244);
         color: #1d1143;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         cursor: pointer;
         transition: all 0.3s ease-in-out;
+        font-weight: 600;
+        margin-top: 10px;
       }
+
       .btn-submit:hover {
         background: rgb(75, 144, 217);
-        transform: scale(1.05);
+        transform: scale(1.02);
       }
-      /* تحسين العرض على الشاشات الصغيرة */
-      @media (max-width: 320px) {
+
+      input[type="date"] {
+        min-height: 44px;
+      }
+
+      #password-strength-meter {
+        margin-top: 10px;
+      }
+
+      #password-strength-text {
+        font-size: 12px;
+        margin-top: 4px;
+      }
+
+      .password-suggestion {
+        margin-bottom: 16px;
+      }
+
+      #password-suggestion {
+        font-size: 14px;
+        padding: 12px;
+      }
+
+      /* Footer Styles */
+      .footer {
+        width: 100%;
+        background: var(--primary-color);
+        color: white;
+        padding: 2rem 0;
+        margin-top: auto;
+      }
+
+      .footer__container {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 4rem 2rem;
+      }
+
+      .footer__logo {
+        margin-bottom: 1rem;
+        color: white;
+        display: flex;
+        color: var(--secondary-color);
+        gap: 0.5rem;
+      }
+      .footer__logo span {
+        font-size: 2rem;
+        font-family: var(--header-font);
+      }
+
+      .footer__logo div {
+        font-size: 2rem;
+        font-weight: bold;
+        color: var(--secondary-color);
+        background-color: var(--white);
+        padding: 0.5rem;
+      }
+
+      .footer__socials {
+        list-style: none;
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        margin-top: 1rem;
+      }
+
+      .footer__socials a {
+        padding: 6px 10px;
+        font-size: 1.25rem;
+        color: var(--text-light);
+        background-color: var(--white);
+        border-radius: 100%;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .footer__socials a:hover {
+        color: var(--white);
+        background-color: var(--secondary-color);
+      }
+
+      .footer__col h4 {
+        margin-bottom: 1rem;
+        font-size: 1.2rem;
+        font-weight: 800;
+        font-family: var(--header-font);
+        color: var(--white);
+      }
+
+      .footer__links {
+        list-style: none;
+      }
+
+      .footer__links li {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .footer__links a {
+        color: var(--text-light);
+        text-decoration: none;
+      }
+
+      .footer__links span {
+        font-size: 2rem;
+        color: var(--secondary-color);
+      }
+      .footer__col:last-child .footer__links li {
+        margin-bottom: 2rem;
+      }
+      .footer__links a:hover {
+        color: var(--secondary-color);
+      }
+      .footer__links h5 {
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        font-weight: 800;
+        font-family: var(--header-font);
+        color: var(--white);
+      }
+      .footer__links p {
+        color: var(--text-light);
+      }
+      .footer__bar {
+        padding: 1rem;
+        font-size: 0.8rem;
+        color: var(--text-light);
+        text-align: center;
+      }
+
+      @media (max-width: 375px) {
+        body {
+          padding: 15px;
+        }
+
         .title {
-          font-size: 1.1rem;
+          font-size: 22px;
         }
-        .form-group label {
-          font-size: 0.85rem;
+
+        .form-group input,
+        .input-group select {
+          padding: 10px;
+          font-size: 15px;
         }
-        .form-group input {
-          padding: 0.65rem;
-          font-size: 0.85rem;
-        }
-        .sub-note,
-        .date-note,
-        .terms-note {
-          font-size: 0.75rem;
-        }
+
         .btn-submit {
-          font-size: 0.9rem;
-          padding: 0.7rem;
+          padding: 12px;
+          font-size: 15px;
         }
-        .show-password {
-          font-size: 0.8rem;
+
+        .footer__container {
+          grid-template-columns: 1fr;
         }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <!-- العنوان الرئيسي -->
       <h1 class="title">Finish signing up</h1>
 
       <div class="form-group">
@@ -264,23 +408,19 @@
             Faculty of Early Childhood Education
           </option>
           <option value="Faculty of Law">Faculty of Law</option>
-
           <option value="Faculty of Physical Therapy">
             Faculty of Physical Therapy
           </option>
           <option value="Faculty of Engineering">Faculty of Engineering</option>
-
           <option value="Faculty of Artificial Intelligence">
             Faculty of Artificial Intelligence
           </option>
-
           <option value="Faculty of Business Administration">
             Faculty of Business Administration
           </option>
           <option value="Faculty of civil Engineering">
             Faculty of civil Engineering
           </option>
-
           <option value="Faculty of Electronics and Communication Engineering">
             Faculty of Electronics and Communication Engineering
           </option>
@@ -300,7 +440,6 @@
       </div>
       <div class="sub-note">Make sure this University</div>
 
-      <!-- تاريخ الميلاد -->
       <div class="form-group">
         <label for="birthdate">Date of birth</label>
         <input type="date" id="birthdate" />
@@ -311,248 +450,516 @@
       </div>
       <div class="form-group">
         <label for="phone">Phone number</label>
-        <input type="text" id="phone" placeholder="Enter your phone number" />
+        <input type="tel" id="phone" placeholder="Enter your phone number" />
       </div>
-      <!-- البريد الإلكتروني -->
       <div class="form-group">
         <label for="email">Email</label>
         <input type="email" id="email" placeholder="user@gmail.com" />
       </div>
 
-      <!-- كلمة المرور -->
- 
-<div class="password-container">
-  <label for="signup-password">Password</label>
-  <input
-    type="password"
-    id="signup-password"
-    placeholder="Enter your password"
-    oninput="checkPasswordStrength()"
-  />
-  <button type="button" class="show-password" id="togglePasswordBtn">
-    Show
-  </button>
-  <div id="password-strength-meter" style="margin-top: 8px;">
-    <div style="display: flex; height: 4px; margin-bottom: 4px;">
-      <div id="strength-bar-1" style="flex: 1; background: #e0e0e0; margin: 0 2px; border-radius: 2px;"></div>
-      <div id="strength-bar-2" style="flex: 1; background: #e0e0e0; margin: 0 2px; border-radius: 2px;"></div>
-      <div id="strength-bar-3" style="flex: 1; background: #e0e0e0; margin: 0 2px; border-radius: 2px;"></div>
-      <div id="strength-bar-4" style="flex: 1; background: #e0e0e0; margin: 0 2px; border-radius: 2px;"></div>
+      <div class="password-container">
+        <label for="signup-password">Password</label>
+        <input
+          type="password"
+          id="signup-password"
+          placeholder="Enter your password"
+          oninput="checkPasswordStrength()"
+        />
+        <button type="button" class="show-password" id="togglePasswordBtn">
+          Show
+        </button>
+        <div id="password-strength-meter" style="margin-top: 8px">
+          <div style="display: flex; height: 4px; margin-bottom: 4px">
+            <div
+              id="strength-bar-1"
+              style="
+                flex: 1;
+                background: #e0e0e0;
+                margin: 0 2px;
+                border-radius: 2px;
+              "
+            ></div>
+            <div
+              id="strength-bar-2"
+              style="
+                flex: 1;
+                background: #e0e0e0;
+                margin: 0 2px;
+                border-radius: 2px;
+              "
+            ></div>
+            <div
+              id="strength-bar-3"
+              style="
+                flex: 1;
+                background: #e0e0e0;
+                margin: 0 2px;
+                border-radius: 2px;
+              "
+            ></div>
+            <div
+              id="strength-bar-4"
+              style="
+                flex: 1;
+                background: #e0e0e0;
+                margin: 0 2px;
+                border-radius: 2px;
+              "
+            ></div>
+          </div>
+          <div
+            id="password-strength-text"
+            style="font-size: 12px; color: #666"
+          ></div>
+        </div>
+      </div>
+
+      <div class="password-suggestion" style="margin-bottom: 16px">
+        <div style="display: flex; gap: 8px; margin-bottom: 4px">
+          <input
+            type="text"
+            id="password-suggestion"
+            placeholder="Click generate for a strong password"
+            readonly
+            style="
+              flex: 1;
+              padding: 12px;
+              border: 1px solid #ccc;
+              border-radius: 8px;
+              font-size: 14px;
+            "
+          />
+          <button
+            type="button"
+            id="generate-password"
+            class="btnbook"
+            style="width: auto; padding: 0 12px"
+          >
+            Generate
+          </button>
+        </div>
+        <div class="sub-note" style="font-size: 12px">
+          <i class="fas fa-lightbulb" style="color: #ffc107"></i> Strong
+          passwords contain uppercase, lowercase, numbers and special characters
+        </div>
+      </div>
+
+      <button class="btn-submit">Agree and continue</button>
     </div>
-    <div id="password-strength-text" style="font-size: 0.8rem; color: #666;"></div>
-  </div>
-</div>
 
-<div class="password-suggestion" style="margin-bottom: 1.2rem;">
-  <div style="display: flex; gap: 8px; margin-bottom: 4px;">
-    <input 
-      type="text" 
-      id="password-suggestion" 
-      placeholder="Click generate for a strong password" 
-      readonly
-      style="flex: 1; padding: 0.75rem; border: 1px solid #ccc; border-radius: 6px;"
-    />
-    <button 
-      type="button" 
-      id="generate-password" 
-      class="btnbook"
-      style="width: auto; padding: 0.5rem 1rem;"
-    >
-      Generate
-    </button>
-  </div>
-  <div class="sub-note" style="font-size: 0.8rem;">
-    <i class="fas fa-lightbulb" style="color: #ffc107;"></i> Strong passwords contain uppercase, lowercase, numbers and special characters
-  </div>
-</div>
+    <footer class="footer">
+      <div class="footer__container">
+        <div class="footer__col">
+          <div class="footer__logo">
+            <div>E</div>
+            <span>EASY <br />RENT</span>
+          </div>
+          <p>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum eius
+            itaque quod expedita labore est quibusdam incidunt! Harum expedita
+            mollitia ea, magnam ratione aut consectetur. Soluta ipsum sapiente
+            provident dicta.
+          </p>
+          <ul class="footer__socials">
+            <li>
+              <a href="#"><i class="ri-facebook-line"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="ri-instagram-line"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="ri-linkedin-line"></i></a>
+            </li>
+          </ul>
+        </div>
 
-<button class="btn-submit">Agree and continue</button>
-<script>
-  // Get all elements once at the beginning
-  const passwordInput = document.getElementById("signup-password");
-  const togglePasswordBtn = document.getElementById("togglePasswordBtn");
-  const generatePasswordBtn = document.getElementById('generate-password');
-  const suggestionField = document.getElementById('password-suggestion');
-  const strengthText = document.getElementById('password-strength-text');
-  const bars = [
-    document.getElementById('strength-bar-1'),
-    document.getElementById('strength-bar-2'),
-    document.getElementById('strength-bar-3'),
-    document.getElementById('strength-bar-4')
-  ];
+        <div class="footer__col">
+          <h4>Services</h4>
+          <ul class="footer__links">
+            <li><a href="#">Online Booking</a></li>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Special offer</a></li>
+            <li><a href="#">Room Customization</a></li>
+            <li><a href="#">Customer Support</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Contact Us</h4>
+          <ul class="footer__links">
+            <li>
+              <span><i class="ri-phone-fill"></i></span>
+              <div>
+                <h5>Phone Number</h5>
+                <p>+20 1224170048</p>
+              </div>
+            </li>
+            <li>
+              <span><i class="ri-mail-line"></i></span>
+              <div>
+                <h5>Email</h5>
+                <p>info@easyrent15.com</p>
+              </div>
+            </li>
+            <li>
+              <span><i class="ri-map-pin-2-fill"></i></span>
+              <div>
+                <h5>Location</h5>
+                <p>Minya st. Taha-Hessien</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bar">
+        EasyRent copyright 2025 web Design. All rights reserved.
+      </div>
+    </footer>
 
-  // Toggle password visibility
-  togglePasswordBtn.addEventListener("click", () => {
-    if (passwordInput.type === "password") {
-      passwordInput.type = "text";
-      togglePasswordBtn.textContent = "Hide";
-    } else {
-      passwordInput.type = "password";
-      togglePasswordBtn.textContent = "Show";
-    }
-  });
+    <script>
+      // Get all elements once at the beginning
+      const passwordInput = document.getElementById("signup-password");
+      const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+      const generatePasswordBtn = document.getElementById("generate-password");
+      const suggestionField = document.getElementById("password-suggestion");
+      const strengthText = document.getElementById("password-strength-text");
+      const bars = [
+        document.getElementById("strength-bar-1"),
+        document.getElementById("strength-bar-2"),
+        document.getElementById("strength-bar-3"),
+        document.getElementById("strength-bar-4"),
+      ];
 
-  // Generate strong password
-  generatePasswordBtn.addEventListener('click', function() {
-    const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
-    const lowercase = 'abcdefghijklmnopqrstuvwxyz';
-    const numbers = '0123456789';
-    const symbols = '!@#$%^&*()_+-=';
-    
-    let password = '';
-    // Ensure at least one character from each category
-    password += uppercase[Math.floor(Math.random() * uppercase.length)];
-    password += lowercase[Math.floor(Math.random() * lowercase.length)];
-    password += numbers[Math.floor(Math.random() * numbers.length)];
-    password += symbols[Math.floor(Math.random() * symbols.length)];
-    
-    // Fill remaining characters randomly
-    const allChars = uppercase + lowercase + numbers + symbols;
-    for (let i = 0; i < 8; i++) {
-      password += allChars[Math.floor(Math.random() * allChars.length)];
-    }
-    
-    // Shuffle the password
-    password = password.split('').sort(() => 0.5 - Math.random()).join('');
-    
-    suggestionField.value = password;
-    
-    // Auto-fill the password field and trigger strength check
-    passwordInput.value = password;
-    passwordInput.type = "text";
-    togglePasswordBtn.textContent = "Hide";
-    checkPasswordStrength();
-  });
+      // Toggle password visibility
+      togglePasswordBtn.addEventListener("click", () => {
+        if (passwordInput.type === "password") {
+          passwordInput.type = "text";
+          togglePasswordBtn.textContent = "Hide";
+        } else {
+          passwordInput.type = "password";
+          togglePasswordBtn.textContent = "Show";
+        }
+      });
 
-  // Password strength checker
-  function checkPasswordStrength() {
-    const password = passwordInput.value;
-    
-    // Reset all bars
-    bars.forEach(bar => {
-      bar.style.background = '#e0e0e0';
-    });
-    
-    if (password.length === 0) {
-      strengthText.textContent = '';
-      return;
-    }
-    
-    let strength = 0;
-    
-    // Length check
-    if (password.length >= 8) strength += 1;
-    if (password.length >= 12) strength += 1;
-    
-    // Complexity checks
-    if (/[A-Z]/.test(password)) strength += 1;
-    if (/[a-z]/.test(password)) strength += 1;
-    if (/[0-9]/.test(password)) strength += 1;
-    if (/[^A-Za-z0-9]/.test(password)) strength += 1;
-    
-    // Update UI
-    const strengthLevel = Math.min(Math.floor(strength / 2), 4);
-    const colors = ['#ff4444', '#ffbb33', '#00C851', '#00C851'];
-    const messages = [
-      'Very Weak',
-      'Weak',
-      'Good',
-      'Strong',
-      'Very Strong'
-    ];
-    
-    for (let i = 0; i < strengthLevel; i++) {
-      bars[i].style.background = colors[strengthLevel - 1];
-    }
-    
-    strengthText.textContent = messages[strengthLevel];
-    strengthText.style.color = colors[strengthLevel - 1];
-  }
-  
-  // Auto-fill when suggestion is clicked
-  suggestionField.addEventListener('click', function() {
-    if (this.value) {
-      passwordInput.value = this.value;
-      checkPasswordStrength();
-      this.select();
-      try {
-        document.execCommand('copy');
-        // Optional: Show a tooltip or brief message that password was copied
-      } catch (err) {
-        console.log('Copy failed');
+      // Generate strong password
+      generatePasswordBtn.addEventListener("click", function () {
+        const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        const lowercase = "abcdefghijklmnopqrstuvwxyz";
+        const numbers = "0123456789";
+        const symbols = "!@#$%^&*()_+-=";
+
+        let password = "";
+        // Ensure at least one character from each category
+        password += uppercase[Math.floor(Math.random() * uppercase.length)];
+        password += lowercase[Math.floor(Math.random() * lowercase.length)];
+        password += numbers[Math.floor(Math.random() * numbers.length)];
+        password += symbols[Math.floor(Math.random() * symbols.length)];
+
+        // Fill remaining characters randomly
+        const allChars = uppercase + lowercase + numbers + symbols;
+        for (let i = 0; i < 8; i++) {
+          password += allChars[Math.floor(Math.random() * allChars.length)];
+        }
+
+        // Shuffle the password
+        password = password
+          .split("")
+          .sort(() => 0.5 - Math.random())
+          .join("");
+
+        suggestionField.value = password;
+
+        // Auto-fill the password field and trigger strength check
+        passwordInput.value = password;
+        passwordInput.type = "text";
+        togglePasswordBtn.textContent = "Hide";
+        checkPasswordStrength();
+      });
+
+      // Password strength checker
+      function checkPasswordStrength() {
+        const password = passwordInput.value;
+
+        // Reset all bars
+        bars.forEach((bar) => {
+          bar.style.background = "#e0e0e0";
+        });
+
+        if (password.length === 0) {
+          strengthText.textContent = "";
+          return;
+        }
+
+        let strength = 0;
+
+        // Length check
+        if (password.length >= 8) strength += 1;
+        if (password.length >= 12) strength += 1;
+
+        // Complexity checks
+        if (/[A-Z]/.test(password)) strength += 1;
+        if (/[a-z]/.test(password)) strength += 1;
+        if (/[0-9]/.test(password)) strength += 1;
+        if (/[^A-Za-z0-9]/.test(password)) strength += 1;
+
+        // Update UI
+        const strengthLevel = Math.min(Math.floor(strength / 2), 4);
+        const colors = ["#ff4444", "#ffbb33", "#00C851", "#00C851"];
+        const messages = ["Very Weak", "Weak", "Good", "Strong", "Very Strong"];
+
+        for (let i = 0; i < strengthLevel; i++) {
+          bars[i].style.background = colors[strengthLevel - 1];
+        }
+
+        strengthText.textContent = messages[strengthLevel];
+        strengthText.style.color = colors[strengthLevel - 1];
       }
-    }
-  });
 
-  
-  // Function to save form data to localStorage
-  function saveFormData() {
-    const formData = {
-      userName: document.getElementById('firstNameID').value,
-      university: document.getElementById('university').value,
-      faculty: document.getElementById('faculty').value,
-      birthdate: document.getElementById('birthdate').value,
-      phone: document.getElementById('phone').value,
-      email: document.getElementById('email').value,
-      password: document.getElementById('signup-password').value
-    };
-    
-    localStorage.setItem('userRegistrationData', JSON.stringify(formData));
-    return true;
-  }
+      // Auto-fill when suggestion is clicked
+      suggestionField.addEventListener("click", function () {
+        if (this.value) {
+          passwordInput.value = this.value;
+          checkPasswordStrength();
+          this.select();
+          try {
+            document.execCommand("copy");
+            // Optional: Show a brief message that password was copied
+            const originalText = this.placeholder;
+            this.placeholder = "Copied to clipboard!";
+            setTimeout(() => {
+              this.placeholder = originalText;
+            }, 2000);
+          } catch (err) {
+            console.log("Copy failed");
+          }
+        }
+      });
 
-  // Function to validate form before submission
-  function validateForm() {
-    const requiredFields = [
-      'firstNameID', 'university', 'faculty', 
-      'birthdate', 'phone', 'email', 'signup-password'
-    ];
-    
-    for (const fieldId of requiredFields) {
-      const field = document.getElementById(fieldId);
-      if (!field.value) {
-        alert(`Please fill in ${field.placeholder || field.name || 'this field'}`);
-        field.focus();
-        return false;
+      // Function to save form data to localStorage
+      function saveFormData() {
+        const formData = {
+          userName: document.getElementById("firstNameID").value.trim(),
+          university: document.getElementById("university").value,
+          faculty: document.getElementById("faculty").value,
+          birthdate: document.getElementById("birthdate").value,
+          phone: document.getElementById("phone").value.trim(),
+          email: document.getElementById("email").value.trim(),
+          password: document.getElementById("signup-password").value,
+          lastSaved: new Date().toISOString(),
+        };
+
+        try {
+          localStorage.setItem(
+            "userRegistrationData",
+            JSON.stringify(formData)
+          );
+          console.log("Data saved to localStorage:", formData);
+          return true;
+        } catch (e) {
+          console.error("Failed to save to localStorage:", e);
+          alert("Failed to save your data. Please try again.");
+          return false;
+        }
       }
-    }
-    
-    // Additional validation for password strength
-    const password = document.getElementById('signup-password').value;
-    if (password.length < 8) {
-      alert('Password must be at least 8 characters long');
-      return false;
-    }
-    
-    return true;
-  }
 
-  // Add event listener to submit button
-  document.querySelector('.btn-submit').addEventListener('click', function(e) {
-    e.preventDefault(); // Prevent form submission for demo
-    
-    if (validateForm() && saveFormData()) {
-      alert('Registration completed successfully!');
-      // Optional: Redirect to another page after successful registration
-      // window.location.href = 'welcome.html';
-    }
-  });
+      // Function to load form data from localStorage
+      function loadFormData() {
+        try {
+          const savedData = localStorage.getItem("userRegistrationData");
+          if (savedData) {
+            const formData = JSON.parse(savedData);
 
-  // Optional: Load saved data if exists (for demo purposes)
-  window.addEventListener('DOMContentLoaded', () => {
-    const savedData = localStorage.getItem('userRegistrationData');
-    if (savedData) {
-      const formData = JSON.parse(savedData);
-      document.getElementById('firstNameID').value = formData.userName || '';
-      document.getElementById('university').value = formData.university || '';
-      document.getElementById('faculty').value = formData.faculty || '';
-      document.getElementById('birthdate').value = formData.birthdate || '';
-      document.getElementById('phone').value = formData.phone || '';
-      document.getElementById('email').value = formData.email || '';
-      document.getElementById('signup-password').value = formData.password || '';
-    }
-  });
+            // Calculate how old the data is (in hours)
+            const lastSaved = new Date(formData.lastSaved);
+            const hoursOld = (new Date() - lastSaved) / (1000 * 60 * 60);
 
-</script>
+            // Only load data if it's less than 24 hours old
+            if (hoursOld < 24) {
+              document.getElementById("firstNameID").value =
+                formData.userName || "";
+              document.getElementById("university").value =
+                formData.university || "";
+              document.getElementById("faculty").value = formData.faculty || "";
+              document.getElementById("birthdate").value =
+                formData.birthdate || "";
+              document.getElementById("phone").value = formData.phone || "";
+              document.getElementById("email").value = formData.email || "";
+
+              // Don't auto-fill password for security reasons
+              console.log("Loaded saved form data from localStorage");
+
+              // Show a message that previous data was loaded
+              const notification = document.createElement("div");
+              notification.style.position = "fixed";
+              notification.style.top = "10px";
+              notification.style.left = "50%";
+              notification.style.transform = "translateX(-50%)";
+              notification.style.backgroundColor = "#4CAF50";
+              notification.style.color = "white";
+              notification.style.padding = "10px 20px";
+              notification.style.borderRadius = "5px";
+              notification.style.zIndex = "1000";
+              notification.style.boxShadow = "0 2px 10px rgba(0,0,0,0.2)";
+              notification.textContent = "Previous form data loaded";
+
+              document.body.appendChild(notification);
+
+              // Remove notification after 3 seconds
+              setTimeout(() => {
+                notification.style.opacity = "0";
+                setTimeout(() => document.body.removeChild(notification), 300);
+              }, 3000);
+            } else {
+              // Data is too old, remove it
+              localStorage.removeItem("userRegistrationData");
+              console.log("Removed old form data from localStorage");
+            }
+          }
+        } catch (e) {
+          console.error("Failed to load from localStorage:", e);
+        }
+      }
+
+      // Auto-save form data when fields change (with debounce)
+      let saveTimeout;
+      function setupAutoSave() {
+        const formFields = [
+          "firstNameID",
+          "university",
+          "faculty",
+          "birthdate",
+          "phone",
+          "email",
+          "signup-password",
+        ];
+
+        formFields.forEach((fieldId) => {
+          document.getElementById(fieldId).addEventListener("input", () => {
+            clearTimeout(saveTimeout);
+            saveTimeout = setTimeout(() => {
+              saveFormData();
+            }, 1000); // Save 1 second after last input
+          });
+        });
+      }
+
+      // Enhanced form validation
+      function validateForm() {
+        const requiredFields = [
+          { id: "firstNameID", name: "Full Name" },
+          { id: "university", name: "University" },
+          { id: "faculty", name: "Faculty" },
+          { id: "birthdate", name: "Date of Birth" },
+          { id: "phone", name: "Phone Number" },
+          { id: "email", name: "Email" },
+          { id: "signup-password", name: "Password" },
+        ];
+
+        // Check required fields
+        for (const field of requiredFields) {
+          const element = document.getElementById(field.id);
+          if (!element.value.trim()) {
+            element.focus();
+            // Add error styling
+            element.style.borderColor = "#ff4444";
+            // Create error message
+            const errorMsg = document.createElement("div");
+            errorMsg.style.color = "#ff4444";
+            errorMsg.style.fontSize = "12px";
+            errorMsg.style.marginTop = "5px";
+            errorMsg.textContent = `Please enter your ${field.name}`;
+
+            // Remove any existing error message
+            const existingError = element.nextElementSibling;
+            if (
+              existingError &&
+              existingError.classList.contains("error-message")
+            ) {
+              element.parentNode.removeChild(existingError);
+            }
+
+            element.parentNode.appendChild(errorMsg);
+            errorMsg.classList.add("error-message");
+
+            return false;
+          }
+        }
+
+        // Validate email format
+        const email = document.getElementById("email").value.trim();
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+          alert("Please enter a valid email address");
+          document.getElementById("email").focus();
+          return false;
+        }
+
+        // Validate password strength
+        const password = document.getElementById("signup-password").value;
+        if (password.length < 8) {
+          alert("Password must be at least 8 characters long");
+          document.getElementById("signup-password").focus();
+          return false;
+        }
+
+        return true;
+      }
+
+      // Enhanced submit handler
+      document
+        .querySelector(".btn-submit")
+        .addEventListener("click", function (e) {
+          e.preventDefault();
+
+          if (validateForm()) {
+            if (saveFormData()) {
+              // Show success message
+              alert(
+                "Registration completed successfully!\nYour data has been saved."
+              );
+
+              // In a real app, you would submit to a server here
+              // For demo, we'll just clear the form after submission
+              document.getElementById("firstNameID").value = "";
+              document.getElementById("university").value = "";
+              document.getElementById("faculty").value = "";
+              document.getElementById("birthdate").value = "";
+              document.getElementById("phone").value = "";
+              document.getElementById("email").value = "";
+              document.getElementById("signup-password").value = "";
+            }
+          }
+        });
+
+      // Initialize the page
+      window.addEventListener("DOMContentLoaded", () => {
+        // Load any saved data
+        loadFormData();
+
+        // Set up auto-save
+        setupAutoSave();
+
+        // Add a beforeunload listener to warn about unsaved changes
+        window.addEventListener("beforeunload", (e) => {
+          const formData = {
+            userName: document.getElementById("firstNameID").value.trim(),
+            university: document.getElementById("university").value,
+            faculty: document.getElementById("faculty").value,
+            birthdate: document.getElementById("birthdate").value,
+            phone: document.getElementById("phone").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            password: document.getElementById("signup-password").value,
+          };
+
+          // Check if any field has data
+          const hasData = Object.values(formData).some((value) => value);
+
+          if (hasData) {
+            e.preventDefault();
+            e.returnValue =
+              "You have unsaved form data. Are you sure you want to leave?";
+            return e.returnValue;
+          }
+        });
+      });
+    </script>
   </body>
 </html>
