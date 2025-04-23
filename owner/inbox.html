@@ -1,16 +1,14 @@
 <!DOCTYPE html>
-<html lang="ar">
+<html lang="en">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Pink Dashboard</title>
+    <title>Easy Rent - Inbox</title>
     <!-- Font Awesome CDN -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
-    <!-- Chart.js CDN -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
       :root {
         --primary-color: #82c9ff;
@@ -35,11 +33,23 @@
         padding: 20px;
         min-height: 100vh;
       }
-      .sidebar h2 {
-        margin-top: 0;
-        padding: 15px;
+
+      /* Updated Logo Styling */
+      .logo-container {
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #b8bcbe;
+      }
+      .logo {
         color: var(--success-color);
-        font-size: 30px;
+        font-size: 28px;
+        font-weight: bold;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
       }
 
       .sidebar a {
@@ -58,34 +68,6 @@
       .sidebar a:hover {
         background-color: #82c9ff;
       }
-
-      .nav-menu {
-        list-style: none;
-      }
-
-      .nav-item {
-        margin-bottom: 15px;
-      }
-
-      .nav-item a {
-        text-decoration: none;
-        color: var(--secondary-color);
-        display: block;
-        padding: 8px 10px;
-        border-radius: 4px;
-        transition: all 0.3s ease;
-      }
-
-      .nav-item a:hover,
-      .nav-item.active a {
-        background-color: var(--light-gray);
-        color: var(--primary-color);
-      }
-
-      .sidebar li {
-        margin: 15px 0;
-        cursor: pointer;
-      }
       .main {
         flex: 1;
         padding: 30px;
@@ -97,23 +79,127 @@
         margin: -30px -30px 30px;
         border-radius: 0 0 8px 8px;
       }
-     
-
-    
+      .inbox-header {
+        display: flex;
+        flex-direction: column;
+      }
+      .inbox-header h1 {
+        margin-bottom: 10px;
+      }
+      .full-width-divider {
+        height: 1px;
+        background-color: #e1e1e1;
+        width: 100%;
+        margin: 10px 0 25px;
+      }
+      .notification {
+        background-color: #fff;
+        border-radius: 12px;
+        padding: 20px;
+        margin-bottom: 30px;
+        text-align: center;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      }
+      .notification h3 {
+        font-size: 17px;
+        font-weight: 600;
+        color: #000;
+        margin: 0 0 8px;
+      }
+      .notification p {
+        font-size: 15px;
+        color: #666;
+        margin: 0;
+      }
+      .empty-state {
+        text-align: center;
+        color: #999;
+        font-size: 15px;
+        margin-top: 40px;
+      }
+      .chat-bar {
+        position: fixed;
+        bottom: 0;
+        left: 220px;
+        right: 0;
+        background: white;
+        padding: 15px;
+        border-top: 1px solid #e1e1e1;
+        display: flex;
+        justify-content: center;
+      }
+      .chat-input {
+        width: 90%;
+        max-width: 800px;
+        display: flex;
+        gap: 10px;
+      }
+      .chat-input input {
+        flex: 1;
+        padding: 12px 15px;
+        border: 1px solid #e1e1e1;
+        border-radius: 20px;
+        font-size: 15px;
+      }
+      .chat-input button {
+        background: #007aff;
+        color: white;
+        border: none;
+        border-radius: 20px;
+        padding: 0 20px;
+        font-weight: 500;
+        cursor: pointer;
+      }
+      .chat-container {
+        margin-bottom: 80px;
+        min-height: 300px;
+        max-height: 60vh;
+        overflow-y: auto;
+      }
+      .message {
+        background: #fff;
+        padding: 10px 15px;
+        border-radius: 18px;
+        margin-bottom: 10px;
+        max-width: 70%;
+        box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+        word-wrap: break-word;
+      }
+      .user-message {
+        background: #007aff;
+        color: white;
+        margin-left: auto;
+      }
+      .received-message {
+        background: #f1f1f1;
+        margin-right: auto;
+      }
+      .message-time {
+        font-size: 12px;
+        color: #999;
+        margin-top: 5px;
+        text-align: right;
+      }
     </style>
   </head>
   <body>
-    <div class="container">
-      <div class="sidebar">
-        <h2><i class="fas fa-house-chimney"></i> Easy Rent</h2>
-        <a href="dashbord.html"><i class="fas fa-chart-line"></i> Dashboard</a>
-        <a href="createrooms.html"><i class="fas fa-plus"></i> Add Property</a>
-        <a href="myproparty.html"  ><i class="fas fa-building"></i> My Properties</a
-        >
-        <a href="inbox.html"><i class="fas fa-envelope"></i> Inbox</a>
-        <a href="setting.html"><i class="fas fa-user"></i> Profile Settings</a>
-        <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    <div class="sidebar">
+      <!-- Updated Logo Section -->
+      <div class="logo-container">
+        <h1 class="logo">
+          <i class="fas fa-house-chimney"></i>
+          Easy Rent
+        </h1>
       </div>
+
+      <a href="dashbord.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+      <a href="createrooms.html"><i class="fas fa-plus"></i> Add Property</a>
+      <a href="myproparty.html"
+        ><i class="fas fa-building"></i> My Properties</a
+      >
+      <a href="inbox.html"><i class="fas fa-envelope"></i> Inbox</a>
+      <a href="setting.html"><i class="fas fa-user"></i> Profile Settings</a>
+      <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
     </div>
 
     <div class="main">
@@ -123,12 +209,104 @@
       </div>
 
       <div class="content">
-        <h1>Inbox</h1>
-        
+        <div class="inbox-header">
+          <h1>Inbox</h1>
+          <div class="full-width-divider"></div>
+        </div>
+      </div>
+
+      <div class="notification">
+        <h3>Home Guide: Exhibition in Progress</h3>
+        <p>We're building something amazing - improvements are coming soon!</p>
+      </div>
+
+      <div class="chat-container" id="chatContainer">
+        <div class="empty-state">No messages yet. Start a conversation!</div>
+      </div>
+    </div>
+
+    <!-- Chat input bar -->
+    <div class="chat-bar">
+      <div class="chat-input">
+        <input
+          type="text"
+          id="messageInput"
+          placeholder="Type your message here..."
+        />
+        <button id="sendButton"><i class="fas fa-paper-plane"></i> Send</button>
+      </div>
     </div>
 
     <script>
- 
+      document.addEventListener("DOMContentLoaded", function () {
+        const chatContainer = document.getElementById("chatContainer");
+        const messageInput = document.getElementById("messageInput");
+        const sendButton = document.getElementById("sendButton");
+
+        function removeEmptyState() {
+          const emptyState = chatContainer.querySelector(".empty-state");
+          if (emptyState) {
+            emptyState.remove();
+          }
+        }
+
+        function formatTime(date) {
+          return date.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+        }
+
+        function sendMessage() {
+          const messageText = messageInput.value.trim();
+          if (messageText) {
+            removeEmptyState();
+
+            // Create message element
+            const messageElement = document.createElement("div");
+            messageElement.className = "message user-message";
+
+            const now = new Date();
+            messageElement.innerHTML = `
+                        ${messageText}
+                        <div class="message-time">${formatTime(now)}</div>
+                    `;
+
+            chatContainer.appendChild(messageElement);
+            messageInput.value = "";
+
+            // Scroll to bottom
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+
+            // Simulate reply after 1 second
+            setTimeout(() => {
+              const replyElement = document.createElement("div");
+              replyElement.className = "message received-message";
+              replyElement.innerHTML = `
+                            Thank you for your message! Our team will respond shortly.
+                            <div class="message-time">${formatTime(
+                              new Date()
+                            )}</div>
+                        `;
+              chatContainer.appendChild(replyElement);
+              chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 1000);
+          }
+        }
+
+        // Send message on button click
+        sendButton.addEventListener("click", sendMessage);
+
+        // Send message on Enter key
+        messageInput.addEventListener("keypress", function (e) {
+          if (e.key === "Enter") {
+            sendMessage();
+          }
+        });
+
+        // Focus input field automatically
+        messageInput.focus();
+      });
     </script>
   </body>
 </html>

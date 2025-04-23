@@ -25,7 +25,7 @@
         box-sizing: border-box;
         margin: 0;
         padding: 0;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-family: "Inter", sans-serif;
       }
       body {
         margin: 0;
@@ -39,12 +39,25 @@
         padding: 20px;
         min-height: 100vh;
       }
-      .sidebar h2 {
-        margin-top: 0;
-        padding: 15px;
-        color: var(--success-color);
-        font-size: 30px;
+
+      /* Updated Logo Styling */
+      .logo-container {
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #b8bcbe;
       }
+      .logo {
+        color: var(--success-color);
+        font-size: 28px;
+        font-weight: bold;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+
       .sidebar a {
         display: flex;
         align-items: center;
@@ -52,14 +65,14 @@
         margin: 10px 0;
         text-decoration: none;
         color: white;
-        background-color: #78c2f4;
+        background-color: #89c8f8;
         border-radius: 5px;
         font-size: 16px;
         gap: 10px;
         transition: background 0.3s;
       }
       .sidebar a:hover {
-        background-color: rgb(102, 149, 243);
+        background-color: #82c9ff;
       }
 
       .nav-menu {
@@ -354,9 +367,14 @@
     </style>
   </head>
   <body>
-    <div class="container">
-      <div class="sidebar">
-        <h2><i class="fas fa-house-chimney"></i> Easy Rent</h2>
+    <div class="sidebar">
+      <!-- Updated Logo Section -->
+      <div class="logo-container">
+        <h1 class="logo">
+          <i class="fas fa-house-chimney"></i>
+          Easy Rent
+        </h1>
+      </div>
         <a href="dashbord.html"><i class="fas fa-chart-line"></i> Dashboard</a>
         <a href="createrooms.html"><i class="fas fa-plus"></i> Add Property</a>
         <a href="myproparty.html"
