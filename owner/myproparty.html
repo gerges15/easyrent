@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Easy Rent - My Properties</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #82c9ff;
+        --secondary-color: #6c757d;
+        --light-gray: #f8f9fa;
+        --border-color: #dee2e6;
+        --success-color: #20115b;
+      }
+      * {
+        box-sizing: border-box;
+        font-family: "Inter", sans-serif;
+      }
+      body {
+        margin: 0;
+        display: flex;
+        min-height: 100vh;
+        background: #f0f4f8;
+        color: #1a1a1a;
+      }
+      .sidebar {
+        width: 220px;
+        background-color: #f0eded;
+        padding: 20px;
+      }
+      .logo-container {
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #89c8f8;
+      }
+      .logo {
+        color: var(--success-color);
+        font-size: 28px;
+        font-weight: bold;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
+      .sidebar a {
+        display: flex;
+        align-items: center;
+        padding: 10px;
+        margin: 10px 0;
+        text-decoration: none;
+        color: white;
+        background-color: #89c8f8;
+        border-radius: 5px;
+        font-size: 16px;
+        gap: 10px;
+        transition: background 0.3s;
+      }
+      .sidebar a:hover {
+        background-color: #82c9ff;
+      }
+      .main {
+        flex: 1;
+        padding: 30px;
+      }
+      .header {
+        background-color: #260f45;
+        color: #fff;
+        padding: 10px 20px;
+        margin: -30px -30px 30px;
+        border-radius: 0 0 8px 8px;
+      }
+      .page-title {
+        font-size: 24px;
+        font-weight: 600;
+        margin-bottom: 20px;
+        color: var(--success-color);
+      }
+
+      /* Property Listing Styles */
+      .properties-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .property-card {
+        background: white;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+      }
+
+      .property-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .property-image {
+        width: 100%;
+        height: 200px;
+        object-fit: cover;
+      }
+
+      .property-details {
+        padding: 15px;
+      }
+
+      .property-title {
+        font-size: 18px;
+        margin: 0 0 10px;
+        color: var(--success-color);
+      }
+
+      .property-info {
+        display: flex;
+        justify-content: space-between;
+        color: #666;
+        font-size: 14px;
+        margin-bottom: 10px;
+      }
+
+      .property-price {
+        font-weight: bold;
+        color: #007aff;
+        font-size: 16px;
+      }
+
+      .property-actions {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .action-btn {
+        flex: 1;
+        padding: 8px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 5px;
+      }
+
+      .edit-btn {
+        background: #e3f2fd;
+        color: #007aff;
+      }
+
+      .delete-btn {
+        background: #ffebee;
+        color: #f44336;
+      }
+
+      /* Empty State */
+      .empty-state {
+        text-align: center;
+        padding: 40px 20px;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        margin-bottom: 30px;
+      }
+
+      .empty-state p {
+        color: #666;
+        font-size: 16px;
+        margin: 0;
+      }
+
+      /* Stats Card */
+      .stats-card {
+        background-color: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+      }
+
+      .stats-card h3 {
+        margin-top: 0;
+        color: var(--success-color);
+        font-size: 18px;
+      }
+
+      .stats-value {
+        font-size: 24px;
+        font-weight: bold;
+        color: #007aff;
+        margin: 10px 0;
+      }
+
+      .progress-notice {
+        font-style: italic;
+        color: #666;
+        font-size: 14px;
+        margin-top: 20px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sidebar">
+      <div class="logo-container">
+        <h1 class="logo">
+          <i class="fas fa-house-chimney"></i>
+          Easy Rent
+        </h1>
+      </div>
+
+      <a href="dashbord.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+      <a href="createrooms.html"><i class="fas fa-plus"></i> Add Property</a>
+      <a href="myproparty.html"
+        ><i class="fas fa-building"></i> My Properties</a
+      >
+      <a href="inbox.html"><i class="fas fa-envelope"></i> Inbox</a>
+      <a href="setting.html"><i class="fas fa-user"></i> Profile Settings</a>
+      <a href="../index.html"><i class="fas fa-sign-out-alt"></i> Logout</a>
+    </div>
+
+    <div class="main">
+      <div class="header">
+        <strong
+          >🏗 We're building something amazing—exciting improvements are on the
+          way!</strong
+        >
+      </div>
+
+      <h1 class="page-title">My Properties</h1>
+
+      <!-- Properties Listing -->
+      <div class="properties-container" id="propertiesContainer">
+        <!-- Properties will be added here dynamically -->
+        <div class="empty-state">
+          <p>No properties found.</p>
+        </div>
+      </div>
+
+      <div class="stats-card">
+        <h3>Total Available Listings</h3>
+        <div class="stats-value" id="totalListings">0</div>
+        <p class="progress-notice">
+          We're building something amazing—exciting improvements are on the way!
+        </p>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+        // Get only properties added by current user (using user ID from localStorage)
+        const currentUserId = localStorage.getItem("currentUserId") || "user1";
+        const allProperties =
+          JSON.parse(localStorage.getItem("properties")) || [];
+        const userProperties = allProperties.filter(
+          (prop) => prop.userId === currentUserId
+        );
+
+        const propertiesContainer = document.getElementById(
+          "propertiesContainer"
+        );
+        const totalListings = document.getElementById("totalListings");
+
+        // Update stats
+        function updateStats() {
+          totalListings.textContent = userProperties.length;
+        }
+
+        // Display only user's properties
+        function displayUserProperties() {
+          if (userProperties.length === 0) {
+            propertiesContainer.innerHTML = `
+                        <div class="empty-state">
+                            <p>No properties found. Add properties from the "Add Property" page!</p>
+                        </div>
+                    `;
+            return;
+          }
+
+          propertiesContainer.innerHTML = "";
+          userProperties.forEach((property, index) => {
+            const propertyCard = document.createElement("div");
+            propertyCard.className = "property-card";
+            propertyCard.innerHTML = `
+                        <img src="${property.image}" alt="${property.title}" class="property-image">
+                        <div class="property-details">
+                            <h3 class="property-title">${property.title}</h3>
+                            <div class="property-info">
+                                <span><i class="fas fa-map-marker-alt"></i> ${property.location}</span>
+                                <span><i class="fas fa-bed"></i> ${property.bedrooms} beds</span>
+                            </div>
+                            <div class="property-info">
+                                <span><i class="fas fa-bath"></i> ${property.bathrooms} baths</span>
+                                <span class="property-price">$${property.price}/mo</span>
+                            </div>
+                            <div class="property-actions">
+                                <button class="action-btn delete-btn" data-id="${property.id}">
+                                    <i class="fas fa-trash"></i> Delete
+                                </button>
+                            </div>
+                        </div>
+                    `;
+            propertiesContainer.appendChild(propertyCard);
+          });
+        }
+
+        // Delete property
+        propertiesContainer.addEventListener("click", function (e) {
+          if (
+            e.target.classList.contains("delete-btn") ||
+            e.target.parentElement.classList.contains("delete-btn")
+          ) {
+            const button = e.target.classList.contains("delete-btn")
+              ? e.target
+              : e.target.parentElement;
+            const propertyId = button.getAttribute("data-id");
+
+            if (confirm("Are you sure you want to delete this property?")) {
+              // Remove from all properties
+              const updatedProperties = allProperties.filter(
+                (prop) => prop.id !== propertyId
+              );
+              localStorage.setItem(
+                "properties",
+                JSON.stringify(updatedProperties)
+              );
+
+              // Refresh display
+              window.location.reload();
+            }
+          }
+        });
+
+        // Initialize
+        displayUserProperties();
+        updateStats();
+      });
+    </script>
+  </body>
+</html>
