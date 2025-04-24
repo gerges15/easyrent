@@ -318,6 +318,22 @@
         color: #fcfcfc;
       }
 
+      /* New styles for forgot password link */
+      .forgot-password {
+        text-align: center;
+        margin: 1rem 0;
+      }
+
+      .forgot-password a {
+        color: #82c9ff;
+        text-decoration: none;
+        font-size: 0.9rem;
+      }
+
+      .forgot-password a:hover {
+        text-decoration: underline;
+      }
+
       /* تحسين للخطوط الصغيرة في الشاشات الضيقة */
       @media (max-width: 320px) {
         .btn-primary,
@@ -442,6 +458,11 @@
       <button class="btn-primary" onclick="window.location.href='index.html'">
         Continue
       </button>
+
+      <!-- Forgot password link -->
+      <div class="forgot-password">
+        <a href="forgetpass.html">Forgot password?</a>
+      </div>
 
       <div class="separator">
         <div class="line"></div>
