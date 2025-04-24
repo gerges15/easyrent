@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Forgot Password</title>
+    <title>Verify Code</title>
     <style>
       body {
         background: #f0f2f5;
@@ -18,33 +18,31 @@
         padding: 2em;
         border-radius: 8px;
         box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        width: 500px;
+        width: 300px;
       }
       h2 {
         margin-bottom: 1em;
         color: #333;
         text-align: center;
       }
-      input[type="email"] {
+      input {
         width: 100%;
         padding: 0.5em;
         margin-bottom: 1em;
         border: 1px solid #ccc;
         border-radius: 4px;
-        font-size: 16px;
       }
       button {
         width: 100%;
-        padding: 0.6em;
-        background: #8abff8;
+        padding: 0.5em;
+        background: #28a745;
         color: #fff;
         border: none;
         border-radius: 4px;
         cursor: pointer;
-        font-size: 16px;
       }
       button:hover {
-        background: #609dde;
+        background: #218838;
       }
       .message {
         margin-top: 1em;
@@ -54,58 +52,52 @@
   </head>
   <body>
     <div class="container">
-      <h2>Forgot Password</h2>
-      <form id="forgotPasswordForm">
+      <h2>Verify Code</h2>
+      <form id="verifyCodeForm">
         <input
           type="email"
           id="email"
           placeholder="Enter your email"
           required
         />
-        <button onclick="location.href"codeforgot.html type="submit">
-          Reset Password
-        </button>
+        <input
+          type="text"
+          id="code"
+          placeholder="Enter the 6-digit code"
+          required
+        />
+        <button type="submit">Verify Code</button>
       </form>
       <div class="message" id="message"></div>
     </div>
 
     <script>
       document
-        .getElementById("forgotPasswordForm")
+        .getElementById("verifyCodeForm")
         .addEventListener("submit", async function (e) {
           e.preventDefault();
-          const email = document.getElementById("email").value.trim();
+          const email = document.getElementById("email").value;
+          const code = document.getElementById("code").value;
           const messageEl = document.getElementById("message");
 
-          if (!email) {
-            messageEl.style.color = "red";
-            messageEl.textContent = "Please enter your email.";
-            return;
-          }
-
           try {
-            const res = await fetch("http://localhost:3000/api/send-code", {
+            const res = await fetch("/api/verify-code", {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
               },
-              body: JSON.stringify({ email }),
+              body: JSON.stringify({ email, code }),
             });
 
             const data = await res.json();
 
             if (res.ok) {
               messageEl.style.color = "green";
-              messageEl.textContent =
-                "If this email is registered, a 6-digit reset code has been sent. It will expire in 10 minutes.";
-
-              // ⏳ التوجيه بعد 1.5 ثانية
-              setTimeout(() => {
-                window.location.href = "codeforgot.html";
-              }, 1500);
+              messageEl.textContent = data.message;
+              // بعد التحقق الناجح، يمكنك توجيه المستخدم لصفحة تغيير كلمة المرور
             } else {
               messageEl.style.color = "red";
-              messageEl.textContent = data.message || "Something went wrong.";
+              messageEl.textContent = data.message || "Invalid code.";
             }
           } catch (error) {
             messageEl.style.color = "red";

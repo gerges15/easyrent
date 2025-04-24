@@ -20,7 +20,7 @@
       .container {
         max-width: 450px;
         margin: 0 auto;
-        padding: 20px;
+        padding: 40px 20px;
         text-align: center;
         flex: 1;
         display: flex;
@@ -29,7 +29,11 @@
       }
 
       .logo {
-        margin-bottom: 20px;
+        margin-bottom: 30px;
+      }
+
+      .logo img {
+        height: 40px;
       }
 
       h1 {
@@ -119,17 +123,11 @@
         border-top: 1px solid #dadce0;
       }
 
-      .footer-content {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 24px;
-      }
-
       .footer-links {
         display: flex;
+        justify-content: center;
         gap: 24px;
+        margin-bottom: 12px;
       }
 
       .footer-links a {
@@ -140,97 +138,20 @@
       .footer-links a:hover {
         text-decoration: underline;
       }
-    .footer-content {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 24px;
-        }
-      .language-selector {
-        position: relative;
-        display: inline-block;
-      }
-
-      .language-btn {
-        background: none;
-        border: none;
-        color: #1a73e8;
-        font-size: 12px;
-        cursor: pointer;
-        padding: 4px 8px;
-        border-radius: 4px;
-      }
-
-      .language-btn:hover {
-        background-color: #f1f3f4;
-      }
-
-      .language-dropdown {
-        display: none;
-        position: absolute;
-        bottom: 100%;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: white;
-        border: 1px solid #dadce0;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        padding: 8px 0;
-        min-width: 150px;
-        z-index: 1;
-      }
-
-      .language-dropdown.show {
-        display: block;
-      }
-
-      .language-option {
-        padding: 8px 16px;
-        cursor: pointer;
-      }
-
-      .language-option:hover {
-        background-color: #f7f8f8;
-      }
     </style>
   </head>
   <body>
     <div class="container">
       <div class="logo">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 272 92"
-          width="75"
-          height="24"
-        >
-          <path
-            d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"
-            fill="#EA4335"
-          />
-          <path
-            d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"
-            fill="#FBBC05"
-          />
-          <path
-            d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.26 21.25-22.26 5.29 0 9.49 2.35 11.68 4.96h.34v-3.61h9.25zm-8.56 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z"
-            fill="#4285F4"
-          />
-          <path d="M225 3v65h-9.5V3h9.5z" fill="#34A853" />
-          <path
-            d="M262.02 54.48l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.65 12.28c2.27 4.45 5.8 6.72 10.75 6.72 4.96 0 8.4-2.44 10.92-6.14zm-23.27-7.98l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z"
-            fill="#EA4335"
-          />
-          <path
-            d="M35.29 41.41V32H67c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C16.32 69.35.36 54.3.36 39 .36 23.7 16.32 8.65 32.35 8.65 39c0 6.66 5.96 15.71 14.85 23.2 9.82 8.23 18.8 8.23 22.01 8.23 6.3 0 10.75-1.01 15.45-3.06 5.03-2.3 9.41-5.71 12.66-10.75l-13.51-8.73c-3.27 4.79-6.72 7.06-11.51 7.06-3.44 0-6.14-1.26-8.23-3.44-1.72-1.93-2.77-4.37-3.19-7.38h39.47l-.24-2.5z"
-            fill="#4285F4"
-          />
-        </svg>
+        <img
+          src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png"
+          alt="Google Logo"
+        />
       </div>
 
       <h1>Welcome</h1>
-      <div class="email-display" id="display-email">user@example.com</div>
-      <div class="subtitle">to continue to  EasyRent.com</div>
+      <div class="email-display" id="display-email">Loading...</div>
+      <div class="subtitle">to continue to EasyRent.com</div>
 
       <div class="input-container">
         <label class="input-label">Enter your password</label>
@@ -244,177 +165,32 @@
         Next
       </button>
 
-      <button class="forgot-email" onclick="window.location.href='forgotpass.html'">Forgot password?</div>
-    </div>
-    <div class="privacy-notice">
-      Before using this app, you can review homesglobe.com's privacy policy and
-      terms of service.
-    </div>
-
-    <div class="footer">
-      <div class="footer-content">
-        <div class="footer-links">
-          <a href="#" id="help-link">Help</a>
-          <a href="#" id="privacy-link">Privacy</a>
-          <a href="#" id="terms-link">Terms</a>
-        </div>
-
-        <div class="language-selector">
-          <button class="language-btn" id="current-language">
-            English (United States)
-          </button>
-          <div class="language-dropdown" id="language-dropdown">
-            <div class="language-option" data-lang="en">
-              English (United States)
-            </div>
-            <div class="language-option" data-lang="ar">العربية (Arabic)</div>
-            <div class="language-option" data-lang="es">Español (Spanish)</div>
-            <div class="language-option" data-lang="fr">Français (French)</div>
-            <div class="language-option" data-lang="de">Deutsch (German)</div>
-            <div class="language-option" data-lang="ja">日本語 (Japanese)</div>
-            <div class="language-option" data-lang="zh">中文 (Chinese)</div>
-            <div class="language-option" data-lang="pt">
-              Português (Portuguese)
-            </div>
-            <div class="language-option" data-lang="ru">Русский (Russian)</div>
-            <div class="language-option" data-lang="hi">हिन्दी (Hindi)</div>
-          </div>
-        </div>
+      <div
+        class="forgot-email"
+        onclick="window.location.href='forgotpass.html'"
+      >
+        Forgot password?
       </div>
     </div>
 
+    <div class="footer">
+      <div class="footer-links">
+        <a href="#">Help</a>
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+      </div>
+      <div>&copy; 2025 Google Clone</div>
+    </div>
+
     <script>
-      // Language translations
-      const translations = {
-        en: {
-          help: "Help",
-          privacy: "Privacy",
-          terms: "Terms",
-          current_lang: "English (United States)",
-        },
-        ar: {
-          help: "مساعدة",
-          privacy: "خصوصية",
-          terms: "الشروط",
-          current_lang: "العربية",
-        },
-        es: {
-          help: "Ayuda",
-          privacy: "Privacidad",
-          terms: "Términos",
-          current_lang: "Español",
-        },
-        fr: {
-          help: "Aide",
-          privacy: "Confidentialité",
-          terms: "Conditions",
-          current_lang: "Français",
-        },
-        de: {
-          help: "Hilfe",
-          privacy: "Datenschutz",
-          terms: "Nutzungsbedingungen",
-          current_lang: "Deutsch",
-        },
-        ja: {
-          help: "ヘルプ",
-          privacy: "プライバシー",
-          terms: "利用規約",
-          current_lang: "日本語",
-        },
-        zh: {
-          help: "帮助",
-          privacy: "隐私权",
-          terms: "条款",
-          current_lang: "中文",
-        },
-        pt: {
-          help: "Ajuda",
-          privacy: "Privacidade",
-          terms: "Termos",
-          current_lang: "Português",
-        },
-        ru: {
-          help: "Справка",
-          privacy: "Конфиденциальность",
-          terms: "Условия",
-          current_lang: "Русский",
-        },
-        hi: {
-          help: "सहायता",
-          privacy: "गोपनीयता",
-          terms: "नियम",
-          current_lang: "हिन्दी",
-        },
-      };
+      // عرض الإيميل من localStorage
+      const email = localStorage.getItem("userEmail");
+      const emailDisplay = document.getElementById("display-email");
 
-      // DOM elements
-      const currentLanguageBtn = document.getElementById("current-language");
-      const languageDropdown = document.getElementById("language-dropdown");
-      const helpLink = document.getElementById("help-link");
-      const privacyLink = document.getElementById("privacy-link");
-      const termsLink = document.getElementById("terms-link");
-      const yourAccount = document.getElementById("your-account");
-      const otherAccount = document.getElementById("other-account");
-      const accountName = document.querySelector(".account-name");
-      const accountEmail = document.querySelector(".account-email");
-      const signinTitle = document.querySelector("h1");
-      const subtitles = document.querySelectorAll(".subtitle");
-
-      // Set initial language
-      updateLanguage("en");
-
-      // Toggle language dropdown
-      currentLanguageBtn.addEventListener("click", (e) => {
-        e.stopPropagation();
-        languageDropdown.classList.toggle("show");
-      });
-
-      // Close dropdown when clicking outside
-      document.addEventListener("click", () => {
-        languageDropdown.classList.remove("show");
-      });
-
-      // Language selection
-      document.querySelectorAll(".language-option").forEach((option) => {
-        option.addEventListener("click", (e) => {
-          const lang = e.target.getAttribute("data-lang");
-          updateLanguage(lang);
-          languageDropdown.classList.remove("show");
-        });
-      });
-
-      // Account selection
-      yourAccount.addEventListener("click", () => {
-        alert("Signing in with your account");
-        // Add your actual sign-in logic here
-      });
-
-      otherAccount.addEventListener("click", () => {
-        alert("Switching to another account");
-        // Add your account switching logic here
-      });
-
-      // Update language function
-      function updateLanguage(lang) {
-        const t = translations[lang];
-
-        // Update main content
-        signinTitle.textContent = t.signin;
-        subtitles[0].textContent = t.choose_account;
-        subtitles[1].textContent = t.continue_to;
-        accountName.textContent = t.your_account;
-        accountEmail.textContent = t.your_email;
-        otherAccount.textContent = t.other_account;
-
-        // Update footer
-        helpLink.textContent = t.help;
-        privacyLink.textContent = t.privacy;
-        termsLink.textContent = t.terms;
-        currentLanguageBtn.textContent = t.current_lang;
-
-        // Update html lang attribute
-        document.documentElement.lang = lang;
+      if (email) {
+        emailDisplay.textContent = email;
+      } else {
+        emailDisplay.textContent = "user@example.com";
       }
     </script>
   </body>

