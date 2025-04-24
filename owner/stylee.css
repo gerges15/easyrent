@@ -595,7 +595,7 @@ nav {
   background: linear-gradient(
     135deg,
     rgba(68, 176, 165, 0.1) 0%,
-    rgba(68, 176, 165, 0.3) 100%
+    rgba(68, 104, 177, 0.3) 100%
   );
   opacity: 0;
   transition: opacity 0.3s ease;
@@ -1054,9 +1054,9 @@ nav {
     ),
     radial-gradient(at 49% 30%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
     radial-gradient(at 14% 26%, hsla(240, 15%, 9%, 1) 0px, transparent 85%),
-    radial-gradient(at 0% 64%, rgb(30, 125, 132) 0px, transparent 85%),
+    radial-gradient(at 0% 64%, rgb(23, 99, 144) 0px, transparent 85%),
     radial-gradient(at 41% 94%, rgb(140, 216, 237) 0px, transparent 85%),
-    radial-gradient(at 100% 99%, rgb(50, 155, 193) 0px, transparent 85%);
+    radial-gradient(at 100% 99%, rgb(50, 71, 193) 0px, transparent 85%);
   color: #fff;
   border-radius: 12px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -1068,7 +1068,7 @@ nav {
   left: 0;
   width: 100%;
   height: 10px;
-  background: linear-gradient(to right, #3be6b8, #29d0d8);
+  background: linear-gradient(to right, #394bcd, #44aaf4);
   border-radius: 12px 12px 0 0;
 }
 
@@ -1108,7 +1108,7 @@ nav {
   justify-content: center;
   width: 20px;
   height: 20px;
-  background-color: #37afb3;
+  background-color: #0218a5;
   border-radius: 50%;
   margin-right: 10px;
   flex-shrink: 0;
@@ -1129,7 +1129,7 @@ nav {
   display: block;
   width: 100%;
   padding: 12px;
-  background: linear-gradient(to right, #1da59e, #6bf8ff);
+  background: linear-gradient(to right, #1d53a5, #6bcbff);
   color: white;
   border: none;
   border-radius: 6px;
