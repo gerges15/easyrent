@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>R8 Dormitory - Admin Panel</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #267bd0;
+        --secondary-color: #3498db;
+        --background: #f5f6fa;
+        --card-bg: #ffffff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Roboto", sans-serif;
+      }
+
+      body {
+        background: var(--background);
+        min-height: 100vh;
+      }
+
+      .container {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 30px;
+      }
+
+      /* Left Sidebar */
+      .sidebar {
+        background: var(--primary-color);
+        color: white;
+        padding: 20px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+        left: 0;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        font-size: 1.8rem;
+        margin-bottom: 40px;
+        text-align: center;
+        font-weight: 600;
+      }
+
+      .nav-menu {
+        list-style: none;
+      }
+
+      .nav-item {
+        padding: 15px;
+        margin: 8px 0;
+        border-radius: 8px;
+        transition: 0.3s;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+      }
+
+      .nav-item:hover,
+      .nav-item.active {
+        background: var(--secondary-color);
+      }
+
+      .material-icons {
+        margin-right: 12px;
+      }
+
+      /* Main Content */
+      .main-content {
+        padding: 30px 40px;
+      }
+
+      .content-section {
+        display: none;
+        animation: fadeIn 0.3s ease;
+      }
+
+      .content-section.active {
+        display: block;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Stats Cards */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+      }
+
+      .stat-card {
+        background: var(--card-bg);
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .stat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .stat-value {
+        font-size: 2.2rem;
+        color: var(--primary-color);
+      }
+
+      .more-link {
+        color: var(--secondary-color);
+        text-decoration: none;
+        font-size: 0.9rem;
+        display: inline-block;
+        margin-top: 15px;
+      }
+
+      /* Logs Table */
+      .logs-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--card-bg);
+        margin-top: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .logs-table th,
+      .logs-table td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+      }
+
+      .logs-table th {
+        background: var(--primary-color);
+        color: white;
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 768px) {
+        .container {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: fixed;
+          z-index: 1000;
+          width: 240px;
+          transform: translateX(-100%);
+          transition: transform 0.3s ease;
+        }
+
+        .sidebar.active {
+          transform: translateX(0);
+        }
+
+        .menu-toggle {
+          display: block;
+        }
+      }
+
+      .menu-toggle {
+        position: fixed;
+        left: 15px;
+        top: 15px;
+        z-index: 1100;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: none;
+      }
+      
+      /* Main Content */
+      .main-content {
+        padding: 2rem;
+        background: #ecf0f1;
+      }
+
+      /* Room Controls */
+      .controls {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .search-input {
+        flex: 1;
+        max-width: 300px;
+        padding: 0.8rem;
+        border: 1px solid #bdc3c7;
+        border-radius: 4px;
+      }
+
+      .btn {
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: opacity 0.3s;
+      }
+
+      .btn-primary {
+        background: #3498db;
+        color: white;
+      }
+
+      .btn-success {
+        background: #2ecc71;
+        color: white;
+      }
+
+      /* Room Table */
+      .room-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      }
+
+      .room-table th,
+      .room-table td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #ecf0f1;
+      }
+
+      .room-table th {
+        background: #3498db;
+        color: white;
+      }
+
+      .status {
+        padding: 0.3rem 0.6rem;
+        border-radius: 12px;
+        font-size: 0.9rem;
+      }
+
+      .available {
+        background: #d4efdf;
+        color: #196f3d;
+      }
+
+      .not-available {
+        background: #f2d7d5;
+        color: #c0392b;
+      }
+
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+      }
+
+      .modal-content {
+        background: white;
+        width: 500px;
+        margin: 2rem auto;
+        padding: 2rem;
+        border-radius: 5px;
+      }
+      .form-group {
+        margin-bottom: 1rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-group input {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      /* زر الخطر */
+      .btn-danger {
+        background: #e74c3c;
+        color: white;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="menu-toggle">☰</button>
+
+    <div class="container">
+      <!-- Left Sidebar -->
+      <aside class="sidebar">
+        <div class="logo">Easy Rent</div>
+        <ul class="nav-menu">
+          <li class="nav-item active" data-target="dashboard">
+            <span class="material-icons">dashboard</span>
+            Dashboard
+          </li>
+          <li class="nav-item" data-target="rooms">
+            <span class="material-icons">meeting_room</span>
+            Rooms
+          </li>
+          <li class="nav-item" data-target="students">
+            <span class="material-icons">people</span>
+            Students
+          </li>
+          <li class="nav-item" data-target="logs">
+            <span class="material-icons">history</span>
+            Logs
+          </li>
+          <li class="nav-item" data-target="payments">
+            <span class="material-icons">payments</span>
+            Payments
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+          <header class="dashboard-header">
+            <h1>Admin Dashboard</h1>
+          </header>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-header">
+                <h2>Students</h2>
+                <span class="material-icons">school</span>
+              </div>
+              <div class="stat-value">0</div>
+              <a href="#" class="more-link">View Details →</a>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <h2>Rooms</h2>
+                <span class="material-icons">meeting_room</span>
+              </div>
+              <div class="stat-value">5</div>
+              <a href="#" class="more-link">View Details →</a>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <h2>Logs</h2>
+                <span class="material-icons">history</span>
+              </div>
+              <div class="stat-value">2</div>
+              <a href="#" class="more-link">View Details →</a>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-header">
+                <h2>Payments</h2>
+                <span class="material-icons">payments</span>
+              </div>
+              <div class="stat-value">2</div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Logs Section -->
+        <section id="logs" class="content-section">
+          <header class="dashboard-header">
+            <h1>Activity Logs</h1>
+          </header>
+          <table class="logs-table">
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>User</th>
+                <th>Action</th>
+                <th>Details</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>2023-12-01 10:00</td>
+                <td>Admin</td>
+                <td>User Login</td>
+                <td>Successful login from IP 192.168.1.1</td>
+              </tr>
+              <tr>
+                <td>2023-12-01 11:30</td>
+                <td>User123</td>
+                <td>Room Booking</td>
+                <td>Booked room #205</td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- Add other sections (Rooms, Students, Payments) similarly -->
+        <section id="rooms" class="content-section">
+          <header class="dashboard-header">
+            <h1>Rooms Management</h1>
+          </header>
+          <!-- Add rooms content here -->
+            <div class="controls">
+          <input
+            type="text"
+            class="search-input"
+            placeholder="Search rooms..."
+          />
+          <button class="btn btn-primary" onclick="showAllRooms()">Search</button>
+          <button class="btn btn-primary" style="background-color: #e74c3c;">Show All</button>
+          <button class="btn btn-success" onclick="showAddForm()">
+            Add Room
+          </button>
+        </div>
+
+        <!-- Rooms Table -->
+        <table class="room-table">
+          <thead>
+            <tr>
+              <th>Room ID</th>
+              <th>Room Name</th>
+              <th>Available Beds</th>
+              <th>Occupants</th>
+              <th>Dorm Address</th>
+              <th>Dorm Name</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="roomTableBody">
+            <!-- Data will be populated by JavaScript -->
+          </tbody>
+        </table>
+
+      
+<!-- تعديل جزء النموذج في HTML -->
+<div id="addModal" class="modal">
+    <div class="modal-content">
+        <h2>${currentEditId ? 'Edit Room' : 'Add New Room'}</h2>
+        <form id="roomForm" onsubmit="addRoom(event)">
+            <div class="form-group">
+                <label>Room Name:</label>
+                <input type="text" name="name" required>
+            </div>
+            <div class="form-group">
+                <label>Available Beds:</label>
+                <input type="number" name="beds" required>
+            </div>
+            <div class="form-group">
+                <label>Dorm Address:</label>
+                <input type="text" name="address" required>
+            </div>
+            <div class="form-group">
+                <label>Dorm Name:</label>
+                <input type="text" name="dormName" required>
+            </div>
+            <button type="submit" class="btn btn-success">Save</button>
+            <button type="button" class="btn btn-danger" onclick="closeModal()">Cancel</button>
+        </form>
+    </div>
+    </div>
+   </main>
+    </div>
+        </section>
+
+        <section id="students" class="content-section">
+        <header class="dashboard-header">
+            <h1>Students Management</h1>
+      </header>
+       <!-- Add students content here -->
+        </section>
+
+        <section id="payments" class="content-section">
+          <header class="dashboard-header">
+            <h1>Payments History</h1>
+          </header>
+          <!-- Add payments content here -->
+        </section>
+      </main>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const navItems = document.querySelectorAll(".nav-item");
+        const sections = document.querySelectorAll(".content-section");
+        const sidebar = document.querySelector(".sidebar");
+
+        // Handle navigation
+        function activateSection(sectionId) {
+          sections.forEach((section) => {
+            section.classList.remove("active");
+            if (section.id === sectionId) {
+              section.classList.add("active");
+            }
+          });
+        }
+
+        // Handle menu item clicks
+        navItems.forEach((item) => {
+          item.addEventListener("click", () => {
+            // Remove active class from all items
+            navItems.forEach((nav) => nav.classList.remove("active"));
+
+            // Add active class to clicked item
+            item.classList.add("active");
+
+            // Activate corresponding section
+            const targetSection = item.dataset.target;
+            activateSection(targetSection);
+
+            // Close sidebar on mobile
+            if (window.innerWidth <= 768) {
+              sidebar.classList.remove("active");
+            }
+          });
+        });
+
+        // Toggle sidebar on mobile
+        document.querySelector(".menu-toggle").addEventListener("click", () => {
+          sidebar.classList.toggle("active");
+        });
+      });
+        // البيانات المحدثة مع المزيد من الأمثلة
+    let rooms = [
+    {
+        id: 41,
+        name: "Room M1",
+        beds: 5,
+        occupants: 0,
+        address: "Trio de Villa Residences, Bogulo, Benguet",
+        dormName: "RS Dormitory Manila",
+        status: "Available"
+    },
+    {
+        id: 42,
+        name: "Room M2",
+        beds: 4,
+        occupants: 0,
+        address: "Trio de Villa Residences, Bogulo, Benguet",
+        dormName: "RS Dormitory Manila",
+        status: "Available"
+    }
+];
+document.addEventListener("DOMContentLoaded", () => {
+    renderTable();
+});
+
+
+     
+   // حذف الغرفة
+function deleteRoom(id) {
+    if (confirm("Are you sure you want to delete this room?")) {
+        rooms = rooms.filter(room => room.id !== id);
+        renderTable();
+    }
+}
+
+// وظيفة البحث
+function searchRooms() {
+    const searchTerm = document.querySelector(".search-input").value.toLowerCase();
+    const filtered = rooms.filter(room => 
+        room.name.toLowerCase().includes(searchTerm) ||
+        room.address.toLowerCase().includes(searchTerm) ||
+        room.dormName.toLowerCase().includes(searchTerm)
+    );
+    renderTable(filtered);
+}
+
+      // 2. نظام التعديل المطور
+      let currentEditId = null;
+
+      function editRoom(roomId) {
+        currentEditId = roomId;
+        const room = rooms.find((r) => r.id === roomId);
+        const form = document.getElementById("roomForm");
+
+        form.querySelector('[name="name"]').value = room.name;
+        form.querySelector('[name="beds"]').value = room.beds;
+        form.querySelector('[name="address"]').value = room.address;
+        form.querySelector('[name="dormName"]').value = room.dormName;
+
+        document.querySelector(".modal h2").textContent = "Edit Room";
+        showAddForm();
+      }
+
+      // 3. تأكيد الحذف مع modal مخصص
+      function deleteRoom(roomId) {
+        if (confirm("Are you sure you want to delete this room?")) {
+          rooms = rooms.filter((room) => room.id !== roomId);
+          renderTable();
+        }
+      }
+
+      // دالة العرض المحدثة
+      function renderTable(data = rooms) {
+        const tbody = document.getElementById("roomTableBody");
+        tbody.innerHTML = data
+          .map(
+            (room) => `
+                <tr>
+                    <td>${room.id}</td>
+                    <td>${room.name}</td>
+                    <td>${room.beds}</td>
+                    <td>${room.occupants}</td>
+                    <td>${room.address}</td>
+                    <td>${room.dormName}</td>
+                    <td><span class="status ${
+                      room.status === "Available"
+                        ? "available"
+                        : "not-available"
+                    }">${room.status}</span></td>
+                    <td>
+                        <button class="btn btn-primary" onclick="editRoom(${
+                          room.id
+                        })">Edit</button>
+                        <button class="btn btn-danger" onclick="deleteRoom(${
+                          room.id
+                        })">Delete</button>
+                    </td>
+                </tr>
+            `
+          )
+          .join("");
+      }
+// عرض كل الغرف
+function showAllRooms() {
+    document.querySelector(".search-input").value = "";
+    renderTable();
+}
+      // تعديل دالة الإضافة/التعديل
+      function addRoom(e) {
+        e.preventDefault();
+        const formData = new FormData(e.target);
+
+        const roomData = {
+          name: formData.get("name"),
+          beds: parseInt(formData.get("beds")),
+          address: formData.get("address"),
+          dormName: formData.get("dormName"),
+        };
+
+        if (currentEditId) {
+          // حالة التعديل
+          const index = rooms.findIndex((r) => r.id === currentEditId);
+          rooms[index] = { ...rooms[index], ...roomData };
+          currentEditId = null;
+        } else {
+          // حالة الإضافة
+          rooms.push({
+            id: rooms.length + 1,
+            ...roomData,
+            occupants: 0,
+            status: "Available",
+          });
+        }
+
+        renderTable();
+        closeModal();
+        e.target.reset();
+      }
+
+      // تهيئة الأحداث
+      document.addEventListener("DOMContentLoaded", () => {
+        document
+          .querySelector(".search-input")
+          .addEventListener("input", searchRooms);
+        document
+          .querySelector('[onclick="showAddForm()"]')
+          .addEventListener("click", () => {
+            document.querySelector(".modal h2").textContent = "Add New Room";
+          });
+      });
+      function addRoom(e) {
+    e.preventDefault();
+    const formData = new FormData(e.target);
+    
+    const newRoom = {
+        id: currentEditId || Date.now(),
+        name: formData.get("name"),
+        beds: parseInt(formData.get("beds")),
+        occupants: 0,
+        address: formData.get("address"),
+        dormName: formData.get("dormName"),
+        status: "Available"
+    };
+
+    if (currentEditId) {
+        // تحديث الغرفة
+        const index = rooms.findIndex(r => r.id === currentEditId);
+        rooms[index] = newRoom;
+    } else {
+        // إضافة غرفة جديدة
+        rooms.push(newRoom);
+    }
+
+    renderTable();
+    closeModal();
+    e.target.reset();
+}
+
+      // التهيئة الأولية
+  renderTable();
+  
+    </script>
+  </body>
+</html>

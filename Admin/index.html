@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Login Panel</title>
+
+    <!-- تضمين خطوط جوجل -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Merienda:wght@400;700&family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <style>
+      :root {
+        --teal: #2e9cc1;
+        --teal-dark: #1a377f;
+        --teal-hover: #27679e;
+        --light-bg: #f8f9fa;
+        --shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background: var(--light-bg);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .login-form {
+        background: white;
+        width: 100%;
+        max-width: 420px;
+        border-radius: 16px;
+        box-shadow: var(--shadow);
+        overflow: hidden;
+        transition: transform 0.3s ease;
+        margin: 20px;
+      }
+
+      .login-form:hover {
+        transform: translateY(-4px);
+      }
+
+      .form-header {
+        background: var(--teal);
+        padding: 1.8rem;
+        text-align: center;
+      }
+
+      .form-header h4 {
+        color: white;
+        font-family: "Merienda", cursive;
+        font-weight: 700;
+        letter-spacing: 1px;
+        margin: 0;
+      }
+
+      .form-body {
+        padding: 2.5rem;
+      }
+
+      .input-group {
+        margin-bottom: 1.8rem;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px 20px;
+        border: 2px solid #e0e0e0;
+        border-radius: 8px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        text-align: center;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: var(--teal);
+        box-shadow: 0 0 0 3px rgba(46, 127, 193, 0.2);
+      }
+
+      .form-control::placeholder {
+        color: #a0aec0;
+        opacity: 1;
+      }
+
+      .btn-login {
+        background: var(--teal);
+        color: white;
+        padding: 12px 30px;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .btn-login:hover {
+        background: var(--teal-dark);
+        box-shadow: 0 4px 12px rgba(46, 193, 172, 0.3);
+      }
+
+      .user-login-link {
+        color: var(--teal);
+        text-decoration: none;
+        font-size: 0.9rem;
+        transition: color 0.3s ease;
+      }
+
+      .user-login-link:hover {
+        color: var(--teal-dark);
+        text-decoration: underline;
+      }
+
+      .footer-text {
+        margin-top: 1.5rem;
+        color: #718096;
+        font-size: 0.85rem;
+        text-align: center;
+      }
+
+      @media (max-width: 480px) {
+        .login-form {
+          margin: 10px;
+          border-radius: 12px;
+        }
+
+        .form-body {
+          padding: 1.8rem;
+        }
+
+        .btn-login {
+          width: 100%;
+          margin-bottom: 1rem;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="login-form">
+      <form method="POST">
+        <div class="form-header">
+          <h4>ADMIN LOGIN</h4>
+        </div>
+
+        <div class="form-body">
+          <div class="input-group">
+            <input
+              type="text"
+              id="username"
+              name="username"
+              class="form-control"
+              placeholder="Admin Name"
+              required
+              autofocus
+            />
+          </div>
+
+          <div class="input-group">
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="form-control"
+              placeholder="Password"
+              required
+            />
+          </div>
+
+          <div
+            class="input-group"
+            style="
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+            "
+          >
+            <button type="submit" name="login" class="btn-login">
+              Sign In
+            </button>
+            <a href="#" class="user-login-link"> User Login </a>
+          </div>
+
+          <p class="footer-text">Secure access for authorized personnel only</p>
+        </div>
+      </form>
+    </div>
+    <script>
+      // DOM Elements
+      const loginForm = document.querySelector(".login-form");
+      const usernameInput = document.getElementById("username");
+      const passwordInput = document.getElementById("password");
+      const loginBtn = document.querySelector(".btn-login");
+
+      // Configuration
+      const MAX_ATTEMPTS = 5;
+      let attempts = 0;
+      let timeout = null;
+
+      // Security Patterns
+      const ADMIN_USERNAME_PATTERN = /^admin[a-zA-Z0-9_-]{3,24}$/;
+      const PASSWORD_PATTERN = /^(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.{8,})/;
+
+      // Session Management
+      const SESSION_TIMEOUT = 1800; // 30 minutes in seconds
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        checkExistingSession();
+        initEventListeners();
+      });
+
+      function initEventListeners() {
+        loginForm.addEventListener("submit", handleSubmit);
+        usernameInput.addEventListener("input", validateUsername);
+        passwordInput.addEventListener("input", validatePassword);
+      }
+
+      // Form Validation
+      function validateUsername() {
+        const isValid = ADMIN_USERNAME_PATTERN.test(usernameInput.value.trim());
+        toggleValidationState(usernameInput, isValid);
+        return isValid;
+      }
+
+      function validatePassword() {
+        const isValid = PASSWORD_PATTERN.test(passwordInput.value);
+        toggleValidationState(passwordInput, isValid);
+        return isValid;
+      }
+
+      function toggleValidationState(element, isValid) {
+        element.style.borderColor = isValid ? "#2ec1ac" : "#e53e3e";
+        element.parentElement.querySelector(".error-msg")?.remove();
+
+        if (!isValid) {
+          const errorMsg = document.createElement("div");
+          errorMsg.className = "error-msg";
+          errorMsg.style.color = "#e53e3e";
+          errorMsg.style.fontSize = "0.8rem";
+          errorMsg.style.marginTop = "0.3rem";
+          errorMsg.textContent =
+            element === usernameInput
+              ? "Invalid admin username format"
+              : "Password must contain 8+ chars, 1 uppercase, and 1 special character";
+          element.parentElement.appendChild(errorMsg);
+        }
+      }
+
+      // Form Handling
+      async function handleSubmit(e) {
+        e.preventDefault();
+
+        if (attempts >= MAX_ATTEMPTS) {
+          showAlert("Too many attempts. Please try again later.", "error");
+          disableForm();
+          return;
+        }
+
+        const isUsernameValid = validateUsername();
+        const isPasswordValid = validatePassword();
+
+        if (isUsernameValid && isPasswordValid) {
+          try {
+            toggleLoadingState(true);
+            const formData = {
+              username: usernameInput.value.trim(),
+              password: passwordInput.value,
+            };
+
+            // Simulate API call
+            const response = await mockLoginAPI(formData);
+
+            if (response.success) {
+              startSessionTimer();
+              showAlert("Login successful! Redirecting...", "success");
+              setTimeout(
+                () => (window.location.href = "/admin-dashboard"),
+                1500
+              );
+            } else {
+              attempts++;
+              showAlert(
+                `Invalid credentials (${
+                  MAX_ATTEMPTS - attempts
+                } attempts remaining)`,
+                "error"
+              );
+            }
+          } catch (error) {
+            showAlert("Server error. Please try again.", "error");
+          } finally {
+            toggleLoadingState(false);
+          }
+        }
+      }
+
+      // Security Functions
+      function disableForm() {
+        clearTimeout(timeout);
+        loginForm.style.opacity = "0.6";
+        loginForm.querySelectorAll("input, button").forEach((el) => {
+          el.disabled = true;
+        });
+        timeout = setTimeout(() => {
+          loginForm.style.opacity = "1";
+          loginForm.querySelectorAll("input, button").forEach((el) => {
+            el.disabled = false;
+          });
+          attempts = 0;
+        }, 300000); // 5 minutes cooldown
+      }
+
+      function startSessionTimer() {
+        let timeLeft = SESSION_TIMEOUT;
+        const timerInterval = setInterval(() => {
+          timeLeft--;
+          document.title = `Admin Panel (${Math.floor(timeLeft / 60)}:${
+            timeLeft % 60 < 10 ? "0" : ""
+          }${timeLeft % 60})`;
+
+          if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            sessionStorage.removeItem("adminSession");
+            window.location.href = "/logout";
+          }
+        }, 1000);
+      }
+
+      function checkExistingSession() {
+        if (sessionStorage.getItem("adminSession")) {
+          window.location.href = "/admin-dashboard";
+        }
+      }
+
+      // UI Helpers
+      function toggleLoadingState(isLoading) {
+        loginBtn.innerHTML = isLoading
+          ? '<div class="spinner"></div>'
+          : "Sign In";
+        loginBtn.disabled = isLoading;
+      }
+
+      function showAlert(message, type) {
+        const alert = document.createElement("div");
+        alert.className = `alert alert-${type}`;
+        alert.style.position = "fixed";
+        alert.style.top = "25px";
+        alert.style.right = "25px";
+        alert.style.padding = "1rem 1.5rem";
+        alert.style.borderRadius = "8px";
+        alert.style.color = type === "error" ? "#721c24" : "#155724";
+        alert.style.backgroundColor = type === "error" ? "#f8d7da" : "#d4edda";
+        alert.style.border = `1px solid ${
+          type === "error" ? "#f5c6cb" : "#c3e6cb"
+        }`;
+        alert.textContent = message;
+
+        document.body.appendChild(alert);
+        setTimeout(() => alert.remove(), 4000);
+      }
+
+      // Mock API (Replace with real API call)
+      async function mockLoginAPI(data) {
+        return new Promise((resolve, reject) => {
+          setTimeout(() => {
+            if (
+              data.username === "admin" &&
+              data.password === "SecurePass123!"
+            ) {
+              sessionStorage.setItem("adminSession", "active");
+              resolve({ success: true });
+            } else {
+              resolve({ success: false });
+            }
+          }, 1000);
+        });
+      }
+    </script>
+  </body>
+</html>
