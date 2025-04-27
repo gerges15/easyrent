@@ -1,87 +1,641 @@
-
 <!DOCTYPE html>
-<html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Student Dormitory - Admin Panel</title>
+    <link
+      href="https://fonts.googleapis.com/icon?family=Material+Icons"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --primary-color: #267bd0;
+        --secondary-color: #3498db;
+        --background: #f5f6fa;
+        --card-bg: #ffffff;
+      }
 
-<head>
-    <script src="javascript.js" type="text/javascript"></script>
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Roboto", sans-serif;
+      }
 
-   
-    <title>Edit Room Data</title>
-</head>
+      body {
+        background: var(--background);
+        min-height: 100vh;
+      }
 
+      .container {
+        display: grid;
+        grid-template-columns: 240px 1fr;
+        gap: 30px;
+      }
 
-<body>
-    <div class="container-fluid" id="main-content">
-        <div class="row">
-            <div class="col-lg-10 ms-auto p-4 overflow-hidden">
-                <h2 class="fw-bold mb-4">EDIT ROOM DATA</h2>
-                <div class="row">
-                    <div class="col-md-7">
+      /* Left Sidebar */
+      .sidebar {
+        background: var(--primary-color);
+        color: white;
+        padding: 20px;
+        height: 100vh;
+        position: sticky;
+        top: 0;
+        left: 0;
+        box-shadow: 2px 0 8px rgba(0, 0, 0, 0.1);
+      }
 
-                      
-                                <div class="container-fluid">
-                                    <div class="row">
-                                            <div class="bg-white rounded shadow p-4">
-                                                <form method="POST">
-                                                    <input type="hidden" name="room_id" value="">
-                                                    <div class="row" class="d-flex">
-                                                        <div class="col-md-6 ps-0 mb-3">
-                                                            <label class="form-label" for="room_name">Room Name:</label>
-                                                            <input type="text" class="form-control shadow-none" id="room_name" name="room_name" value="' . $row['room_name'] . '">
-                                                        </div>
+      .logo {
+        font-size: 1.8rem;
+        margin-bottom: 40px;
+        text-align: center;
+        font-weight: 600;
+      }
 
-                                                        <div class="col-md-6 ps-0 mb-3">
-                                                            <label class="form-label" for="price">Price:</label>
-                                                            <input type="number"  class="form-control shadow-none" id="price" name="price" value="' . $row['price'] . '">
-                                                        </div>
+      .nav-menu {
+        list-style: none;
+      }
 
-                                                        <div class="col-md-6 ps-0 mb-3">
-                                                            <label class="form-label" for="available_beds">Available Beds:</label>
-                                                            <input type="text"  class="form-control shadow-none" id="available_beds" name="available_beds" value="' . $row['available_beds'] . '">
-                                                        </div>
+      .nav-item {
+        padding: 15px;
+        margin: 8px 0;
+        border-radius: 8px;
+        transition: 0.3s;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+      }
 
-                                                        <div class="col-md-4 ps-0 mb-3">
-                                                            <label class="form-label" for="status">Status: </label>
-                                                            <select name="status" class="form-select shadow-none "  value="' . $row['status'] . '" >
-                                                                <option value="Available">Available</option>
-                                                                <option value="N/A">N/A/option>
-                                                            </select>
-                                                        </div>
+      .nav-item:hover,
+      .nav-item.active {
+        background: var(--secondary-color);
+      }
 
-                                                        <div class="col-md-6 ps-0 mb-3">
-                                                            <label class="form-label" for="description">Description:</label>
-                                                            <input type="text"  class="form-control shadow-none" id="description" name="description" value="' . $row['description'] . '">
-                                                        </div>
+      .material-icons {
+        margin-right: 12px;
+      }
 
-                                                        <div class="col-md-6 ps-0 mb-3">
-                                                            <label class="form-label" for="image">Image:</label>
-                                                            <input type="text"  class="form-control shadow-none" id="image" name="image" value="' . $row['image'] . '">
-                                                        </div>
+      /* Main Content */
+      .main-content {
+        padding: 30px 40px;
+      }
 
-                                                    </div>
-                                                    
-                                                    <div class="d-flex justify-content-evenly">
-                                                    <button type="submit" name="submit" class="btn btn-md text-white btn-primary shadow-none">Update Room</button>
-                                                    </div>
-                                                 </form> 
-                                        </div> 
-                                    </div>
-                                </div>';
-                            }
-                        }
+      .content-section {
+        display: none;
+        animation: fadeIn 0.3s ease;
+      }
 
-                       <div class="alert alert-danger">All fields are required!</div>';
-                            
+      .content-section.active {
+        display: block;
+      }
 
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
 
-                    </div>
-                </div>
+      /* Stats Cards */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 20px;
+      }
+
+      .stat-card {
+        background: var(--card-bg);
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .stat-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+      }
+
+      .stat-value {
+        font-size: 2.2rem;
+        color: var(--primary-color);
+      }
+
+      .more-link {
+        color: var(--secondary-color);
+        text-decoration: none;
+        font-size: 0.9rem;
+        display: inline-block;
+        margin-top: 15px;
+      }
+
+      /* Tables */
+      .logs-table,
+      .room-table,
+      .payment-table {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--card-bg);
+        margin-top: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      .logs-table th,
+      .logs-table td,
+      .room-table th,
+      .room-table td,
+      .payment-table th,
+      .payment-table td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid #eee;
+      }
+
+      .logs-table th,
+      .room-table th,
+      .payment-table th {
+        background: var(--primary-color);
+        color: white;
+      }
+
+      /* Status Indicators */
+      .status {
+        padding: 0.3rem 0.6rem;
+        border-radius: 12px;
+        font-size: 0.9rem;
+      }
+
+      .available {
+        background: #d4efdf;
+        color: #196f3d;
+      }
+
+      .not-available {
+        background: #f2d7d5;
+        color: #c0392b;
+      }
+
+      .payment-status {
+        padding: 5px 10px;
+        border-radius: 15px;
+        font-size: 0.85rem;
+      }
+
+      .status-paid {
+        background: #d4efdf;
+        color: #196f3d;
+      }
+
+      .status-pending {
+        background: #fcf3cf;
+        color: #9a7d0a;
+      }
+
+      .status-overdue {
+        background: #f2d7d5;
+        color: #c0392b;
+      }
+
+      /* Controls */
+      .controls {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        flex-wrap: wrap;
+      }
+
+      .search-input {
+        flex: 1;
+        max-width: 300px;
+        padding: 0.8rem;
+        border: 1px solid #bdc3c7;
+        border-radius: 4px;
+      }
+
+      .btn {
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        transition: opacity 0.3s;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-primary {
+        background: #3498db;
+        color: white;
+      }
+
+      .btn-success {
+        background: #2ecc71;
+        color: white;
+      }
+
+      .btn-danger {
+        background: #e74c3c;
+        color: white;
+      }
+
+      /* Filters */
+      .filter-select,
+      .filter-input {
+        padding: 8px 12px;
+        border: 1px solid #bdc3c7;
+        border-radius: 4px;
+        margin-right: 10px;
+      }
+
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+      }
+
+      .modal-content {
+        background: white;
+        width: 500px;
+        margin: 2rem auto;
+        padding: 2rem;
+        border-radius: 5px;
+      }
+
+      .form-group {
+        margin-bottom: 1rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+      }
+
+      .form-group input,
+      .form-group select {
+        width: 100%;
+        padding: 0.5rem;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+      }
+
+      /* Mobile Responsive */
+      @media (max-width: 768px) {
+        .container {
+          grid-template-columns: 1fr;
+        }
+
+        .sidebar {
+          position: fixed;
+          z-index: 1000;
+          width: 240px;
+          transform: translateX(-100%);
+          transition: transform 0.3s ease;
+        }
+
+        .sidebar.active {
+          transform: translateX(0);
+        }
+
+        .menu-toggle {
+          display: block;
+        }
+
+        .main-content {
+          padding: 1rem;
+        }
+      }
+
+      .menu-toggle {
+        position: fixed;
+        left: 15px;
+        top: 15px;
+        z-index: 1100;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 10px;
+        border-radius: 5px;
+        cursor: pointer;
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <button class="menu-toggle">☰</button>
+
+    <div class="container">
+      <!-- Left Sidebar -->
+      <aside class="sidebar">
+        <div class="logo">Dorm Admin</div>
+        <ul class="nav-menu">
+          <li class="nav-item active" data-target="dashboard">
+            <span class="material-icons">dashboard</span>
+            Dashboard
+          </li>
+          <li class="nav-item" data-target="rooms">
+            <span class="material-icons">meeting_room</span>
+            Rooms
+          </li>
+          <li class="nav-item" data-target="students">
+            <span class="material-icons">people</span>
+            Students
+          </li>
+          <li class="nav-item" data-target="logs">
+            <span class="material-icons">history</span>
+            Logs
+          </li>
+          <li class="nav-item" data-target="payments">
+            <span class="material-icons">payments</span>
+            Payments
+          </li>
+        </ul>
+      </aside>
+
+      <!-- Main Content -->
+      <main class="main-content">
+        <!-- Dashboard Section -->
+        <section id="dashboard" class="content-section active">
+          <!-- ... (Keep existing dashboard content) ... -->
+        </section>
+
+        <!-- Rooms Section -->
+        <section id="rooms" class="content-section">
+          <!-- ... (Keep existing rooms content) ... -->
+        </section>
+
+        <!-- Payments Section -->
+        <section id="payments" class="content-section">
+          <header class="dashboard-header">
+            <h1>Payments Management</h1>
+          </header>
+
+          <div class="controls">
+            <div class="filters">
+              <select
+                id="paymentStatus"
+                class="filter-select"
+                onchange="filterPayments()"
+              >
+                <option value="all">All Statuses</option>
+                <option value="paid">Paid</option>
+                <option value="pending">Pending</option>
+                <option value="overdue">Overdue</option>
+              </select>
+              <input
+                type="month"
+                id="paymentMonth"
+                class="filter-input"
+                onchange="filterPayments()"
+              />
+              <input
+                type="text"
+                class="search-input"
+                placeholder="Search student..."
+                oninput="searchPayments()"
+              />
             </div>
-        </div>
+            <button class="btn btn-success" onclick="openPaymentModal()">
+              <span class="material-icons">add</span>
+              Add Payment
+            </button>
+          </div>
 
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-header">
+                <h2>Total Payments</h2>
+                <span class="material-icons">account_balance_wallet</span>
+              </div>
+              <div class="stat-value">$25,000</div>
+            </div>
 
-</body>
+            <div class="stat-card">
+              <div class="stat-header">
+                <h2>Pending</h2>
+                <span class="material-icons">pending_actions</span>
+              </div>
+              <div class="stat-value">$8,500</div>
+            </div>
 
+            <div class="stat-card">
+              <div class="stat-header">
+                <h2>Overdue</h2>
+                <span class="material-icons">error_outline</span>
+              </div>
+              <div class="stat-value">$3,200</div>
+            </div>
+          </div>
+
+          <table class="payment-table">
+            <thead>
+              <tr>
+                <th>Payment ID</th>
+                <th>Student</th>
+                <th>Room</th>
+                <th>Amount</th>
+                <th>Due Date</th>
+                <th>Paid Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="paymentTableBody">
+              <!-- Data populated by JavaScript -->
+            </tbody>
+          </table>
+
+          <!-- Payment Modal -->
+          <div id="paymentModal" class="modal">
+            <div class="modal-content">
+              <h2>New Payment</h2>
+              <form id="paymentForm" onsubmit="handlePaymentSubmit(event)">
+                <div class="form-group">
+                  <label>Student:</label>
+                  <select id="studentSelect" required>
+                    <option value="">Select student...</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Amount:</label>
+                  <input type="number" id="paymentAmount" step="100" required />
+                </div>
+                <div class="form-group">
+                  <label>Type:</label>
+                  <select id="paymentType" required>
+                    <option value="rent">Rent</option>
+                    <option value="deposit">Deposit</option>
+                    <option value="fine">Fine</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Due Date:</label>
+                  <input type="date" id="dueDate" required />
+                </div>
+                <div class="form-actions">
+                  <button type="submit" class="btn btn-success">Save</button>
+                  <button
+                    type="button"
+                    class="btn btn-danger"
+                    onclick="closePaymentModal()"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <script>
+      // Rooms Data and Functions
+      let rooms = [
+        /*... existing rooms data ...*/
+      ];
+
+      // Payments Data
+      let payments = [
+        {
+          id: 1001,
+          student: "John Doe",
+          room: "M1-201",
+          amount: 1500,
+          dueDate: "2024-03-05",
+          paidDate: "2024-03-01",
+          status: "paid",
+          type: "rent",
+        },
+        {
+          id: 1002,
+          student: "Jane Smith",
+          room: "M2-105",
+          amount: 2000,
+          dueDate: "2024-03-10",
+          paidDate: null,
+          status: "pending",
+          type: "deposit",
+        },
+      ];
+
+      // Payment Functions
+      function renderPayments(data = payments) {
+        const tbody = document.getElementById("paymentTableBody");
+        tbody.innerHTML = data
+          .map(
+            (payment) => `
+                <tr>
+                    <td>${payment.id}</td>
+                    <td>${payment.student}</td>
+                    <td>${payment.room}</td>
+                    <td>$${payment.amount}</td>
+                    <td>${payment.dueDate}</td>
+                    <td>${payment.paidDate || "--"}</td>
+                    <td>
+                        <span class="payment-status status-${payment.status}">
+                            ${getStatusText(payment.status)}
+                        </span>
+                    </td>
+                    <td>
+                        <button class="btn btn-primary" onclick="markAsPaid(${
+                          payment.id
+                        })">
+                            Mark Paid
+                        </button>
+                    </td>
+                </tr>
+            `
+          )
+          .join("");
+      }
+
+      function filterPayments() {
+        const status = document.getElementById("paymentStatus").value;
+        const month = document.getElementById("paymentMonth").value;
+
+        let filtered = payments;
+
+        if (status !== "all")
+          filtered = filtered.filter((p) => p.status === status);
+        if (month)
+          filtered = filtered.filter((p) => p.dueDate.startsWith(month));
+
+        renderPayments(filtered);
+      }
+
+      function searchPayments() {
+        const term = document
+          .querySelector(".search-input")
+          .value.toLowerCase();
+        renderPayments(
+          payments.filter((p) => p.student.toLowerCase().includes(term))
+        );
+      }
+
+      function openPaymentModal() {
+        document.getElementById("paymentModal").style.display = "flex";
+        populateStudents();
+      }
+
+      function closePaymentModal() {
+        document.getElementById("paymentModal").style.display = "none";
+        document.getElementById("paymentForm").reset();
+      }
+
+      function handlePaymentSubmit(e) {
+        e.preventDefault();
+
+        const newPayment = {
+          id: Date.now(),
+          student: document.getElementById("studentSelect").value,
+          amount: document.getElementById("paymentAmount").value,
+          type: document.getElementById("paymentType").value,
+          dueDate: document.getElementById("dueDate").value,
+          status: "pending",
+          paidDate: null,
+        };
+
+        payments.push(newPayment);
+        renderPayments();
+        closePaymentModal();
+      }
+
+      function getStatusText(status) {
+        const statusMap = {
+          paid: "Paid",
+          pending: "Pending",
+          overdue: "Overdue",
+        };
+        return statusMap[status];
+      }
+
+      function populateStudents() {
+        const select = document.getElementById("studentSelect");
+        select.innerHTML = '<option value="">Select student...</option>';
+        const students = ["John Doe", "Jane Smith", "Mike Johnson"];
+        students.forEach((student) => {
+          select.innerHTML += `<option value="${student}">${student}</option>`;
+        });
+      }
+
+      // Initialize
+      document.addEventListener("DOMContentLoaded", () => {
+        renderPayments();
+        // ... existing initialization code ...
+      });
+    </script>
+  </body>
 </html>
