@@ -10,10 +10,16 @@
     />
     <style>
       :root {
-        --primary-color: #3b82f6;
+        --primary-color: #294777;
         --secondary-color: #60a5fa;
         --background: #f3f4f6;
         --card-bg: #ffffff;
+        --light-color: #eff6ff;
+        --dark-color: #1e293b;
+        --success-color: #10b981;
+        --warning-color: #f59e0b;
+        --danger-color: #ef4444;
+        --gray-color: #94a3b8;
       }
 
       @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
@@ -28,6 +34,7 @@
       body {
         background: var(--background);
         min-height: 100vh;
+        background-color: #f8fafc;
       }
 
       .container {
@@ -295,6 +302,261 @@
         border-color: var(--primary-color);
         box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.1);
       }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+
+      .page-title h1 {
+        font-size: 1.5rem;
+        color: var(--dark-color);
+      }
+
+      .user-menu {
+        display: flex;
+        align-items: center;
+      }
+
+      .notification {
+        position: relative;
+        margin-right: 1.5rem;
+        color: var(--gray-color);
+        cursor: pointer;
+      }
+
+      .notification-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background-color: var(--danger-color);
+        color: white;
+        border-radius: 50%;
+        width: 18px;
+        height: 18px;
+        font-size: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .user-profile {
+        display: flex;
+        align-items: center;
+      }
+
+      .user-profile img {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover;
+      }
+
+      .user-name {
+        font-weight: 500;
+        color: var(--dark-color);
+      }
+
+      /* Stats Cards */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+        gap: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .stat-card {
+        background-color: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      .stat-header {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+      }
+
+      .stat-title {
+        color: var(--gray-color);
+        font-size: 0.875rem;
+      }
+
+      .stat-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+      }
+
+      .stat-icon.blue {
+        background-color: var(--primary-color);
+      }
+
+      .stat-icon.green {
+        background-color: var(--success-color);
+      }
+
+      .stat-icon.orange {
+        background-color: var(--warning-color);
+      }
+
+      .stat-value {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--dark-color);
+        margin-bottom: 0.5rem;
+      }
+
+      .stat-change {
+        font-size: 0.75rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .stat-change.positive {
+        color: var(--success-color);
+      }
+
+      .stat-change.negative {
+        color: var(--danger-color);
+      }
+
+      /* Recent Activity */
+      .content-grid {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1.5rem;
+      }
+
+      .card {
+        background-color: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      }
+
+      .card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1.5rem;
+      }
+
+      .card-title {
+        font-size: 1.125rem;
+        font-weight: 500;
+        color: var(--dark-color);
+      }
+
+      .view-all {
+        color: var(--primary-color);
+        font-size: 0.875rem;
+        text-decoration: none;
+      }
+
+      /* Table Styles */
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 1rem;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      th {
+        color: var(--gray-color);
+        font-weight: 500;
+        font-size: 0.875rem;
+      }
+
+      td {
+        color: var(--dark-color);
+        font-size: 0.875rem;
+      }
+
+      .status {
+        display: inline-block;
+        padding: 0.25rem 0.75rem;
+        border-radius: 20px;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+
+      .status.active {
+        background-color: #d1fae5;
+        color: var(--success-color);
+      }
+
+      .status.pending {
+        background-color: #fef3c7;
+        color: var(--warning-color);
+      }
+
+      .status.cancelled {
+        background-color: #fee2e2;
+        color: var(--danger-color);
+      }
+
+      /* Recent Bookings */
+      .booking-list {
+        list-style: none;
+      }
+
+      .booking-item {
+        display: flex;
+        align-items: center;
+        padding: 1rem 0;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .booking-item:last-child {
+        border-bottom: none;
+      }
+
+      .booking-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        background-color: var(--light-color);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 1rem;
+        color: var(--primary-color);
+      }
+
+      .booking-details {
+        flex: 1;
+      }
+
+      .booking-title {
+        font-size: 0.875rem;
+        color: var(--dark-color);
+        margin-bottom: 0.25rem;
+      }
+
+      .booking-date {
+        font-size: 0.75rem;
+        color: var(--gray-color);
+      }
+
+      /* Responsive Design */
+      @media (max-width: 1024px) {
+        .content-grid {
+          grid-template-columns: 1fr;
+        }
+      }
 
       /* Responsive Design */
       @media (max-width: 768px) {
@@ -505,15 +767,41 @@
         background: #e74c3c;
         color: white;
       }
+      /* Updated Logo Styling */
+      .logo-container {
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #b8bcbe;
+      }
+      .logo {
+        color: #dfeafb;
+        font-size: 28px;
+        font-weight: bold;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+      }
     </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
   </head>
   <body>
     <button class="menu-toggle">☰</button>
 
     <div class="container">
-      <!-- Left Sidebar -->
+      <!-- Sidebar -->
       <aside class="sidebar">
-        <div class="logo">Easy Rent</div>
+        <div class="logo-container">
+          <h1 class="logo">
+            <i class="fas fa-house-chimney"></i>
+            Easy Rent
+          </h1>
+        </div>
         <ul class="nav-menu">
           <li class="nav-item active" data-target="dashboard">
             <span class="material-icons">dashboard</span>
@@ -542,43 +830,134 @@
       <main class="main-content">
         <!-- Dashboard Section -->
         <section id="dashboard" class="content-section active">
-          <header class="dashboard-header">
-            <h1>Admin Dashboard</h1>
-          </header>
+          <div class="header">
+            <div class="page-title">
+              <h1>Dashboard Overview</h1>
+            </div>
+            <div class="user-menu">
+              <div class="notification">
+                <i class="fas fa-bell"></i>
+                <span class="notification-badge">3</span>
+              </div>
+              <div class="user-profile">
+                <img src="https://via.placeholder.com/36" alt="Admin User" />
+                <span class="user-name">Admin</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats Cards -->
           <div class="stats-grid">
             <div class="stat-card">
               <div class="stat-header">
-                <h2>Students</h2>
-                <span class="material-icons">school</span>
+                <div class="stat-title">Total Properties</div>
+                <div class="stat-icon blue">
+                  <i class="fas fa-home"></i>
+                </div>
               </div>
-              <div class="stat-value">0</div>
-              <a href="#" class="more-link">View Details →</a>
+              <div class="stat-value">142</div>
+              <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i> 8% from last month
+              </div>
             </div>
 
             <div class="stat-card">
               <div class="stat-header">
-                <h2>Rooms</h2>
-                <span class="material-icons">meeting_room</span>
+                <div class="stat-title">Active Bookings</div>
+                <div class="stat-icon green">
+                  <i class="fas fa-calendar-check"></i>
+                </div>
               </div>
-              <div class="stat-value">0</div>
-              <a href="#" class="more-link">View Details →</a>
+              <div class="stat-value">86</div>
+              <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i> 12% from last month
+              </div>
             </div>
 
             <div class="stat-card">
               <div class="stat-header">
-                <h2>Logs</h2>
-                <span class="material-icons">history</span>
+                <div class="stat-title">Total Revenue</div>
+                <div class="stat-icon orange">
+                  <i class="fas fa-dollar-sign"></i>
+                </div>
               </div>
-              <div class="stat-value">0</div>
-              <a href="#" class="more-link">View Details →</a>
+              <div class="stat-value">$24,580</div>
+              <div class="stat-change positive">
+                <i class="fas fa-arrow-up"></i> 5% from last month
+              </div>
+            </div>
+          </div>
+
+          <!-- Content Grid -->
+          <div class="content-grid">
+            <!-- Recent Bookings -->
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Recent Bookings</h2>
+                <a href="#" class="view-all">View All</a>
+              </div>
+              <table>
+                <thead>
+                  <tr>
+                    <th>Property</th>
+                    <th>Customer</th>
+                    <th>Dates</th>
+                    <th>Status</th>
+                    <th>Amount</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Modern Apartment</td>
+                    <td>John Smith</td>
+                    <td>Jun 12-18, 2023</td>
+                    <td><span class="status active">Confirmed</span></td>
+                    <td>$420</td>
+                  </tr>
+                  <tr>
+                    <td>Beach Villa</td>
+                    <td>Sarah Johnson</td>
+                    <td>Jun 15-22, 2023</td>
+                    <td><span class="status pending">Pending</span></td>
+                    <td>$1,200</td>
+                  </tr>
+                  <tr>
+                    <td>City Loft</td>
+                    <td>Michael Brown</td>
+                    <td>Jun 18-20, 2023</td>
+                    <td><span class="status active">Confirmed</span></td>
+                    <td>$380</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
 
-            <div class="stat-card">
-              <div class="stat-header">
-                <h2>Payments</h2>
-                <span class="material-icons">payments</span>
+            <!-- Recent Activity -->
+            <div class="card">
+              <div class="card-header">
+                <h2 class="card-title">Recent Activity</h2>
+                <a href="#" class="view-all">View All</a>
               </div>
-              <div class="stat-value">2</div>
+              <ul class="booking-list">
+                <li class="booking-item">
+                  <div class="booking-icon">
+                    <i class="fas fa-home"></i>
+                  </div>
+                  <div class="booking-details">
+                    <div class="booking-title">New property added</div>
+                    <div class="booking-date">Today, 10:45 AM</div>
+                  </div>
+                </li>
+                <li class="booking-item">
+                  <div class="booking-icon">
+                    <i class="fas fa-calendar-check"></i>
+                  </div>
+                  <div class="booking-details">
+                    <div class="booking-title">Booking #4582 confirmed</div>
+                    <div class="booking-date">Today, 9:30 AM</div>
+                  </div>
+                </li>
+              </ul>
             </div>
           </div>
         </section>
