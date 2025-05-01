@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>University Dorm Payment System</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="payment.js"></script>
+
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <style>
+      /* Base Styles */
+      * {
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      body {
+        background: #f8f9fa;
+        margin: 0;
+        padding: 2rem;
+      }
+
+      .payment-container {
+        max-width: 1000px;
+        margin: 0 auto;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        padding: 2rem;
+      }
+
+      /* Payment Methods */
+      .payment-methods {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1.5rem;
+        margin: 2rem 0;
+      }
+
+      .payment-card {
+        background: white;
+        border-radius: 10px;
+        padding: 1.5rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border: 2px solid #e9ecef;
+        text-align: center;
+      }
+
+      .payment-card.active {
+        border-color: #2196f3;
+        background: #f8f9ff;
+        box-shadow: 0 5px 15px rgba(33, 150, 243, 0.2);
+      }
+
+      .payment-icon {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        color: #495057;
+      }
+
+      .payment-card.active .payment-icon {
+        color: #2196f3;
+      }
+
+      /* Icons Colors */
+      .fa-cc-visa {
+        color: #1a1f71;
+      }
+      .fa-cc-mastercard {
+        color: #eb001b;
+      }
+      .fa-mobile-alt {
+        color: #4caf50;
+      }
+      .fa-wallet {
+        color: #9c27b0;
+      }
+      .fa-coins {
+        color: #ff9800;
+      }
+
+      /* Form Styles */
+      .payment-form {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1.5rem;
+      }
+
+      .form-group {
+        margin-bottom: 1.25rem;
+        position: relative;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 0.875rem 2.5rem 0.875rem 1rem;
+        border: 1px solid #ced4da;
+        border-radius: 8px;
+        font-size: 1rem;
+      }
+
+      /* Input Icons */
+      .input-icon {
+        position: absolute;
+        right: 15px;
+        top: 38px;
+        color: #6c757d;
+      }
+
+      /* OTP Section */
+      .otp-container {
+        display: none;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 0.5rem;
+      }
+
+      .otp-input {
+        width: 100%;
+        text-align: center;
+        padding: 1rem;
+      }
+
+      /* Receipt Section */
+      .receipt-section {
+        display: none;
+        border-top: 1px solid #eee;
+        padding-top: 1.5rem;
+      }
+      #card-element {
+        padding: 12px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+      }
+
+      /* أنماط خاصة بعناصر Stripe */
+      .StripeElement {
+        height: 40px;
+        padding: 10px;
+        transition: all 0.3s ease;
+      }
+
+      /* تحسين مظهر عناصر Stripe */
+      #card-element {
+        border: 1px solid #ced4da;
+        padding: 12px;
+        border-radius: 8px;
+        margin: 5px 0;
+      }
+
+      .error {
+        color: #dc3545;
+        font-size: 0.875rem;
+        margin-top: 0.5rem;
+        display: block;
+      }
+
+      .StripeElement--invalid {
+        border-color: #dc3545;
+      }
+
+      .StripeElement--focus {
+        border-color: #80bdff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+      }
+      .receipt-icon {
+        font-size: 2rem;
+        color: #28a745;
+      }
+      /* أنماط جديدة للزر */
+      .submit-btn {
+        grid-column: span 2;
+        background: #2196f3;
+        color: white;
+        padding: 1rem;
+        border: none;
+        border-radius: 8px;
+        font-size: 1.1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        position: relative;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+
+      .submit-btn:hover {
+        background: #1976d2;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(33, 150, 243, 0.3);
+      }
+
+      .submit-btn:disabled {
+        background: #90caf9;
+        cursor: not-allowed;
+        opacity: 0.7;
+      }
+
+      .spinner {
+        width: 20px;
+        height: 20px;
+        border: 3px solid rgba(255, 255, 255, 0.3);
+        border-radius: 50%;
+        border-top-color: white;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="payment-container">
+      <h1><i class="fas fa-university"></i> Dormitory Fee Payment</h1>
+
+      <!-- Currency Selector -->
+      <div class="form-group currency-selector">
+        <label><i class="fas fa-coins"></i> Currency</label>
+        <select id="currency">
+          <option value="USD">USD ($)</option>
+          <option value="EGP">EGP (ج.م)</option>
+          <option value="SAR">SAR (ر.س)</option>
+        </select>
+        <i class="fas fa-globe input-icon"></i>
+      </div>
+
+      <!-- Payment Methods -->
+      <div class="payment-methods">
+        <div class="payment-card active" data-method="card">
+          <i class="payment-icon fa-brands fa-cc-visa"></i>
+          <div>Credit/Debit Card</div>
+        </div>
+
+        <div class="payment-card" data-method="instapay">
+          <i class="payment-icon fa-solid fa-mobile-alt"></i>
+          <div>Instapay</div>
+        </div>
+
+        <div class="payment-card" data-method="feza">
+          <i class="payment-icon fa-solid fa-wallet"></i>
+          <div>Feza Wallet</div>
+        </div>
+      </div>
+
+      <!-- Payment Form -->
+      <form class="payment-form" id="paymentForm">
+        <!-- Personal Info -->
+        <div class="personal-info">
+          <div class="form-group">
+            <label><i class="fas fa-user"></i> Full Name</label>
+            <input type="text" required />
+            <i class="fas fa-signature input-icon"></i>
+          </div>
+
+          <div class="form-group">
+            <label><i class="fas fa-id-card"></i> Student ID</label>
+            <input
+              type="text"
+              pattern="[A-Z]{3}\d{5}"
+              placeholder="ABC12345"
+              required
+            />
+            <i class="fas fa-hashtag input-icon"></i>
+          </div>
+        </div>
+
+        <!-- Payment Details -->
+        <div class="payment-details">
+          <!-- Card Payment -->
+          <div class="method-section" data-method="card">
+            <div class="form-group">
+              <label><i class="fas fa-credit-card"></i> Card Details</label>
+              <div id="card-element"></div>
+              <div id="card-errors" class="error" role="alert"></div>
+            </div>
+
+            <!-- أضف قسم الأخطاء العام -->
+            <div id="payment-errors" class="error"></div>
+
+            <div class="form-group">
+              <label><i class="fas fa-calendar-alt"></i> Expiry Date</label>
+              <input type="month" required />
+              <i class="fas fa-calendar input-icon"></i>
+            </div>
+          </div>
+
+          <!-- Instapay -->
+          <div
+            class="method-section"
+            data-method="instapay"
+            style="display: none"
+          >
+            <div class="form-group">
+              <label><i class="fas fa-phone"></i> Mobile Number</label>
+              <input
+                type="tel"
+                pattern="\+20\d{10}"
+                placeholder="+201234567890"
+                required
+              />
+              <i class="fas fa-mobile-alt input-icon"></i>
+            </div>
+          </div>
+
+          <!-- Feza -->
+          <div class="method-section" data-method="feza" style="display: none">
+            <div class="form-group">
+              <label><i class="fas fa-wallet"></i> Feza ID</label>
+              <input type="text" pattern="FEZA\d{8}" required />
+              <i class="fas fa-id-badge input-icon"></i>
+            </div>
+          </div>
+
+          <!-- OTP Section -->
+          <div class="otp-container" id="otpSection">
+            <h3><i class="fas fa-shield-alt"></i> OTP Verification</h3>
+            <input type="text" class="otp-input" maxlength="1" pattern="\d" />
+            <input type="text" class="otp-input" maxlength="1" pattern="\d" />
+            <input type="text" class="otp-input" maxlength="1" pattern="\d" />
+            <input type="text" class="otp-input" maxlength="1" pattern="\d" />
+            <input type="text" class="otp-input" maxlength="1" pattern="\d" />
+            <input type="text" class="otp-input" maxlength="1" pattern="\d" />
+          </div>
+        </div>
+
+        <button type="submit" class="submit-btn" id="submit-btn">
+          <i class="fas fa-lock"></i> Secure Payment ($1,250.00)
+        </button>
+      </form>
+
+      <!-- Receipt Section -->
+      <div class="receipt-section" id="receiptSection">
+        <h3><i class="fas fa-receipt receipt-icon"></i> Payment Receipt</h3>
+        <div id="receiptContent"></div>
+        <button onclick="downloadReceipt()">
+          <i class="fas fa-download"></i> Download Receipt
+        </button>
+      </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="module" src="payment.js"></script>
+  </body>
+</html>
