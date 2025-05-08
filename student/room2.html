@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Minia Student Housing</title>
+    <style>
+      :root {
+        --primary-color: #2b599d;
+        --secondary-color: #8fc0f9;
+        --accent-color: #4fc3f7;
+        --light-color: #f8f9fa;
+        --dark-color: #343a40;
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: #f5f5f5;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      header {
+        background-color: var(--primary-color);
+        color: white;
+        padding: 1rem 0;
+        text-align: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .search-section {
+        background-color: white;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        margin: 20px 0;
+      }
+
+      .search-form {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      .form-group {
+        flex: 1;
+        min-width: 200px;
+      }
+
+      label {
+        display: block;
+        margin-bottom: 5px;
+        font-weight: 600;
+      }
+
+      input,
+      select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 4px;
+        font-size: 16px;
+      }
+
+      button {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 16px;
+        transition: background-color 0.3s;
+      }
+
+      button:hover {
+        background-color: var(--secondary-color);
+      }
+
+      .search-btn {
+        align-self: flex-end;
+        height: 40px;
+      }
+
+      .rooms-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+        gap: 25px;
+        margin: 30px 0;
+      }
+
+      .room-card {
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+      }
+
+      .room-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .room-image {
+        height: 200px;
+        width: 100%;
+        object-fit: cover;
+      }
+
+      .room-details {
+        padding: 20px;
+      }
+
+      .room-title {
+        font-size: 1.3rem;
+        margin-bottom: 10px;
+        color: var(--dark-color);
+      }
+
+      .room-location {
+        color: #666;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+      }
+
+      .room-location i {
+        margin-right: 5px;
+        color: var(--primary-color);
+      }
+
+      .room-price {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--primary-color);
+        margin: 10px 0;
+      }
+
+      .price-period {
+        font-size: 1rem;
+        color: #666;
+        font-weight: normal;
+      }
+
+      .room-features {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin: 15px 0;
+      }
+
+      .feature {
+        display: flex;
+        align-items: center;
+      }
+
+      .feature i {
+        margin-right: 5px;
+        color: var(--accent-color);
+      }
+
+      .room-actions {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 20px;
+      }
+
+      .btn-book {
+        background-color: var(--primary-color);
+        flex: 1;
+      }
+
+      .btn-view {
+        background-color: transparent;
+        border: 1px solid var(--primary-color);
+        color: var(--primary-color);
+        margin-right: 10px;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        z-index: 1000;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .modal-content {
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        max-width: 600px;
+        width: 90%;
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      .close-modal {
+        float: right;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+
+      .booking-form input,
+      .booking-form select {
+        margin-bottom: 15px;
+      }
+
+      .room-gallery {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin: 15px 0;
+      }
+
+      .gallery-img {
+        height: 80px;
+        width: 100%;
+        object-fit: cover;
+        cursor: pointer;
+        border-radius: 4px;
+      }
+
+      .no-results {
+        text-align: center;
+        padding: 40px;
+        grid-column: 1 / -1;
+        font-size: 1.2rem;
+        color: #666;
+      }
+
+      @media (max-width: 768px) {
+        .rooms-container {
+          grid-template-columns: 1fr;
+        }
+
+        .room-gallery {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1>EASY RENT PROPERTIES</h1>
+        <p>Find your perfect room in Easy Rent</p>
+      </div>
+    </header>
+
+    <div class="container">
+      <section class="search-section">
+        <h2>Search for Rooms in Minia</h2>
+        <form class="search-form" id="searchForm">
+          <div class="form-group">
+            <label for="location">Location in Minia</label>
+            <select id="location">
+              <option value="">All Minia Locations</option>
+              <option value="taha-hussein">Taha Hussein</option>
+              <option value="damaris">Damaris</option>
+              <option value="mahatta">Mahatta</option>
+              <option value="shalaby">Shalaby</option>
+              <option value="adnan">Adnan</option>
+              <option value="minia-elgededa">Minia Elgededa</option>
+              <option value="medan-elsaa">Medan Elsaa</option>
+              <option value="medan-lepnan">Medan Lepnan</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="min-price">Min Price (EGP)</label>
+            <input type="number" id="min-price" placeholder="Minimum price" />
+          </div>
+
+          <div class="form-group">
+            <label for="max-price">Max Price (EGP)</label>
+            <input type="number" id="max-price" placeholder="Maximum price" />
+          </div>
+
+          <div class="form-group">
+            <label for="room-type">Room Type</label>
+            <select id="room-type">
+              <option value="">Any Type</option>
+              <option value="single">Single Room</option>
+              <option value="shared">Shared Room</option>
+              <option value="apartment">Triple Room</option>
+              <option value="studio">Quadruple</option>
+            </select>
+          </div>
+
+          <button type="submit" class="search-btn">Search Rooms</button>
+        </form>
+      </section>
+
+      <div class="rooms-container" id="roomsContainer">
+        <!-- Room cards will be dynamically inserted here -->
+      </div>
+    </div>
+
+    <!-- Room Details Modal -->
+    <div class="modal" id="roomDetailsModal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('roomDetailsModal')"
+          >&times;</span
+        >
+        <h2 id="modalRoomTitle">Single Room</h2>
+        <p class="room-location">
+          <i class="fas fa-map-marker-alt"></i>
+          <span id="modalRoomLocation"
+            >Taha Hussein, 0.5km from Minia University</span
+          >
+        </p>
+        <p class="room-price">
+          <span id="modalRoomPrice">1,200 EGP</span>
+          <span class="price-period">/month</span>
+        </p>
+
+        <div class="room-gallery">
+          <img src="../images/K2S115.webp" class="gallery-img" />
+          <img src="../images/is.jpg" class="gallery-img" />
+          <img
+            src="../images/8c87f66386ea5a63e835d0b3791d8898.jpg"
+            class="gallery-img"
+          />
+        </div>
+
+        <h3>Description</h3>
+        <p id="modalRoomDescription">
+          This cozy single room is perfect for students looking for affordable
+          accommodation close to Minia University. The room comes furnished with
+          a single bed, study desk, chair, and wardrobe. Shared kitchen and
+          bathroom facilities are available on each floor. High-speed WiFi is
+          included in the rent.
+        </p>
+
+        <h3>Features</h3>
+        <div class="room-features" id="modalRoomFeatures">
+          <span class="feature"><i class="fas fa-bed"></i> Single bed</span>
+          <span class="feature"
+            ><i class="fas fa-ruler-combined"></i> 12m²</span
+          >
+          <span class="feature"><i class="fas fa-wifi"></i> WiFi</span>
+          <span class="feature"
+            ><i class="fas fa-utensils"></i> Kitchen access</span
+          >
+          <span class="feature"
+            ><i class="fas fa-tshirt"></i> Laundry facilities</span
+          >
+          <span class="feature"
+            ><i class="fas fa-bicycle"></i> Bike storage</span
+          >
+        </div>
+
+        <h3>Availability</h3>
+        <p>Available from: <strong>September 1, 2023</strong></p>
+        <p>Minimum stay: <strong>6 months</strong></p>
+
+        <div style="text-align: center; margin-top: 20px">
+          <button class="btn-book" onclick="openBookingModal(1)">
+            Book This Room
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking Modal -->
+    <div class="modal" id="bookingModal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('bookingModal')"
+          >&times;</span
+        >
+        <h2>Book Your Room</h2>
+        <p>
+          You're booking:
+          <strong id="bookingRoomTitle">Single Room</strong>
+        </p>
+        <p>Price: <strong id="bookingRoomPrice">1,200 EGP/month</strong></p>
+
+        <form class="booking-form">
+          <input type="hidden" id="roomId" />
+
+          <label for="fullName">Full Name</label>
+          <input type="text" id="fullName" required />
+
+          <label for="email">Email</label>
+          <input type="email" id="email" required />
+
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" required />
+
+          <label for="studentId">Student ID</label>
+          <input type="text" id="studentId" required />
+
+          <label for="university">University</label>
+          <select id="university" required>
+            <option value="">Select University</option>
+            <option value="minia">Minia University</option>
+            <option value="other">Other University</option>
+          </select>
+
+          <label for="moveInDate">Move-in Date</label>
+          <input type="date" id="moveInDate" required />
+
+          <label for="duration">Duration (months)</label>
+          <select id="duration" required>
+            <option value="6">6 months</option>
+            <option value="9">9 months</option>
+            <option value="12">12 months</option>
+          </select>
+
+          <label for="specialRequests">Special Requests</label>
+          <textarea id="specialRequests" rows="3"></textarea>
+
+          <div style="margin-top: 20px">
+            <button type="submit" class="btn-book">Submit Booking</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script>
+      // Sample room data for Minia
+      const rooms = [
+        {
+          id: 1,
+          title: " Single Room",
+          location: "Taha Hussein, 0.5km from Minia University",
+          price: 1200,
+          type: "single",
+          description:
+            "This cozy single room is perfect for students looking for affordable accommodation close to Minia University. The room comes furnished with a single bed, study desk, chair, and wardrobe. Shared kitchen and bathroom facilities are available on each floor. High-speed WiFi is included in the rent.",
+          features: [
+            "Single bed",
+            "12m²",
+            "WiFi",
+            "Kitchen access",
+            "Laundry facilities",
+            "Bike storage",
+          ],
+          images: ["../images/1,hrud.jpg"],
+        },
+        {
+          id: 2,
+          title: "Shared Double Room",
+          location: "Damaris, 0.3km from Minia University",
+          price: 800,
+          type: "shared",
+          description:
+            "This shared double room offers an economical housing solution for students. The room includes two single beds, two study desks, and shared wardrobe space. You'll share the room with one other student. Common areas include a shared kitchen, TV lounge, and laundry facilities.",
+          features: [
+            "double beds",
+            "18m²",
+            "WiFi",
+            "bathroom",
+            "Shared kitchen",
+            "TV lounge",
+            "Laundry facilities",
+          ],
+          images: ["../images/8c87f66386ea5a63e835d0b3791d8898.jpg"],
+        },
+        {
+          id: 3,
+          title: "quadruple room",
+          location: "Minia Elgededa, 1.2km from university",
+          price: 2500,
+          type: "studio",
+          description:
+            "This modern studio apartment offers private living with all the comforts of home. The space includes a double bed, kitchenette, private bathroom, and study area. Perfect for students who value privacy and independence. Located in the vibrant Minia Elgededa area with easy access to campus via public transport.",
+          features: [
+            "Double bed",
+            "30m²",
+            "WiFi",
+            "Shared kitchen",
+            "Private bathroom",
+            "Study area",
+          ],
+          images: ["../images/K2S115.webp"],
+        },
+        {
+          id: 4,
+          title: "Budget Single Room",
+          location: "Mahatta, 0.8km from university",
+          price: 700,
+          type: "single",
+          description:
+            "Affordable single room in Mahatta area with basic amenities. Perfect for students on a tight budget. Shared bathroom and kitchen facilities.",
+          features: [
+            "triple bed",
+            "15m²",
+            "WiFi",
+            "Shared kitchen",
+            "Shared bathroom",
+          ],
+          images: [
+            "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+            "https://images.unsplash.com/photo-1513694203232-719a280e022f?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60",
+          ],
+        },
+        {
+          id: 5,
+          title: "Luxury Apartment",
+          location: "Medan Elsaa, 1.5km from university",
+          price: 3500,
+          type: "apartment",
+          description:
+            "Spacious apartment with modern furnishings and all amenities included. Perfect for students who want premium living space.",
+          features: [
+            "Double bed",
+            "45m²",
+            "WiFi",
+            "Private bathroom",
+            "Living area",
+            "Air conditioning",
+          ],
+          images: ["../owner/تصميم-غرف-نوم-مودرن.webp"],
+        },
+      ];
+
+      // Function to render room cards
+      function renderRooms(roomsToRender) {
+        const container = document.getElementById("roomsContainer");
+        container.innerHTML = "";
+
+        if (roomsToRender.length === 0) {
+          container.innerHTML =
+            '<div class="no-results">No rooms match your search criteria. Please try different filters.</div>';
+          return;
+        }
+
+        roomsToRender.forEach((room) => {
+          const roomCard = document.createElement("div");
+          roomCard.className = "room-card";
+          roomCard.innerHTML = `
+                    <img src="${room.images[0]}" alt="${
+            room.title
+          }" class="room-image">
+                    <div class="room-details">
+                        <h3 class="room-title">${room.title}</h3>
+                        <p class="room-location"><i class="fas fa-map-marker-alt"></i> ${
+                          room.location
+                        }</p>
+                        <p class="room-price">${room.price.toLocaleString()} EGP <span class="price-period">/month</span></p>
+                        
+                        <div class="room-features">
+                            ${room.features
+                              .slice(0, 4)
+                              .map((feature) => {
+                                const icon = feature.includes("bed")
+                                  ? "fa-bed"
+                                  : feature.includes("m²")
+                                  ? "fa-ruler-combined"
+                                  : feature.includes("WiFi")
+                                  ? "fa-wifi"
+                                  : feature.includes("kitchen")
+                                  ? "fa-utensils"
+                                  : feature.includes("TV")
+                                  ? "fa-tv"
+                                  : feature.includes("bathroom")
+                                  ? "fa-bath"
+                                  : feature.includes("laundry")
+                                  ? "fa-tshirt"
+                                  : feature.includes("bike")
+                                  ? "fa-bicycle"
+                                  : "fa-check";
+                                return `<span class="feature"><i class="fas ${icon}"></i> ${feature}</span>`;
+                              })
+                              .join("")}
+                        </div>
+                        
+                        <div class="room-actions">
+                            <button class="btn-view" onclick="openRoomDetails(${
+                              room.id
+                            })">View Details</button>
+                            <button class="btn-book" onclick="openBookingModal(${
+                              room.id
+                            })">Book Now</button>
+                        </div>
+                    </div>
+                `;
+          container.appendChild(roomCard);
+        });
+      }
+
+      // Function to filter rooms based on search criteria
+      function filterRooms() {
+        const location = document
+          .getElementById("location")
+          .value.toLowerCase();
+        const minPrice =
+          parseInt(document.getElementById("min-price").value) || 0;
+        const maxPrice =
+          parseInt(document.getElementById("max-price").value) || Infinity;
+        const roomType = document
+          .getElementById("room-type")
+          .value.toLowerCase();
+
+        const filteredRooms = rooms.filter((room) => {
+          // Filter by location
+          const locationMatch =
+            !location ||
+            room.location.toLowerCase().includes(location) ||
+            room.location.toLowerCase().includes(location.replace("-", " "));
+
+          // Filter by price
+          const priceMatch = room.price >= minPrice && room.price <= maxPrice;
+
+          // Filter by room type
+          const typeMatch = !roomType || room.type === roomType;
+
+          return locationMatch && priceMatch && typeMatch;
+        });
+
+        renderRooms(filteredRooms);
+      }
+
+      // Initial render of all rooms
+      renderRooms(rooms);
+
+      // Open room details modal
+      function openRoomDetails(roomId) {
+        const room = rooms.find((r) => r.id === roomId);
+        if (!room) return;
+
+        document.getElementById("modalRoomTitle").textContent = room.title;
+        document.getElementById("modalRoomLocation").textContent =
+          room.location;
+        document.getElementById(
+          "modalRoomPrice"
+        ).textContent = `${room.price.toLocaleString()} EGP`;
+        document.getElementById("modalRoomDescription").textContent =
+          room.description;
+
+        const featuresContainer = document.getElementById("modalRoomFeatures");
+        featuresContainer.innerHTML = "";
+        room.features.forEach((feature) => {
+          const icon = feature.includes("bed")
+            ? "fa-bed"
+            : feature.includes("m²")
+            ? "fa-ruler-combined"
+            : feature.includes("WiFi")
+            ? "fa-wifi"
+            : feature.includes("kitchen")
+            ? "fa-utensils"
+            : feature.includes("TV")
+            ? "fa-tv"
+            : feature.includes("bathroom")
+            ? "fa-bath"
+            : feature.includes("laundry")
+            ? "fa-tshirt"
+            : feature.includes("bike")
+            ? "fa-bicycle"
+            : "fa-check";
+
+          const featureElement = document.createElement("span");
+          featureElement.className = "feature";
+          featureElement.innerHTML = `<i class="fas ${icon}"></i> ${feature}`;
+          featuresContainer.appendChild(featureElement);
+        });
+
+        document.getElementById("roomDetailsModal").style.display = "flex";
+      }
+
+      // Open booking modal
+      function openBookingModal(roomId) {
+        const room = rooms.find((r) => r.id === roomId);
+        if (!room) return;
+
+        document.getElementById("bookingRoomTitle").textContent = room.title;
+        document.getElementById(
+          "bookingRoomPrice"
+        ).textContent = `${room.price.toLocaleString()} EGP/month`;
+        document.getElementById("roomId").value = room.id;
+
+        // Set minimum date to today
+        const today = new Date().toISOString().split("T")[0];
+        document.getElementById("moveInDate").min = today;
+
+        document.getElementById("bookingModal").style.display = "flex";
+        closeModal("roomDetailsModal");
+      }
+
+      // Close modal
+      function closeModal(modalId) {
+        document.getElementById(modalId).style.display = "none";
+      }
+
+      // Handle booking form submission
+      document
+        .querySelector(".booking-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          // In a real application, you would send this data to a server
+          const bookingData = {
+            roomId: document.getElementById("roomId").value,
+            fullName: document.getElementById("fullName").value,
+            email: document.getElementById("email").value,
+            phone: document.getElementById("phone").value,
+            studentId: document.getElementById("studentId").value,
+            university: document.getElementById("university").value,
+            moveInDate: document.getElementById("moveInDate").value,
+            duration: document.getElementById("duration").value,
+            specialRequests: document.getElementById("specialRequests").value,
+          };
+
+          console.log("Booking submitted:", bookingData);
+          alert(
+            "Booking request submitted successfully! We will contact you shortly to confirm."
+          );
+          closeModal("bookingModal");
+
+          // Reset form
+          this.reset();
+        });
+
+      // Handle search form submission
+      document
+        .getElementById("searchForm")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+          filterRooms();
+        });
+
+      // Close modals when clicking outside
+      window.addEventListener("click", function (e) {
+        if (e.target === document.getElementById("roomDetailsModal")) {
+          closeModal("roomDetailsModal");
+        }
+        if (e.target === document.getElementById("bookingModal")) {
+          closeModal("bookingModal");
+        }
+      });
+    </script>
+  </body>
+</html>
