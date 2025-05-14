@@ -6,7 +6,7 @@
     <title>Minia Student Housing</title>
     <style>
       :root {
-        --primary-color: #2b599d;
+        --primary-color: #3a79d6;
         --secondary-color: #8fc0f9;
         --accent-color: #4fc3f7;
         --light-color: #f8f9fa;
@@ -24,6 +24,23 @@
         background-color: #f5f5f5;
         color: #333;
         line-height: 1.6;
+      }
+      /* Updated Logo Styling */
+      .logo-container {
+        text-align: center;
+        margin-bottom: 30px;
+        padding-bottom: 15px;
+        border-bottom: 2px solid #b8bcbe;
+      }
+      .logo {
+        color: var(--success-color);
+        font-size: 28px;
+        font-weight: bold;
+        margin: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
       }
 
       header {
@@ -264,8 +281,13 @@
   <body>
     <header>
       <div class="container">
-        <h1>EASY RENT PROPERTIES</h1>
-        <p>Find your perfect room in Easy Rent</p>
+        <div class="logo-container">
+          <h1 class="logo">
+            <i class="fas fa-house-chimney"></i>
+            Easy Rent Properties
+          </h1>
+          <p>Find your perfect room in Easy Rent</p>
+        </div>
       </div>
     </header>
 
