@@ -348,6 +348,7 @@
     </style>
   </head>
   <body>
+    <form id="loginForm">
     <!-- اختيار الدولة ورقم الهاتف -->
     <div class="container">
       <h1 class="title">Log in or sign up</h1>
@@ -455,9 +456,8 @@
         rates apply.
       </p>
 
-      <button class="btn-primary" onclick="window.location.href='index.html'">
-        Continue
-      </button>
+      <button type="submit" class="btn-primary">Continue</button>
+      </form>
 
       <!-- Forgot password link -->
       <div class="forgot-password">
@@ -560,18 +560,54 @@
       </div>
     </footer>
 
-    <script>
+    <script type="module">
       // تحقق بسيط من الإدخال
       document
-        .querySelector(".btn-primary")
-        .addEventListener("click", function (event) {
-          const input = document.getElementById("phone").value;
-          const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input); // تحقق من البريد الإلكتروني
-          const isPhone = /^\d{10,}$/.test(input); // تحقق من رقم الهاتف (10 أرقام أو أكثر)
+        .getElementById("loginForm")
+        .addEventListener("submit", function (event) {
+          event.preventDefault(); // لمنع الإرسال الافتراضي
+
+          const input = document.getElementById("phone").value.trim();
+          const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input); // تحقق بريد
+          const isPhone = /^\d{10,}$/.test(input); // تحقق رقم هاتف (10 أرقام على الأقل)
 
           if (!isEmail && !isPhone) {
             alert("Please enter a valid phone number or email.");
-            event.preventDefault(); // إيقاف الإرسال إذا كانت البيانات غير صحيحة
+            return; // لا نكمل الإرسال
+          }
+
+          // إذا صح، يمكنك هنا متابعة التوجيه أو إرسال البيانات إلى السيرفر
+          window.location.href = "index.html";
+        });
+
+      // login.js
+
+      import API from "./js/api.js";
+
+      const api = new API("http://easyrentapi0.runasp.net/api/v1");
+
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const email = document.getElementById("email").value;
+          const password = document.getElementById("password").value;
+
+          try {
+            const res = await api.post("/auth/login", { email, password });
+
+            // خزني التوكن
+            localStorage.setItem("token", res.token);
+
+            // خزني بيانات المستخدم لو حابة
+            localStorage.setItem("user", JSON.stringify(res.user));
+
+            // روحي على صفحة التحقق من نوع المستخدم
+            window.location.href = "redirect.html"; // الصفحة اللي فيها checkUserType()
+          } catch (err) {
+            alert("تسجيل الدخول فشل، تأكدي من البيانات");
+            console.error("Login Error:", err);
           }
         });
     </script>
