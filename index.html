@@ -109,7 +109,7 @@
             
             <!-- الصورة الأولى -->
             <div class="about__image about__image--main">
-              <img src="images/is.jpg" alt="Luxury apartment interior view" loading="lazy" />
+              <img src="./images/vecteezy_unadorned-gray-interior-of-the-apartment_28217484.jpg" alt="Luxury apartment interior view" loading="lazy" />
             </div>
             
             <!-- الصف الثاني -->
@@ -680,31 +680,25 @@
 
     <script>
       // Show cookie consent if not already accepted
-      document.addEventListener('DOMContentLoaded', function() {
+      document.addEventListener('DOMContentLoaded', () => {
         if (!localStorage.getItem('cookiesAccepted')) {
           setTimeout(() => {
-            document.getElementById('cookieConsent').style.display = 'block';
+            const consentEl = document.getElementById('cookieConsent');
+            if (consentEl) consentEl.style.display = 'block';
           }, 1000);
         }
       });
-
+      
       function acceptCookies() {
         localStorage.setItem('cookiesAccepted', 'true');
-        document.getElementById('cookieConsent').style.display = 'none';
-        // Load cookie-dependent services here (e.g., Google Analytics)
+        const consentEl = document.getElementById('cookieConsent');
+        if (consentEl) consentEl.style.display = 'none';
+        // تحميل الخدمات التي تعتمد على الكوكيز هنا، مثل Google Analytics
       }
+      
     </script>
     <script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
-    <script src="https://unpkg.com/scrollreveal"></script>
     
-    
-
-    <script>
-      // Use modules
-      import { initNavigation } from './navigation.js';
-      import { initCookieConsent } from './cookie-consent.js';
-      import { initPropertyFilter } from './property-filter.js';
-    </script>
     <script type="module" src="./js/main.js"></script>
 
   </body>

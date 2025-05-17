@@ -30,8 +30,6 @@ async function checkUserType() {
   }
 }
 
-// نفذ الدالة لما الصفحة تفتح
-
 // Wait for DOM to be fully loaded before executing JavaScript
 document.addEventListener("DOMContentLoaded", function () {
   // Mobile Menu Toggle with null checks
@@ -320,13 +318,18 @@ document.addEventListener("DOMContentLoaded", function () {
   const applyBtn = document.getElementById("applyFilter");
 
   // Reset button functionality
-  resetBtn.addEventListener("click", function () {
-    forRentSelect.value = "rent";
-    currencySelect.value = "euro";
-    areaUnitSelect.value = "sqft";
-    bathroomSelect.value = "";
-    bedroomSelect.value = "";
-    kitchenSelect.value = "";
+  document.addEventListener("DOMContentLoaded", () => {
+    const resetBtn = document.getElementById("resetBtn");
+    if (resetBtn) {
+      resetBtn.addEventListener("click", function () {
+        forRentSelect.value = "rent";
+        currencySelect.value = "euro";
+        areaUnitSelect.value = "sqft";
+        bathroomSelect.value = "";
+        bedroomSelect.value = "";
+        kitchenSelect.value = "";
+      });
+    }
   });
 
   // Apply button functionality
