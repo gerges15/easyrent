@@ -333,6 +333,18 @@
       .forgot-password a:hover {
         text-decoration: underline;
       }
+      select,
+      input[type="text"],
+      input[type="tel"],
+      input[type="password"] {
+        width: 100%;
+        padding: 0.75rem;
+        font-size: 0.99rem;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        outline: none;
+        appearance: none;
+      }
 
       /* تحسين للخطوط الصغيرة في الشاشات الضيقة */
       @media (max-width: 320px) {
@@ -348,9 +360,10 @@
     </style>
   </head>
   <body>
+    <form id="loginForm">
     <!-- اختيار الدولة ورقم الهاتف -->
     <div class="container">
-      <h1 class="title">Login</h1>
+      <h1 class="title">Log in or sign up</h1>
       <!-- اختيار الدولة ورقم الهاتف -->
       <div class="input-group">
         <label for="country">Country/Region</label>
@@ -454,13 +467,18 @@
         We'll call or text to confirm your number. Standard message and data
         rates apply.
       </p>
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Enter your password"
+          required
+        />
+      </div>
 
-      <button
-        class="btn-primary"
-        onclick="window.location.href='dashboard.html'"
-      >
-        Continue
-      </button>
+      <button type="submit" class="btn-primary">Continue</button>
+      </form>
 
       <!-- Forgot password link -->
       <div class="forgot-password">
@@ -481,7 +499,7 @@
 
       <button
         class="btn-outline"
-        onclick="window.location.href='logingogle.html'"
+        onclick="window.location.href='logingoogle.html'"
       >
         <i class="fa-brands fa-google btn-icon"></i>
         Continue with Google
@@ -489,7 +507,7 @@
 
       <button
         class="btn-outline btn-facebook"
-        onclick="window.location.href='facebook.html'"
+        onclick="window.location.href='face.html'"
       >
         <i class="fa-brands fa-facebook-f btn-icon"></i>
         Continue with Facebook
@@ -563,20 +581,60 @@
       </div>
     </footer>
 
-    <script>
+    <script type="module">
       // تحقق بسيط من الإدخال
-      document
-        .querySelector(".btn-primary")
-        .addEventListener("click", function (event) {
-          const input = document.getElementById("phone").value;
-          const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(input); // تحقق من البريد الإلكتروني
-          const isPhone = /^\d{10,}$/.test(input); // تحقق من رقم الهاتف (10 أرقام أو أكثر)
-
-          if (!isEmail && !isPhone) {
-            alert("Please enter a valid phone number or email.");
-            event.preventDefault(); // إيقاف الإرسال إذا كانت البيانات غير صحيحة
+     
+        document.getElementById("loginForm").addEventListener("submit", async function (e) {
+          e.preventDefault();
+      
+          const country = document.getElementById("country").value;
+          const identifier = document.getElementById("phone").value.trim();
+          const password = document.getElementById("password").value;
+      
+          if (!identifier || !password || !country) {
+            alert("Please fill in all fields.");
+            return;
           }
+      
+          // لو مش بريد إلكتروني، ضيف رمز الدولة
+          const isEmail = identifier.includes("@");
+          const emailOrPhone = isEmail ? identifier : country + identifier;
+      
+          const payload = {
+            emailOrPhone: emailOrPhone,
+            password: password
+          };
+      
+          try {
+            const response = await fetch("http://easyrentapi0.runasp.net/api/Owner/login", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(payload),
+            });
+          
+            const resultText = await response.text();
+          
+            if (!response.ok) {
+              alert("Login failed: " + resultText);
+              return;
+            }
+          
+            alert(resultText); // هتكون مثلاً "Login successful."
+            window.location.href = "./dashbord.html"; // عدل حسب الصفحة
+          
+          } catch (error) {
+            alert("حدث خطأ في الاتصال بالسيرفر. حاول مرة أخرى.");
+            console.error(error);
+          }
+          
+          
         });
-    </script>
+      </script>
+      
+      
+      
+ 
   </body>
 </html>

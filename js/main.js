@@ -1,12 +1,14 @@
-// js/main.js
 import API from "./api.js";
+import { initCookieConsent } from "./cookie-consent.js";
+import { initNavigation } from "./navigation.js";
+import { initFilter } from "./property-filter.js";
 
-// إنشاء نسخة من API class
+// إنشاء نسخة من API class مع التوكن لو موجود
 const api = new API("http://easyrentapi0.runasp.net", {
-  authToken: localStorage.getItem("token"), // التوكن لو موجود
+  authToken: localStorage.getItem("token"),
 });
 
-// مثال على استخدامه بعد تسجيل الدخول
+// التحقق من نوع المستخدم وتوجيهه للصفحة المناسبة
 async function checkUserType() {
   try {
     const user = await api.get("/auth/me");
@@ -30,17 +32,20 @@ async function checkUserType() {
   }
 }
 
-// Wait for DOM to be fully loaded before executing JavaScript
-document.addEventListener("DOMContentLoaded", function () {
-  // Mobile Menu Toggle with null checks
+// استدعاء تهيئة الإضافات
+initCookieConsent();
+initNavigation();
+initFilter();
+
+document.addEventListener("DOMContentLoaded", () => {
+  // ---- Mobile Menu Toggle ----
   const menuBtn = document.getElementById("menu-btn");
   const navlinks = document.getElementById("nav__links");
 
   if (menuBtn && navlinks) {
-    const menuBtnIcon = menuBtn.querySelector(".ri-menu-line"); // More specific selector
-
+    const menuBtnIcon = menuBtn.querySelector(".ri-menu-line");
     if (menuBtnIcon) {
-      menuBtn.addEventListener("click", (e) => {
+      menuBtn.addEventListener("click", () => {
         navlinks.classList.toggle("open");
         const isOpen = navlinks.classList.contains("open");
         menuBtnIcon.setAttribute(
@@ -50,7 +55,6 @@ document.addEventListener("DOMContentLoaded", function () {
       });
 
       navlinks.addEventListener("click", (e) => {
-        // Only close if clicking on a link (not the container itself)
         if (e.target.tagName === "A") {
           navlinks.classList.remove("open");
           menuBtnIcon.setAttribute("class", "ri-menu-line");
@@ -63,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
     console.warn("Menu button or nav links element not found");
   }
 
-  // ScrollReveal animations
+  // ---- ScrollReveal Animations ----
   if (typeof ScrollReveal !== "undefined") {
     const sr = ScrollReveal({
       distance: "50px",
@@ -71,31 +75,16 @@ document.addEventListener("DOMContentLoaded", function () {
       duration: 1000,
     });
 
-    // Header animations
-    sr.reveal(".header__container h1", {
-      delay: 500,
-    });
-
-    sr.reveal(".header__container .section__subheader", {
-      delay: 250,
-    });
-
-    sr.reveal(".header__container .btn", {
-      delay: 1000,
-    });
-
-    sr.reveal(".room__card", {
-      interval: 500,
-    });
-
-    sr.reveal(".feature__card", {
-      interval: 500,
-    });
+    sr.reveal(".header__container h1", { delay: 500 });
+    sr.reveal(".header__container .section__subheader", { delay: 250 });
+    sr.reveal(".header__container .btn", { delay: 1000 });
+    sr.reveal(".room__card", { interval: 500 });
+    sr.reveal(".feature__card", { interval: 500 });
   } else {
     console.warn("ScrollReveal library not loaded - animations disabled");
   }
 
-  // Property data and display functions
+  // ---- بيانات العقارات ----
   const properties = [
     {
       id: 1,
@@ -171,14 +160,14 @@ document.addEventListener("DOMContentLoaded", function () {
     },
   ];
 
-  // Save properties to localStorage
+  // حفظ بيانات العقارات في localStorage
   try {
     localStorage.setItem("propertyData", JSON.stringify(properties));
   } catch (e) {
     console.warn("Could not save to localStorage:", e);
   }
 
-  // Display properties function
+  // دالة عرض العقارات
   function displayProperties(propertiesToShow = properties) {
     const propertyGrid = document.getElementById("property-grid");
     if (!propertyGrid) {
@@ -216,7 +205,7 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 
-  // Load and display properties
+  // تحميل وعرض بيانات العقارات من localStorage
   try {
     const savedData = localStorage.getItem("propertyData");
     if (savedData) {
@@ -229,7 +218,7 @@ document.addEventListener("DOMContentLoaded", function () {
     displayProperties();
   }
 
-  // Make feature cards clickable
+  // ---- Feature Cards: clickable with hover effect ----
   const featureCards = document.querySelectorAll(".feature__card");
   featureCards.forEach((card) => {
     card.style.cursor = "pointer";
@@ -251,9 +240,8 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   });
 
-  // Theme switcher functionality
+  // ---- Theme Switcher ----
   const themeSwitch = document.querySelector('.switch input[type="checkbox"]');
-
   if (themeSwitch) {
     function switchTheme(e) {
       if (e.target.checked) {
@@ -267,7 +255,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     themeSwitch.addEventListener("change", switchTheme, false);
 
-    // Check for saved theme preference
+    // تحميل تفضيل الثيم من التخزين أو نظام الجهاز
     const currentTheme = localStorage.getItem("theme");
     if (currentTheme) {
       document.documentElement.setAttribute("data-theme", currentTheme);
@@ -278,36 +266,32 @@ document.addEventListener("DOMContentLoaded", function () {
       window.matchMedia &&
       window.matchMedia("(prefers-color-scheme: dark)").matches
     ) {
-      // Check for system preference
       document.documentElement.setAttribute("data-theme", "dark");
       themeSwitch.checked = true;
     }
   }
-});
 
-function toggleSection(header) {
-  const section = header.parentElement;
-  const content = section.querySelector(".filter-content");
-  const arrow = section.querySelector(".arrow");
+  // ---- Toggle filter sections ----
+  function toggleSection(header) {
+    const section = header.parentElement;
+    const content = section.querySelector(".filter-content");
+    header.classList.toggle("collapsed");
 
-  header.classList.toggle("collapsed");
-
-  if (content.style.maxHeight) {
-    content.style.maxHeight = null;
-    content.classList.remove("collapsed");
-  } else {
-    content.style.maxHeight = content.scrollHeight + "px";
-    content.classList.add("collapsed");
+    if (content.style.maxHeight) {
+      content.style.maxHeight = null;
+      content.classList.remove("collapsed");
+    } else {
+      content.style.maxHeight = content.scrollHeight + "px";
+      content.classList.add("collapsed");
+    }
   }
-}
 
-// Initialize all sections as expanded
-document.querySelectorAll(".filter-content").forEach((content) => {
-  content.style.maxHeight = content.scrollHeight + "px";
-});
+  // فتح جميع الأقسام بشكل افتراضي
+  document.querySelectorAll(".filter-content").forEach((content) => {
+    content.style.maxHeight = content.scrollHeight + "px";
+  });
 
-document.addEventListener("DOMContentLoaded", function () {
-  // Get all filter elements
+  // ---- Filter Controls ----
   const forRentSelect = document.getElementById("forRent");
   const currencySelect = document.getElementById("currency");
   const areaUnitSelect = document.getElementById("areaUnit");
@@ -317,59 +301,36 @@ document.addEventListener("DOMContentLoaded", function () {
   const resetBtn = document.getElementById("resetFilter");
   const applyBtn = document.getElementById("applyFilter");
 
-  // Reset button functionality
-  document.addEventListener("DOMContentLoaded", () => {
-    const resetBtn = document.getElementById("resetBtn");
-    if (resetBtn) {
-      resetBtn.addEventListener("click", function () {
-        forRentSelect.value = "rent";
-        currencySelect.value = "euro";
-        areaUnitSelect.value = "sqft";
-        bathroomSelect.value = "";
-        bedroomSelect.value = "";
-        kitchenSelect.value = "";
-      });
-    }
-  });
-
-  // Apply button functionality
-  applyBtn.addEventListener("click", function () {
-    const filters = {
-      purpose: forRentSelect.value,
-      currency: currencySelect.value,
-      areaUnit: areaUnitSelect.value,
-      bathroomCount: bathroomSelect.value,
-      bedroomCount: bedroomSelect.value,
-      kitchenCount: kitchenSelect.value,
-      minSize: 150,
-      maxSize: 250,
-    };
-
-    console.log("Applied Filters:", filters);
-    alert("Filters applied! Check console for details.");
-    // Here you would typically send these filters to your backend
-    // or use them to filter properties on the frontend
-  });
-
-  // Size option selection
-  const sizeOptions = document.querySelectorAll(".size-option");
-  sizeOptions.forEach((option) => {
-    option.addEventListener("click", function () {
-      this.querySelector(".checkmark").style.display =
-        this.querySelector(".checkmark").style.display === "none"
-          ? "flex"
-          : "none";
+  // إعادة تعيين الفلاتر
+  if (resetBtn) {
+    resetBtn.addEventListener("click", () => {
+      if (forRentSelect) forRentSelect.value = "rent";
+      if (currencySelect) currencySelect.value = "euro";
+      if (areaUnitSelect) areaUnitSelect.value = "sqft";
+      if (bathroomSelect) bathroomSelect.value = "";
+      if (bedroomSelect) bedroomSelect.value = "";
+      if (kitchenSelect) kitchenSelect.value = "";
     });
-  });
-});
-document.addEventListener("DOMContentLoaded", function () {
-  document.addEventListener("click", function (e) {
-    const clickedInside =
-      e.target.closest(".more-content") || e.target.closest(".more-label");
+  }
 
-    if (!clickedInside) {
-      const toggle = document.getElementById("more-toggle");
-      if (toggle) toggle.checked = false;
-    }
+  // تطبيق الفلاتر
+  if (applyBtn) {
+    applyBtn.addEventListener("click", () => {
+      const filters = {
+        purpose: forRentSelect ? forRentSelect.value : "",
+        currency: currencySelect ? currencySelect.value : "",
+        areaUnit: areaUnitSelect ? areaUnitSelect.value : "",
+        bathroomCount: bathroomSelect ? bathroomSelect.value : "",
+        bedroomCount: bedroomSelect ? bedroomSelect.value : "",
+        kitchenCount: kitchenSelect ? kitchenSelect.value : "",
+      };
+      console.log("تطبيق الفلاتر:", filters);
+      // هنا تضيف منطق تصفية البيانات حسب الفلاتر
+    });
+  }
+
+  // ---- Toggle filter section on header click ----
+  document.querySelectorAll(".filter-header").forEach((header) => {
+    header.addEventListener("click", () => toggleSection(header));
   });
 });

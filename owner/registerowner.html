@@ -215,21 +215,16 @@
             Please enter your location
           </div>
         </div>
-        <button
-          onclick="location.href='dashboard.html'"
-          class="btn-submit"
-          id="submitBtn"
-        >
-          Agree and continue
-        </button>
+
+        <button class="btn-submit" id="submitBtn">Agree and continue</button>
       </div>
 
       <script>
-        // كود إظهار/إخفاء كلمة المرور
         const passwordInput = document.getElementById("password");
         const togglePasswordBtn = document.getElementById("togglePasswordBtn");
         const submitBtn = document.getElementById("submitBtn");
 
+        // إظهار وإخفاء كلمة السر
         togglePasswordBtn.addEventListener("click", () => {
           if (passwordInput.type === "password") {
             passwordInput.type = "text";
@@ -240,57 +235,95 @@
           }
         });
 
-        // Function to validate email
+        // زر الإرسال معطل بالبداية
+        submitBtn.disabled = true;
+
+        // تحقق من صحة الإيميل
         function isValidEmail(email) {
           const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
           return re.test(email);
         }
 
-        // Function to validate form
+        // التحقق البسيط لتفعيل زر الإرسال
+        function canEnableSubmit() {
+          const legalName = document.getElementById("legalName").value.trim();
+          const username = document.getElementById("username").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value;
+          const phone = document.getElementById("phone").value.trim();
+          const location = document.getElementById("location").value.trim();
+
+          return (
+            legalName !== "" &&
+            username !== "" &&
+            isValidEmail(email) &&
+            password.length >= 6 &&
+            phone !== "" &&
+            location !== ""
+          );
+        }
+
+        // تحديث حالة الزر
+        function updateSubmitButtonState() {
+          submitBtn.disabled = !canEnableSubmit();
+        }
+
+        // إضافة مراقبة على كل الحقول
+        [
+          "legalName",
+          "username",
+          "email",
+          "password",
+          "phone",
+          "location",
+        ].forEach((id) => {
+          document
+            .getElementById(id)
+            .addEventListener("input", updateSubmitButtonState);
+        });
+
+        // تحديث أولي لحالة الزر
+        updateSubmitButtonState();
+
+        // دالة التحقق الشامل مع رسائل الخطأ
         function validateForm() {
           let isValid = true;
 
-          // Reset error messages
+          // إخفاء الرسائل القديمة
           document.querySelectorAll(".error-message").forEach((el) => {
             el.style.display = "none";
           });
 
-          // Validate legal name
           const legalName = document.getElementById("legalName").value.trim();
           if (legalName === "") {
             document.getElementById("legalNameError").style.display = "block";
             isValid = false;
           }
 
-          // Validate username
           const username = document.getElementById("username").value.trim();
           if (username === "") {
             document.getElementById("usernameError").style.display = "block";
             isValid = false;
           }
 
-          // Validate email
           const email = document.getElementById("email").value.trim();
           if (email === "" || !isValidEmail(email)) {
             document.getElementById("emailError").style.display = "block";
             isValid = false;
           }
 
-          // Validate password
           const password = document.getElementById("password").value;
           if (password.length < 6) {
             document.getElementById("passwordError").style.display = "block";
             isValid = false;
           }
 
-          // Validate phone
           const phone = document.getElementById("phone").value.trim();
           if (phone === "") {
             document.getElementById("phoneError").style.display = "block";
             isValid = false;
           }
 
-          // Validate location
           const location = document.getElementById("location").value.trim();
           if (location === "") {
             document.getElementById("locationError").style.display = "block";
@@ -299,28 +332,64 @@
 
           return isValid;
         }
+        submitBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
 
-        // Save data and redirect
-        submitBtn.addEventListener("click", () => {
-          if (validateForm()) {
-            // Collect form data
-            const userData = {
-              legalName: document.getElementById("legalName").value.trim(),
-              username: document.getElementById("username").value.trim(),
-              email: document.getElementById("email").value.trim(),
-              password: document.getElementById("password").value,
-              phone: document.getElementById("phone").value.trim(),
-              location: document.getElementById("location").value.trim(),
-            };
+          if (!validateForm()) return;
 
-            // Save to localStorage
-            localStorage.setItem("userData", JSON.stringify(userData));
+          const userData = {
+            id: 0,
+            name: document.getElementById("legalName").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            userName: document.getElementById("username").value.trim(),
+            password: document.getElementById("password").value,
+            passwordHash: "",
+            phoneNumber: document.getElementById("phone").value.trim(),
+            address: document.getElementById("location").value.trim(),
+            createdAt: new Date().toISOString(),
+            units: [],
+          };
 
-            // Redirect to createroom page
-            window.location.href = "createrooms.html";
+          try {
+            const response = await fetch(
+              "http://easyrentapi0.runasp.net/api/Owner/register",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(userData),
+              }
+            );
+
+            if (!response.ok) {
+              const text = await response.text();
+              let errorData;
+              try {
+                errorData = JSON.parse(text);
+              } catch {
+                errorData = { message: text || response.statusText };
+              }
+              alert(
+                "Registration failed: " +
+                  (errorData.message || response.statusText)
+              );
+              return;
+            }
+
+            const text = await response.text();
+            let data;
+            try {
+              data = text ? JSON.parse(text) : null;
+            } catch {
+              data = null;
+            }
+
+            alert("تم التسجيل بنجاح! الرجاء تسجيل الدخول.");
+            window.location.href = "./loginowner.html";
+          } catch (error) {
+            console.error("Fetch error:", error);
+            alert("حدث خطأ في الاتصال بالخادم. يرجى المحاولة لاحقًا.");
           }
         });
-        const userData = JSON.parse(localStorage.getItem("userData"));
       </script>
     </main>
   </body>

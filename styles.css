@@ -282,7 +282,7 @@ nav {
   right: 0;
   height: 75%;
   width: 100%;
-  background-image: url("./is.jpg");
+  background-image: url("./images/is.jpg");
   background-size: cover;
   background-position: center center;
   background-repeat: no-repeat;
@@ -1040,6 +1040,7 @@ nav {
   display: none;
   position: absolute;
   z-index: 10;
+
   margin-top: 10px;
   background: #fff;
   padding: 20px;
@@ -1049,6 +1050,13 @@ nav {
   width: 100%;
   max-width: 400px;
 }
+.more-content label {
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: var(--text-dark);
+  font-size: 14px;
+}
+
 .apply-btn {
   padding: 12px 25px;
   border-radius: 6px;

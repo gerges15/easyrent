@@ -22,12 +22,31 @@ export default class API {
     return headers;
   }
 
+  async handleResponse(res) {
+    // حاول تفك JSON من الرد، لو ما ينفع خلي response null
+    let data = null;
+    try {
+      data = await res.json();
+    } catch {
+      // رد غير JSON أو فارغ
+    }
+
+    if (!res.ok) {
+      // رمي خطأ مع رسالة من السيرفر أو رسالة عامة
+      const errorMessage =
+        data?.message || `Error: ${res.status} ${res.statusText}`;
+      throw new Error(errorMessage);
+    }
+
+    return data;
+  }
+
   async get(endpoint) {
     const res = await fetch(`${this.baseURL}${endpoint}`, {
       method: "GET",
       headers: this.getHeaders(),
     });
-    return res.json();
+    return this.handleResponse(res);
   }
 
   async post(endpoint, data) {
@@ -36,7 +55,7 @@ export default class API {
       headers: this.getHeaders(),
       body: JSON.stringify(data),
     });
-    return res.json();
+    return this.handleResponse(res);
   }
 
   async put(endpoint, data) {
@@ -45,7 +64,7 @@ export default class API {
       headers: this.getHeaders(),
       body: JSON.stringify(data),
     });
-    return res.json();
+    return this.handleResponse(res);
   }
 
   async delete(endpoint) {
@@ -53,7 +72,7 @@ export default class API {
       method: "DELETE",
       headers: this.getHeaders(),
     });
-    return res.json();
+    return this.handleResponse(res);
   }
 
   setAuthToken(token) {
