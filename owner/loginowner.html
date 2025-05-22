@@ -458,7 +458,7 @@
         <label for="phone">Phone number or email</label>
         <input
           type="text"
-          id="phone"
+          id="emailOrPhone"
           placeholder="Enter your phone number or email"
         />
       </div>
@@ -468,16 +468,16 @@
         rates apply.
       </p>
       <div class="input-group">
-        <label for="password">Password</label>
-        <input
-          type="password"
-          id="password"
-          placeholder="Enter your password"
-          required
-        />
+      
+          <input type="password" id="password" placeholder="Password" />
+          <label>
+            <input type="checkbox" id="togglePassword" />
+            Show Password
+          </label>
+      
       </div>
 
-      <button type="submit" class="btn-primary">Continue</button>
+      <button type="submit" class="btn-primary" id="loginBtn">Continue</button>
       </form>
 
       <!-- Forgot password link -->
@@ -580,61 +580,68 @@
         EasyRent copyright 2025 web Design .All rights reserved.
       </div>
     </footer>
-
-    <script type="module">
-      // تحقق بسيط من الإدخال
-     
-        document.getElementById("loginForm").addEventListener("submit", async function (e) {
-          e.preventDefault();
+    <script type="module">  
+      document.getElementById("togglePassword").addEventListener("change", function () {
+        const passwordInput = document.getElementById("password");
+        passwordInput.type = this.checked ? "text" : "password";
+      });
       
-          const country = document.getElementById("country").value;
-          const identifier = document.getElementById("phone").value.trim();
-          const password = document.getElementById("password").value;
+      document.getElementById("loginForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
       
-          if (!identifier || !password || !country) {
-            alert("Please fill in all fields.");
-            return;
-          }
+        const country = document.getElementById("country").value;
+        const emailOrPhone = document.getElementById("emailOrPhone").value.trim();
+        const password = document.getElementById("password").value;
       
-          // لو مش بريد إلكتروني، ضيف رمز الدولة
-          const isEmail = identifier.includes("@");
-          const emailOrPhone = isEmail ? identifier : country + identifier;
+        if (!emailOrPhone || !password || !country) {
+          alert("Please fill all fields.");
+          return;
+        }
       
-          const payload = {
-            emailOrPhone: emailOrPhone,
-            password: password
-          };
+        const payload = {
+          emailOrPhone,
+          password
+        };
       
-          try {
-            const response = await fetch("http://easyrentapi0.runasp.net/api/Owner/login", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(payload),
-            });
-          
-            const resultText = await response.text();
-          
-            if (!response.ok) {
-              alert("Login failed: " + resultText);
-              return;
+        try {
+          const res = await fetch("https://easyrentapi0.runasp.net/api/Owner/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+      
+          if (res.ok) {
+            const data = await res.json();
+            localStorage.setItem("user", JSON.stringify(data));
+      
+            // redirect based on user role
+            if (data.role === "admin") {
+              location.href = "admin.html";
+            } else if (data.role === "owner") {
+              location.href = "owner.html";
+            } else {
+              location.href = "student.html";
             }
-          
-            alert(resultText); // هتكون مثلاً "Login successful."
-            window.location.href = "./dashbord.html"; // عدل حسب الصفحة
-          
-          } catch (error) {
-            alert("حدث خطأ في الاتصال بالسيرفر. حاول مرة أخرى.");
-            console.error(error);
+      
+          } else {
+            const errorText = await res.text();
+            try {
+              const errorData = JSON.parse(errorText);
+              alert(errorData.message || "Login failed. Please try again.");
+            } catch (e) {
+              alert(errorText || "Login failed. Please try again.");
+            }
           }
-          
-          
-        });
+      
+        } catch (err) {
+          console.error(err);
+          alert("Something went wrong. Please try again later.");
+        }
+      });
+      
       </script>
       
+    
       
-      
- 
-  </body>
+</body> 
 </html>
