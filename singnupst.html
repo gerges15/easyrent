@@ -11,11 +11,12 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
     />
-
+    <!-- Remix Icon -->
     <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@3.4.0/fonts/remixicon.css"
+      href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css"
       rel="stylesheet"
     />
+
     <style>
       @import url("https://fonts.googleapis.com/css2?family=playfair+Display:wght@100..400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
@@ -174,7 +175,7 @@
 
       .btn-submit {
         width: 100%;
-        padding: 14px;
+        padding: 12px;
         font-size: 16px;
         background: rgb(138, 170, 244);
         color: #1d1143;
@@ -329,6 +330,14 @@
       .section__description {
         color: #fcfcfc;
       }
+      .custom-divider {
+        border: none;
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.1);
+        margin: 50px auto 30px;
+        width: 85%;
+      }
+
       @media (max-width: 375px) {
         body {
           padding: 15px;
@@ -346,6 +355,7 @@
 
         .btn-submit {
           padding: 12px;
+          margin-bottom: 40px;
           font-size: 15px;
         }
 
@@ -360,203 +370,181 @@
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1 class="title">Finish signing up</h1>
+    <form id="signupForm">
+      <div class="container">
+        <h1 class="title">Finish signing up</h1>
+        <div class="form-group">
+          <label for="firstNameID">User Name</label>
+          <input type="text" id="firstNameID" placeholder="Full name" />
+        </div>
+        <div class="sub-note">
+          Make sure this matches the name on your government ID. If you go by
+          another name, you can add a preferred first name.
+        </div>
+        <div class="input-group">
+          <select id="universityId">
+            <option value="0" disabled selected>Choose your university</option>
+            <option value="1">Minia University</option>
+            <option value="2">Minia National University</option>
+            <option value="4">
+              Higher Institute of Engineering and Technology
+            </option>
+            <option value="5">Languages Institute</option>
+          </select>
+        </div>
 
-      <div class="form-group">
-        <label for="firstNameID">User Name </label>
-        <input type="text" id="firstNameID" placeholder="Full name" />
-      </div>
-      <div class="sub-note">
-        Make sure this matches the name on your government ID. If you go by
-        another name, you can add a preferred first name.
-      </div>
+        <div class="input-group">
+          <select id="collegeId">
+            <option value="0" disabled selected>Choose your faculty</option>
+            <option value="101">Faculty of Medicine</option>
+            <option value="102">Faculty of Engineering</option>
+            <option value="103">Faculty of Pharmacy</option>
+            <option value="104">Faculty of Dentistry</option>
+            <option value="105">Faculty of Science</option>
+            <option value="106">Faculty of Nursing</option>
+            <option value="107">Faculty of Agriculture</option>
+            <option value="108">Faculty of Fine Arts</option>
+            <option value="109">Faculty of Education</option>
+            <option value="110">Faculty of Arts</option>
+            <option value="111">Faculty of Law</option>
+            <option value="112">Faculty of Specific Education</option>
+            <option value="113">Faculty of Physical Education</option>
+            <option value="114">Faculty of Al-Alsun</option>
+            <option value="115">Faculty of Arts</option>
+            <option value="116">Faculty of Dar Al-Uloom</option>
+            <option value="117">Faculty of Tourism and Hotels</option>
+            <option value="118">Faculty of Computers and Information</option>
+            <option value="119">Faculty of Early Childhood Education</option>
+            <option value="120">Faculty of Physical Therapy</option>
+            <option value="121">Faculty of Engineering</option>
+            <option value="122">Faculty of Artificial Intelligence</option>
+            <option value="123">Faculty of Business Administration</option>
+            <option value="124">Faculty of Civil Engineering</option>
+            <option value="125">
+              Faculty of Electronics and Communication Engineering
+            </option>
+            <option value="126">
+              Electrical Power and Machines Engineering
+            </option>
+            <option value="127">Faculty of English Language</option>
+            <option value="128">Faculty of German Language</option>
+            <option value="129">Faculty of French Language</option>
+          </select>
+        </div>
 
-      <div class="input-group">
-        <label for="university">Select your university</label>
-        <select id="universityId" name="university" required>
-          <option value="" disabled selected>Choose your university</option>
-          <option value="1">Minia University</option>
-          <option value="2">Minia National University</option>
-          <option value="4">
-            Higher Institute of Engineering and Technology
-          </option>
-          <option value="5">Languages Institute</option>
-        </select>
-      </div>
-      <div class="input-group">
-        <label for="faculty">Select your faculty</label>
-        <select id="collegeId" name="faculty" required>
-          <option value="" disabled selected>Choose your faculty</option>
-          <option value="101">Faculty of Medicine</option>
-          <option value="102 ">Faculty of Engineering</option>
-          <option value="103">Faculty of Pharmacy</option>
-          <option value="104">Faculty of Dentistry</option>
-          <option value="105">Faculty of Science</option>
-          <option value="106">Faculty of Nursing</option>
-          <option value="107">Faculty of Agriculture</option>
-          <option value="108">Faculty of Fine Arts</option>
-          <option value="109">Faculty of Education</option>
-          <option value="110">Faculty of Arts</option>
-          <option value="111">Faculty of Law</option>
-          <option value="112">Faculty of Specific Education</option>
-          </option>
-          <option value="113">
-            Faculty of Physical Education
-          </option>
-          <option value="114">Faculty of Al-Alsun</option>
-          <option value="115">Faculty of Arts</option>
-          <option value="116">  Faculty of Dar Al-Uloom</option>">
-          
-         
-          <option value="117">
-            Faculty of Tourism and Hotels
-          </option>
-          <option value="118">
-            Faculty of Computers and Information
-          </option>
-          <option value="119">
-            Faculty of Early Childhood Education
-          </option>
-         
-          <option value="120">
-            Faculty of Physical Therapy
-          </option>
-          <option value="121">Faculty of Engineering</option>
-          <option value="122">
-            Faculty of Artificial Intelligence
-          </option>
-          <option value="123">
-            Faculty of Business Administration
-          </option>
-          <option value="124">
-            Faculty of civil Engineering
-          </option>
-          <option value="125">
-            Faculty of Electronics and Communication Engineering
-          </option>
-          <option value="126">
-            Electrical Power and Machines Engineering
-          </option>
-          <option value="127">
-            Faculty of English Language
-          </option>
-          <option value="128">
-            Faculty of German Language
-          </option>
-          <option value="129">Faculty of French Language
-           
-          </option>
-        </select>
-      </div>
-      <div class="sub-note">Make sure this University</div>
+        <div class="sub-note">Make sure this University</div>
 
-      <div class="form-group">
-        <label for="birthdate">Date of birth</label>
-        <input type="date" id="birthdate" />
-      </div>
-      <div class="date-note">
-        To sign up, you need to be at least 18. Your birthday won't be shared
-        with other people who use Easy rent.
-      </div>
-      <div class="form-group">
-        <label for="phone">Phone number</label>
-        <input type="tel" id="phone" placeholder="Enter your phone number" />
-      </div>
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" id="email" placeholder="user@gmail.com" />
-      </div>
+        <div class="form-group">
+          <label for="address">Address</label>
+          <input type="text" id="address" placeholder="Enter your address" />
+        </div>
+        <div class="sub-note">Please provide your current address</div>
+        <div class="date-note">
+          Enter your address in full details as it appears on your ID or
+          government document.
+        </div>
 
-      <div class="password-container">
-        <label for="signup-password">Password</label>
-        <input
-          type="password"
-          id="signup-password"
-          placeholder="Enter your password"
-          oninput="checkPasswordStrength()"
-        />
-        <button type="button" class="show-password" id="togglePasswordBtn">
-          Show
-        </button>
-        <div id="password-strength-meter" style="margin-top: 8px">
-          <div style="display: flex; height: 4px; margin-bottom: 4px">
+        <div class="form-group">
+          <label for="phone">Phone number</label>
+          <input type="tel" id="phone" placeholder="Enter your phone number" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="email" id="email" placeholder="user@gmail.com" />
+        </div>
+
+        <div class="password-container">
+          <label for="signup-password">Password</label>
+          <input
+            type="password"
+            id="signup-password"
+            placeholder="Enter your password"
+          />
+          <button type="button" class="show-password" id="togglePasswordBtn">
+            Show
+          </button>
+          <div id="password-strength-meter" style="margin-top: 8px">
+            <div style="display: flex; height: 4px; margin-bottom: 4px">
+              <div
+                id="strength-bar-1"
+                style="
+                  flex: 1;
+                  background: #e0e0e0;
+                  margin: 0 2px;
+                  border-radius: 2px;
+                "
+              ></div>
+              <div
+                id="strength-bar-2"
+                style="
+                  flex: 1;
+                  background: #e0e0e0;
+                  margin: 0 2px;
+                  border-radius: 2px;
+                "
+              ></div>
+              <div
+                id="strength-bar-3"
+                style="
+                  flex: 1;
+                  background: #e0e0e0;
+                  margin: 0 2px;
+                  border-radius: 2px;
+                "
+              ></div>
+              <div
+                id="strength-bar-4"
+                style="
+                  flex: 1;
+                  background: #e0e0e0;
+                  margin: 0 2px;
+                  border-radius: 2px;
+                "
+              ></div>
+            </div>
             <div
-              id="strength-bar-1"
-              style="
-                flex: 1;
-                background: #e0e0e0;
-                margin: 0 2px;
-                border-radius: 2px;
-              "
-            ></div>
-            <div
-              id="strength-bar-2"
-              style="
-                flex: 1;
-                background: #e0e0e0;
-                margin: 0 2px;
-                border-radius: 2px;
-              "
-            ></div>
-            <div
-              id="strength-bar-3"
-              style="
-                flex: 1;
-                background: #e0e0e0;
-                margin: 0 2px;
-                border-radius: 2px;
-              "
-            ></div>
-            <div
-              id="strength-bar-4"
-              style="
-                flex: 1;
-                background: #e0e0e0;
-                margin: 0 2px;
-                border-radius: 2px;
-              "
+              id="password-strength-text"
+              style="font-size: 12px; color: #666"
             ></div>
           </div>
-          <div
-            id="password-strength-text"
-            style="font-size: 12px; color: #666"
-          ></div>
         </div>
-      </div>
 
-      <div class="password-suggestion" style="margin-bottom: 16px">
-        <div style="display: flex; gap: 8px; margin-bottom: 4px">
-          <input
-            type="text"
-            id="password-suggestion"
-            placeholder="Click generate for a strong password"
-            readonly
-            style="
-              flex: 1;
-              padding: 12px;
-              border: 1px solid #ccc;
-              border-radius: 8px;
-              font-size: 14px;
-            "
-          />
-          <button
-            type="button"
-            id="generate-password"
-            class="btnbook"
-            style="width: auto; padding: 0 12px"
-          >
-            Generate
-          </button>
+        <div class="password-suggestion" style="margin-bottom: 16px">
+          <div style="display: flex; gap: 8px; margin-bottom: 4px">
+            <input
+              type="text"
+              id="password-suggestion"
+              placeholder="Click generate for a strong password"
+              readonly
+              style="
+                flex: 1;
+                padding: 12px;
+                border: 1px solid #ccc;
+                border-radius: 8px;
+                font-size: 14px;
+              "
+            />
+            <button
+              type="button"
+              id="generate-password"
+              class="btnbook"
+              style="width: auto; padding: 0 12px"
+            >
+              Generate
+            </button>
+          </div>
+          <div class="sub-note" style="font-size: 12px">
+            <i class="fas fa-lightbulb" style="color: #ffc107"></i> Strong
+            passwords contain uppercase, lowercase, numbers and special
+            characters
+          </div>
         </div>
-        <div class="sub-note" style="font-size: 12px">
-          <i class="fas fa-lightbulb" style="color: #ffc107"></i> Strong
-          passwords contain uppercase, lowercase, numbers and special characters
-        </div>
-      </div>
 
-      <button class="btn-submit">Agree and continue</button>
-    </div>
+        <button class="btn-submit" type="submit">Agree and continue</button>
+      </div>
+    </form>
+    <hr class="custom-divider" />
 
     <footer class="footer" id="contact">
       <div class="section__contanier footer__contanier">
@@ -594,10 +582,9 @@
             >
           </div>
           <p class="section__description">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Illum eius
-            itaque quod expedita labore est quibusdam incidunt! Harum expedita
-            mollitia ea, magnam ratione aut consectetur. Soluta ipsum sapiente
-            provident dicta.
+            Easy rent is dedicated to simplifying the process of finding student
+            accommandations, it enables a seamless connection between students
+            and owners.
           </p>
           <ul class="footer__socials">
             <li>
@@ -611,6 +598,7 @@
             </li>
           </ul>
         </div>
+
         <div class="footer__col">
           <h4>Services</h4>
           <div class="footer__links">
@@ -653,313 +641,226 @@
       </div>
     </footer>
     <script type="module">
-      // العناصر الأساسية
-      const passwordInput = document.getElementById("signup-password");
-      const togglePasswordBtn = document.getElementById("togglePasswordBtn");
-      const generatePasswordBtn = document.getElementById("generate-password");
-      const suggestionField = document.getElementById("password-suggestion");
-      const strengthText = document.getElementById("password-strength-text");
-      const bars = [
-        document.getElementById("strength-bar-1"),
-        document.getElementById("strength-bar-2"),
-        document.getElementById("strength-bar-3"),
-        document.getElementById("strength-bar-4"),
-      ];
-    
-      // إظهار وإخفاء كلمة المرور
-      togglePasswordBtn.addEventListener("click", () => {
-        const isHidden = passwordInput.type === "password";
-        passwordInput.type = isHidden ? "text" : "password";
-        togglePasswordBtn.textContent = isHidden ? "Hide" : "Show";
-      });
-    
-      // توليد كلمة مرور قوية
-      generatePasswordBtn.addEventListener("click", function () {
-        const uppercase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const lowercase = "abcdefghijklmnopqrstuvwxyz";
-        const numbers = "0123456789";
-        const symbols = "!@#$%^&*()_+-=";
-    
-        let password = "";
-        password += uppercase[Math.floor(Math.random() * uppercase.length)];
-        password += lowercase[Math.floor(Math.random() * lowercase.length)];
-        password += numbers[Math.floor(Math.random() * numbers.length)];
-        password += symbols[Math.floor(Math.random() * symbols.length)];
-    
-        const allChars = uppercase + lowercase + numbers + symbols;
-        for (let i = 0; i < 8; i++) {
-          password += allChars[Math.floor(Math.random() * allChars.length)];
-        }
-    
-        password = password.split("").sort(() => 0.5 - Math.random()).join("");
-    
-        suggestionField.value = password;
-        passwordInput.value = password;
-        passwordInput.type = "text";
-        togglePasswordBtn.textContent = "Hide";
-        checkPasswordStrength();
-      });
-    
-      // فحص قوة كلمة المرور
-      function checkPasswordStrength() {
-        const password = passwordInput.value;
-        bars.forEach((bar) => (bar.style.background = "#e0e0e0"));
-        if (password.length === 0) {
-          strengthText.textContent = "";
-          return;
-        }
-    
-        let strength = 0;
-        if (password.length >= 8) strength += 1;
-        if (password.length >= 12) strength += 1;
-        if (/[A-Z]/.test(password)) strength += 1;
-        if (/[a-z]/.test(password)) strength += 1;
-        if (/[0-9]/.test(password)) strength += 1;
-        if (/[^A-Za-z0-9]/.test(password)) strength += 1;
-    
-        const strengthLevel = Math.min(Math.floor(strength / 2), 4);
-        const colors = ["#ff4444", "#ffbb33", "#00C851", "#00C851"];
-        const messages = ["Very Weak", "Weak", "Good", "Strong", "Very Strong"];
-    
-        for (let i = 0; i < strengthLevel; i++) {
-          bars[i].style.background = colors[strengthLevel - 1];
-        }
-    
-        strengthText.textContent = messages[strengthLevel];
-        strengthText.style.color = colors[strengthLevel - 1];
-      }
-    
-      suggestionField.addEventListener("click", function () {
-        if (this.value) {
-          passwordInput.value = this.value;
-          checkPasswordStrength();
-          this.select();
+      document.addEventListener("DOMContentLoaded", () => {
+        const formSubmitBtn = document.querySelector(".btn-submit");
+        const generateBtn = document.getElementById("generate-password");
+        const passwordInput = document.getElementById("signup-password");
+        const passwordSuggestion = document.getElementById(
+          "password-suggestion"
+        );
+        const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+
+        // تحميل الجامعات والكليات من API
+        async function loadUniversitiesAndColleges() {
           try {
-            document.execCommand("copy");
-            const originalText = this.placeholder;
-            this.placeholder = "Copied to clipboard!";
-            setTimeout(() => {
-              this.placeholder = originalText;
-            }, 2000);
-          } catch (err) {
-            console.log("Copy failed");
-          }
-        }
-      });
-    
-      // حفظ البيانات في localStorage
-      function saveFormData() {
-        const formData = {
-          userName: document.getElementById("firstNameID").value.trim(),
-          university: document.getElementById("university").value,
-          faculty: document.getElementById("faculty").value,
-          birthdate: document.getElementById("birthdate").value,
-          phone: document.getElementById("phone").value.trim(),
-          email: document.getElementById("email").value.trim(),
-          password: document.getElementById("signup-password").value,
-          lastSaved: new Date().toISOString(),
-        };
-    
-        try {
-          localStorage.setItem("userRegistrationData", JSON.stringify(formData));
-          console.log("Data saved to localStorage:", formData);
-          return true;
-        } catch (e) {
-          console.error("Failed to save to localStorage:", e);
-          alert("Failed to save your data. Please try again.");
-          return false;
-        }
-      }
-    
-      // تحميل البيانات من localStorage
-      function loadFormData() {
-        try {
-          const savedData = localStorage.getItem("userRegistrationData");
-          if (savedData) {
-            const formData = JSON.parse(savedData);
-            const lastSaved = new Date(formData.lastSaved);
-            const hoursOld = (new Date() - lastSaved) / (1000 * 60 * 60);
-    
-            if (hoursOld < 24) {
-              document.getElementById("firstNameID").value = formData.userName || "";
-              document.getElementById("university").value = formData.university || "";
-              document.getElementById("faculty").value = formData.faculty || "";
-              document.getElementById("birthdate").value = formData.birthdate || "";
-              document.getElementById("phone").value = formData.phone || "";
-              document.getElementById("email").value = formData.email || "";
-    
-              const notification = document.createElement("div");
-              notification.style.position = "fixed";
-              notification.style.top = "10px";
-              notification.style.left = "50%";
-              notification.style.transform = "translateX(-50%)";
-              notification.style.backgroundColor = "#4CAF50";
-              notification.style.color = "white";
-              notification.style.padding = "10px 20px";
-              notification.style.borderRadius = "5px";
-              notification.style.zIndex = "1000";
-              notification.textContent = "Previous form data loaded";
-              document.body.appendChild(notification);
-              setTimeout(() => {
-                notification.style.opacity = "0";
-                setTimeout(() => document.body.removeChild(notification), 300);
-              }, 3000);
-            } else {
-              localStorage.removeItem("userRegistrationData");
-              console.log("Removed old form data from localStorage");
-            }
-          }
-        } catch (e) {
-          console.error("Failed to load from localStorage:", e);
-        }
-      }
-    
-      // حفظ تلقائي عند الكتابة
-      let saveTimeout;
-      function setupAutoSave() {
-        const formFields = [
-          "firstNameID",
-          "university",
-          "faculty",
-          "birthdate",
-          "phone",
-          "email",
-          "signup-password",
-        ];
-        formFields.forEach((fieldId) => {
-          document.getElementById(fieldId).addEventListener("input", () => {
-            clearTimeout(saveTimeout);
-            saveTimeout = setTimeout(() => {
-              saveFormData();
-            }, 1000);
-          });
-        });
-      }
-    
-      // التحقق من صحة النموذج
-      function validateForm() {
-        const requiredFields = [
-          { id: "firstNameID", name: "Full Name" },
-          { id: "university", name: "University" },
-          { id: "faculty", name: "Faculty" },
-          { id: "birthdate", name: "Date of Birth" },
-          { id: "phone", name: "Phone Number" },
-          { id: "email", name: "Email" },
-          { id: "signup-password", name: "Password" },
-        ];
-    
-        for (const field of requiredFields) {
-          const element = document.getElementById(field.id);
-          if (!element.value.trim()) {
-            element.focus();
-            element.style.borderColor = "#ff4444";
-            const errorMsg = document.createElement("div");
-            errorMsg.style.color = "#ff4444";
-            errorMsg.style.fontSize = "12px";
-            errorMsg.style.marginTop = "5px";
-            errorMsg.textContent = `Please enter your ${field.name}`;
-            const existingError = element.nextElementSibling;
-            if (
-              existingError &&
-              existingError.classList.contains("error-message")
-            ) {
-              element.parentNode.removeChild(existingError);
-            }
-            element.parentNode.appendChild(errorMsg);
-            errorMsg.classList.add("error-message");
-            return false;
-          }
-        }
-    
-        const email = document.getElementById("email").value.trim();
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          alert("Please enter a valid email address");
-          document.getElementById("email").focus();
-          return false;
-        }
-    
-        const password = document.getElementById("signup-password").value;
-        if (password.length < 8) {
-          alert("Password must be at least 8 characters long");
-          document.getElementById("signup-password").focus();
-          return false;
-        }
-    
-        return true;
-      }
-    
-      // عند تحميل الصفحة
-      window.addEventListener("DOMContentLoaded", () => {
-        loadFormData();
-        setupAutoSave();
-    
-        window.addEventListener("beforeunload", (e) => {
-          const formData = {
-            userName: document.getElementById("firstNameID").value.trim(),
-            university: document.getElementById("university").value,
-            faculty: document.getElementById("faculty").value,
-            birthdate: document.getElementById("birthdate").value,
-            phone: document.getElementById("phone").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            password: document.getElementById("signup-password").value,
-          };
-    
-          const hasData = Object.values(formData).some((value) => value);
-          if (hasData) {
-            e.preventDefault();
-            e.returnValue = "You have unsaved form data. Are you sure you want to leave?";
-            return e.returnValue;
-          }
-        });
-    
-        // عند الضغط على زر التسجيل
-        document.querySelector(".btn-submit").addEventListener("click", async function (e) {
-          e.preventDefault();
-    
-          if (!validateForm()) return;
-    
-          const name = document.getElementById("firstNameID").value.trim();
-          const email = document.getElementById("email").value.trim();
-          const password = document.getElementById("signup-password").value;
-          const phone = document.getElementById("phone").value.trim();
-          const universityId = parseInt(document.getElementById("university").value);
-          const collegeId = parseInt(document.getElementById("faculty").value);
-    
-          const formData = {
-            name: name,
-            email: email,
-            userName: name,
-            password: password,
-            phoneNumber: phone,
-            birthDate: birthdate,
-            universityId: universityId,
-            collegeId: collegeId
-          };
-    
-          try {
-            const response = await fetch("https://easyrentapi0.runasp.net/api/Student/register", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(formData)
+            // تحميل الجامعات
+            const uniRes = await fetch(
+              "https://easyrentapi0.runasp.net/api/University/get-all"
+            );
+            if (!uniRes.ok) throw new Error("Failed to load universities");
+            const universities = await uniRes.json();
+            const uniSelect = document.getElementById("universityId");
+            universities.forEach((u) => {
+              const option = document.createElement("option");
+              option.value = u.id;
+              option.textContent = u.name;
+              uniSelect.appendChild(option);
             });
-    
-            if (!response.ok) {
-              const errorData = await response.json();
-              alert("فشل في التسجيل: " + (errorData.message || "تحقق من البيانات."));
+
+            // تحميل الكليات
+            const collegeRes = await fetch(
+              "https://easyrentapi0.runasp.net/api/Student/all"
+            );
+            if (!collegeRes.ok) throw new Error("Failed to load colleges");
+            const colleges = await collegeRes.json();
+            const collegeSelect = document.getElementById("collegeId");
+            colleges.forEach((c) => {
+              const option = document.createElement("option");
+              option.value = c.id;
+              option.textContent = c.name;
+              collegeSelect.appendChild(option);
+            });
+          } catch (error) {
+            alert("Error loading universities or colleges: " + error.message);
+          }
+        }
+
+        // تقييم قوة كلمة المرور
+        function checkPasswordStrength() {
+          const val = passwordInput.value;
+          const bars = [
+            document.getElementById("strength-bar-1"),
+            document.getElementById("strength-bar-2"),
+            document.getElementById("strength-bar-3"),
+            document.getElementById("strength-bar-4"),
+          ];
+
+          let strength = 0;
+          if (val.length > 7) strength++;
+          if (/[A-Z]/.test(val)) strength++;
+          if (/[0-9]/.test(val)) strength++;
+          if (/[^A-Za-z0-9]/.test(val)) strength++;
+
+          bars.forEach((bar, i) => {
+            bar.style.background = i < strength ? "#4caf50" : "#e0e0e0";
+          });
+
+          const text = document.getElementById("password-strength-text");
+          const strengthText = [
+            "Very Weak",
+            "Weak",
+            "Medium",
+            "Strong",
+            "Very Strong",
+          ];
+          text.textContent = strengthText[strength];
+        }
+
+        // حفظ البيانات مؤقتًا
+        function saveFormData() {
+          const data = {
+            name: document.getElementById("firstNameID").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            phone: document.getElementById("phone").value.trim(),
+            address: document.getElementById("address").value.trim(),
+            password: passwordInput.value,
+            universityId: document.getElementById("universityId").value,
+            collegeId: document.getElementById("collegeId").value,
+          };
+          localStorage.setItem("signupFormData", JSON.stringify(data));
+        }
+
+        // تحميل البيانات المحفوظة
+        function loadFormData() {
+          const saved = localStorage.getItem("signupFormData");
+          if (!saved) return;
+          const data = JSON.parse(saved);
+          if (data.name)
+            document.getElementById("firstNameID").value = data.name;
+          if (data.email) document.getElementById("email").value = data.email;
+          if (data.phone) document.getElementById("phone").value = data.phone;
+          if (data.address)
+            document.getElementById("address").value = data.address;
+          if (data.password) {
+            passwordInput.value = data.password;
+            checkPasswordStrength();
+          }
+          if (data.universityId)
+            document.getElementById("universityId").value = data.universityId;
+          if (data.collegeId)
+            document.getElementById("collegeId").value = data.collegeId;
+        }
+
+        // إظهار/إخفاء كلمة المرور
+        togglePasswordBtn.addEventListener("click", () => {
+          if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            togglePasswordBtn.textContent = "Hide";
+          } else {
+            passwordInput.type = "password";
+            togglePasswordBtn.textContent = "Show";
+          }
+        });
+
+        // توليد كلمة مرور من API
+        generateBtn.addEventListener("click", async () => {
+          try {
+            const response = await fetch(
+              "https://easyrentapi0.runasp.net/api/Auth/generate-password"
+            );
+            if (!response.ok) throw new Error("Failed to generate password");
+            const data = await response.json();
+            passwordSuggestion.value = data.password || "";
+            passwordInput.value = data.password || "";
+            checkPasswordStrength();
+            saveFormData();
+          } catch (error) {
+            alert("Error generating password: " + error.message);
+          }
+        });
+
+        // إرسال بيانات التسجيل
+        formSubmitBtn.addEventListener("click", async (e) => {
+          e.preventDefault();
+
+          const password = passwordInput.value;
+
+          if (password.length < 8) {
+            alert("Password must be at least 8 characters.");
+            return;
+          }
+
+          const strongRegex =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
+          if (!strongRegex.test(password)) {
+            alert(
+              "Password must contain uppercase, lowercase, number, and special character."
+            );
+            return;
+          }
+
+          const payload = {
+            name: document.getElementById("firstNameID").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            userName: document.getElementById("firstNameID").value.trim(),
+            password,
+            phoneNumber: document.getElementById("phone").value.trim(),
+            address: document.getElementById("address").value.trim(),
+            universityId:
+              parseInt(document.getElementById("universityId").value) || 0,
+            collegeId:
+              parseInt(document.getElementById("collegeId").value) || 0,
+          };
+
+          if (!payload.name || !payload.email || !payload.password) {
+            alert("Please fill in all required fields.");
+            return;
+          }
+
+          if (payload.universityId === 0) {
+            alert("Please select a valid University.");
+            return;
+          }
+
+          if (payload.collegeId === 0) {
+            alert("Please select a valid College.");
+            return;
+          }
+
+          try {
+            const res = await fetch(
+              "https://easyrentapi0.runasp.net/api/Student/register",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+              }
+            );
+
+            if (!res.ok) {
+              const text = await res.text();
+              alert("Error: " + text);
               return;
             }
-    
-            const result = await response.json();
-            alert("✅ تم التسجيل بنجاح!");
-            // window.location.href = "login.html";
-    
+
+            alert("Registration successful!");
+            localStorage.removeItem("signupFormData");
+            // window.location.href = 'login.html';
           } catch (error) {
-            console.error("خطأ أثناء التسجيل:", error);
-            alert("⚠️ حدث خطأ في الاتصال بالخادم.");
+            alert("Network error: " + error.message);
           }
         });
+
+        // حفظ البيانات عند التغيير
+        document.querySelectorAll("input, select").forEach((input) => {
+          input.addEventListener("input", saveFormData);
+        });
+
+        passwordInput.addEventListener("input", checkPasswordStrength);
+
+        // تحميل بيانات الجامعات والكليات ثم تحميل بيانات الفورم
+        loadUniversitiesAndColleges().then(loadFormData);
       });
     </script>
-    
-      </body>
+  </body>
 </html>

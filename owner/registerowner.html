@@ -10,9 +10,16 @@
 
     <link
       rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/remixicon/2.5.0/remixicon.min.css"
+    />
+
+    <link
+      rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
     <style>
+      @import url("https://fonts.googleapis.com/css2?family=playfair+Display:wght@100..400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+
       /* القواعد العامة */
       * {
         margin: 0;
@@ -143,256 +150,510 @@
         margin-top: 5px;
         display: none;
       }
+
+      /* Footer Styles */
+      .footer {
+        background: #1a193f;
+      }
+
+      .footer__contanier {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr; /* 3 أعمدة */
+        gap: 4rem 2rem;
+      }
+
+      .footer__logo {
+        margin-bottom: 2rem;
+        color: #82c9ff;
+      }
+      .footer__logo span {
+        line-height: 1.2;
+        font-family: "playfair Display", serif;
+        font-size: 26px;
+        font-weight: bold;
+        color: #82c9ff;
+      }
+      .footer__logo div {
+        background: #82c9ff;
+        color: #1a193f;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 0px;
+        font-weight: bold;
+        font-size: 24px;
+      }
+
+      .footer__socials {
+        list-style: none;
+        margin-top: 2rem;
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .footer__socials a {
+        padding: 6px 10px;
+        font-size: 1.25rem;
+        color: var(--text-light);
+        background-color: azure;
+        border-radius: 100%;
+        cursor: pointer;
+        transition: 0.3s;
+      }
+
+      .footer__socials a:hover {
+        color: #f8f8f8;
+        background-color: #9cb5ff;
+      }
+
+      .footer__col h4 {
+        margin-bottom: 2.5rem;
+        font-size: 1.25rem;
+        font-weight: 800;
+        font-family: "playfair Display", serif;
+        color: #f8f8f8;
+      }
+
+      .footer__links {
+        list-style: none;
+      }
+
+      .footer__links li {
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+      }
+
+      .footer__links a {
+        color: #fff;
+        transition: 0.3s;
+        gap: 1rem;
+      }
+
+      .footer__links a:hover {
+        color: #82c9ff;
+      }
+
+      .footer__col:last-child .footer__links li {
+        margin-bottom: 2rem;
+      }
+
+      .footer__links span {
+        font-size: 2rem;
+        color: #82c9ff;
+      }
+
+      .footer__links h5 {
+        margin-bottom: 0.5rem;
+        font-size: 1rem;
+        font-weight: 800;
+        font-family: "playfair Display", serif;
+        color: #fff;
+      }
+
+      .footer__links p {
+        color: #fff;
+      }
+
+      .footer__bar {
+        padding: 1rem;
+        font-size: 0.8rem;
+        color: white;
+        text-align: center;
+      }
+      .section__description {
+        color: #fcfcfc;
+      }
+      .custom-divider {
+        border: none;
+        height: 1px;
+        background-color: rgba(0, 0, 0, 0.1);
+        margin: 50px auto 30px;
+        width: 85%;
+      }
+      @media (max-width: 375px) {
+        body {
+          padding: 15px;
+        }
+
+        .title {
+          font-size: 22px;
+        }
+
+        .form-group input,
+        .input-group select {
+          padding: 10px;
+          font-size: 15px;
+        }
+
+        .btn-submit {
+          padding: 12px;
+          margin-bottom: 40px;
+          font-size: 15px;
+        }
+
+        .footer__contanier {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .footer__col:first-child {
+          grid-column: 1/3;
+        }
+      }
     </style>
   </head>
   <body>
     <main>
-      
       <div class="container">
         <!-- العنوان الرئيسي -->
         <h1 class="title">Finish signing up</h1>
         <form id="registerForm">
-        <div class="form-group">
-          <label for="legalName">Legal Name</label>
-          <input type="text" id="legalName" placeholder="First name on ID" />
-          <div class="error-message" id="legalNameError">
-            Please enter your legal name
+          <div class="form-group">
+            <label for="legalName">Legal Name</label>
+            <input type="text" id="legalName" placeholder="First name on ID" />
+            <div class="error-message" id="legalNameError">
+              Please enter your legal name
+            </div>
           </div>
-        </div>
-        <div class="sub-note">
-          Make sure this matches the name on your government ID. If you go by
-          another name, you can add a preferred first name.
-        </div>
-        <div class="form-group">
-          <label for="username">Username</label>
-          <input type="text" id="username" placeholder="Choose a username" />
-          <div class="error-message" id="usernameError">
-            Please choose a username
+          <div class="sub-note">
+            Make sure this matches the name on your government ID. If you go by
+            another name, you can add a preferred first name.
           </div>
-        </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Choose a username" />
+            <div class="error-message" id="usernameError">
+              Please choose a username
+            </div>
+          </div>
 
-        <div class="date-note">
-          To sign up, you need to be at least 18. Your username won't be shared
-          with other people who use Easy Rent.
-        </div>
+          <div class="date-note">
+            To sign up, you need to be at least 18. Your username won't be
+            shared with other people who use Easy Rent.
+          </div>
 
-        <!-- البريد الإلكتروني -->
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" placeholder="user@gmail.com" />
-          <div class="error-message" id="emailError">
-            Please enter a valid email
+          <!-- البريد الإلكتروني -->
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="user@gmail.com" />
+            <div class="error-message" id="emailError">
+              Please enter a valid email
+            </div>
+          </div>
+
+          <!-- رقم الهاتف -->
+          <div class="form-group">
+            <label for="phone">Phone number</label>
+            <input
+              type="text"
+              id="phone"
+              placeholder="Enter your phone number"
+            />
+            <div class="error-message" id="phoneError">
+              Please enter a valid phone number
+            </div>
+
+            <!-- الموقع -->
+            <div class="form-group">
+              <label for="location">Location</label>
+              <input
+                type="text"
+                id="location"
+                placeholder="Enter your location"
+              />
+              <div class="error-message" id="locationError">
+                Please enter your location
+              </div>
+            </div>
+            <div class="password-container">
+              <label for="password">Password</label>
+              <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+              />
+              <button
+                type="button"
+                class="show-password"
+                id="togglePasswordBtn"
+              >
+                Show
+              </button>
+              <button
+                type="button"
+                class="show-password"
+                id="generatePasswordBtn"
+                style="right: 60px"
+              >
+                Generate
+              </button>
+              <div class="error-message" id="passwordError">
+                Password must be at least 6 characters
+              </div>
+            </div>
+
+            <!-- الزر الرئيسي -->
+            <button class="btn-submit" id="submitBtn" type="submit">
+              Agree and continue
+            </button>
+          </div>
+        </form>
+      </div>
+    </main>
+
+    <hr class="custom-divider" />
+    <footer class="footer" id="contact">
+      <div class="section__contanier footer__contanier">
+        <div class="footer__col">
+          <div class="logo footer__logo">
+            <div>E</div>
+            <span>EASY <br />RENT</span>
+          </div>
+          <p class="section__description">
+            Easy rent is dedicated to simplifying the process of finding student
+            accommandations, it enables a seamless connection between students
+            and owners.
+          </p>
+          <ul class="footer__socials">
+            <li>
+              <a href="#" target="_blank"><i class="ri-facebook-line"></i></a>
+            </li>
+            <li>
+              <a href="#" target="_blank"><i class="ri-instagram-line"></i></a>
+            </li>
+            <li>
+              <a href="#" target="_blank"><i class="ri-linkedin-line"></i></a>
+            </li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4>Services</h4>
+          <div class="footer__links">
+            <li><a href="#">Online Booking</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="#"> Special Offers</a></li>
+            <li><a href="#">Room Customization</a></li>
+            <li><a href="#">Customer Support</a></li>
           </div>
         </div>
-
-      
-        <!-- رقم الهاتف -->
-        <div class="form-group">
-          <label for="phone">Phone number</label>
-          <input type="text" id="phone" placeholder="Enter your phone number" />
-          <div class="error-message" id="phoneError">
-            Please enter a valid phone number
+        <div class="footer__col">
+          <h4>Contact Us</h4>
+          <div class="footer__links">
+            <li>
+              <span><i class="ri-phone-fill"></i></span>
+              <div>
+                <h5>Phone Number</h5>
+                <p>+20 1224170048</p>
+              </div>
+            </li>
+            <li>
+              <span><i class="ri-record-mail-line"></i></span>
+              <div>
+                <h5>Email</h5>
+                <p>info@easyrent15.com</p>
+              </div>
+            </li>
+            <li>
+              <span><i class="ri-map-pin-2-fill"></i></span>
+              <div>
+                <h5>Location</h5>
+                <p>Minya st. Taha-Hessien</p>
+              </div>
+            </li>
           </div>
         </div>
-        <!-- الموقع -->
-        <div class="form-group">
-          <label for="location">Location</label>
-          <input type="text" id="location" placeholder="Enter your location" />
-          <div class="error-message" id="locationError">
-            Please enter your location
-          </div>
-        </div>
-        <div class="password-container">
-          <label for="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            placeholder="Enter your password"
-          />
-          <button type="button" class="show-password" id="togglePasswordBtn">Show</button>
-          <button type="button" class="show-password" id="generatePasswordBtn" style="right: 60px;">Generate</button>
-          <div class="error-message" id="passwordError">Password must be at least 6 characters</div>
-        </div>
-      
-        <!-- الزر الرئيسي -->
-        <button class="btn-submit" id="submitBtn" type="submit">Agree and continue</button>
-      </form>
+      </div>
+      <div class="footer__bar">
+        EasyRent copyright 2025 web Design .All rights reserved.
+      </div>
+    </footer>
+    <script>
+      const passwordInput = document.getElementById("password");
+      const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+      const submitBtn = document.getElementById("submitBtn");
 
-      <script>
-        const passwordInput = document.getElementById("password");
-        const togglePasswordBtn = document.getElementById("togglePasswordBtn");
-        const submitBtn = document.getElementById("submitBtn");
-      
-        // إظهار وإخفاء كلمة السر
-        togglePasswordBtn.addEventListener("click", () => {
-          const isPassword = passwordInput.type === "password";
-          passwordInput.type = isPassword ? "text" : "password";
-          togglePasswordBtn.textContent = isPassword ? "Hide" : "Show";
-        });
-      
-        // تحقق من صحة الإيميل
-        function isValidEmail(email) {
-          const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          return re.test(email);
-        }
-      
-        // تحقق من صحة رقم الهاتف (بسيط)
-        function isValidPhone(phone) {
-          const re = /^\+?\d{7,15}$/;
-          return re.test(phone);
-        }
+      // إظهار وإخفاء كلمة السر
+      togglePasswordBtn.addEventListener("click", () => {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+        togglePasswordBtn.textContent = isPassword ? "Hide" : "Show";
+      });
+
+      // تحقق من صحة الإيميل
+      function isValidEmail(email) {
+        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        return re.test(email);
+      }
+
+      // تحقق من صحة رقم الهاتف (بسيط)
+      function isValidPhone(phone) {
+        const re = /^\+?\d{7,15}$/;
+        return re.test(phone);
+      }
       // دالة توليد كلمة مرور عشوائية
-function generateRandomPassword(length = 10) {
-  const chars =
-    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
-  let password = "";
-  for (let i = 0; i < length; i++) {
-    password += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return password;
-}
-
-// ربط زر توليد كلمة المرور
-const generatePasswordBtn = document.getElementById("generatePasswordBtn");
-
-generatePasswordBtn.addEventListener("click", () => {
-  const newPassword = generateRandomPassword(12); // طول 12 حرف مثلاً
-  passwordInput.value = newPassword;
-  // غير نوع الحقل عشان يشوف المستخدم الباسورد الجديد (اختياري)
-  passwordInput.type = "text";
-  togglePasswordBtn.textContent = "Hide";
-  updateSubmitButtonState();
-});
-
-        // تحقق بسيط لتفعيل زر الإرسال
-        function canEnableSubmit() {
-          const legalName = document.getElementById("legalName").value.trim();
-          const username = document.getElementById("username").value.trim();
-          const email = document.getElementById("email").value.trim();
-          const password = passwordInput.value;
-          const phone = document.getElementById("phone").value.trim();
-          const location = document.getElementById("location").value.trim();
-      
-          return (
-            legalName !== "" &&
-            username !== "" &&
-            isValidEmail(email) &&
-            password.length >= 6 &&
-            isValidPhone(phone) &&
-            location !== ""
-          );
+      function generateRandomPassword(length = 10) {
+        const chars =
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
+        let password = "";
+        for (let i = 0; i < length; i++) {
+          password += chars.charAt(Math.floor(Math.random() * chars.length));
         }
-      
-        function updateSubmitButtonState() {
-          submitBtn.disabled = !canEnableSubmit();
-        }
-      
-        // ربط التحقق على المدخلات
-        ["legalName", "username", "email", "password", "phone", "location"].forEach(
-          (id) => {
-            document.getElementById(id).addEventListener("input", updateSubmitButtonState);
-          }
+        return password;
+      }
+
+      // ربط زر توليد كلمة المرور
+      const generatePasswordBtn = document.getElementById(
+        "generatePasswordBtn"
+      );
+
+      generatePasswordBtn.addEventListener("click", () => {
+        const newPassword = generateRandomPassword(12); // طول 12 حرف مثلاً
+        passwordInput.value = newPassword;
+        // غير نوع الحقل عشان يشوف المستخدم الباسورد الجديد (اختياري)
+        passwordInput.type = "text";
+        togglePasswordBtn.textContent = "Hide";
+        updateSubmitButtonState();
+      });
+
+      // تحقق بسيط لتفعيل زر الإرسال
+      function canEnableSubmit() {
+        const legalName = document.getElementById("legalName").value.trim();
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = passwordInput.value;
+        const phone = document.getElementById("phone").value.trim();
+        const location = document.getElementById("location").value.trim();
+
+        return (
+          legalName !== "" &&
+          username !== "" &&
+          isValidEmail(email) &&
+          password.length >= 6 &&
+          isValidPhone(phone) &&
+          location !== ""
         );
-      
-        updateSubmitButtonState(); // تفعيل أولي
-      
-        // التحقق من صحة النموذج وعرض رسائل الخطأ
-        function validateForm() {
-          let isValid = true;
-          document.querySelectorAll(".error-message").forEach((el) => {
-            el.style.display = "none";
-          });
-      
-          const legalName = document.getElementById("legalName").value.trim();
-          const username = document.getElementById("username").value.trim();
-          const email = document.getElementById("email").value.trim();
-          const password = passwordInput.value;
-          const phone = document.getElementById("phone").value.trim();
-          const location = document.getElementById("location").value.trim();
-      
-          if (legalName === "") {
-            document.getElementById("legalNameError").style.display = "block";
-            isValid = false;
-          }
-          if (username === "") {
-            document.getElementById("usernameError").style.display = "block";
-            isValid = false;
-          }
-          if (!isValidEmail(email)) {
-            document.getElementById("emailError").style.display = "block";
-            isValid = false;
-          }
-          if (password.length < 6) {
-            document.getElementById("passwordError").style.display = "block";
-            isValid = false;
-          }
-          if (!isValidPhone(phone)) {
-            document.getElementById("phoneError").style.display = "block";
-            isValid = false;
-          }
-          if (location === "") {
-            document.getElementById("locationError").style.display = "block";
-            isValid = false;
-          }
-      
-          return isValid;
+      }
+
+      function updateSubmitButtonState() {
+        submitBtn.disabled = !canEnableSubmit();
+      }
+
+      // ربط التحقق على المدخلات
+      [
+        "legalName",
+        "username",
+        "email",
+        "password",
+        "phone",
+        "location",
+      ].forEach((id) => {
+        document
+          .getElementById(id)
+          .addEventListener("input", updateSubmitButtonState);
+      });
+
+      updateSubmitButtonState(); // تفعيل أولي
+
+      // التحقق من صحة النموذج وعرض رسائل الخطأ
+      function validateForm() {
+        let isValid = true;
+        document.querySelectorAll(".error-message").forEach((el) => {
+          el.style.display = "none";
+        });
+
+        const legalName = document.getElementById("legalName").value.trim();
+        const username = document.getElementById("username").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = passwordInput.value;
+        const phone = document.getElementById("phone").value.trim();
+        const location = document.getElementById("location").value.trim();
+
+        if (legalName === "") {
+          document.getElementById("legalNameError").style.display = "block";
+          isValid = false;
         }
-      
-        submitBtn.addEventListener("click", async (e) => {
-          e.preventDefault();
-        
-          if (!validateForm()) return;
-        
-          try {
-            // أولاً توليد كلمة المرور
-            const genRes = await fetch("https://easyrentapi0.runasp.net/api/Auth/generate-password");
-            if (!genRes.ok) throw new Error("فشل توليد كلمة المرور");
-        
-            const genData = await genRes.json();
-            const generatedPassword = genData.password;
-        
-            // بعدها تبني userData بالكلمة المولدة
-            const userData = {
-              name: document.getElementById("legalName").value.trim(),
-              userName: document.getElementById("username").value.trim(),
-              email: document.getElementById("email").value.trim(),
-              password: generatedPassword, // استخدم الكلمة المولدة هنا
-              phoneNumber: document.getElementById("phone").value.trim(),
-              address: document.getElementById("location").value.trim(),
-            };
-        
-            console.log("بيانات المستخدم التي سترسلها:", userData);
-        
-            // إرسال بيانات التسجيل
-            const response = await fetch("https://easyrentapi0.runasp.net/api/Owner/register", {
+        if (username === "") {
+          document.getElementById("usernameError").style.display = "block";
+          isValid = false;
+        }
+        if (!isValidEmail(email)) {
+          document.getElementById("emailError").style.display = "block";
+          isValid = false;
+        }
+        if (password.length < 6) {
+          document.getElementById("passwordError").style.display = "block";
+          isValid = false;
+        }
+        if (!isValidPhone(phone)) {
+          document.getElementById("phoneError").style.display = "block";
+          isValid = false;
+        }
+        if (location === "") {
+          document.getElementById("locationError").style.display = "block";
+          isValid = false;
+        }
+
+        return isValid;
+      }
+
+      submitBtn.addEventListener("click", async (e) => {
+        e.preventDefault();
+
+        if (!validateForm()) return;
+
+        try {
+          // أولاً توليد كلمة المرور
+          const genRes = await fetch(
+            "https://easyrentapi0.runasp.net/api/Auth/generate-password"
+          );
+          if (!genRes.ok) throw new Error("فشل توليد كلمة المرور");
+
+          const genData = await genRes.json();
+          const generatedPassword = genData.password;
+
+          // بعدها تبني userData بالكلمة المولدة
+          const userData = {
+            name: document.getElementById("legalName").value.trim(),
+            userName: document.getElementById("username").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            password: generatedPassword, // استخدم الكلمة المولدة هنا
+            phoneNumber: document.getElementById("phone").value.trim(),
+            address: document.getElementById("location").value.trim(),
+          };
+
+          console.log("بيانات المستخدم التي سترسلها:", userData);
+
+          // إرسال بيانات التسجيل
+          const response = await fetch(
+            "https://easyrentapi0.runasp.net/api/Owner/register",
+            {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify(userData),
-            });
-        
-            if (!response.ok) {
-              const text = await response.text();
-              console.error("Response error text:", text); // طباعة رسالة الخطأ الكاملة من السيرفر
-              let errorMsg = response.statusText;
-              try {
-                const errorData = JSON.parse(text);
-                errorMsg = errorData.message || errorMsg;
-              } catch {}
-              throw new Error(errorMsg);
             }
-            
-            alert("تم التسجيل بنجاح! الرجاء تسجيل الدخول.");
-            window.location.href = "./loginowner.html";
-        
-          } catch (error) {
-            console.error("Detailed error message:", error);
-            alert("Error occurred: " + (error.message || error));
+          );
+
+          if (!response.ok) {
+            const text = await response.text();
+            console.error("Response error text:", text); // طباعة رسالة الخطأ الكاملة من السيرفر
+            let errorMsg = response.statusText;
+            try {
+              const errorData = JSON.parse(text);
+              errorMsg = errorData.message || errorMsg;
+            } catch {}
+            throw new Error(errorMsg);
           }
-        });
-        
-      </script>
-      
-      
-    </main>
+
+          alert("تم التسجيل بنجاح! الرجاء تسجيل الدخول.");
+          window.location.href = "./loginowner.html";
+        } catch (error) {
+          console.error("Detailed error message:", error);
+          alert("Error occurred: " + (error.message || error));
+        }
+      });
+    </script>
   </body>
 </html>
