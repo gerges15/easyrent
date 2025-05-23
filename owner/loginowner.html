@@ -345,6 +345,27 @@
         outline: none;
         appearance: none;
       }
+      .password-wrapper {
+        position: relative;
+        display: inline-block;
+      }
+      #password {
+        padding-right: 60px; /* مساحة للزر */
+      }
+      #togglePasswordBtn {
+        position: absolute;
+        right: 5px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: transparent;
+        border: none;
+        cursor: pointer;
+        color: #007bff;
+        font-weight: bold;
+      }
+      #togglePasswordBtn:focus {
+        outline: none;
+      }
 
       /* تحسين للخطوط الصغيرة في الشاشات الضيقة */
       @media (max-width: 320px) {
@@ -468,14 +489,11 @@
         rates apply.
       </p>
       <div class="input-group">
-      
-          <input type="password" id="password" placeholder="Password" />
-          <label>
-            <input type="checkbox" id="togglePassword" />
-            Show Password
-          </label>
-      
-      </div>
+        <div class="password-wrapper">
+          <input type="password" id="password" />
+        </div>
+        </div>
+        
 
       <button type="submit" class="btn-primary" id="loginBtn">Continue</button>
       </form>
@@ -580,10 +598,22 @@
         EasyRent copyright 2025 web Design .All rights reserved.
       </div>
     </footer>
-    <script type="module">  
-      document.getElementById("togglePassword").addEventListener("change", function () {
-        const passwordInput = document.getElementById("password");
-        passwordInput.type = this.checked ? "text" : "password";
+
+    
+    <script type="module">
+
+      const passwordInput = document.getElementById("password");
+      const togglePasswordBtn = document.createElement("button");
+      togglePasswordBtn.type = "button";
+      togglePasswordBtn.id = "togglePasswordBtn";
+      togglePasswordBtn.textContent = "Show";
+      
+      passwordInput.parentNode.appendChild(togglePasswordBtn);
+      
+      togglePasswordBtn.addEventListener("click", () => {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+        togglePasswordBtn.textContent = isPassword ? "Hide" : "Show";
       });
       
       document.getElementById("loginForm").addEventListener("submit", async function (e) {
@@ -598,50 +628,48 @@
           return;
         }
       
-        const payload = {
-          emailOrPhone,
-          password
-        };
-      
         try {
-          const res = await fetch("https://easyrentapi0.runasp.net/api/Owner/login", {
+          const loginRes = await fetch("https://easyrentapi0.runasp.net/api/Owner/login", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({
+              emailOrPhone,
+              password // مباشرة بدون تشفير
+            })
           });
       
-          if (res.ok) {
-            const data = await res.json();
-            localStorage.setItem("user", JSON.stringify(data));
-      
-            // redirect based on user role
-            if (data.role === "admin") {
-              location.href = "admin.html";
-            } else if (data.role === "owner") {
-              location.href = "owner.html";
-            } else {
-              location.href = "student.html";
-            }
-      
-          } else {
-            const errorText = await res.text();
+          if (!loginRes.ok) {
+            let errorMsg = await loginRes.text();
             try {
-              const errorData = JSON.parse(errorText);
-              alert(errorData.message || "Login failed. Please try again.");
-            } catch (e) {
-              alert(errorText || "Login failed. Please try again.");
-            }
+              const errObj = JSON.parse(errorMsg);
+              errorMsg = errObj.message || errorMsg;
+            } catch {}
+            alert(errorMsg || "Login failed. Please try again.");
+            return;
           }
       
+          const data = await loginRes.json();
+          localStorage.setItem("user", JSON.stringify(data));
+      
+          // توجيه حسب الدور
+          if (data.role === "admin") {
+            location.href = "admin.html";
+          } else if (data.role === "owner") {
+            location.href = "../dashbord.html";
+
+          } else {
+            location.href = "../index.html"; // أو أي صفحة خاصة بالطالب
+          }
+          
+      
         } catch (err) {
-          console.error(err);
-          alert("Something went wrong. Please try again later.");
+          console.error("Unexpected error:", err);
+          alert(err.message || "Something went wrong. Please try again later.");
         }
       });
       
-      </script>
       
-    
-      
+            
+    </script>           
 </body> 
 </html>
