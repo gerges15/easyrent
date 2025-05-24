@@ -197,51 +197,67 @@
     </div>
 
     <script>
-      // لو مفيش بيانات محفوظة في localStorage نحط صفرات كبداية
-      const sampleRentData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
-      if (!localStorage.getItem("rentData")) {
-        localStorage.setItem("rentData", JSON.stringify(sampleRentData));
+      document.addEventListener("DOMContentLoaded", () => {
+        const token = localStorage.getItem("token");
+        const ownerId = localStorage.getItem("ownerId");
+      
+        if (!token || !ownerId) {
+          window.location.href = "../loginowner.html"; // توجيه فوري
+        }
+      });
+      
+    
+        try {
+          const response = await fetch("https://easyrentapi0.runasp.net/api/Unit", {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+    
+          if (!response.ok) throw new Error("فشل في تحميل الوحدات.");
+    
+          const data = await response.json();
+    
+          // تصفية العقارات الخاصة بالمالك فقط
+          const ownerUnits = data.filter(unit => unit.ownerId_FK === ownerId);
+    
+          updateDashboard(ownerUnits);
+        } catch (error) {
+          console.error("Error fetching units:", error);
+          alert("حدث خطأ أثناء تحميل البيانات.");
+        }
+      
+    
+      function updateDashboard(properties) {
+        const total = properties.length;
+        const available = properties.filter(p => p.status === "available").length;
+    
+        document.getElementById("total-property").textContent = total;
+        document.getElementById("to-rent").textContent = available;
+    
+        const monthlyData = Array(12).fill(0);
+        properties.forEach(p => {
+          const month = new Date(p.createdAt).getMonth();
+          monthlyData[month]++;
+        });
+    
+        renderChart(monthlyData);
       }
-
-      const rentData = JSON.parse(localStorage.getItem("rentData")) || [];
-
-      // تحديث الأرقام
-      const totalRent = rentData.reduce((a, b) => a + b, 0);
-      document.getElementById("total-property").innerText = totalRent;
-      document.getElementById("to-rent").innerText = totalRent;
-
-      // عرض رسالة بدل الجراف لو مفيش بيانات
-      if (totalRent === 0) {
-        document.getElementById("chartContainer").innerHTML = `
-          <h3><i class="fas fa-chart-bar"></i> Properties Per Month</h3>
-          <p style="color: #999; font-size: 16px;">There is no data yet, no apartments are being added for rent.</p>
-        `;
-      } else {
+    
+      function renderChart(data) {
         const ctx = document.getElementById("propertiesChart").getContext("2d");
         new Chart(ctx, {
           type: "bar",
           data: {
             labels: [
-              "January",
-              "February",
-              "March",
-              "April",
-              "May",
-              "June",
-              "July",
-              "August",
-              "September",
-              "October",
-              "November",
-              "December",
+              "January", "February", "March", "April", "May", "June",
+              "July", "August", "September", "October", "November", "December"
             ],
-            datasets: [
-              {
-                label: "property rent",
-                data: rentData,
-                backgroundColor: "#ff69b4",
-              },
-            ],
+            datasets: [{
+              label: "Properties Added",
+              data,
+              backgroundColor: "#ff69b4",
+            }],
           },
           options: {
             responsive: true,
@@ -249,36 +265,17 @@
               y: {
                 beginAtZero: true,
                 ticks: {
-                  stepSize: 1,
-                },
-              },
-            },
-          },
+                  stepSize: 1
+                }
+              }
+            }
+          }
         });
       }
-
-      // Load data from localStorage or initialize if not exists
-      let dashboardData = JSON.parse(localStorage.getItem("dashboardData")) || {
-        totalProperty: 0,
-        toSale: 0,
-        toRent: 0,
-        availableRent: 0,
-        monthlyData: [100, 75, 90, 25, 0, 0, 0, 0, 0, 0, 0, 0],
-        cookiesAccepted: false,
-      };
-
-      // DOM elements
-      const totalPropertyEl = document.getElementById("total-property");
-      const toRentEl = document.getElementById("to-rent");
-
-      // Initialize UI
-      function initUI() {
-        totalPropertyEl.textContent = dashboardData.totalProperty;
-        toRentEl.textContent = dashboardData.toRent;
-      }
-
-      // Initialize the UI when page loads
-      document.addEventListener("DOMContentLoaded", initUI);
+    
+      // تحميل البيانات عند فتح الصفحة
+      document.addEventListener("DOMContentLoaded", loadPropertiesFromAPI);
     </script>
+    
   </body>
 </html>

@@ -640,17 +640,26 @@
           }
       
           const data = await loginRes.json();
-          localStorage.setItem("user", JSON.stringify(data));
-      
+console.log(data); // عشان تتأكد من شكل البيانات
+
+// حفظ البيانات
+localStorage.setItem("user", JSON.stringify(data));
+localStorage.setItem("ownerId", data.ownerId); // ✅ التصحيح هنا
+// لو عندك توكن أضفها هنا كمان:
+localStorage.setItem("token", data.token); // لو التوكن جاية ضمن الاستجابة
+
+// التوجيه حسب الدور (افتراض إن دي صفحة المالك فقط)
+location.href = "../owner/dashbord.html";
+
           // توجيه حسب الدور
           if (data.role === "admin") {
             location.href = "admin.html";
           } else if (data.role === "Owner") {
-            location.href = "../owner/dashbord.html"; // أو أي صفحة خاصة بالطالب
-
+            location.href = "../owner/dashbord.html";
           } else {
-            location.href = "dashbord.html"; // أو أي صفحة خاصة بالطالب
+            location.href = "dashbord.html"; // صفحة الطالب
           }
+          
           
       
         } catch (err) {

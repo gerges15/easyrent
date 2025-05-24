@@ -197,6 +197,116 @@
       canvas {
         max-width: 100%;
       }
+      #uploadButton {
+        padding: 8px 16px;
+        background-color: #3baaff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      #uploadButton:hover {
+        background-color: #2196f3;
+      }
+      #dropZone {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border: 2px dashed #b0bec5;
+        padding: 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        user-select: none;
+        margin-bottom: 10px;
+      }
+      #dropZone:hover {
+        background-color: #e0f0ff;
+        border-color: #3baaff;
+      }
+      #uploadButton {
+        padding: 8px 16px;
+        background-color: #3baaff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      #uploadButton:hover {
+        background-color: #2196f3;
+      }
+      #previewContainer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      #previewContainer div {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #ccc;
+      }
+      #previewContainer img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      #dropZone {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        border: 2px dashed #b0bec5;
+        padding: 20px;
+        border-radius: 8px;
+        cursor: pointer;
+        user-select: none;
+        margin-bottom: 10px;
+      }
+      #dropZone:hover {
+        background-color: #e0f0ff;
+        border-color: #3baaff;
+      }
+      #uploadButton {
+        padding: 8px 16px;
+        background-color: #3baaff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      #uploadButton:hover {
+        background-color: #2196f3;
+      }
+      #previewContainer {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      #previewContainer div {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        border-radius: 8px;
+        overflow: hidden;
+        border: 1px solid #ccc;
+      }
+      #previewContainer img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+      }
+      .msg {
+        margin-bottom: 15px;
+        font-weight: 600;
+        color: green;
+        background: #040404;
+      }
+      
     </style>
   </head>
   <body>
@@ -225,14 +335,15 @@
         something amazing—exciting improvements are on the way!
       </div>
 
-      <form class="form-container">
+      <form id="propertyForm" class="form-container">
         <div class="form-section">
-          <h3 style="padding: 0.7rem">Property Info</h3>
-          <hr style="color:#c9d2d7"/>
+          <h3>Property Info</h3>
+          <hr/>
           <div class="row">
+            <!-- حقول هنا بدون فورم إضافي -->
             <div class="form-group">
               <label>Price *</label>
-              <input type="number" placeholder="Enter Price" required />
+              <input type="number" placeholder="Enter Price" id="price" required />
             </div>
             <div class="form-group">
               <label>Type *</label>
@@ -244,10 +355,10 @@
               </select>
             </div>
           </div>
-          <div class="row">
+            <div class="row">
             <div class="form-group">
               <label>Property Name *</label>
-              <input type="text" placeholder="Enter Property Name" required />
+              <input type="text" placeholder="Enter Property Name" id="title" required />
             </div>
             <div class="form-group">
               <label>Home Type *</label>
@@ -255,13 +366,15 @@
             </div>
           </div>
           <div class="form-group">
-            <label>Description *</label>
+            <label for="address">Address</label>
             <textarea
+              id="address"
               rows="3"
-              placeholder="Write About Property"
+              placeholder="Write About address"
               required
             ></textarea>
           </div>
+          
           <div class="form-group">
             <label>Property Size *</label>
             <input type="text" placeholder="Enter Property Size" required />
@@ -312,12 +425,41 @@
 
         <div class="form-section">
           <h3>Property Image</h3>
-          <div class="image-upload">
-            <span>📷 Drop your files here</span>
-            <label for="imageUpload">Choose File</label>
-            <input type="file" id="imageUpload" accept="image/*" />
-            <img id="preview" />
+          <div class="form-group">
+            <label for="nearbyLandmarks">Nearby Landmarks *</label>
+            <input id="nearbyLandmarks" name="Nearby Landmarks" type="text" placeholder="Landmarks" required />
           </div>
+      
+
+        <div class="form-section">
+          <h3>Upload Images</h3>
+          <hr />
+          <div
+            id="dropZone"
+            title="Click to select images or drag & drop here"
+            tabindex="0"
+          >
+            <i class="fas fa-cloud-upload-alt"></i>
+            <span>Upload Images</span>
+            <button
+              type="button"
+              id="uploadButton"
+              aria-label="Upload Images"
+              title="Upload Images"
+            >
+              Upload
+            </button>
+          </div>
+          <input
+            type="file"
+            id="imageUpload"
+            multiple
+            accept="image/png, image/jpeg, image/jpg"
+            style="display: none"
+          />
+          <div id="previewContainer"></div>
+          <button type="button" id="deleteAllBtn">Delete All Images</button>
+    
 
           <div class="form-group">
             <label>Contact No. *</label>
@@ -339,48 +481,173 @@
       </form>
     </div>
     <script>
-      const form = document.querySelector("form");
-      const imageInput = document.getElementById("imageUpload");
-      const preview = document.getElementById("preview");
+      const dropZone = document.getElementById("dropZone");
+const imageInput = document.getElementById("imageUpload");
+const uploadButton = document.getElementById("uploadButton");
+const imagePreviewContainer = document.getElementById("previewContainer"); // صححت الاسم
 
-      imageInput.addEventListener("change", function () {
-        const file = this.files[0];
-        if (file) {
-          const reader = new FileReader();
-          reader.onload = function (e) {
-            preview.src = e.target.result;
-            preview.style.display = "block";
+const form = document.getElementById("propertyForm");
+const deleteAllBtn = document.getElementById("deleteAllBtn");
 
-            // ✅ تخزين الصورة في localStorage
-            localStorage.setItem("propertyImage", e.target.result);
-          };
-          reader.readAsDataURL(file);
-        }
-      });
+// فتح نافذة اختيار الصور
+uploadButton.addEventListener("click", () => imageInput.click());
 
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
+// عرض الصور المختارة
+function previewImages(files) {
+  const storedImages = JSON.parse(localStorage.getItem("propertyImages") || "[]");
 
-        const data = {};
-        form.querySelectorAll("input, textarea, select").forEach((el) => {
-          if (el.type === "file") return;
-          const key = el.previousElementSibling?.innerText
-            ?.replace("*", "")
-            .trim();
-          data[key] = el.value;
-        });
+  [...files].forEach((file) => {
+    if (file && file.type.startsWith("image/")) {
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const imageUrl = e.target.result;
+        storedImages.push(imageUrl);
+        addImagePreview(imageUrl);
+        localStorage.setItem("propertyImages", JSON.stringify(storedImages));
+      };
+      reader.readAsDataURL(file);
+    }
+  });
+}
 
-        localStorage.setItem("propertyData", JSON.stringify(data));
+// إنشاء عنصر صورة مع زر حذف
+function addImagePreview(src) {
+  const wrapper = document.createElement("div");
+  wrapper.style.position = "relative";
+  wrapper.style.display = "inline-block";
+  wrapper.style.margin = "5px";
 
-        alert("✅ تم حفظ بيانات العقار!");
+  const img = document.createElement("img");
+  img.src = src;
+  img.style.width = "120px";
+  img.style.height = "120px";
+  img.style.objectFit = "cover";
+  img.style.borderRadius = "8px";
+  img.style.border = "1px solid #ccc";
 
-        // إعادة ضبط النموذج
-        form.reset();
-        preview.style.display = "none";
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "❌";
+  deleteBtn.style.position = "absolute";
+  deleteBtn.style.top = "2px";
+  deleteBtn.style.right = "2px";
+  deleteBtn.style.background = "red";
+  deleteBtn.style.color = "white";
+  deleteBtn.style.border = "none";
+  deleteBtn.style.borderRadius = "50%";
+  deleteBtn.style.cursor = "pointer";
+  deleteBtn.style.width = "24px";
+  deleteBtn.style.height = "24px";
+  deleteBtn.style.lineHeight = "20px";
+  deleteBtn.style.padding = "0";
 
-        // إعادة التوجيه لصفحة العرض
-        window.location.href = "view.html";
-      });
-    </script>
+  deleteBtn.addEventListener("click", () => {
+    wrapper.remove();
+    const updatedImages = JSON.parse(localStorage.getItem("propertyImages") || "[]").filter((i) => i !== src);
+    localStorage.setItem("propertyImages", JSON.stringify(updatedImages));
+  });
+
+  wrapper.appendChild(img);
+  wrapper.appendChild(deleteBtn);
+  imagePreviewContainer.appendChild(wrapper);
+}
+
+// تحميل الصور من localStorage عند الفتح
+window.addEventListener("DOMContentLoaded", () => {
+  const savedImages = JSON.parse(localStorage.getItem("propertyImages") || "[]");
+  savedImages.forEach((src) => addImagePreview(src));
+});
+
+// عند اختيار صور
+imageInput.addEventListener("change", function () {
+  previewImages(this.files);
+});
+
+// سحب وإفلات الصور
+["dragenter", "dragover"].forEach((event) => {
+  dropZone.addEventListener(event, (e) => {
+    e.preventDefault();
+    dropZone.style.backgroundColor = "#e0f0ff";
+    dropZone.style.borderColor = "#3baaff";
+  });
+});
+
+["dragleave", "drop"].forEach((event) => {
+  dropZone.addEventListener(event, (e) => {
+    e.preventDefault();
+    dropZone.style.backgroundColor = "";
+    dropZone.style.borderColor = "#b0bec5";
+  });
+});
+
+dropZone.addEventListener("drop", (e) => {
+  const files = e.dataTransfer.files;
+  previewImages(files);
+});
+
+// حذف كل الصور
+deleteAllBtn.addEventListener("click", () => {
+  localStorage.removeItem("propertyImages");
+  imagePreviewContainer.innerHTML = "";
+});
+
+// إرسال البيانات
+form.addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  const token = localStorage.getItem("token");
+  const ownerId = localStorage.getItem("ownerId");
+
+  if (!token || !ownerId) {
+    alert("يجب تسجيل الدخول أولاً.");
+    return;
+  }
+
+  // جلب القيم من الحقول
+  const title = document.getElementById("title").value;
+  const priceForMonth = parseFloat(document.getElementById("price").value);
+  const address = document.getElementById("address").value;
+
+  // تجهيز بيانات الوحدة
+  const requestBody = {
+    title,
+    priceForMonth,
+    address,
+    ownerId_FK: parseInt(ownerId),
+  };
+
+  try {
+    const response = await fetch("https://easyrentapi0.runasp.net/api/Unit", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(requestBody),
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      alert("✅ تم إنشاء الوحدة بنجاح!");
+
+      // ✅ تحميل الصور المخزنة (اختياري: إرسالها إلى API آخر أو حفظها محلياً)
+      const images = JSON.parse(localStorage.getItem("propertyImages") || "[]");
+      console.log("صور الوحدة:", images); // يمكنك إرسالها إلى API لاحقاً
+
+      // إعادة تعيين النموذج وحذف الصور من localStorage
+      form.reset();
+      imagePreviewContainer.innerHTML = "";
+      localStorage.removeItem("propertyImages");
+    } else {
+      const error = await response.json();
+      alert("❌ فشل إنشاء الوحدة: " + (error.message || response.status));
+    }
+  } catch (err) {
+    console.error("Network Error:", err);
+    alert("❌ خطأ في الاتصال بالخادم.");
+  }
+});
+
+ </script>
+  
   </body>
 </html>
