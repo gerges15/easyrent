@@ -188,6 +188,11 @@
             <h3><i class="fas fa-key"></i> Available for Rent</h3>
             <div class="to-rent">To Rent: <span id="to-rent">0</span></div>
           </div>
+          <div class="card">
+            <h3><i class="fas fa-lock"></i> Booked Units</h3>
+            <div class="booked-units">Booked: <span id="booked-units">0</span></div>
+          </div>
+          
         </div>
         <div class="chart" id="chartContainer">
           <h3><i class="fas fa-chart-bar"></i> Properties Per Month</h3>
@@ -195,87 +200,88 @@
         </div>
       </div>
     </div>
-
     <script>
       document.addEventListener("DOMContentLoaded", () => {
         const token = localStorage.getItem("token");
         const ownerId = localStorage.getItem("ownerId");
       
         if (!token || !ownerId) {
-          window.location.href = "../loginowner.html"; // توجيه فوري
+          window.location.href = "../loginowner.html";
+          return;
         }
-      });
       
-    
-        try {
-          const response = await fetch("https://easyrentapi0.runasp.net/api/Unit", {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
+        async function loadUnitsFromAPI() {
+          try {
+            const response = await fetch(`https://easyrentapi0.runasp.net/api/Unit/owner/${ownerId}`, {
+              headers: {
+                Authorization: `Bearer ${token}`
+              }
+            });
+      
+            if (!response.ok) {
+              throw new Error("فشل في تحميل البيانات");
+            }
+      
+            const units = await response.json();
+            updateDashboard(units);
+          } catch (error) {
+            console.error(error);
+            alert("حدث خطأ أثناء جلب بيانات الوحدات");
+          }
+        }
+      
+        function updateDashboard(properties) {
+          const total = properties.length;
+          const available = properties.filter(p => p.status === "available").length;
+          const booked = properties.filter(p => p.status === "booked").length;
+document.getElementById("booked-units").textContent = booked;
+
+      
+          document.getElementById("total-property").textContent = total;
+          document.getElementById("to-rent").textContent = available;
+      
+          const monthlyData = Array(12).fill(0);
+          properties.forEach(p => {
+            const createdAt = new Date(p.createdAt);
+            if (!isNaN(createdAt)) {
+              const month = createdAt.getMonth();
+              monthlyData[month]++;
+            }
           });
-    
-          if (!response.ok) throw new Error("فشل في تحميل الوحدات.");
-    
-          const data = await response.json();
-    
-          // تصفية العقارات الخاصة بالمالك فقط
-          const ownerUnits = data.filter(unit => unit.ownerId_FK === ownerId);
-    
-          updateDashboard(ownerUnits);
-        } catch (error) {
-          console.error("Error fetching units:", error);
-          alert("حدث خطأ أثناء تحميل البيانات.");
+      
+          renderChart(monthlyData);
         }
       
-    
-      function updateDashboard(properties) {
-        const total = properties.length;
-        const available = properties.filter(p => p.status === "available").length;
-    
-        document.getElementById("total-property").textContent = total;
-        document.getElementById("to-rent").textContent = available;
-    
-        const monthlyData = Array(12).fill(0);
-        properties.forEach(p => {
-          const month = new Date(p.createdAt).getMonth();
-          monthlyData[month]++;
-        });
-    
-        renderChart(monthlyData);
-      }
-    
-      function renderChart(data) {
-        const ctx = document.getElementById("propertiesChart").getContext("2d");
-        new Chart(ctx, {
-          type: "bar",
-          data: {
-            labels: [
-              "January", "February", "March", "April", "May", "June",
-              "July", "August", "September", "October", "November", "December"
-            ],
-            datasets: [{
-              label: "Properties Added",
-              data,
-              backgroundColor: "#ff69b4",
-            }],
-          },
-          options: {
-            responsive: true,
-            scales: {
-              y: {
-                beginAtZero: true,
-                ticks: {
-                  stepSize: 1
+        function renderChart(data) {
+          const ctx = document.getElementById("propertiesChart").getContext("2d");
+          new Chart(ctx, {
+            type: "bar",
+            data: {
+              labels: [
+                "January", "February", "March", "April", "May", "June",
+                "July", "August", "September", "October", "November", "December"
+              ],
+              datasets: [{
+                label: "Properties Added",
+                data,
+                backgroundColor: "#ff69b4",
+              }],
+            },
+            options: {
+              responsive: true,
+              scales: {
+                y: {
+                  beginAtZero: true,
+                  ticks: { stepSize: 1 }
                 }
               }
             }
-          }
-        });
-      }
-    
-      // تحميل البيانات عند فتح الصفحة
-      document.addEventListener("DOMContentLoaded", loadPropertiesFromAPI);
-    </script>
-    
-  </body>
+          });
+        }
+      
+        // Call API loader
+        loadUnitsFromAPI();
+      });
+      </script>
+        </body>
 </html>
