@@ -251,6 +251,7 @@
 
       applyTranslations();
 
+      // جلب الإيميل من الرابط
       const urlParams = new URLSearchParams(window.location.search);
       const email = urlParams.get("email") || "recoveryemail@gmail.com";
       document.getElementById("displayEmail").textContent = maskEmail(email);
@@ -267,6 +268,7 @@
       const verificationCodeInput = document.getElementById("verificationCode");
       const nextBtn = document.getElementById("nextBtn");
 
+      // تفعيل الزر عند كتابة 6 أرقام
       verificationCodeInput.addEventListener("input", function () {
         const code = this.value.trim();
         nextBtn.disabled = code.length !== 6;
@@ -277,16 +279,38 @@
         }
       });
 
+      // عند الضغط على "Next" يتم التحقق من الكود عبر API
       nextBtn.addEventListener("click", function () {
         const code = verificationCodeInput.value.trim();
-        if (code === "123456") {
-          alert("✅ Verification successful! Redirecting...");
-        } else {
-          elements.errorMessage.style.display = "block";
-          elements.input.classList.add("error");
-        }
+
+        fetch("https://easyrentapi0.runasp.net/api/Auth/verify-code", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            email: email,
+            verificationCode: code,
+          }),
+        })
+          .then((res) => {
+            if (!res.ok) throw new Error("Invalid code");
+            return res.json();
+          })
+          .then((data) => {
+            // ✅ التحقق ناجح – الانتقال لصفحة تعيين كلمة المرور
+            window.location.href = `reset-password.html?email=${encodeURIComponent(
+              email
+            )}`;
+          })
+          .catch((err) => {
+            // ❌ فشل التحقق – عرض رسالة خطأ
+            elements.errorMessage.style.display = "block";
+            elements.input.classList.add("error");
+          });
       });
 
+      // خيار "لم يصلك الرمز؟"
       elements.tryAnother.addEventListener("click", function () {
         alert("Redirecting to alternative recovery methods...");
       });

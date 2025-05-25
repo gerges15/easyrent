@@ -16,7 +16,7 @@
   --max-width: 1200px;
 }
 
-/* Dark mode variables */
+/* Dark mode variables 
 [data-theme="dark"] {
   --primary-color: #78c2f4;
   --secondary-color: #edf1f1;
@@ -28,7 +28,7 @@
   --border-color: #100b54;
   --card-bg: #2d2d2d;
   --body-bg: #1a1a1a;
-}
+}*/
 
 /* Smooth transitions for theme switching */
 body,
