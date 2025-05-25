@@ -106,6 +106,12 @@
         outline: none;
         appearance: none; /* لإخفاء سهم select في بعض المتصفحات */
       }
+        /* تأثير الإطار الأزرق عند التركيز */
+        input:focus,
+        select:focus {
+          border-color: #007bff; /* لون الإطار الأزرق */
+          box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* تأثير الظل */
+        }
 
       /* الملاحظة أسفل حقل رقم الهاتف */
       .note {
@@ -149,7 +155,9 @@
         color: #666;
         font-size: 0.9rem;
       }
-
+      #password {
+        padding-right: 60px; /* مساحة للزر */
+      }
       /* الأزرار الأخرى (التسجيل بالبريد، Apple، Google، Facebook) */
       .btn-outline {
         width: 100%;
@@ -384,7 +392,7 @@
     <form id="loginForm">
     <!-- اختيار الدولة ورقم الهاتف -->
     <div class="container">
-      <h1 class="title">Log in</h1>
+      <h1 class="title">Let's Start! LOGIN</h1>
       <!-- اختيار الدولة ورقم الهاتف -->
       <div class="input-group">
         <label for="country">Country/Region</label>
@@ -489,6 +497,7 @@
         rates apply.
       </p>
       <div class="input-group">
+        <label for="password">Password</label>
         <div class="password-wrapper">
           <input type="password" id="password" />
         </div>
