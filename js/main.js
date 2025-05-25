@@ -241,36 +241,72 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ---- Theme Switcher ----
-  const themeSwitch = document.querySelector('.switch input[type="checkbox"]');
-  if (themeSwitch) {
-    function switchTheme(e) {
-      if (e.target.checked) {
-        document.documentElement.setAttribute("data-theme", "dark");
-        localStorage.setItem("theme", "dark");
-      } else {
-        document.documentElement.setAttribute("data-theme", "light");
-        localStorage.setItem("theme", "light");
-      }
+  // تأكد من تحميل DOM بالكامل أولاً
+  document.addEventListener("DOMContentLoaded", function () {
+    const themeSwitch = document.querySelector(
+      '.switch input[type="checkbox"]'
+    );
+
+    if (themeSwitch) {
+      // دالة تغيير الثيم
+      const switchTheme = (e) => {
+        const isDark = e.target.checked;
+        document.documentElement.setAttribute(
+          "data-theme",
+          isDark ? "dark" : "light"
+        );
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      };
+
+      // تحميل التفضيلات عند البدء
+      const loadThemePreference = () => {
+        // 1. تحقق من localStorage أولاً
+        const savedTheme = localStorage.getItem("theme");
+
+        // 2. إذا لم يوجد في localStorage، تحقق من تفضيلات النظام
+        const systemPrefersDark =
+          window.matchMedia &&
+          window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+        // 3. التفضيل الافتراضي يكون light
+        const themeToApply =
+          savedTheme || (systemPrefersDark ? "dark" : "light");
+
+        // تطبيق الثيم
+        document.documentElement.setAttribute("data-theme", themeToApply);
+        themeSwitch.checked = themeToApply === "dark";
+
+        // تسجيل في الكونسول لفحص القيم
+        console.log(`تم تحميل الثيم: ${themeToApply}`, {
+          savedTheme,
+          systemPrefersDark,
+        });
+      };
+
+      // إعداد Event Listener
+      themeSwitch.addEventListener("change", switchTheme);
+
+      // تحميل التفضيلات عند البدء
+      loadThemePreference();
+
+      // مراقبة تغييرات تفضيلات النظام (اختياري)
+      window
+        .matchMedia("(prefers-color-scheme: dark)")
+        .addEventListener("change", (e) => {
+          if (!localStorage.getItem("theme")) {
+            document.documentElement.setAttribute(
+              "data-theme",
+              e.matches ? "dark" : "light"
+            );
+            themeSwitch.checked = e.matches;
+          }
+        });
+    } else {
+      console.warn("لم يتم العثور على مفتاح تبديل الثيم");
+      // تطبيق الوضع الفاتح كافتراضي إذا لم يوجد مفتاح
+      document.documentElement.setAttribute("data-theme", "light");
     }
-
-    themeSwitch.addEventListener("change", switchTheme, false);
-
-    // تحميل تفضيل الثيم من التخزين أو نظام الجهاز
-    const currentTheme = localStorage.getItem("theme");
-    if (currentTheme) {
-      document.documentElement.setAttribute("data-theme", currentTheme);
-      if (currentTheme === "dark") {
-        themeSwitch.checked = true;
-      }
-    } else if (
-      window.matchMedia &&
-      window.matchMedia("(prefers-color-scheme: dark)").matches
-    ) {
-      document.documentElement.setAttribute("data-theme", "dark");
-      themeSwitch.checked = true;
-    }
-  }
-
+  });
   // ---- Toggle filter sections ----
   function toggleSection(header) {
     const section = header.parentElement;
