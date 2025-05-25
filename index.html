@@ -626,7 +626,6 @@
       <button class="accept-button" onclick="acceptCookies()">I Accept</button>
        <button class="accept-button" onclick="acceptCookies()">I Reject</button>
     </div>
-
     <style>
       .cookie-card {
         position: fixed;
@@ -670,8 +669,23 @@
     }
     </style>
 
-    <script type="module" src="js/cookie-consent.js"></script> <!-- فقط إذا تريد تحميله مستقلاً -->
+    <script>
+      // Show cookie consent banner after 2 seconds
+      setTimeout(function() {
+        document.getElementById('cookieConsent').style.display = 'block';
+      }, 2000);
 
+      // Function to accept cookies
+      function acceptCookies() {
+        document.getElementById('cookieConsent').style.display = 'none';
+        localStorage.setItem('cookiesAccepted', 'true');
+      }
+
+      // Check if cookies were already accepted
+      if (localStorage.getItem('cookiesAccepted') === 'true') {
+        document.getElementById('cookieConsent').style.display = 'none';
+      }
+    </script>
     
     <script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
     

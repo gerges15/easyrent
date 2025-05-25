@@ -257,12 +257,39 @@
           });
         }
 
+        function getBotReply(userMessage) {
+          const replies = [
+            "مرحبًا! كيف حالك اليوم؟ هل تبحث عن شقة للإيجار؟",
+            ,
+            " مرحبًا! أنا هنا لمساعدتك في إيجاد الشقة المثالية بتاعتك",
+            ,
+            "أتمنى أن تكون بخير! كيف يمكنني مساعدتك؟",
+            "شكرًا على تواصلك! لدينا مجموعة من الشقق المتاحة.",
+            "إذا كان لديك أي استفسار حول الشقق ، فلا تتردد في طرحه!",
+            "نحن هنا لدعمك في إيجاد الشقة المثالية لك.",
+            "هل لديك ميزانية معينة تبحث عنها؟",
+            "نحن نقدم شققًا بمساحات وأسعار مختلفة، كيف يمكنني مساعدتك؟",
+            "إذا كنت تبحث عن شقة، فأنا هنا لمساعدتك في ذلك.",
+            "هل ترغب في معرفة المزيد عن الشقق المتاحة لديك",
+            "كيف يمكنني مساعدتك في عملية الإيجار؟",
+            "إذا كان لديك أي استفسار حول الأسعار أو المرافق، فلا تتردد في سؤالي.",
+            "هل لديك نوع معين من الشقق في بالك؟",
+            "نحن نقدم شققًا في مناطق مختلفة، هل لديك منطقة معينة تفضلها؟",
+            "إذا كنت بحاجة إلى معلومات إضافية، فلا تتردد في طرحها.",
+            "هل ترغب في معرفة المزيد عن خدماتنا المتعلقة بالإيجار؟",
+            "أنا هنا لمساعدتك في أي شيء تحتاجه بخصوص الشقق.",
+            "كيف يمكنني مساعدتك في إيجاد الشقة المثالية لك؟",
+          ];
+          // اختيار رد عشوائي من القائمة
+          return replies[Math.floor(Math.random() * replies.length)];
+        }
+
         function sendMessage() {
           const messageText = messageInput.value.trim();
           if (messageText) {
             removeEmptyState();
 
-            // Create message element
+            // إنشاء عنصر الرسالة
             const messageElement = document.createElement("div");
             messageElement.className = "message user-message";
 
@@ -278,21 +305,36 @@
             // Scroll to bottom
             chatContainer.scrollTop = chatContainer.scrollHeight;
 
-            // Simulate reply after 1 second
+            // الحصول على رد البوت
+            const botReply = getBotReply(messageText);
+
+            // محاكاة الرد بعد 1 ثانية
             setTimeout(() => {
               const replyElement = document.createElement("div");
               replyElement.className = "message received-message";
               replyElement.innerHTML = `
-                            Thank you for your message! Our team will respond shortly.
-                            <div class="message-time">${formatTime(
-                              new Date()
-                            )}</div>
-                        `;
+                          ${botReply}
+                          <div class="message-time">${formatTime(
+                            new Date()
+                          )}</div>
+                      `;
               chatContainer.appendChild(replyElement);
               chatContainer.scrollTop = chatContainer.scrollHeight;
             }, 1000);
           }
         }
+
+        // إرسال رسالة ترحيبية عند تحميل الصفحة
+        setTimeout(() => {
+          const welcomeMessage = document.createElement("div");
+          welcomeMessage.className = "message received-message";
+          welcomeMessage.innerHTML = `
+                      مرحبًا! كيف حالك اليوم؟ إذا كان لديك أي استفسار حول الشقق، فلا تتردد في طرحه.
+                      <div class="message-time">${formatTime(new Date())}</div>
+                  `;
+          chatContainer.appendChild(welcomeMessage);
+          chatContainer.scrollTop = chatContainer.scrollHeight;
+        }, 500);
 
         // Send message on button click
         sendButton.addEventListener("click", sendMessage);
