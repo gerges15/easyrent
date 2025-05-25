@@ -4,7 +4,7 @@ import { initNavigation } from "./navigation.js";
 import { initFilter } from "./property-filter.js";
 
 // إنشاء نسخة من API class مع التوكن لو موجود
-const api = new API("http://easyrentapi0.runasp.net", {
+const api = new API("https://easyrentapi0.runasp.net", {
   authToken: localStorage.getItem("token"),
 });
 

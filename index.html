@@ -35,8 +35,8 @@
           <ul class="nav__links" id="nav__links">
             <li><a href="#contact">Contact</a></li> 
             <li><a href="./owner/choses.html">Add Properity</a></li>   
-            <li><a href="./singnupst.html">Sign Up</a></li>
-            <li><a href="./login.html">Login</a></li>
+            <li><a href="singnupst.html">Sign Up</a></li>
+            <li><a href="login.html">Login</a></li>
             <li><a href="#Properties">Properties</a></li>
             <li><a href="#units">Units</a></li> 
             <li><a href="#About US">About US</a></li>
@@ -626,6 +626,7 @@
       <button class="accept-button" onclick="acceptCookies()">I Accept</button>
        <button class="accept-button" onclick="acceptCookies()">I Reject</button>
     </div>
+
     <style>
       .cookie-card {
         position: fixed;
@@ -668,7 +669,6 @@
       transition-duration: .2s;
     }
     </style>
-
     <script>
       // Show cookie consent banner after 2 seconds
       setTimeout(function() {
@@ -686,6 +686,9 @@
         document.getElementById('cookieConsent').style.display = 'none';
       }
     </script>
+
+    <script type="module" src="js/cookie-consent.js"></script> <!-- فقط إذا تريد تحميله مستقلاً -->
+
     
     <script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
     

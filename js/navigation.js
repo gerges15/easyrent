@@ -1,31 +1,24 @@
-// js/navigation.js
-
+// js/navigation.js - النسخة المعدلة
 export function initNavigation() {
-  const menuBtn = document.getElementById("menu-btn");
   const navLinks = document.getElementById("nav__links");
 
-  if (!menuBtn || !navLinks) {
+  if (!navLinks) {
     console.warn("عناصر التنقل مش موجودة في الصفحة");
     return;
   }
 
-  const menuBtnIcon = menuBtn.querySelector("i");
-
-  menuBtn.addEventListener("click", () => {
-    navLinks.classList.toggle("open");
-
-    if (navLinks.classList.contains("open")) {
-      menuBtnIcon.className = "ri-close-line";
-    } else {
-      menuBtnIcon.className = "ri-menu-line";
+  // إضافة كلاس active للرابط الحالي
+  const currentPage = window.location.pathname.split("/").pop();
+  navLinks.querySelectorAll("a").forEach((link) => {
+    const linkPage = link.getAttribute("href").split("/").pop();
+    if (
+      linkPage === currentPage ||
+      (currentPage === "" && linkPage === "#home")
+    ) {
+      link.classList.add("active");
     }
   });
 
-  // يقفل المينيو لما نضغط على أي رابط
-  navLinks.addEventListener("click", (e) => {
-    if (e.target.tagName === "A") {
-      navLinks.classList.remove("open");
-      menuBtnIcon.className = "ri-menu-line";
-    }
-  });
+  // أي وظائف إضافية تريدين إضافتها للتنقل
+  console.log("تم تهيئة التنقل بنجاح (النسخة المبسطة)");
 }
