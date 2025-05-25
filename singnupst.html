@@ -403,10 +403,10 @@
             <option value="105">Faculty of Science</option>
             <option value="106">Faculty of Nursing</option>
             <option value="107">Faculty of Agriculture</option>
-            <option value="108">Faculty of Fine Arts</option>
-            <option value="109">Faculty of Education</option>
-            <option value="110">Faculty of Arts</option>
-            <option value="111">Faculty of Law</option>
+            <option value="108">Faculty of Education</option>
+            <option value="109">Faculty of Physical Education</option>
+            <option value="110">Faculty of Al-Alsun</option>
+            <option value="111">Faculty of Arts</option>
             <option value="112">Faculty of Specific Education</option>
             <option value="113">Faculty of Physical Education</option>
             <option value="114">Faculty of Al-Alsun</option>
@@ -419,7 +419,8 @@
             <option value="121">Faculty of Engineering</option>
             <option value="122">Faculty of Artificial Intelligence</option>
             <option value="123">Faculty of Business Administration</option>
-            <option value="124">Faculty of Civil Engineering</option>
+            <option value="124">Faculty of Law</option>
+            <option value="125">Faculty of Civil Engineering</option>
             <option value="125">
               Faculty of Electronics and Communication Engineering
             </option>
@@ -640,227 +641,227 @@
         EasyRent copyright 2025 web Design .All rights reserved.
       </div>
     </footer>
-    <script type="module">
-      document.addEventListener("DOMContentLoaded", () => {
-        const formSubmitBtn = document.querySelector(".btn-submit");
-        const generateBtn = document.getElementById("generate-password");
-        const passwordInput = document.getElementById("signup-password");
-        const passwordSuggestion = document.getElementById(
-          "password-suggestion"
-        );
-        const togglePasswordBtn = document.getElementById("togglePasswordBtn");
-
-        // تحميل الجامعات والكليات من API
-        async function loadUniversitiesAndColleges() {
-          try {
-            // تحميل الجامعات
-            const uniRes = await fetch(
-              "https://easyrentapi0.runasp.net/api/University/get-all"
-            );
-            if (!uniRes.ok) throw new Error("Failed to load universities");
-            const universities = await uniRes.json();
-            const uniSelect = document.getElementById("universityId");
-            universities.forEach((u) => {
-              const option = document.createElement("option");
-              option.value = u.id;
-              option.textContent = u.name;
-              uniSelect.appendChild(option);
-            });
-
-            // تحميل الكليات
-            const collegeRes = await fetch(
-              "https://easyrentapi0.runasp.net/api/Student/all"
-            );
-            if (!collegeRes.ok) throw new Error("Failed to load colleges");
-            const colleges = await collegeRes.json();
-            const collegeSelect = document.getElementById("collegeId");
-            colleges.forEach((c) => {
-              const option = document.createElement("option");
-              option.value = c.id;
-              option.textContent = c.name;
-              collegeSelect.appendChild(option);
-            });
-          } catch (error) {
-            alert("Error loading universities or colleges: " + error.message);
-          }
-        }
-
-        // تقييم قوة كلمة المرور
-        function checkPasswordStrength() {
-          const val = passwordInput.value;
-          const bars = [
+    
+      <script type="module">
+        document.addEventListener("DOMContentLoaded", () => {
+          const form = document.getElementById("signupForm");
+          const uniSelect = document.getElementById("universityId");
+          const collegeSelect = document.getElementById("collegeId");
+          const passwordInput = document.getElementById("signup-password");
+          const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+          const generateBtn = document.getElementById("generate-password");
+          const passwordSuggestion = document.getElementById(
+            "password-suggestion"
+          );
+          const strengthBars = [
             document.getElementById("strength-bar-1"),
             document.getElementById("strength-bar-2"),
             document.getElementById("strength-bar-3"),
             document.getElementById("strength-bar-4"),
           ];
-
-          let strength = 0;
-          if (val.length > 7) strength++;
-          if (/[A-Z]/.test(val)) strength++;
-          if (/[0-9]/.test(val)) strength++;
-          if (/[^A-Za-z0-9]/.test(val)) strength++;
-
-          bars.forEach((bar, i) => {
-            bar.style.background = i < strength ? "#4caf50" : "#e0e0e0";
+          const strengthText = document.getElementById("password-strength-text");
+  
+          // تحميل الجامعات
+          async function loadUniversities() {
+            try {
+              const res = await fetch(
+                "https://easyrentapi0.runasp.net/api/University"
+              );
+              if (!res.ok) throw new Error("Failed to load universities");
+              const data = await res.json();
+              data.forEach((u) => {
+                const option = document.createElement("option");
+                option.value = u.id;
+                option.textContent = u.name;
+                uniSelect.appendChild(option);
+              });
+            } catch (err) {
+              alert("Error loading universities: " + err.message);
+            }
+          }
+  
+          // تحميل الكليات
+          async function loadColleges() {
+            try {
+              const res = await fetch(
+                "https://easyrentapi0.runasp.net/api/Colleges"
+              );
+              if (!res.ok) throw new Error("Failed to load colleges");
+              const data = await res.json();
+              data.forEach((c) => {
+                const option = document.createElement("option");
+                option.value = c.id;
+                option.textContent = c.name;
+                collegeSelect.appendChild(option);
+              });
+            } catch (err) {
+              alert("Error loading colleges: " + err.message);
+            }
+          }
+  
+          // تحقق قوة كلمة المرور
+          function checkPasswordStrength() {
+            const val = passwordInput.value;
+            let strength = 0;
+            if (val.length >= 8) strength++;
+            if (/[A-Z]/.test(val)) strength++;
+            if (/[0-9]/.test(val)) strength++;
+            if (/[^A-Za-z0-9]/.test(val)) strength++;
+  
+            strengthBars.forEach((bar, i) => {
+              bar.style.background = i < strength ? "#4caf50" : "#e0e0e0";
+            });
+  
+            const texts = [
+              "Very Weak",
+              "Weak",
+              "Medium",
+              "Strong",
+              "Very Strong",
+            ];
+            strengthText.textContent = texts[strength];
+          }
+  
+          // حفظ بيانات النموذج مؤقتًا في localStorage
+          function saveFormData() {
+            const data = {
+              name: document.getElementById("firstNameID").value.trim(),
+              email: document.getElementById("email").value.trim(),
+              phone: document.getElementById("phone").value.trim(),
+              address: document.getElementById("address").value.trim(),
+              password: passwordInput.value,
+              universityId: uniSelect.value,
+              collegeId: collegeSelect.value,
+            };
+            localStorage.setItem("signupFormData", JSON.stringify(data));
+          }
+  
+          // تحميل بيانات محفوظة من localStorage
+          function loadFormData() {
+            const saved = localStorage.getItem("signupFormData");
+            if (!saved) return;
+            const data = JSON.parse(saved);
+            if (data.name)
+              document.getElementById("firstNameID").value = data.name;
+            if (data.email) document.getElementById("email").value = data.email;
+            if (data.phone) document.getElementById("phone").value = data.phone;
+            if (data.address)
+              document.getElementById("address").value = data.address;
+            if (data.password) {
+              passwordInput.value = data.password;
+              checkPasswordStrength();
+            }
+            if (data.universityId) uniSelect.value = data.universityId;
+            if (data.collegeId) collegeSelect.value = data.collegeId;
+          }
+  
+          // توليد كلمة مرور من API
+          generateBtn.addEventListener("click", async () => {
+            try {
+              const res = await fetch(
+                "https://easyrentapi0.runasp.net/api/Auth/generate-password"
+              );
+              if (!res.ok) throw new Error("Failed to generate password");
+              const data = await res.json();
+              passwordSuggestion.value = data.password || "";
+              passwordInput.value = data.password || "";
+              checkPasswordStrength();
+              saveFormData();
+            } catch (err) {
+              alert("Error generating password: " + err.message);
+            }
           });
-
-          const text = document.getElementById("password-strength-text");
-          const strengthText = [
-            "Very Weak",
-            "Weak",
-            "Medium",
-            "Strong",
-            "Very Strong",
-          ];
-          text.textContent = strengthText[strength];
-        }
-
-        // حفظ البيانات مؤقتًا
-        function saveFormData() {
-          const data = {
-            name: document.getElementById("firstNameID").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            phone: document.getElementById("phone").value.trim(),
-            address: document.getElementById("address").value.trim(),
-            password: passwordInput.value,
-            universityId: document.getElementById("universityId").value,
-            collegeId: document.getElementById("collegeId").value,
-          };
-          localStorage.setItem("signupFormData", JSON.stringify(data));
-        }
-
-        // تحميل البيانات المحفوظة
-        function loadFormData() {
-          const saved = localStorage.getItem("signupFormData");
-          if (!saved) return;
-          const data = JSON.parse(saved);
-          if (data.name)
-            document.getElementById("firstNameID").value = data.name;
-          if (data.email) document.getElementById("email").value = data.email;
-          if (data.phone) document.getElementById("phone").value = data.phone;
-          if (data.address)
-            document.getElementById("address").value = data.address;
-          if (data.password) {
-            passwordInput.value = data.password;
-            checkPasswordStrength();
-          }
-          if (data.universityId)
-            document.getElementById("universityId").value = data.universityId;
-          if (data.collegeId)
-            document.getElementById("collegeId").value = data.collegeId;
-        }
-
-        // إظهار/إخفاء كلمة المرور
-        togglePasswordBtn.addEventListener("click", () => {
-          if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            togglePasswordBtn.textContent = "Hide";
-          } else {
-            passwordInput.type = "password";
-            togglePasswordBtn.textContent = "Show";
-          }
-        });
-
-        // توليد كلمة مرور من API
-        generateBtn.addEventListener("click", async () => {
-          try {
-            const response = await fetch(
-              "https://easyrentapi0.runasp.net/api/Auth/generate-password"
-            );
-            if (!response.ok) throw new Error("Failed to generate password");
-            const data = await response.json();
-            passwordSuggestion.value = data.password || "";
-            passwordInput.value = data.password || "";
-            checkPasswordStrength();
-            saveFormData();
-          } catch (error) {
-            alert("Error generating password: " + error.message);
-          }
-        });
-
-        // إرسال بيانات التسجيل
-        formSubmitBtn.addEventListener("click", async (e) => {
-          e.preventDefault();
-
-          const password = passwordInput.value;
-
-          if (password.length < 8) {
-            alert("Password must be at least 8 characters.");
-            return;
-          }
-
-          const strongRegex =
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
-          if (!strongRegex.test(password)) {
-            alert(
-              "Password must contain uppercase, lowercase, number, and special character."
-            );
-            return;
-          }
-
-          const payload = {
-            name: document.getElementById("firstNameID").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            userName: document.getElementById("firstNameID").value.trim(),
-            password,
-            phoneNumber: document.getElementById("phone").value.trim(),
-            address: document.getElementById("address").value.trim(),
-            universityId:
-              parseInt(document.getElementById("universityId").value) || 0,
-            collegeId:
-              parseInt(document.getElementById("collegeId").value) || 0,
-          };
-
-          if (!payload.name || !payload.email || !payload.password) {
-            alert("Please fill in all required fields.");
-            return;
-          }
-
-          if (payload.universityId === 0) {
-            alert("Please select a valid University.");
-            return;
-          }
-
-          if (payload.collegeId === 0) {
-            alert("Please select a valid College.");
-            return;
-          }
-
-          try {
-            const res = await fetch(
-              "https://easyrentapi0.runasp.net/api/Student/register",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-              }
-            );
-
-            if (!res.ok) {
-              const text = await res.text();
-              alert("Error: " + text);
+  
+          // زر إظهار وإخفاء كلمة المرور
+          togglePasswordBtn.addEventListener("click", () => {
+            if (passwordInput.type === "password") {
+              passwordInput.type = "text";
+              togglePasswordBtn.textContent = "Hide";
+            } else {
+              passwordInput.type = "password";
+              togglePasswordBtn.textContent = "Show";
+            }
+          });
+  
+          // استماع لتغييرات الحقول لحفظ البيانات وتقييم كلمة المرور
+          document.querySelectorAll("input, select").forEach((el) => {
+            el.addEventListener("input", () => {
+              saveFormData();
+              if (el === passwordInput) checkPasswordStrength();
+            });
+          });
+  
+          // إرسال النموذج والتسجيل
+          form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+  
+            const payload = {
+              name: document.getElementById("firstNameID").value.trim(),
+              email: document.getElementById("email").value.trim(),
+              userName: document.getElementById("firstNameID").value.trim(),
+              password: passwordInput.value,
+              phoneNumber: document.getElementById("phone").value.trim(),
+              address: document.getElementById("address").value.trim(),
+              universityId: parseInt(uniSelect.value),
+              collegeId: parseInt(collegeSelect.value),
+            };
+  
+            if (!payload.name || !payload.email || !payload.password) {
+              alert("Please fill in all required fields.");
               return;
             }
-
-            alert("Registration successful!");
-            localStorage.removeItem("signupFormData");
-            // window.location.href = 'login.html';
-          } catch (error) {
-            alert("Network error: " + error.message);
-          }
+            if (payload.universityId === 0 || isNaN(payload.universityId)) {
+              alert("Please select a valid University.");
+              return;
+            }
+            if (payload.collegeId === 0 || isNaN(payload.collegeId)) {
+              alert("Please select a valid College.");
+              return;
+            }
+            if (payload.password.length < 8) {
+              alert("Password must be at least 8 characters.");
+              return;
+            }
+            const strongRegex =
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
+            if (!strongRegex.test(payload.password)) {
+              alert(
+                "Password must contain uppercase, lowercase, number, and special character."
+              );
+              return;
+            }
+  
+            try {
+              const res = await fetch(
+                "https://easyrentapi0.runasp.net/api/Student/register",
+                {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify(payload),
+                }
+              );
+              if (!res.ok) {
+                const errorText = await res.text();
+                alert("Error: " + errorText);
+                return;
+              }
+              alert("Registration successful!");
+              localStorage.removeItem("signupFormData");
+              // redirect to login or next page:
+               window.location.href = "login.html";
+            } catch (err) {
+              alert("Network error: " + err.message);
+            }
+          });
+  
+          // تهيئة الصفحة
+          (async function init() {
+            await loadUniversities();
+            await loadColleges();
+            loadFormData();
+          })();
         });
-
-        // حفظ البيانات عند التغيير
-        document.querySelectorAll("input, select").forEach((input) => {
-          input.addEventListener("input", saveFormData);
-        });
-
-        passwordInput.addEventListener("input", checkPasswordStrength);
-
-        // تحميل بيانات الجامعات والكليات ثم تحميل بيانات الفورم
-        loadUniversitiesAndColleges().then(loadFormData);
-      });
+      </script>
     </script>
   </body>
 </html>

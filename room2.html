@@ -262,6 +262,85 @@
         font-size: 1.2rem;
         color: #666;
       }
+      .star-rating {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .stars {
+        display: flex;
+        flex-direction: row-reverse;
+        justify-content: flex-start;
+        gap: 5px;
+      }
+
+      .stars input[type="radio"] {
+        display: none;
+      }
+
+      .stars label {
+        font-size: 25px;
+        color: #ddd;
+        cursor: pointer;
+        transition: color 0.3s;
+      }
+
+      .stars label:hover,
+      .stars label:hover ~ label,
+      .stars input[type="radio"]:checked ~ label {
+        color: gold;
+      }
+      .feedback-item {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 12px;
+        margin-bottom: 10px;
+        background-color: #f9f9f9;
+      }
+      
+      .feedback-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .feedback-rating .fa-star {
+        color: #ccc;
+      }
+      
+      .feedback-rating .fa-star.selected {
+        color: gold;
+      }
+      
+      .feedback-comment {
+        margin-top: 8px;
+        font-size: 14px;
+      }
+      
+
+      #feedbackList {
+        max-height: 200px;
+        overflow-y: auto;
+        border-top: 1px solid #ccc;
+        padding-top: 10px;
+      }
+
+      .feedback-item {
+        background-color: #f0f0f0;
+        border-radius: 6px;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      .feedback-stars {
+        color: gold;
+        margin-bottom: 5px;
+      }
+
+      .feedback-comment {
+        font-size: 14px;
+        color: #333;
+      }
 
       @media (max-width: 768px) {
         .rooms-container {
@@ -294,7 +373,7 @@
     <div class="container">
       <section class="search-section">
         <h2>Search for Rooms in Minia</h2>
-        <form class="search-form" id="searchForm">
+        <form class="search-form" id="searchform">
           <div class="form-group">
             <label for="location">Location in Minia</label>
             <select id="location">
@@ -457,319 +536,53 @@
           <div style="margin-top: 20px">
             <button type="submit" class="btn-book">Submit Booking</button>
           </div>
-        </form>
+      <!-- Feedback Section -->
+<section id="feedbackSection" style="margin-top: 30px">
+  <h3>Feedback & Ratings</h3>
+
+  <form id="feedbackForm">
+    <div class="star-rating">
+      <label>Rate this room:</label>
+      <textarea id="commentInput" placeholder="اكتب تعليقك هنا..."></textarea>
+      <div id="ratingStars">
+        <span class="star" data-value="1">★</span>
+        <span class="star" data-value="2">★</span>
+        <span class="star" data-value="3">★</span>
+        <span class="star" data-value="4">★</span>
+        <span class="star" data-value="5">★</span>
       </div>
+      <input type="hidden" id="rating" value="0">
+    
+      
+
+    <button
+      id="sendFeedbackBtn"
+      type="submit"
+      
+      style="
+        margin-top: 10px;
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+      "
+    >
+      Submit Feedback
+    </button>
     </div>
+  </form>
 
-    <script>
-      // Sample room data for Minia
-      const rooms = [
-        {
-          id: 1,
-          title: " Single Room",
-          location: "Taha Hussein, 0.5km from Minia University",
-          price: 1200,
-          type: "single",
-          description:
-            "This cozy single room is perfect for students looking for affordable accommodation close to Minia University. The room comes furnished with a single bed, study desk, chair, and wardrobe. Shared kitchen and bathroom facilities are available on each floor. High-speed WiFi is included in the rent.",
-          features: [
-            "Single bed",
-            "12m²",
-            "WiFi",
-            "Kitchen access",
-            "Laundry facilities",
-            "Bike storage",
-          ],
-          images: ["./images/1,hrud.jpg"],
-        },
-        {
-          id: 2,
-          title: "Shared Double Room",
-          location: "Damaris, 0.3km from Minia University",
-          price: 800,
-          type: "shared",
-          description:
-            "This shared double room offers an economical housing solution for students. The room includes two single beds, two study desks, and shared wardrobe space. You'll share the room with one other student. Common areas include a shared kitchen, TV lounge, and laundry facilities.",
-          features: [
-            "double beds",
-            "18m²",
-            "WiFi",
-            "bathroom",
-            "Shared kitchen",
-            "TV lounge",
-            "Laundry facilities",
-          ],
-          images: ["./images/86accfe4dbea3ec8f23b8920f181f676.jpg"],
-        },
-        {
-          id: 3,
-          title: "quadruple room",
-          location: "Minia Elgededa, 1.2km from university",
-          price: 2500,
-          type: "studio",
-          description:
-            "This modern studio apartment offers private living with all the comforts of home. The space includes a double bed, kitchenette, private bathroom, and study area. Perfect for students who value privacy and independence. Located in the vibrant Minia Elgededa area with easy access to campus via public transport.",
-          features: [
-            "Double bed",
-            "30m²",
-            "WiFi",
-            "Shared kitchen",
-            "Private bathroom",
-            "Study area",
-          ],
-          images: ["./images/double.jpg"],
-        },
-        {
-          id: 4,
-          title: "Budget Single Room",
-          location: "Mahatta, 0.8km from university",
-          price: 700,
-          type: "single",
-          description:
-            "Affordable single room in Mahatta area with basic amenities. Perfect for students on a tight budget. Shared bathroom and kitchen facilities.",
-          features: [
-            "triple bed",
-            "15m²",
-            "WiFi",
-            "Shared kitchen",
-            "Shared bathroom",
-          ],
-          images: ["./images/SZC08-2.webp", "./images/is.jpg"],
-        },
-        {
-          id: 5,
-          title: "Luxury Apartment",
-          location: "Medan Elsaa, 1.5km from university",
-          price: 3500,
-          type: "apartment",
-          description:
-            "Spacious apartment with modern furnishings and all amenities included. Perfect for students who want premium living space.",
-          features: [
-            "Double bed",
-            "45m²",
-            "WiFi",
-            "Private bathroom",
-            "Living area",
-            "Air conditioning",
-          ],
-          images: ["./owner/تصميم-غرف-نوم-مودرن.webp"],
-        },
-      ];
+  <div id="feedbackList" style="margin-top: 20px">
+    <h4>Previous Feedbacks</h4>
+    <div id="feedbackContainer">
+      <!-- Feedback items will appear here -->
+    </div>
+  </div>
+</section>
 
-      // Function to render room cards
-      function renderRooms(roomsToRender) {
-        const container = document.getElementById("roomsContainer");
-        container.innerHTML = "";
 
-        if (roomsToRender.length === 0) {
-          container.innerHTML =
-            '<div class="no-results">No rooms match your search criteria. Please try different filters.</div>';
-          return;
-        }
-
-        roomsToRender.forEach((room) => {
-          const roomCard = document.createElement("div");
-          roomCard.className = "room-card";
-          roomCard.innerHTML = `
-                    <img src="${room.images[0]}" alt="${
-            room.title
-          }" class="room-image">
-                    <div class="room-details">
-                        <h3 class="room-title">${room.title}</h3>
-                        <p class="room-location"><i class="fas fa-map-marker-alt"></i> ${
-                          room.location
-                        }</p>
-                        <p class="room-price">${room.price.toLocaleString()} EGP <span class="price-period">/month</span></p>
-                        
-                        <div class="room-features">
-                            ${room.features
-                              .slice(0, 4)
-                              .map((feature) => {
-                                const icon = feature.includes("bed")
-                                  ? "fa-bed"
-                                  : feature.includes("m²")
-                                  ? "fa-ruler-combined"
-                                  : feature.includes("WiFi")
-                                  ? "fa-wifi"
-                                  : feature.includes("kitchen")
-                                  ? "fa-utensils"
-                                  : feature.includes("TV")
-                                  ? "fa-tv"
-                                  : feature.includes("bathroom")
-                                  ? "fa-bath"
-                                  : feature.includes("laundry")
-                                  ? "fa-tshirt"
-                                  : feature.includes("bike")
-                                  ? "fa-bicycle"
-                                  : "fa-check";
-                                return `<span class="feature"><i class="fas ${icon}"></i> ${feature}</span>`;
-                              })
-                              .join("")}
-                        </div>
-                        
-                        <div class="room-actions">
-                            <button class="btn-view" onclick="openRoomDetails(${
-                              room.id
-                            })">View Details</button>
-                            <button class="btn-book" onclick="openBookingModal(${
-                              room.id
-                            })">Book Now</button>
-                        </div>
-                    </div>
-                `;
-          container.appendChild(roomCard);
-        });
-      }
-
-      // Function to filter rooms based on search criteria
-      function filterRooms() {
-        const location = document
-          .getElementById("location")
-          .value.toLowerCase();
-        const minPrice =
-          parseInt(document.getElementById("min-price").value) || 0;
-        const maxPrice =
-          parseInt(document.getElementById("max-price").value) || Infinity;
-        const roomType = document
-          .getElementById("room-type")
-          .value.toLowerCase();
-
-        const filteredRooms = rooms.filter((room) => {
-          // Filter by location
-          const locationMatch =
-            !location ||
-            room.location.toLowerCase().includes(location) ||
-            room.location.toLowerCase().includes(location.replace("-", " "));
-
-          // Filter by price
-          const priceMatch = room.price >= minPrice && room.price <= maxPrice;
-
-          // Filter by room type
-          const typeMatch = !roomType || room.type === roomType;
-
-          return locationMatch && priceMatch && typeMatch;
-        });
-
-        renderRooms(filteredRooms);
-      }
-
-      // Initial render of all rooms
-      renderRooms(rooms);
-
-      // Open room details modal
-      function openRoomDetails(roomId) {
-        const room = rooms.find((r) => r.id === roomId);
-        if (!room) return;
-
-        document.getElementById("modalRoomTitle").textContent = room.title;
-        document.getElementById("modalRoomLocation").textContent =
-          room.location;
-        document.getElementById(
-          "modalRoomPrice"
-        ).textContent = `${room.price.toLocaleString()} EGP`;
-        document.getElementById("modalRoomDescription").textContent =
-          room.description;
-
-        const featuresContainer = document.getElementById("modalRoomFeatures");
-        featuresContainer.innerHTML = "";
-        room.features.forEach((feature) => {
-          const icon = feature.includes("bed")
-            ? "fa-bed"
-            : feature.includes("m²")
-            ? "fa-ruler-combined"
-            : feature.includes("WiFi")
-            ? "fa-wifi"
-            : feature.includes("kitchen")
-            ? "fa-utensils"
-            : feature.includes("TV")
-            ? "fa-tv"
-            : feature.includes("bathroom")
-            ? "fa-bath"
-            : feature.includes("laundry")
-            ? "fa-tshirt"
-            : feature.includes("bike")
-            ? "fa-bicycle"
-            : "fa-check";
-
-          const featureElement = document.createElement("span");
-          featureElement.className = "feature";
-          featureElement.innerHTML = `<i class="fas ${icon}"></i> ${feature}`;
-          featuresContainer.appendChild(featureElement);
-        });
-
-        document.getElementById("roomDetailsModal").style.display = "flex";
-      }
-
-      // Open booking modal
-      function openBookingModal(roomId) {
-        const room = rooms.find((r) => r.id === roomId);
-        if (!room) return;
-
-        document.getElementById("bookingRoomTitle").textContent = room.title;
-        document.getElementById(
-          "bookingRoomPrice"
-        ).textContent = `${room.price.toLocaleString()} EGP/month`;
-        document.getElementById("roomId").value = room.id;
-
-        // Set minimum date to today
-        const today = new Date().toISOString().split("T")[0];
-        document.getElementById("moveInDate").min = today;
-
-        document.getElementById("bookingModal").style.display = "flex";
-        closeModal("roomDetailsModal");
-      }
-
-      // Close modal
-      function closeModal(modalId) {
-        document.getElementById(modalId).style.display = "none";
-      }
-
-      // Handle booking form submission
-      document
-        .querySelector(".booking-form")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-
-          // In a real application, you would send this data to a server
-          const bookingData = {
-            roomId: document.getElementById("roomId").value,
-            fullName: document.getElementById("fullName").value,
-            email: document.getElementById("email").value,
-            phone: document.getElementById("phone").value,
-            studentId: document.getElementById("studentId").value,
-            university: document.getElementById("university").value,
-            moveInDate: document.getElementById("moveInDate").value,
-            duration: document.getElementById("duration").value,
-            specialRequests: document.getElementById("specialRequests").value,
-          };
-
-          console.log("Booking submitted:", bookingData);
-          alert(
-            "Booking request submitted successfully! We will contact you shortly to confirm."
-          );
-          closeModal("bookingModal");
-
-          // Reset form
-          this.reset();
-        });
-
-      // Handle search form submission
-      document
-        .getElementById("searchForm")
-        .addEventListener("submit", function (e) {
-          e.preventDefault();
-          filterRooms();
-        });
-
-      // Close modals when clicking outside
-      window.addEventListener("click", function (e) {
-        if (e.target === document.getElementById("roomDetailsModal")) {
-          closeModal("roomDetailsModal");
-        }
-        if (e.target === document.getElementById("bookingModal")) {
-          closeModal("bookingModal");
-        }
-      });
-    </script>
+   <script type="module" src="./js/rooms2.js"></script>
   </body>
 </html>
