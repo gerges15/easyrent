@@ -2,10 +2,9 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
     <link
-      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
       rel="stylesheet"
     />
     <link
@@ -23,42 +22,41 @@
         <div class="nav__bar">
           <div class="nav__header">
             <div class="logo nav__logo">
-              <span><i class="fas fa-house-chimney"></i>EASY<br />RENT</span>
+              <span><i class="fas fa-house-chimney"></i> EASY<br />RENT</span>
             </div>
-            <div class="nav__menu__btn" id="menu-btn">
-              <button aria-label="Toggle navigation menu">
-                <i id="i" class="ri-menu-line"></i>
-              </button>
-              <i id="i" class="ri-user-line"></i>
-            </div>
+            <button class="nav__menu__btn" id="menu-btn">
+              <i class="ri-menu-line"></i>
+            </button>
           </div>
-          <ul class="nav__links" id="nav__links">
-            <li><a href="#contact">Contact</a></li> 
-            <li><a href="./owner/choses.html">Add Properity</a></li>   
-            <li><a href="./singnupst.html">Sign Up</a></li>
-            <li><a href="./login.html">Login</a></li>
-            <li><a href="#Properties">Properties</a></li>
-            <li><a href="#units">Units</a></li> 
-            <li><a href="#About US">About US</a></li>
-            <li><a href="#home">Home</a></li>
-          </ul>
 
-          <label class="switch">
-            <input checked="true" id="checkbox" type="checkbox" />
-            <span class="slider">
-              <div class="star star_1"></div>
-              <div class="star star_3"></div>
-              <div class="star star_2"></div>
-              
-              <svg viewBox="0 0 16 16" class="cloud_1 cloud">
-                <path
-                  transform="matrix(.77976 0 0 .78395-299.99-418.63)"
-                  fill="#fff"
-                  d="m391.84 540.91c-.421-.329-.949-.524-1.523-.524-1.351 0-2.451 1.084-2.485 2.435-1.395.526-2.388 1.88-2.388 3.466 0 1.874 1.385 3.423 3.182 3.667v.034h12.73v-.006c1.775-.104 3.182-1.584 3.182-3.395 0-1.747-1.309-3.186-2.994-3.379.007-.106.011-.214.011-.322 0-2.707-2.271-4.901-5.072-4.901-2.073 0-3.856 1.202-4.643 2.925"
-                ></path>
-              </svg>
-            </span>
-          </label>
+          <div class="nav-right-items">
+            <ul class="nav__links" id="nav__links">
+              <li><a href="#contact"><i class="ri-contacts-line"></i> Contact</a></li> 
+              <li><a href="./owner/choses.html"><i class="ri-add-circle-line"></i> Add Properity</a></li>   
+              <li><a href="./singnupst.html"><i class="ri-user-add-line"></i> Sign Up</a></li>
+              <li><a href="./login.html"><i class="ri-login-circle-line"></i> Login</a></li>
+              <li><a href="#Properties"><i class="ri-building-2-line"></i> Properties</a></li>
+              <li><a href="#units"><i class="ri-home-4-line"></i> Units</a></li> 
+              <li><a href="#About US"><i class="ri-information-line"></i> About US</a></li>
+              <li><a href="#home"><i class="ri-home-heart-line"></i> Home</a></li>
+              <li><a href="#" onclick="openLogoutModal(); return false;"><i class="ri-logout-box-r-line"></i> Logout</a></li>
+            </ul>
+            <label class="switch">
+              <input checked="true" id="checkbox" type="checkbox" />
+              <span class="slider">
+                <div class="star star_1"></div>
+                <div class="star star_3"></div>
+                <div class="star star_2"></div>
+                <svg viewBox="0 0 16 16" class="cloud_1 cloud">
+                  <path
+                    transform="matrix(.77976 0 0 .78395-299.99-418.63)"
+                    fill="#fff"
+                    d="m391.84 540.91c-.421-.329-.949-.524-1.523-.524-1.351 0-2.451 1.084-2.485 2.435-1.395.526-2.388 1.88-2.388 3.466 0 1.874 1.385 3.423 3.182 3.667v.034h12.73v-.006c1.775-.104 3.182-1.584 3.182-3.395 0-1.747-1.309-3.186-2.994-3.379.007-.106.011-.214.011-.322 0-2.707-2.271-4.901-5.072-4.901-2.073 0-3.856 1.202-4.643 2.925"
+                  ></path>
+                </svg>
+              </span>
+            </label>
+          </div>
         </div>
       </nav>
     </header>
@@ -616,6 +614,24 @@
         EasyRent copyright  2025 web Design .All rights reserved.
       </div>
     </footer>
+
+    <!-- Logout Confirmation Modal -->
+    <div id="logoutModal" class="logout-modal">
+      <div class="logout-modal-content">
+        <div class="logout-modal-header">
+          <h2><i class="ri-logout-box-r-line"></i> Confirm Logout</h2>
+          <span class="logout-close" onclick="closeLogoutModal()">&times;</span>
+        </div>
+        <div class="logout-modal-body">
+          <p>Are you sure you want to logout?</p>
+        </div>
+        <div class="logout-modal-footer">
+          <button class="logout-btn logout-cancel" onclick="closeLogoutModal()">Cancel</button>
+          <button class="logout-btn logout-confirm" onclick="confirmLogout()">Yes, Logout</button>
+        </div>
+      </div>
+    </div>
+
     <!-- Cookie Consent Banner -->
     <div id="cookieConsent" class="cookie-card">
       <p class="cookie-heading">We Use Cookies</p>
@@ -678,6 +694,45 @@
     <script type="module" src="js/main.js"></script>
     <script type="module" scr="./js/property-filter.js"></script>
     
+    <script>
+      function openLogoutModal() {
+        document.getElementById('logoutModal').style.display = 'block';
+        document.body.style.overflow = 'hidden';
+      }
 
+      function closeLogoutModal() {
+        document.getElementById('logoutModal').style.display = 'none';
+        document.body.style.overflow = 'auto';
+      }
+
+      function confirmLogout() {
+        window.location.href = './login.html';
+      }
+
+      // Close modal when clicking outside
+      window.onclick = function(event) {
+        const modal = document.getElementById('logoutModal');
+        if (event.target == modal) {
+          closeLogoutModal();
+        }
+      }
+
+      // Mobile Menu
+      const menuBtn = document.getElementById('menu-btn');
+      const navRightItems = document.querySelector('.nav-right-items');
+      
+      menuBtn.addEventListener('click', () => {
+        navRightItems.classList.toggle('open');
+        document.body.style.overflow = navRightItems.classList.contains('open') ? 'hidden' : 'auto';
+      });
+
+      // Close menu when clicking outside
+      document.addEventListener('click', (e) => {
+        if (!navRightItems.contains(e.target) && !menuBtn.contains(e.target) && navRightItems.classList.contains('open')) {
+          navRightItems.classList.remove('open');
+          document.body.style.overflow = 'auto';
+        }
+      });
+    </script>
   </body>
 </html>
