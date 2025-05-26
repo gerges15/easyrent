@@ -13,11 +13,6 @@
       href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
       rel="stylesheet"
     />
-    <link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
-/>
-
 
     <style>
       /* إعادة ضبط أساسية */
@@ -102,8 +97,7 @@
 
       select,
       input[type="text"],
-      input[type="tel"],
-      input[type="password"] {
+      input[type="tel"] {
         width: 100%;
         padding: 0.75rem;
         font-size: 0.99rem;
@@ -111,13 +105,6 @@
         border-radius: 6px;
         outline: none;
         appearance: none; /* لإخفاء سهم select في بعض المتصفحات */
-      }
-
-      /* تأثير الإطار الأزرق عند التركيز */
-      input:focus,
-      select:focus {
-        border-color: #007bff; /* لون الإطار الأزرق */
-        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* تأثير الظل */
       }
 
       /* الملاحظة أسفل حقل رقم الهاتف */
@@ -221,51 +208,16 @@
         margin: 0.3rem;
         border-radius: 4px;
       }
-      .input-group {
-        margin-bottom: 1rem;
-      }
-      
-      .input-group label {
-        display: block;
-        margin-bottom: 0.25rem;
-        color: #fff;
-        font-size: 0.875rem;
-      }
-      
-      .input-group input {
-        width: 100%;
-        background: transparent;
-        border: none;
-        border-bottom: 1px solid #666;
-        color: white;
-        padding-right: 2.5rem; /* space for eye icon */
-        padding-left: 0;
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-        font-size: 0.875rem;
-        outline: none;
-      }
-      
-      .input-group button {
-        background: none;
-        border: none;
-        cursor: pointer;
-      }
-      
+
       /* Footer Styles */
       .footer {
         background: #1a193f;
-        width: 100%; /* جعل الفوتر بكامل عرض الصفحة */
-        position: relative; /* لتجنب أي مشاكل في التخطيط */
-        padding: 2rem 0; /* إضافة padding للفوتر */
       }
 
       .footer__contanier {
         display: grid;
         grid-template-columns: 1fr 1fr 1fr; /* 3 أعمدة */
         gap: 4rem 2rem;
-        max-width: 1200px; /* تحديد عرض الفوتر */
-        margin: 0 auto; /* توسيط الفوتر */
       }
 
       .footer__logo {
@@ -380,27 +332,6 @@
 
       .forgot-password a:hover {
         text-decoration: underline;
-      }
-      .password-wrapper {
-        position: relative;
-        display: inline-block;
-      }
-      #password {
-        padding-right: 60px; /* مساحة للزر */
-      }
-      #togglePasswordBtn {
-        position: absolute;
-        right: 6px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        color: #007bff;
-        font-weight: bold;
-      }
-      #togglePasswordBtn:focus {
-        outline: none;
       }
       select,
       input[type="text"],
@@ -536,22 +467,15 @@
         We'll call or text to confirm your number. Standard message and data
         rates apply.
       </p>
-      <div class="input-group relative">
-        <label for="password" class="block text-sm text-white mb-1">Password</label>
-        <div class="relative w-full">
-          <input type="password" id="password" placeholder="Password"
-            class="text-white bg-transparent w-full outline-none text-sm py-2 pr-10 border-b border-gray-500" />
-      
-          <button type="button" id="togglePassword"
-            class="absolute right-0 top-1/2 -translate-y-1/2 px-2 text-gray-400 hover:text-white">
-            <i class="fa-solid fa-eye" id="eyeIcon"></i>
-          </button>
-        </div>
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          placeholder="Enter your password"
+          required
+        />
       </div>
-      
-      
-      
-      
 
       <button type="submit" class="btn-primary">Continue</button>
       </form>
@@ -590,7 +514,6 @@
       </button>
     </div>
 
-    
     <footer class="footer" id="contact">
       <div class="section__contanier footer__contanier">
         <div class="footer__col">
@@ -660,18 +583,18 @@
 
     <script type="module">
       const passwordInput = document.getElementById("password");
-      const togglePasswordBtn = document.getElementById("togglePassword");
-      const eyeIcon = document.getElementById("eyeIcon");
+      const togglePasswordBtn = document.createElement("button");
+      togglePasswordBtn.type = "button";
+      togglePasswordBtn.id = "togglePasswordBtn";
+      togglePasswordBtn.textContent = "Show";
+      
+      passwordInput.parentNode.appendChild(togglePasswordBtn);
       
       togglePasswordBtn.addEventListener("click", () => {
         const isPassword = passwordInput.type === "password";
         passwordInput.type = isPassword ? "text" : "password";
-        
-        // غيّر شكل الأيقونة
-        eyeIcon.classList.toggle("fa-eye");
-        eyeIcon.classList.toggle("fa-eye-slash");
+        togglePasswordBtn.textContent = isPassword ? "Hide" : "Show";
       });
-      
       
       // تحقق بسيط من الإدخال
       document
