@@ -1,24 +1,22 @@
-// js/navigation.js - النسخة المعدلة
 export function initNavigation() {
+  const menuBtn = document.getElementById("menu-btn");
   const navLinks = document.getElementById("nav__links");
 
-  if (!navLinks) {
-    console.warn("عناصر التنقل مش موجودة في الصفحة");
-    return;
+  if (menuBtn && navLinks) {
+    const menuBtnIcon = menuBtn.querySelector("i");
+
+    menuBtn.addEventListener("click", () => {
+      navLinks.classList.toggle("open");
+      menuBtnIcon.className = navLinks.classList.contains("open")
+        ? "ri-close-line"
+        : "ri-menu-line";
+    });
+
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuBtnIcon.className = "ri-menu-line";
+      });
+    });
   }
-
-  // إضافة كلاس active للرابط الحالي
-  const currentPage = window.location.pathname.split("/").pop();
-  navLinks.querySelectorAll("a").forEach((link) => {
-    const linkPage = link.getAttribute("href").split("/").pop();
-    if (
-      linkPage === currentPage ||
-      (currentPage === "" && linkPage === "#home")
-    ) {
-      link.classList.add("active");
-    }
-  });
-
-  // أي وظائف إضافية تريدين إضافتها للتنقل
-  console.log("تم تهيئة التنقل بنجاح (النسخة المبسطة)");
 }

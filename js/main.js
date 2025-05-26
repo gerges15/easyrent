@@ -38,33 +38,36 @@ initNavigation();
 initFilter();
 
 document.addEventListener("DOMContentLoaded", () => {
-  // ---- Mobile Menu Toggle ----
-  const menuBtn = document.getElementById("menu-btn");
-  const navlinks = document.getElementById("nav__links");
+  // ======= TOGGLE MENU =======
+  const menuBtn = document.querySelector("#menu-btn");
+  const navLinks = document.querySelector(".nav__links");
+  const menuBtnIcon = menuBtn?.querySelector("i.menu-icon");
 
-  if (menuBtn && navlinks) {
-    const menuBtnIcon = menuBtn.querySelector(".ri-menu-line");
-    if (menuBtnIcon) {
-      menuBtn.addEventListener("click", () => {
-        navlinks.classList.toggle("open");
-        const isOpen = navlinks.classList.contains("open");
-        menuBtnIcon.setAttribute(
-          "class",
-          isOpen ? "ri-close-line" : "ri-menu-line"
-        );
-      });
+  if (menuBtn && navLinks && menuBtnIcon) {
+    // Toggle menu when clicking the menu button
+    menuBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      navLinks.classList.toggle("open");
+      menuBtnIcon.className = navLinks.classList.contains("open")
+        ? "ri-close-line menu-icon"
+        : "ri-menu-line menu-icon";
+    });
 
-      navlinks.addEventListener("click", (e) => {
-        if (e.target.tagName === "A") {
-          navlinks.classList.remove("open");
-          menuBtnIcon.setAttribute("class", "ri-menu-line");
-        }
+    // Close menu when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
+        navLinks.classList.remove("open");
+        menuBtnIcon.className = "ri-menu-line menu-icon";
+      }
+    });
+
+    // Close menu when clicking on a link
+    navLinks.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navLinks.classList.remove("open");
+        menuBtnIcon.className = "ri-menu-line menu-icon";
       });
-    } else {
-      console.warn("Menu button icon not found");
-    }
-  } else {
-    console.warn("Menu button or nav links element not found");
+    });
   }
 
   // ---- ScrollReveal Animations ----
@@ -241,72 +244,26 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ---- Theme Switcher ----
-  // تأكد من تحميل DOM بالكامل أولاً
-  document.addEventListener("DOMContentLoaded", function () {
-    const themeSwitch = document.querySelector(
-      '.switch input[type="checkbox"]'
-    );
+  const themeSwitch = document.querySelector('.switch input[type="checkbox"]');
+  if (themeSwitch) {
+    // Set initial state to light mode
+    document.documentElement.setAttribute("data-theme", "light");
+    themeSwitch.checked = false;
+    localStorage.setItem("theme", "light");
 
-    if (themeSwitch) {
-      // دالة تغيير الثيم
-      const switchTheme = (e) => {
-        const isDark = e.target.checked;
-        document.documentElement.setAttribute(
-          "data-theme",
-          isDark ? "dark" : "light"
-        );
-        localStorage.setItem("theme", isDark ? "dark" : "light");
-      };
-
-      // تحميل التفضيلات عند البدء
-      const loadThemePreference = () => {
-        // 1. تحقق من localStorage أولاً
-        const savedTheme = localStorage.getItem("theme");
-
-        // 2. إذا لم يوجد في localStorage، تحقق من تفضيلات النظام
-        const systemPrefersDark =
-          window.matchMedia &&
-          window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-        // 3. التفضيل الافتراضي يكون light
-        const themeToApply =
-          savedTheme || (systemPrefersDark ? "dark" : "light");
-
-        // تطبيق الثيم
-        document.documentElement.setAttribute("data-theme", themeToApply);
-        themeSwitch.checked = themeToApply === "dark";
-
-        // تسجيل في الكونسول لفحص القيم
-        console.log(`تم تحميل الثيم: ${themeToApply}`, {
-          savedTheme,
-          systemPrefersDark,
-        });
-      };
-
-      // إعداد Event Listener
-      themeSwitch.addEventListener("change", switchTheme);
-
-      // تحميل التفضيلات عند البدء
-      loadThemePreference();
-
-      // مراقبة تغييرات تفضيلات النظام (اختياري)
-      window
-        .matchMedia("(prefers-color-scheme: dark)")
-        .addEventListener("change", (e) => {
-          if (!localStorage.getItem("theme")) {
-            document.documentElement.setAttribute(
-              "data-theme",
-              e.matches ? "dark" : "light"
-            );
-            themeSwitch.checked = e.matches;
-          }
-        });
-    } else {
-      console.warn("لم يتم العثور على مفتاح تبديل الثيم");
-      // تطبيق الوضع الفاتح كافتراضي إذا لم يوجد مفتاح
-      document.documentElement.setAttribute("data-theme", "light");
+    function switchTheme(e) {
+      if (e.target.checked) {
+        document.documentElement.setAttribute("data-theme", "dark");
+        localStorage.setItem("theme", "dark");
+      } else {
+        document.documentElement.setAttribute("data-theme", "light");
+        localStorage.setItem("theme", "light");
+      }
     }
-  });
+
+    themeSwitch.addEventListener("change", switchTheme, false);
+  }
+
   // ---- Toggle filter sections ----
   function toggleSection(header) {
     const section = header.parentElement;
