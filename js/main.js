@@ -326,4 +326,179 @@ document.addEventListener("DOMContentLoaded", () => {
   document.querySelectorAll(".filter-header").forEach((header) => {
     header.addEventListener("click", () => toggleSection(header));
   });
+
+  // Execute search functionality
+  const executeSearchBtn = document.getElementById("execute-search");
+  if (executeSearchBtn) {
+    executeSearchBtn.addEventListener("click", () => {
+      const location = document.getElementById("location").value;
+      const price = document.getElementById("price").value;
+      const type = document.getElementById("type").value;
+
+      // Create filter object
+      const filters = {
+        location,
+        price,
+        type,
+      };
+
+      // Log the filters (for testing)
+      console.log("Applied filters:", filters);
+
+      // Here you can add the actual filtering logic
+      // For example, filtering the property cards based on the selected values
+      filterProperties(filters);
+    });
+  }
+
+  // Function to filter properties
+  function filterProperties(filters) {
+    const propertyCards = document.querySelectorAll(".property-card");
+
+    propertyCards.forEach((card) => {
+      let shouldShow = true;
+
+      // Location filter
+      if (filters.location !== "all") {
+        const cardLocation =
+          card.querySelector(".property-location").textContent;
+        if (
+          !cardLocation.toLowerCase().includes(filters.location.toLowerCase())
+        ) {
+          shouldShow = false;
+        }
+      }
+
+      // Price filter
+      if (filters.price !== "all") {
+        const cardPrice = card.querySelector(".property-price").textContent;
+        const price = parseFloat(cardPrice.replace(/[^0-9.-]+/g, ""));
+
+        const [min, max] = filters.price.split("-").map((p) => parseFloat(p));
+        if (filters.price.includes("+")) {
+          if (price < min) shouldShow = false;
+        } else if (price < min || price > max) {
+          shouldShow = false;
+        }
+      }
+
+      // Type filter
+      if (filters.type !== "all") {
+        const cardType = card.querySelector(".property-type").textContent;
+        if (!cardType.toLowerCase().includes(filters.type.toLowerCase())) {
+          shouldShow = false;
+        }
+      }
+
+      // Show/hide the card
+      card.style.display = shouldShow ? "block" : "none";
+    });
+  }
+
+  // More Details Dropdown functionality
+  const moreDetailsBtn = document.getElementById("more-details-btn");
+  const moreContent = document.getElementById("more-content");
+  const resetFiltersBtn = document.getElementById("reset-filters");
+  const applyFiltersBtn = document.getElementById("apply-filters");
+
+  if (moreDetailsBtn && moreContent) {
+    let isAnimating = false;
+
+    moreDetailsBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (isAnimating) return;
+
+      isAnimating = true;
+      moreDetailsBtn.classList.toggle("active");
+      moreContent.classList.toggle("show");
+
+      // Reset animation flag after transition
+      setTimeout(() => {
+        isAnimating = false;
+      }, 300);
+    });
+
+    // Close dropdown when clicking outside
+    document.addEventListener("click", (e) => {
+      if (
+        !moreDetailsBtn.contains(e.target) &&
+        !moreContent.contains(e.target)
+      ) {
+        moreDetailsBtn.classList.remove("active");
+        moreContent.classList.remove("show");
+      }
+    });
+
+    // Prevent closing when clicking inside dropdown
+    moreContent.addEventListener("click", (e) => {
+      e.stopPropagation();
+    });
+
+    // Handle escape key
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "Escape" && moreContent.classList.contains("show")) {
+        moreDetailsBtn.classList.remove("active");
+        moreContent.classList.remove("show");
+      }
+    });
+  }
+
+  // Reset filters functionality
+  if (resetFiltersBtn) {
+    resetFiltersBtn.addEventListener("click", () => {
+      const selects = moreContent.querySelectorAll("select");
+      selects.forEach((select) => {
+        select.value = select.firstElementChild.value;
+      });
+
+      // Add visual feedback
+      resetFiltersBtn.classList.add("clicked");
+      setTimeout(() => {
+        resetFiltersBtn.classList.remove("clicked");
+      }, 200);
+    });
+  }
+
+  // Apply filters functionality
+  if (applyFiltersBtn) {
+    applyFiltersBtn.addEventListener("click", () => {
+      const filters = {
+        minSize: document.getElementById("minSize").value,
+        maxSize: document.getElementById("maxSize").value,
+        currency: document.getElementById("currency").value,
+        areaUnit: document.getElementById("areaUnit").value,
+        bathroom: document.getElementById("bathroomCount").value,
+        bedroom: document.getElementById("bedroomCount").value,
+        kitchen: document.getElementById("kitchenCount").value,
+      };
+
+      console.log("Applied filters:", filters);
+
+      // Add visual feedback
+      applyFiltersBtn.classList.add("clicked");
+      setTimeout(() => {
+        applyFiltersBtn.classList.remove("clicked");
+      }, 200);
+
+      // Close the dropdown after applying filters
+      setTimeout(() => {
+        moreDetailsBtn.classList.remove("active");
+        moreContent.classList.remove("show");
+      }, 300);
+    });
+  }
+
+  // Improve room card interaction
+  const roomCards = document.querySelectorAll(".room__card");
+  roomCards.forEach((card) => {
+    card.addEventListener("click", () => {
+      // Get room details
+      const title = card.querySelector("h4").textContent;
+      const price = card.querySelector(".room__price h3").textContent;
+      const features = card.querySelector(".room__features").textContent;
+
+      console.log("Selected room:", { title, price, features });
+      // Here you can add logic to show room details modal or navigate to room page
+    });
+  });
 });
