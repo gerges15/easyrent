@@ -1,67 +1,122 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html lang="ar" dir="rtl">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Forgot Password - Google Accounts</title>
+    <title>استعادة كلمة المرور - EasyRent</title>
     <style>
       body {
-        font-family: "Google Sans", Arial, sans-serif;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
         margin: 0;
         padding: 0;
-        background-color: #fff;
+        background-color: #f5f5f5;
         color: #202124;
-        font-size: 20px;
+        font-size: 16px;
         display: flex;
         flex-direction: column;
         min-height: 100vh;
-        border: 1px solid #dadce0; /* إضافة الإطار إلى الصفحة بأكملها */
       }
 
       .container {
         max-width: 450px;
-        margin: 20px auto; /* إضافة مساحة علوية وسفلية */
-        padding: 20px;
+        margin: 40px auto;
+        padding: 32px;
         text-align: center;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
         background-color: #ffffff;
-        border-radius: 8px; /* زاوية دائرية */
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .logo {
+        margin-bottom: 24px;
+      }
+
+      .logo img {
+        max-width: 150px;
+        height: auto;
+      }
+
+      h1 {
+        font-size: 24px;
+        font-weight: 500;
+        margin-bottom: 16px;
+        color: #202124;
+      }
+
+      .subtitle {
+        font-size: 16px;
+        color: #5f6368;
+        margin-bottom: 24px;
+      }
+
+      .email-label {
+        font-size: 14px;
+        color: #5f6368;
+        margin-bottom: 8px;
+        text-align: right;
       }
 
       .email-display {
         font-size: 16px;
         font-weight: 500;
         margin-bottom: 24px;
-        padding: 12px;
+        padding: 12px 16px;
         background-color: #f8f9fa;
         border-radius: 4px;
-        border: 1px solid #dadce0; /* إضافة إطار حول حقل البريد الإلكتروني */
+        border: 1px solid #dadce0;
+        text-align: center;
+        direction: ltr;
+        word-break: break-all;
+      }
+
+      .email-display:hover {
+        background-color: #f1f3f4;
+      }
+
+      .verification-form {
+        margin-bottom: 24px;
       }
 
       .input-container {
         margin-bottom: 24px;
-        text-align: left;
-        border: 1px solid #dadce0; /* إضافة الإطار للحاوية */
-        padding: 10px;
-        border-radius: 4px;
+        text-align: center;
       }
 
-      .input-field {
-        width: 100%;
-        padding: 13px 15px;
-        font-size: 16px;
-        border: 1px solid #dadce0;
+      .code-input {
+        width: 240px;
+        padding: 12px;
+        font-size: 24px;
+        letter-spacing: 8px;
+        text-align: center;
+        border: 2px solid #dadce0;
         border-radius: 4px;
-        box-sizing: border-box;
+        transition: border-color 0.2s;
       }
 
-      .input-field:focus {
-        border-color: #5299f6;
+      .code-input:focus {
+        border-color: #398bf8;
         outline: none;
-        box-shadow: 0 0 0 2px #e8f0fe;
+        box-shadow: 0 0 0 2px rgba(57, 139, 248, 0.1);
+      }
+
+      .code-input.error {
+        border-color: #d93025;
+      }
+
+      .error-message {
+        color: #d93025;
+        font-size: 14px;
+        margin-top: 8px;
+        display: none;
+      }
+
+      .success-message {
+        color: #188038;
+        font-size: 14px;
+        margin-top: 8px;
+        padding: 8px;
+        background-color: #e6f4ea;
+        border-radius: 4px;
       }
 
       .next-btn {
@@ -69,31 +124,90 @@
         color: white;
         border: none;
         border-radius: 4px;
-        padding: 10px 24px;
-        font-size: 14px;
+        padding: 12px 24px;
+        font-size: 16px;
         font-weight: 500;
         cursor: pointer;
         width: 100%;
-        height: 40px;
-        border: 1px solid #398bf8; /* إضافة إطار للزر */
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
       }
 
-      .next-btn:hover {
-        background-color: #1765cc;
+      .next-btn:hover:not(:disabled) {
+        background-color: #1a73e8;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      .next-btn:active:not(:disabled) {
+        transform: translateY(0);
+        box-shadow: none;
       }
 
       .next-btn:disabled {
-        background-color: #f1f3f4;
-        color: #bdc1c6;
-        cursor: default;
+        background-color: #e8eaed;
+        color: #9aa0a6;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
       }
 
-      .error-message {
-        color: #d93025;
-        font-size: 12px;
-        margin-top: 8px;
-        text-align: left;
+      .next-btn.active {
+        background-color: #1a73e8;
+        box-shadow: 0 2px 4px rgba(26, 115, 232, 0.2);
+      }
+
+      .next-btn.active:hover {
+        background-color: #1557b0;
+      }
+
+      .resend-container {
+        margin-top: 24px;
+        font-size: 14px;
+        color: #5f6368;
+      }
+
+      .resend-button {
+        color: #398bf8;
+        background: none;
+        border: none;
+        padding: 0;
+        font: inherit;
+        cursor: pointer;
+        text-decoration: underline;
+      }
+
+      .resend-button:disabled {
+        color: #9aa0a6;
+        cursor: not-allowed;
+        text-decoration: none;
+      }
+
+      .countdown {
+        color: #5f6368;
+        font-size: 14px;
+        margin-right: 8px;
+      }
+
+      .loader {
         display: none;
+        width: 24px;
+        height: 24px;
+        border: 3px solid #f3f3f3;
+        border-top: 3px solid #398bf8;
+        border-radius: 50%;
+        margin: 0 auto 16px;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
       }
 
       .footer {
@@ -103,6 +217,7 @@
         color: #5f6368;
         font-size: 12px;
         border-top: 1px solid #dadce0;
+        margin-top: auto;
       }
 
       .footer-links {
@@ -120,176 +235,59 @@
       .footer-links a:hover {
         text-decoration: underline;
       }
-
-      .language-selector {
-        cursor: pointer;
-        margin-top: 10px;
-      }
-
-      [dir="rtl"] {
-        text-align: right;
-      }
-
-      .error {
-        border-color: #d93025 !important;
-      }
-
-      [dir="rtl"] {
-        text-align: right;
-      }
     </style>
   </head>
   <body>
     <div class="container">
       <div class="logo">
-        <img
-          src="https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png"
-          alt="Google Logo"
-          width="110"
-          height="50"
-        />
+        <img src="assets/logo.png" alt="EasyRent Logo" />
       </div>
 
-      <h1 id="title">Forgot password?</h1>
+      <h1 id="title">استعادة كلمة المرور</h1>
       <div class="subtitle" id="subtitle">
-        Enter the verification code sent to your recovery email
+        أدخل رمز التحقق المرسل إلى بريدك الإلكتروني
       </div>
 
-      <div class="email-display" id="displayEmail">r*******n@gmail.com</div>
+      <div class="email-display" id="displayEmail"></div>
 
-      <div class="input-container">
-        <input
-          type="text"
-          class="input-field"
-          id="verificationCode"
-          placeholder="Enter 6-digit code"
-          maxlength="6"
-        />
-        <div class="error-message" id="errorMessage">
-          Invalid verification code. Please try again.
+      <div class="loader" id="loader"></div>
+
+      <form id="verificationForm" class="verification-form">
+        <div class="input-container">
+          <input
+            type="text"
+            class="code-input"
+            id="verificationCode"
+            placeholder="______"
+            maxlength="6"
+            autocomplete="one-time-code"
+            inputmode="numeric"
+            pattern="\d*"
+          />
+          <div class="error-message" id="errorMessage"></div>
         </div>
+
+        <button type="submit" class="next-btn" id="nextBtn" disabled>
+          التحقق
+        </button>
+      </form>
+
+      <div class="resend-container">
+        <button class="resend-button" id="resendButton" disabled>
+          إعادة إرسال الرمز
+        </button>
+        <span class="countdown" id="countdown"></span>
       </div>
-
-      <button class="next-btn" id="nextBtn" disabled>Next</button>
-
-      <div class="try-another-way" id="tryAnotherWay">Didn't get the code?</div>
     </div>
 
     <div class="footer">
       <div class="footer-links">
-        <a href="#" id="helpLink">Help</a>
-        <a href="#" id="privacyLink">Privacy</a>
-        <a href="#" id="termsLink">Terms</a>
+        <a href="#" id="helpLink">المساعدة</a>
+        <a href="#" id="privacyLink">الخصوصية</a>
+        <a href="#" id="termsLink">الشروط</a>
       </div>
-      <div class="language-selector" id="languageToggle">العربية</div>
     </div>
 
-    <script>
-      const translations = {
-        en: {
-          title: "Forgot password?",
-          subtitle: "Enter the verification code sent to your recovery email",
-          placeholder: "Enter 6-digit code",
-          next: "Next",
-          error: "Invalid verification code. Please try again.",
-          tryAnother: "Didn't get the code?",
-          help: "Help",
-          privacy: "Privacy",
-          terms: "Terms",
-          language: "العربية",
-        },
-        ar: {
-          title: "هل نسيت كلمة المرور؟",
-          subtitle: "أدخل رمز التحقق المرسل إلى بريدك الإلكتروني للاسترداد",
-          placeholder: "أدخل الرمز المكون من 6 أرقام",
-          next: "التالي",
-          error: "رمز التحقق غير صحيح. حاول مرة أخرى.",
-          tryAnother: "لم يصلك الرمز؟",
-          help: "المساعدة",
-          privacy: "الخصوصية",
-          terms: "الشروط",
-          language: "English",
-        },
-      };
-
-      let currentLang = localStorage.getItem("lang") || "en";
-      const elements = {
-        title: document.getElementById("title"),
-        subtitle: document.getElementById("subtitle"),
-        input: document.getElementById("verificationCode"),
-        nextBtn: document.getElementById("nextBtn"),
-        errorMessage: document.getElementById("errorMessage"),
-        tryAnother: document.getElementById("tryAnotherWay"),
-        langToggle: document.getElementById("languageToggle"),
-        help: document.getElementById("helpLink"),
-        privacy: document.getElementById("privacyLink"),
-        terms: document.getElementById("termsLink"),
-      };
-
-      function applyTranslations() {
-        const t = translations[currentLang];
-        document.documentElement.lang = currentLang;
-        document.documentElement.dir = currentLang === "ar" ? "rtl" : "ltr";
-
-        elements.title.textContent = t.title;
-        elements.subtitle.textContent = t.subtitle;
-        elements.input.placeholder = t.placeholder;
-        elements.nextBtn.textContent = t.next;
-        elements.errorMessage.textContent = t.error;
-        elements.tryAnother.textContent = t.tryAnother;
-        elements.langToggle.textContent = t.language;
-        elements.help.textContent = t.help;
-        elements.privacy.textContent = t.privacy;
-        elements.terms.textContent = t.terms;
-      }
-
-      elements.langToggle.addEventListener("click", () => {
-        currentLang = currentLang === "en" ? "ar" : "en";
-        localStorage.setItem("lang", currentLang);
-        applyTranslations();
-      });
-
-      applyTranslations();
-
-      const urlParams = new URLSearchParams(window.location.search);
-      const email = urlParams.get("email") || "recoveryemail@gmail.com";
-      document.getElementById("displayEmail").textContent = maskEmail(email);
-
-      function maskEmail(email) {
-        const [username, domain] = email.split("@");
-        const maskedUsername =
-          username.charAt(0) +
-          "*".repeat(username.length - 2) +
-          username.charAt(username.length - 1);
-        return maskedUsername + "@" + domain;
-      }
-
-      const verificationCodeInput = document.getElementById("verificationCode");
-      const nextBtn = document.getElementById("nextBtn");
-
-      verificationCodeInput.addEventListener("input", function () {
-        const code = this.value.trim();
-        nextBtn.disabled = code.length !== 6;
-
-        if (elements.errorMessage.style.display === "block") {
-          elements.errorMessage.style.display = "none";
-          this.classList.remove("error");
-        }
-      });
-
-      nextBtn.addEventListener("click", function () {
-        const code = verificationCodeInput.value.trim();
-        if (code === "123456") {
-          alert("✅ Verification successful! Redirecting...");
-        } else {
-          elements.errorMessage.style.display = "block";
-          elements.input.classList.add("error");
-        }
-      });
-
-      elements.tryAnother.addEventListener("click", function () {
-        alert("Redirecting to alternative recovery methods...");
-      });
-    </script>
+    <script type="module" src="js/send-recovery-email.js"></script>
   </body>
 </html>

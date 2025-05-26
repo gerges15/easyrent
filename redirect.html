@@ -4,10 +4,102 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>توجيه المستخدم</title>
+    <style>
+      body {
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background-color: #f5f5f5;
+        font-family: Arial, sans-serif;
+      }
+
+      .container {
+        text-align: center;
+        padding: 20px;
+      }
+
+      .loader {
+        width: 48px;
+        height: 48px;
+        border: 5px solid #82c9ff;
+        border-bottom-color: transparent;
+        border-radius: 50%;
+        display: inline-block;
+        box-sizing: border-box;
+        animation: rotation 1s linear infinite;
+        margin-bottom: 20px;
+      }
+
+      .message {
+        color: #333;
+        font-size: 18px;
+        margin-bottom: 10px;
+      }
+
+      .sub-message {
+        color: #666;
+        font-size: 14px;
+      }
+
+      @keyframes rotation {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .error-container {
+        display: none;
+        text-align: center;
+        padding: 20px;
+        background-color: #fff3f3;
+        border-radius: 8px;
+        margin-top: 20px;
+      }
+
+      .error-message {
+        color: #d32f2f;
+        margin-bottom: 10px;
+      }
+
+      .retry-button {
+        background-color: #82c9ff;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: background-color 0.3s;
+      }
+
+      .retry-button:hover {
+        background-color: #60b6ff;
+      }
+    </style>
   </head>
   <body>
-    <h2>جاري التحقق من نوع المستخدم...</h2>
+    <div class="container">
+      <span class="loader"></span>
+      <div class="message" id="statusMessage">
+        جاري التحقق من نوع المستخدم...
+      </div>
+      <div class="sub-message" id="subMessage">
+        سيتم توجيهك للصفحة المناسبة تلقائياً
+      </div>
 
-    <script type="module" src="redirect.js"></script>
+      <div class="error-container" id="errorContainer">
+        <div class="error-message" id="errorMessage"></div>
+        <button class="retry-button" onclick="window.location.reload()">
+          المحاولة مرة أخرى
+        </button>
+      </div>
+    </div>
+
+    <script type="module" src="js/redirect.js"></script>
   </body>
 </html>

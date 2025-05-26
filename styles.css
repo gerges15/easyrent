@@ -201,7 +201,9 @@ nav {
 }
 
 .nav__links a {
-  color: var(--text-light);
+  font-size: 1rem;
+  font-weight: 500;
+  color: #808080;
   transition: 0.3s;
 }
 
@@ -1122,7 +1124,7 @@ nav {
     background-color: transparent;
   }
   .nav__links a {
-    color: var(--text-dark);
+    color: #808080;
     padding: 0.5rem 1rem;
     font-weight: 500;
     position: relative;
