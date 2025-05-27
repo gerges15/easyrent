@@ -1429,7 +1429,7 @@ nav {
     padding: 2rem 1rem;
     gap: 1.5rem;
   }
-  
+
   .menu__banner li {
     padding: 1rem;
   }
@@ -1937,74 +1937,75 @@ body {
   .about__image {
     width: 100%;
     height: auto;
-}
+  }
 
-.dropdown-btn {
-  width: 100%;
-  padding: 12px 15px;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  background-color: var(--white);
-  color: var(--text-dark);
-  font-size: 14px;
-  font-weight: 500;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
+  .dropdown-btn {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--white);
+    color: var(--text-dark);
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
 
-.dropdown-btn:hover {
-  border-color: var(--secondary-color);
-}
+  .dropdown-btn:hover {
+    border-color: var(--secondary-color);
+  }
 
-.dropdown-btn i {
-  font-size: 16px;
-  transition: transform 0.3s ease;
-}
+  .dropdown-btn i {
+    font-size: 16px;
+    transition: transform 0.3s ease;
+  }
 
-.more-content {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  width: 100%;
-  background: var(--card-bg);
-  border-radius: 8px;
-  margin-top: 5px;
-  padding: 15px;
-  border: 1px solid var(--border-color);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  display: none;
-  z-index: 100;
-}
+  .more-content {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: var(--card-bg);
+    border-radius: 8px;
+    margin-top: 5px;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    display: none;
+    z-index: 100;
+  }
 
-.more-content.show {
-  display: block;
-}
+  .more-content.show {
+    display: block;
+  }
 
-.filter-group {
-  margin-bottom: 15px;
-}
+  .filter-group {
+    margin-bottom: 15px;
+  }
 
-.filter-group label {
-  display: block;
-  margin-bottom: 8px;
-  font-weight: 500;
-  color: var(--text-dark);
-}
+  .filter-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: var(--text-dark);
+  }
 
-.filter-group select {
-  width: 100%;
-  padding: 10px 15px;
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  background-color: var(--white);
-  color: var(--text-dark);
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
+  .filter-group select {
+    width: 100%;
+    padding: 10px 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    background-color: var(--white);
+    color: var(--text-dark);
+    font-size: 14px;
+    transition: all 0.3s ease;
+  }
 
-.filter-group select:hover {
-  border-color: var(--secondary-color);
+  .filter-group select:hover {
+    border-color: var(--secondary-color);
+  }
 }
