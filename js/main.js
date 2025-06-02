@@ -39,34 +39,36 @@ initFilter();
 
 document.addEventListener("DOMContentLoaded", () => {
   // ======= TOGGLE MENU =======
-  const menuBtn = document.querySelector("#menu-btn");
-  const navLinks = document.querySelector(".nav__links");
-  const menuBtnIcon = menuBtn?.querySelector("i.menu-icon");
+  const menuBtn = document.getElementById("menu-btn");
+  const navRightItems = document.querySelector(".nav-right-items");
 
-  if (menuBtn && navLinks && menuBtnIcon) {
-    // Toggle menu when clicking the menu button
+  if (menuBtn && navRightItems) {
     menuBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      navLinks.classList.toggle("open");
-      menuBtnIcon.className = navLinks.classList.contains("open")
-        ? "ri-close-line menu-icon"
-        : "ri-menu-line menu-icon";
+      navRightItems.classList.toggle("open");
+      document.body.style.overflow = navRightItems.classList.contains("open")
+        ? "hidden"
+        : "auto";
+    });
+
+    // Close menu when clicking on a link
+    navRightItems.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        navRightItems.classList.remove("open");
+        document.body.style.overflow = "auto";
+      });
     });
 
     // Close menu when clicking outside
     document.addEventListener("click", (e) => {
-      if (!navLinks.contains(e.target) && !menuBtn.contains(e.target)) {
-        navLinks.classList.remove("open");
-        menuBtnIcon.className = "ri-menu-line menu-icon";
+      if (
+        !navRightItems.contains(e.target) &&
+        !menuBtn.contains(e.target) &&
+        navRightItems.classList.contains("open")
+      ) {
+        navRightItems.classList.remove("open");
+        document.body.style.overflow = "auto";
       }
-    });
-
-    // Close menu when clicking on a link
-    navLinks.querySelectorAll("a").forEach((link) => {
-      link.addEventListener("click", () => {
-        navLinks.classList.remove("open");
-        menuBtnIcon.className = "ri-menu-line menu-icon";
-      });
     });
   }
 
