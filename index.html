@@ -13,6 +13,7 @@
     />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 <link rel="stylesheet" href="./styles.css" />
+<link rel="stylesheet" href="./room-shapes.css" />
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <style>
@@ -45,19 +46,24 @@
         transition: all 0.3s ease;
       }
 
-      .logo-icon:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(124, 77, 255, 0.4);
+      .nav__logo .logo-icon::before {
+        content: "";
+        position: absolute;
+        width: 24px;
+        height: 24px;
+        background: linear-gradient(45deg, #ffffff, #e0e7ff);
+        border-radius: 4px;
+        transform: rotate(45deg);
       }
 
-      .logo-icon::before {
-        content: "ER";
-        background: linear-gradient(45deg, #ffffff, #e0e7ff);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        font-size: 26px;
-        font-weight: 800;
+      .nav__logo .logo-icon::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        background: linear-gradient(135deg, var(--logo-gradient-1), var(--logo-gradient-2));
+        border-radius: 3px;
+        transform: rotate(45deg);
       }
 
       .logo-text {
@@ -139,6 +145,21 @@
         align-items: center;
         gap: 12px;
         margin-bottom: 32px;
+      }
+
+      .footer__logo .logo-icon::before {
+        content: "ER";
+        background: linear-gradient(45deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-size: 26px;
+        font-weight: 800;
+        transform: none;
+      }
+
+      .footer__logo .logo-icon::after {
+        display: none;
       }
 
       .footer__description {
@@ -326,10 +347,10 @@
       <nav>
         <div class="nav__bar">
           <div class="nav__header">
-            <div class="logo nav__logo">
-              <div class="logo-icon"></div>
+            <a href="#" class="logo nav__logo">
+              <div class="logo-creative"></div>
               <span class="logo-text">EASY<br />RENT</span>
-            </div>
+            </a>
             <button class="nav__menu__btn" id="menu-btn">
               <i class="ri-menu-line"></i>
             </button>

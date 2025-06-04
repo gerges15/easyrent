@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Log in - EasyRent</title>
+    <title>Owner Login - EasyRent</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -47,12 +47,60 @@
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       }
 
+      .welcome-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 32px;
+      }
+
       .title {
         text-align: center;
         font-size: 28px;
         font-weight: 700;
-        margin-bottom: 32px;
+        margin-bottom: 0;
         color: #1a1a1a;
+        display: flex;
+        align-items: center;
+      }
+
+      .welcome-logo {
+        position: relative;
+        width: 35px;
+        height: 35px;
+        background: linear-gradient(135deg, #82c9ff 0%, #5aa8e6 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 2px;
+      }
+
+      .welcome-logo::before {
+        content: "";
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        background: #fff;
+        border-radius: 50%;
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+      }
+
+      .welcome-logo::after {
+        content: "ER";
+        position: relative;
+        font-size: 14px;
+        font-weight: 700;
+        background: linear-gradient(45deg, #82c9ff, #5aa8e6);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .welcome-logo:hover::before {
+        transform: scale(0.8);
       }
 
       .input-group {
@@ -142,7 +190,7 @@
 
       .btn-primary:hover {
         background: #5aa8e6;
-        transform: translateY(-2px);
+        transform: translateY(-3px);
       }
 
       .btn-primary:disabled {
@@ -604,11 +652,10 @@
   <body>
     <main>
       <div class="container">
-        <div class="logo">
-          <div class="logo-icon"></div>
-          <span class="logo-text">EASY<br />RENT</span>
+        <div class="welcome-header">
+          <div class="welcome-logo"></div>
+          <h1 class="title">Welcome Owner</h1>
         </div>
-        <h1 class="title">Welcome Back!</h1>
         <form id="loginForm">
           <div class="input-group">
             <label for="emailOrPhone">Email or Phone Number</label>

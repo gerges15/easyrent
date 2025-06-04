@@ -1,0 +1,371 @@
+/* Room and Rental Home Shape Styles */
+
+/* Hexagonal Room Card */
+.room-hex {
+  position: relative;
+  width: 300px;
+  height: 260px;
+  background-color: var(--card-bg);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  transition: transform 0.3s ease;
+  margin: 30px auto;
+}
+
+.room-hex:hover {
+  transform: translateY(-10px);
+}
+
+.room-hex__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Diamond Room Card */
+.room-diamond {
+  position: relative;
+  width: 250px;
+  height: 250px;
+  margin: 40px auto;
+  transform: rotate(45deg);
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.room-diamond:hover {
+  transform: rotate(45deg) scale(1.05);
+}
+
+.room-diamond__image {
+  width: 140%;
+  height: 140%;
+  object-fit: cover;
+  transform: rotate(-45deg) translate(-20px, -20px);
+}
+
+/* Circular Room Card */
+.room-circle {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin: 20px auto;
+  transition: transform 0.3s ease;
+}
+
+.room-circle:hover {
+  transform: scale(1.05);
+}
+
+.room-circle__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Wave-shaped Room Section */
+.room-wave {
+  position: relative;
+  padding-bottom: 50px;
+}
+
+.room-wave::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNDQwIDEyMCI+PHBhdGggZmlsbD0iI2YwZjBmMCIgZD0iTTAsNDAgQzE1MCw4MCA0NTAsMTIwIDcyMCwxMjAgQzk5MCwxMjAgMTI5MCw4MCAxNDQwLDQwIEwxNDQwLDEyMCBMMCwxMjAgWiI+PC9wYXRoPjwvc3ZnPg==");
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+/* Curved Room Card */
+.room-curved {
+  position: relative;
+  width: 300px;
+  height: 200px;
+  border-radius: 20px 20px 100px 100px;
+  overflow: hidden;
+  margin: 20px auto;
+  transition: transform 0.3s ease;
+}
+
+.room-curved:hover {
+  transform: translateY(-10px);
+}
+
+.room-curved__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Trapezoid Room Card */
+.room-trapezoid {
+  position: relative;
+  width: 300px;
+  height: 200px;
+  clip-path: polygon(20% 0%, 80% 0%, 100% 100%, 0% 100%);
+  margin: 20px auto;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+}
+
+.room-trapezoid:hover {
+  transform: scale(1.05);
+}
+
+.room-trapezoid__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Room Info Overlay */
+.room-info {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 20px;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+  color: white;
+  transform: translateY(100%);
+  transition: transform 0.3s ease;
+}
+
+.room-hex:hover .room-info,
+.room-diamond:hover .room-info,
+.room-circle:hover .room-info,
+.room-curved:hover .room-info,
+.room-trapezoid:hover .room-info {
+  transform: translateY(0);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .room-hex,
+  .room-diamond,
+  .room-circle,
+  .room-curved,
+  .room-trapezoid {
+    width: 250px;
+    height: 180px;
+  }
+
+  .room-diamond {
+    width: 200px;
+    height: 200px;
+  }
+
+  .room-circle {
+    width: 220px;
+    height: 220px;
+  }
+}
+
+/* Dark Mode Support */
+[data-theme="dark"] .room-info {
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+}
+
+[data-theme="dark"] .room-wave::after {
+  filter: brightness(0.8);
+}
+
+/* Creative Logo Styles */
+.nav__logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.logo-creative {
+  position: relative;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #7c4dff 0%, #448aff 100%);
+  border-radius: 12px;
+  transform: rotate(45deg);
+  transition: all 0.4s ease;
+  box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+  flex-shrink: 0;
+}
+
+.logo-creative::before {
+  content: "";
+  position: absolute;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, #ffffff 0%, #e0e7ff 100%);
+  border-radius: 8px;
+  transform: rotate(0deg);
+  transition: all 0.4s ease;
+}
+
+.logo-creative::after {
+  content: "ER";
+  position: absolute;
+  font-size: 20px;
+  font-weight: 800;
+  color: #7c4dff;
+  transform: rotate(-45deg);
+  background: linear-gradient(45deg, #7c4dff, #448aff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.4s ease;
+  font-family: "Poppins", sans-serif;
+}
+
+.logo-creative:hover {
+  transform: rotate(135deg);
+  box-shadow: 0 6px 20px rgba(124, 77, 255, 0.4);
+}
+
+.logo-creative:hover::before {
+  transform: rotate(-180deg);
+  background: linear-gradient(135deg, #e0e7ff 0%, #ffffff 100%);
+}
+
+.logo-creative:hover::after {
+  transform: rotate(-135deg);
+  background: linear-gradient(-45deg, #448aff, #7c4dff);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+.logo-text {
+  font-size: 24px;
+  font-weight: 800;
+  background: linear-gradient(45deg, #7c4dff, #448aff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  line-height: 1.2;
+  letter-spacing: -0.5px;
+}
+
+/* Dark Mode Support */
+[data-theme="dark"] .logo-creative::before {
+  background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+}
+
+[data-theme="dark"] .logo-creative::after {
+  background: linear-gradient(45deg, #82c9ff, #a8d4f4);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+[data-theme="dark"] .logo-text {
+  background: linear-gradient(45deg, #82c9ff, #a8d4f4);
+  -webkit-background-clip: text;
+  background-clip: text;
+}
+
+/* Alternative Creative Logo */
+.logo-creative-alt {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #7c4dff 0%, #448aff 100%);
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+
+.logo-creative-alt::before {
+  content: "";
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  background: #ffffff;
+  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  transition: all 0.4s ease;
+}
+
+.logo-creative-alt::after {
+  content: "ER";
+  position: absolute;
+  font-size: 20px;
+  font-weight: 800;
+  background: linear-gradient(45deg, #7c4dff, #448aff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  transition: all 0.4s ease;
+}
+
+.logo-creative-alt:hover {
+  transform: rotate(30deg);
+}
+
+.logo-creative-alt:hover::before {
+  transform: rotate(-30deg);
+}
+
+.logo-creative-alt:hover::after {
+  transform: scale(1.1);
+}
+
+/* Modern Minimalist Logo */
+.logo-modern {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #7c4dff 0%, #448aff 100%);
+  border-radius: 50%;
+  transition: all 0.4s ease;
+  cursor: pointer;
+  overflow: hidden;
+}
+
+.logo-modern::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+    circle at 30% 30%,
+    rgba(255, 255, 255, 0.8) 0%,
+    rgba(255, 255, 255, 0) 60%
+  );
+  transition: all 0.4s ease;
+}
+
+.logo-modern::after {
+  content: "ER";
+  position: absolute;
+  font-size: 24px;
+  font-weight: 800;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  transition: all 0.4s ease;
+}
+
+.logo-modern:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(124, 77, 255, 0.4);
+}
+
+.logo-modern:hover::before {
+  transform: scale(1.2) rotate(45deg);
+}
+
+.logo-modern:hover::after {
+  transform: scale(1.1);
+  text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.3);
+}
