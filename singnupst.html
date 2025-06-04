@@ -2,282 +2,494 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
-    <title>Finish signing up</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign Up - EasyRent</title>
     <link
       rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
     />
-    <!-- Remix Icon -->
     <link
-      href="https://cdn.jsdelivr.net/npm/remixicon/fonts/remixicon.css"
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
       rel="stylesheet"
     />
-
     <style>
-      @import url("https://fonts.googleapis.com/css2?family=playfair+Display:wght@100..400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
       :root {
-        --primary-color: #1d1143;
-        --secondary-color: #4b96d0;
+        --primary-color: #82c9ff;
+        --primary-dark: #5aa8e6;
+        --secondary-color: #1a193f;
+        --text-dark: #333;
+        --text-light: #666;
+        --background: #f5f7fb;
         --white: #ffffff;
-        --text-light: #d1d5db;
-        --header-font: "playfair Display", serif;
+        --border-color: #e1e5ee;
+        --shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        --border-radius: 12px;
+        --logo-gradient-1: #7c4dff;
+        --logo-gradient-2: #448aff;
       }
 
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-          Helvetica, Arial, sans-serif;
+        font-family: "Poppins", sans-serif;
       }
 
       body {
-        background: #fff;
+        background: var(--background);
+        color: var(--text-dark);
+        line-height: 1.5;
+        min-height: 100vh;
         display: flex;
         flex-direction: column;
-        min-height: 100vh;
-        color: #333;
-        padding: 20px;
-        margin: 0;
+      }
+
+      main {
+        flex: 1;
+        padding: 40px 20px;
       }
 
       .container {
-        width: 100%;
-        max-width: 420px;
+        max-width: 480px;
         margin: 0 auto;
-        flex: 1;
+        background: var(--white);
+        border-radius: var(--border-radius);
+        padding: 32px;
+        box-shadow: var(--shadow);
       }
 
       .title {
-        font-size: 24px;
-        font-weight: bold;
-        margin: 15px 0;
-        text-align: left;
-        color: #1d1143;
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--secondary-color);
+        margin-bottom: 32px;
+        text-align: center;
       }
 
       .form-group {
-        margin-bottom: 16px;
+        margin-bottom: 24px;
       }
 
       .form-group label {
         display: block;
-        font-size: 14px;
-        margin-bottom: 6px;
-        color: #444;
+        font-size: 15px;
         font-weight: 500;
+        margin-bottom: 8px;
+        color: var(--text-dark);
       }
 
-      .form-group input {
+      .form-group input,
+      .input-group select {
         width: 100%;
-        padding: 12px;
-        font-size: 16px;
-        border: 1px solid #ccc;
+        padding: 14px 16px;
+        font-size: 15px;
+        border: 2px solid var(--border-color);
         border-radius: 8px;
+        background: var(--white);
+        transition: all 0.3s ease;
+      }
+
+      .form-group input:focus,
+      .input-group select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px rgba(130, 201, 255, 0.1);
         outline: none;
       }
 
       .input-group {
-        margin-bottom: 16px;
-      }
-
-      .input-group label {
-        display: block;
-        font-size: 14px;
-        margin-bottom: 6px;
-        color: #444;
+        margin-bottom: 24px;
       }
 
       .input-group select {
-        width: 100%;
-        padding: 12px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
-        outline: none;
         appearance: none;
-        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23666' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
         background-repeat: no-repeat;
-        background-position: right 10px center;
+        background-position: right 16px center;
         background-size: 16px;
+        padding-right: 48px;
       }
 
       .sub-note {
-        font-size: 12px;
-        color: #666;
-        line-height: 1.4;
-        margin: 6px 0 16px 0;
-      }
-
-      .date-note {
-        font-size: 12px;
-        color: #666;
-        line-height: 1.4;
-        margin-bottom: 16px;
+        font-size: 13px;
+        color: var(--text-light);
+        margin-top: 8px;
+        line-height: 1.5;
       }
 
       .password-container {
         position: relative;
-        margin-bottom: 20px;
+        margin-bottom: 24px;
+      }
+
+      .password-container label {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        font-size: 15px;
+        font-weight: 500;
+        color: var(--text-dark);
+        margin-bottom: 8px;
+      }
+
+      .password-container label .label-content {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .password-container label .label-content i {
+        color: var(--primary-color);
+        font-size: 16px;
+      }
+
+      .password-container label .show-password {
+        background: none;
+        border: none;
+        color: var(--text-light);
+        font-size: 16px;
+        cursor: pointer;
+        padding: 4px 8px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: all 0.3s ease;
+        border-radius: 6px;
+      }
+
+      .password-container label .show-password:hover {
+        background: var(--background);
+        color: var(--primary-color);
+      }
+
+      .password-container label .show-password:focus {
+        outline: none;
+        box-shadow: 0 0 0 2px var(--primary-color);
+      }
+
+      .password-container label .show-password span {
+        font-size: 13px;
+        font-weight: 400;
       }
 
       .password-container input {
         width: 100%;
-        padding: 12px;
-        font-size: 16px;
-        border: 1px solid #ccc;
+        padding: 14px 16px;
+        font-size: 15px;
+        border: 2px solid var(--border-color);
         border-radius: 8px;
+        background: var(--white);
+        transition: all 0.3s ease;
+      }
+
+      .password-container input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px rgba(130, 201, 255, 0.1);
         outline: none;
-        appearance: none;
       }
 
-      .password-container label {
-        display: block;
+      .password-strength-meter {
+        margin-top: 12px;
+        background: var(--background);
+        padding: 12px;
+        border-radius: 8px;
+      }
+
+      .strength-bars {
+        display: flex;
+        gap: 4px;
+        margin-bottom: 8px;
+      }
+
+      .strength-bar {
+        flex: 1;
+        height: 4px;
+        background: #e0e0e0;
+        border-radius: 2px;
+        transition: all 0.3s ease;
+      }
+
+      .strength-bar.weak {
+        background: #ff4d4d;
+      }
+
+      .strength-bar.medium {
+        background: #ffd700;
+      }
+
+      .strength-bar.strong {
+        background: #00c853;
+      }
+
+      .password-strength-text {
+        font-size: 13px;
+        color: var(--text-light);
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .password-strength-text i {
         font-size: 14px;
-        margin-bottom: 6px;
-        color: #444;
-        font-weight: 700;
       }
 
-      .show-password {
-        position: absolute;
-        right: 12px;
-        top: 42px;
-        background: none;
+      .password-strength-text.weak i {
+        color: #ff4d4d;
+      }
+
+      .password-strength-text.medium i {
+        color: #ffd700;
+      }
+
+      .password-strength-text.strong i {
+        color: #00c853;
+      }
+
+      .password-requirements {
+        margin-top: 12px;
+        padding: 12px;
+        background: var(--background);
+        border-radius: 8px;
+        font-size: 13px;
+        color: var(--text-light);
+      }
+
+      .password-requirements ul {
+        list-style: none;
+        margin: 8px 0 0;
+        padding: 0;
+      }
+
+      .password-requirements li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 4px;
+      }
+
+      .password-requirements li i {
+        font-size: 14px;
+        color: var(--text-light);
+      }
+
+      .password-requirements li.valid i {
+        color: #00c853;
+      }
+
+      .password-suggestion-container {
+        margin-top: 16px;
+        display: flex;
+        gap: 8px;
+        position: relative;
+      }
+
+      .password-suggestion-input {
+        flex: 1;
+        padding: 14px 16px;
+        border: 2px solid var(--border-color);
+        border-radius: 8px;
+        font-size: 14px;
+        background: var(--background);
+        color: var(--text-dark);
+        transition: all 0.3s ease;
+      }
+
+      .password-suggestion-input:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px rgba(130, 201, 255, 0.1);
+        outline: none;
+      }
+
+      .generate-btn {
+        background: var(--primary-color);
+        color: var(--white);
         border: none;
-        color: #4b96d0;
+        border-radius: 8px;
+        padding: 14px 24px;
         font-size: 14px;
+        font-weight: 500;
         cursor: pointer;
-        padding: 4px 8px;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
       }
 
-      .btnbook {
-        background-color: rgb(111, 163, 247);
-        color: #fff;
+      .generate-btn i {
         font-size: 16px;
-        cursor: pointer;
-        width: auto;
-        border: none;
-        padding: 8px 12px;
-        margin: 0;
-        border-radius: 6px;
-        transition: all 0.3s ease-in-out;
       }
 
-      .btnbook:hover {
-        transform: scale(1.05);
+      .generate-btn:hover {
+        background: var(--primary-dark);
+        transform: translateY(-2px);
       }
 
       .btn-submit {
         width: 100%;
-        padding: 12px;
-        font-size: 16px;
-        background: rgb(138, 170, 244);
-        color: #1d1143;
+        background: var(--primary-color);
+        color: var(--white);
         border: none;
         border-radius: 8px;
-        cursor: pointer;
-        transition: all 0.3s ease-in-out;
+        padding: 16px;
+        font-size: 16px;
         font-weight: 600;
-        margin-top: 10px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 32px;
       }
 
       .btn-submit:hover {
-        background: rgb(75, 144, 217);
-        transform: scale(1.02);
+        background: var(--primary-dark);
+        transform: translateY(-2px);
       }
 
-      input[type="date"] {
-        min-height: 44px;
-      }
-
-      #password-strength-meter {
-        margin-top: 10px;
-      }
-
-      #password-strength-text {
-        font-size: 12px;
-        margin-top: 4px;
-      }
-
-      .password-suggestion {
-        margin-bottom: 16px;
-      }
-
-      #password-suggestion {
-        font-size: 14px;
-        padding: 12px;
-      }
-
-      /* Footer Styles */
       .footer {
-        background: #1a193f;
+        position: relative;
+        background: linear-gradient(135deg, #1a193f 0%, #242263 100%);
+        padding: 120px 0 0;
+        margin-top: 100px;
+        color: #fff;
       }
 
-      .footer__contanier {
+      .footer::before {
+        content: "";
+        position: absolute;
+        top: -70px;
+        left: 0;
+        width: 100%;
+        height: 70px;
+        background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNDQwIDEwMCI+PHBhdGggZmlsbD0iIzFhMTkzZiIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNMCwwIEMxNTAsMjAgNDUwLDgwIDcyMCw4MCBDOTkwLDgwIDEyOTAsMjAgMTQ0MCwwIEwxNDQwLDEwMCBMMCwxMDAgWiI+PC9wYXRoPjwvc3ZnPg==");
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      .footer__container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr; /* 3 أعمدة */
-        gap: 4rem 2rem;
+        grid-template-columns: 2fr 1fr 1.5fr;
+        gap: 60px;
+      }
+
+      .footer__col {
+        position: relative;
+      }
+
+      .footer__col::after {
+        content: "";
+        position: absolute;
+        right: -30px;
+        top: 0;
+        height: 100%;
+        width: 1px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+      }
+
+      .footer__col:last-child::after {
+        display: none;
       }
 
       .footer__logo {
-        margin-bottom: 2rem;
-        color: #82c9ff;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 32px;
       }
-      .footer__logo span {
-        line-height: 1.2;
-        font-family: "playfair Display", serif;
-        font-size: 26px;
-        font-weight: bold;
-        color: #82c9ff;
-      }
-      .footer__logo div {
-        background: #82c9ff;
-        color: #1a193f;
-        width: 40px;
-        height: 40px;
+
+      .footer__logo-icon {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color) 0%,
+          #5aa8e6 100%
+        );
+        color: var(--white);
+        width: 48px;
+        height: 48px;
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 0px;
+        border-radius: 12px;
         font-weight: bold;
         font-size: 24px;
+        box-shadow: 0 4px 15px rgba(130, 201, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .footer__logo-icon::before {
+        content: "ER";
+        background: linear-gradient(45deg, var(--primary-color), #5aa8e6);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-size: 26px;
+        font-weight: 800;
+        font-family: "Poppins", sans-serif;
+      }
+
+      .footer__logo-text {
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--primary-color);
+        line-height: 1.2;
+        letter-spacing: -0.5px;
+      }
+
+      .footer__description {
+        color: rgba(255, 255, 255, 0.7);
+        line-height: 1.8;
+        margin-bottom: 32px;
+        font-size: 15px;
       }
 
       .footer__socials {
         list-style: none;
-        margin-top: 2rem;
+        display: flex;
+        gap: 16px;
+      }
+
+      .footer__social-link {
         display: flex;
         align-items: center;
-        gap: 1rem;
+        justify-content: center;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+        font-size: 20px;
+        transition: all 0.3s ease;
       }
 
-      .footer__socials a {
-        padding: 6px 10px;
-        font-size: 1.25rem;
-        color: var(--text-light);
-        background-color: azure;
-        border-radius: 100%;
-        cursor: pointer;
-        transition: 0.3s;
-      }
-
-      .footer__socials a:hover {
-        color: #f8f8f8;
-        background-color: #9cb5ff;
+      .footer__social-link:hover {
+        background: var(--logo-gradient-1);
+        transform: translateY(-3px);
       }
 
       .footer__col h4 {
-        margin-bottom: 2.5rem;
-        font-size: 1.25rem;
-        font-weight: 800;
-        font-family: "playfair Display", serif;
-        color: #f8f8f8;
+        color: #fff;
+        font-size: 20px;
+        font-weight: 600;
+        margin-bottom: 24px;
+        position: relative;
+        padding-bottom: 12px;
+      }
+
+      .footer__col h4::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 2px;
+        background: var(--logo-gradient-1);
       }
 
       .footer__links {
@@ -285,583 +497,661 @@
       }
 
       .footer__links li {
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
+        margin-bottom: 16px;
       }
 
       .footer__links a {
-        color: #fff;
-        transition: 0.3s;
-        gap: 1rem;
+        color: rgba(255, 255, 255, 0.7);
+        text-decoration: none;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
       }
 
       .footer__links a:hover {
-        color: #82c9ff;
-      }
-
-      .footer__col:last-child .footer__links li {
-        margin-bottom: 2rem;
-      }
-
-      .footer__links span {
-        font-size: 2rem;
-        color: #82c9ff;
-      }
-
-      .footer__links h5 {
-        margin-bottom: 0.5rem;
-        font-size: 1rem;
-        font-weight: 800;
-        font-family: "playfair Display", serif;
         color: #fff;
+        transform: translateX(5px);
       }
 
-      .footer__links p {
+      .footer__links a i {
+        font-size: 18px;
+        color: var(--logo-gradient-1);
+      }
+
+      .footer__contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .footer__contact-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: var(--logo-gradient-1);
+        flex-shrink: 0;
+      }
+
+      .footer__contact-info h5 {
         color: #fff;
+        font-size: 16px;
+        margin-bottom: 4px;
+      }
+
+      .footer__contact-info p {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 15px;
+        line-height: 1.6;
       }
 
       .footer__bar {
-        padding: 1rem;
-        font-size: 0.8rem;
-        color: white;
+        position: relative;
         text-align: center;
+        padding: 25px 0;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 15px;
+        margin-top: 60px;
       }
-      .section__description {
-        color: #fcfcfc;
-      }
-      .custom-divider {
-        border: none;
+
+      .footer__bar::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
         height: 1px;
-        background-color: rgba(0, 0, 0, 0.1);
-        margin: 50px auto 30px;
-        width: 85%;
+        background: linear-gradient(
+          to right,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
       }
 
-      @media (max-width: 375px) {
-        body {
-          padding: 15px;
-        }
-
-        .title {
-          font-size: 22px;
-        }
-
-        .form-group input,
-        .input-group select {
-          padding: 10px;
-          font-size: 15px;
-        }
-
-        .btn-submit {
-          padding: 12px;
-          margin-bottom: 40px;
-          font-size: 15px;
-        }
-
-        .footer__contanier {
-          grid-template-columns: repeat(2, 1fr);
+      @media (max-width: 992px) {
+        .footer__container {
+          grid-template-columns: 1fr 1fr;
         }
 
         .footer__col:first-child {
-          grid-column: 1/3;
+          grid-column: 1 / -1;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .footer {
+          padding: 80px 0 0;
+        }
+
+        .footer__container {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+
+        .footer__col::after {
+          display: none;
+        }
+
+        .footer__col {
+          text-align: center;
+        }
+
+        .footer__col h4::after {
+          left: 50%;
+          transform: translateX(-50%);
+        }
+
+        .footer__logo {
+          justify-content: center;
+        }
+
+        .footer__socials {
+          justify-content: center;
+        }
+
+        .footer__contact-item {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
+        }
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+      }
+
+      .logo-icon {
+        background: linear-gradient(
+          135deg,
+          var(--logo-gradient-1) 0%,
+          var(--logo-gradient-2) 100%
+        );
+        color: var(--white);
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 24px;
+        box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .logo-icon:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(124, 77, 255, 0.4);
+      }
+
+      .logo-icon::before {
+        content: "ER";
+        background: linear-gradient(45deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-size: 26px;
+        font-weight: 800;
+      }
+
+      .logo-text {
+        font-size: 24px;
+        font-weight: 800;
+        background: linear-gradient(
+          45deg,
+          var(--logo-gradient-1),
+          var(--logo-gradient-2)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        line-height: 1.2;
+        letter-spacing: -0.5px;
+      }
+
+      @media (max-width: 768px) {
+        .logo-icon {
+          width: 40px;
+          height: 40px;
+          font-size: 20px;
+        }
+
+        .logo-icon::before {
+          font-size: 22px;
+        }
+
+        .logo-text {
+          font-size: 20px;
         }
       }
     </style>
   </head>
   <body>
-    <form id="signupForm">
+    <main>
       <div class="container">
-        <h1 class="title">Finish signing up</h1>
-        <div class="form-group">
-          <label for="firstNameID">User Name</label>
-          <input type="text" id="firstNameID" placeholder="Full name" />
-        </div>
-        <div class="sub-note">
-          Make sure this matches the name on your government ID. If you go by
-          another name, you can add a preferred first name.
-        </div>
-        <div class="input-group">
-          <select id="universityId">
-            <option value="0" disabled selected>Choose your university</option>
-            <option value="1">Minia University</option>
-            <option value="2">Minia National University</option>
-            <option value="4">
-              Higher Institute of Engineering and Technology
-            </option>
-            <option value="5">Languages Institute</option>
-          </select>
-        </div>
-
-        <div class="input-group">
-          <select id="collegeId">
-            <option value="0" disabled selected>Choose your faculty</option>
-            <option value="101">Faculty of Medicine</option>
-            <option value="102">Faculty of Engineering</option>
-            <option value="103">Faculty of Pharmacy</option>
-            <option value="104">Faculty of Dentistry</option>
-            <option value="105">Faculty of Science</option>
-            <option value="106">Faculty of Nursing</option>
-            <option value="107">Faculty of Agriculture</option>
-            <option value="108">Faculty of Education</option>
-            <option value="109">Faculty of Physical Education</option>
-            <option value="110">Faculty of Al-Alsun</option>
-            <option value="111">Faculty of Arts</option>
-            <option value="112">Faculty of Specific Education</option>
-            <option value="113">Faculty of Physical Education</option>
-            <option value="114">Faculty of Al-Alsun</option>
-            <option value="115">Faculty of Arts</option>
-            <option value="116">Faculty of Dar Al-Uloom</option>
-            <option value="117">Faculty of Tourism and Hotels</option>
-            <option value="118">Faculty of Computers and Information</option>
-            <option value="119">Faculty of Early Childhood Education</option>
-            <option value="120">Faculty of Physical Therapy</option>
-            <option value="121">Faculty of Engineering</option>
-            <option value="122">Faculty of Artificial Intelligence</option>
-            <option value="123">Faculty of Business Administration</option>
-            <option value="124">Faculty of Law</option>
-            <option value="125">Faculty of Civil Engineering</option>
-            <option value="125">
-              Faculty of Electronics and Communication Engineering
-            </option>
-            <option value="126">
-              Electrical Power and Machines Engineering
-            </option>
-            <option value="127">Faculty of English Language</option>
-            <option value="128">Faculty of German Language</option>
-            <option value="129">Faculty of French Language</option>
-          </select>
-        </div>
-
-        <div class="sub-note">Make sure this University</div>
-
-        <div class="form-group">
-          <label for="address">Address</label>
-          <input type="text" id="address" placeholder="Enter your address" />
-        </div>
-        <div class="sub-note">Please provide your current address</div>
-        <div class="date-note">
-          Enter your address in full details as it appears on your ID or
-          government document.
-        </div>
-
-        <div class="form-group">
-          <label for="phone">Phone number</label>
-          <input type="tel" id="phone" placeholder="Enter your phone number" />
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" placeholder="user@gmail.com" />
-        </div>
-
-        <div class="password-container">
-          <label for="signup-password">Password</label>
-          <input
-            type="password"
-            id="signup-password"
-            placeholder="Enter your password"
-          />
-          <button type="button" class="show-password" id="togglePasswordBtn">
-            Show
-          </button>
-          <div id="password-strength-meter" style="margin-top: 8px">
-            <div style="display: flex; height: 4px; margin-bottom: 4px">
-              <div
-                id="strength-bar-1"
-                style="
-                  flex: 1;
-                  background: #e0e0e0;
-                  margin: 0 2px;
-                  border-radius: 2px;
-                "
-              ></div>
-              <div
-                id="strength-bar-2"
-                style="
-                  flex: 1;
-                  background: #e0e0e0;
-                  margin: 0 2px;
-                  border-radius: 2px;
-                "
-              ></div>
-              <div
-                id="strength-bar-3"
-                style="
-                  flex: 1;
-                  background: #e0e0e0;
-                  margin: 0 2px;
-                  border-radius: 2px;
-                "
-              ></div>
-              <div
-                id="strength-bar-4"
-                style="
-                  flex: 1;
-                  background: #e0e0e0;
-                  margin: 0 2px;
-                  border-radius: 2px;
-                "
-              ></div>
-            </div>
-            <div
-              id="password-strength-text"
-              style="font-size: 12px; color: #666"
-            ></div>
-          </div>
-        </div>
-
-        <div class="password-suggestion" style="margin-bottom: 16px">
-          <div style="display: flex; gap: 8px; margin-bottom: 4px">
+        <h1 class="title">Create Your Account</h1>
+        <form id="signupForm">
+          <div class="form-group">
+            <label for="firstNameID">Full Name</label>
             <input
               type="text"
-              id="password-suggestion"
-              placeholder="Click generate for a strong password"
-              readonly
-              style="
-                flex: 1;
-                padding: 12px;
-                border: 1px solid #ccc;
-                border-radius: 8px;
-                font-size: 14px;
-              "
+              id="firstNameID"
+              placeholder="Enter your full name"
+              required
             />
-            <button
-              type="button"
-              id="generate-password"
-              class="btnbook"
-              style="width: auto; padding: 0 12px"
-            >
-              Generate
-            </button>
-          </div>
-          <div class="sub-note" style="font-size: 12px">
-            <i class="fas fa-lightbulb" style="color: #ffc107"></i> Strong
-            passwords contain uppercase, lowercase, numbers and special
-            characters
-          </div>
-        </div>
-
-        <button class="btn-submit" type="submit">Agree and continue</button>
-      </div>
-    </form>
-    <hr class="custom-divider" />
-
-    <footer class="footer" id="contact">
-      <div class="section__contanier footer__contanier">
-        <div class="footer__col">
-          <div
-            class="logo footer__logo"
-            style="display: flex; align-items: center; gap: 10px"
-          >
-            <div
-              style="
-                background: #82c9ff;
-                color: #1a193f;
-                width: 40px;
-                height: 40px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                border-radius: 8px;
-                font-weight: bold;
-                font-size: 24px;
-              "
-            >
-              E
+            <div class="sub-note">
+              Make sure this matches the name on your government ID.
             </div>
-            <span
-              style="
-                font-size: 20px;
-                font-weight: bold;
-                color: #82c9ff;
-
-                line-height: 1.2;
-              "
-              >EASY<br />
-              RENT</span
-            >
           </div>
-          <p class="section__description">
+
+          <div class="input-group">
+            <label for="universityId">University</label>
+            <select id="universityId" required>
+              <option value="" disabled selected>Select your university</option>
+            </select>
+          </div>
+
+          <div class="input-group">
+            <label for="collegeId">Faculty</label>
+            <select id="collegeId" required>
+              <option value="" disabled selected>Select your faculty</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="address">Address</label>
+            <input
+              type="text"
+              id="address"
+              placeholder="Enter your full address"
+              required
+            />
+            <div class="sub-note">
+              Please provide your current address as it appears on your ID.
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="phone">Phone Number</label>
+            <input
+              type="tel"
+              id="phone"
+              placeholder="Enter your phone number"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email</label>
+            <input
+              type="email"
+              id="email"
+              placeholder="Enter your email address"
+              required
+            />
+          </div>
+
+          <div class="password-container">
+            <label for="signup-password">
+              <div class="label-content">
+                <i class="fas fa-lock"></i>
+                Password
+              </div>
+              <button
+                type="button"
+                class="show-password"
+                id="togglePasswordBtn"
+                aria-label="Toggle password visibility"
+              >
+                <i class="fas fa-eye-slash"></i>
+                <span>Show</span>
+              </button>
+            </label>
+            <input
+              type="password"
+              id="signup-password"
+              placeholder="Create a strong password"
+              required
+            />
+
+            <div class="password-strength-meter">
+              <div class="strength-bars">
+                <div class="strength-bar" id="strength-bar-1"></div>
+                <div class="strength-bar" id="strength-bar-2"></div>
+                <div class="strength-bar" id="strength-bar-3"></div>
+                <div class="strength-bar" id="strength-bar-4"></div>
+              </div>
+              <div class="sub-note" id="password-strength-text"></div>
+            </div>
+
+            <div class="password-suggestion-container">
+              <input
+                type="text"
+                id="password-suggestion"
+                class="password-suggestion-input"
+                placeholder="Click generate for a strong password"
+                readonly
+              />
+              <button type="button" id="generate-password" class="generate-btn">
+                Generate
+              </button>
+            </div>
+            <div class="sub-note">
+              <i class="fas fa-lightbulb" style="color: #ffc107"></i>
+              Strong passwords contain uppercase, lowercase, numbers and special
+              characters
+            </div>
+          </div>
+
+          <button type="submit" class="btn-submit">Create Account</button>
+        </form>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer__container">
+        <div class="footer__col">
+          <div class="footer__logo">
+            <div class="logo-icon"></div>
+            <span class="logo-text">EASY<br />RENT</span>
+          </div>
+          <p class="footer__description">
             Easy rent is dedicated to simplifying the process of finding student
-            accommandations, it enables a seamless connection between students
-            and owners.
+            accommodations. We enable seamless connections between students and
+            property owners, making your housing search experience smooth and
+            efficient.
           </p>
           <ul class="footer__socials">
             <li>
-              <a href="#" target="_blank"><i class="ri-facebook-line"></i></a>
+              <a href="#" class="footer__social-link">
+                <i class="ri-facebook-fill"></i>
+              </a>
             </li>
             <li>
-              <a href="#" target="_blank"><i class="ri-instagram-line"></i></a>
+              <a href="#" class="footer__social-link">
+                <i class="ri-instagram-fill"></i>
+              </a>
             </li>
             <li>
-              <a href="#" target="_blank"><i class="ri-linkedin-line"></i></a>
+              <a href="#" class="footer__social-link">
+                <i class="ri-linkedin-fill"></i>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="footer__social-link">
+                <i class="ri-twitter-fill"></i>
+              </a>
             </li>
           </ul>
         </div>
 
         <div class="footer__col">
-          <h4>Services</h4>
-          <div class="footer__links">
-            <li><a href="#">Online Booking</a></li>
-            <li><a href="privacypolicy.html">Privacy Policy</a></li>
-            <li><a href="#"> Spical offer</a></li>
-            <li><a href="#">Room Customization</a></li>
-            <li><a href="#">Customer Support</a></li>
-          </div>
-        </div>
-        <div class="footer__col">
-          <h4>Contact Us</h4>
-          <div class="footer__links">
+          <h4>Quick Links</h4>
+          <ul class="footer__links">
             <li>
-              <span><i class="ri-phone-fill"></i></span>
-              <div>
+              <a href="#">
+                <i class="ri-arrow-right-s-line"></i>
+                Online Booking
+              </a>
+            </li>
+            <li>
+              <a href="privacypolicy.html">
+                <i class="ri-arrow-right-s-line"></i>
+                Privacy Policy
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="ri-arrow-right-s-line"></i>
+                Special Offers
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="ri-arrow-right-s-line"></i>
+                Room Customization
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="ri-arrow-right-s-line"></i>
+                Customer Support
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer__col">
+          <h4>Contact Info</h4>
+          <ul class="footer__links">
+            <li class="footer__contact-item">
+              <span class="footer__contact-icon">
+                <i class="ri-phone-fill"></i>
+              </span>
+              <div class="footer__contact-info">
                 <h5>Phone Number</h5>
                 <p>+20 1224170048</p>
               </div>
             </li>
-            <li>
-              <span><i class="ri-record-mail-line"></i></span>
-              <div>
-                <h5>Email</h5>
+            <li class="footer__contact-item">
+              <span class="footer__contact-icon">
+                <i class="ri-mail-fill"></i>
+              </span>
+              <div class="footer__contact-info">
+                <h5>Email Address</h5>
                 <p>info@easyrent15.com</p>
               </div>
             </li>
-            <li>
-              <span><i class="ri-map-pin-2-fill"></i></span>
-              <div>
-                <h5>Location</h5>
+            <li class="footer__contact-item">
+              <span class="footer__contact-icon">
+                <i class="ri-map-pin-fill"></i>
+              </span>
+              <div class="footer__contact-info">
+                <h5>Office Location</h5>
                 <p>Minya st. Taha-Hessien</p>
               </div>
             </li>
-          </div>
+          </ul>
         </div>
       </div>
+
       <div class="footer__bar">
-        EasyRent copyright 2025 web Design .All rights reserved.
+        Copyright © 2025 EasyRent. All rights reserved.
       </div>
     </footer>
-    
-      <script type="module">
-        document.addEventListener("DOMContentLoaded", () => {
-          const form = document.getElementById("signupForm");
-          const uniSelect = document.getElementById("universityId");
-          const collegeSelect = document.getElementById("collegeId");
-          const passwordInput = document.getElementById("signup-password");
-          const togglePasswordBtn = document.getElementById("togglePasswordBtn");
-          const generateBtn = document.getElementById("generate-password");
-          const passwordSuggestion = document.getElementById(
-            "password-suggestion"
-          );
-          const strengthBars = [
-            document.getElementById("strength-bar-1"),
-            document.getElementById("strength-bar-2"),
-            document.getElementById("strength-bar-3"),
-            document.getElementById("strength-bar-4"),
+
+    <script type="module">
+      document.addEventListener("DOMContentLoaded", () => {
+        const form = document.getElementById("signupForm");
+        const uniSelect = document.getElementById("universityId");
+        const collegeSelect = document.getElementById("collegeId");
+        const passwordInput = document.getElementById("signup-password");
+        const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+        const generateBtn = document.getElementById("generate-password");
+        const passwordSuggestion = document.getElementById(
+          "password-suggestion"
+        );
+        const strengthBars = [
+          document.getElementById("strength-bar-1"),
+          document.getElementById("strength-bar-2"),
+          document.getElementById("strength-bar-3"),
+          document.getElementById("strength-bar-4"),
+        ];
+        const strengthText = document.getElementById("password-strength-text");
+
+        // تحميل الجامعات
+        async function loadUniversities() {
+          try {
+            const res = await fetch(
+              "https://easyrentapi0.runasp.net/api/University"
+            );
+            if (!res.ok) throw new Error("Failed to load universities");
+            const data = await res.json();
+            data.forEach((u) => {
+              const option = document.createElement("option");
+              option.value = u.id;
+              option.textContent = u.name;
+              uniSelect.appendChild(option);
+            });
+          } catch (err) {
+            alert("Error loading universities: " + err.message);
+          }
+        }
+
+        // تحميل الكليات
+        async function loadColleges() {
+          try {
+            const res = await fetch(
+              "https://easyrentapi0.runasp.net/api/Colleges"
+            );
+            if (!res.ok) throw new Error("Failed to load colleges");
+            const data = await res.json();
+            data.forEach((c) => {
+              const option = document.createElement("option");
+              option.value = c.id;
+              option.textContent = c.name;
+              collegeSelect.appendChild(option);
+            });
+          } catch (err) {
+            alert("Error loading colleges: " + err.message);
+          }
+        }
+
+        // تحقق قوة كلمة المرور
+        function checkPasswordStrength() {
+          const val = passwordInput.value;
+          let strength = 0;
+          if (val.length >= 8) strength++;
+          if (/[A-Z]/.test(val)) strength++;
+          if (/[0-9]/.test(val)) strength++;
+          if (/[^A-Za-z0-9]/.test(val)) strength++;
+
+          strengthBars.forEach((bar, i) => {
+            bar.style.background = i < strength ? "#4caf50" : "#e0e0e0";
+          });
+
+          const texts = [
+            "Very Weak",
+            "Weak",
+            "Medium",
+            "Strong",
+            "Very Strong",
           ];
-          const strengthText = document.getElementById("password-strength-text");
-  
-          // تحميل الجامعات
-          async function loadUniversities() {
-            try {
-              const res = await fetch(
-                "https://easyrentapi0.runasp.net/api/University"
-              );
-              if (!res.ok) throw new Error("Failed to load universities");
-              const data = await res.json();
-              data.forEach((u) => {
-                const option = document.createElement("option");
-                option.value = u.id;
-                option.textContent = u.name;
-                uniSelect.appendChild(option);
-              });
-            } catch (err) {
-              alert("Error loading universities: " + err.message);
-            }
+          strengthText.textContent = texts[strength];
+        }
+
+        // حفظ بيانات النموذج مؤقتًا في localStorage
+        function saveFormData() {
+          const data = {
+            name: document.getElementById("firstNameID").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            phone: document.getElementById("phone").value.trim(),
+            address: document.getElementById("address").value.trim(),
+            password: passwordInput.value,
+            universityId: uniSelect.value,
+            collegeId: collegeSelect.value,
+          };
+          localStorage.setItem("signupFormData", JSON.stringify(data));
+        }
+
+        // تحميل بيانات محفوظة من localStorage
+        function loadFormData() {
+          const saved = localStorage.getItem("signupFormData");
+          if (!saved) return;
+          const data = JSON.parse(saved);
+          if (data.name)
+            document.getElementById("firstNameID").value = data.name;
+          if (data.email) document.getElementById("email").value = data.email;
+          if (data.phone) document.getElementById("phone").value = data.phone;
+          if (data.address)
+            document.getElementById("address").value = data.address;
+          if (data.password) {
+            passwordInput.value = data.password;
+            checkPasswordStrength();
           }
-  
-          // تحميل الكليات
-          async function loadColleges() {
-            try {
-              const res = await fetch(
-                "https://easyrentapi0.runasp.net/api/Colleges"
-              );
-              if (!res.ok) throw new Error("Failed to load colleges");
-              const data = await res.json();
-              data.forEach((c) => {
-                const option = document.createElement("option");
-                option.value = c.id;
-                option.textContent = c.name;
-                collegeSelect.appendChild(option);
-              });
-            } catch (err) {
-              alert("Error loading colleges: " + err.message);
-            }
+          if (data.universityId) uniSelect.value = data.universityId;
+          if (data.collegeId) collegeSelect.value = data.collegeId;
+        }
+
+        // توليد كلمة مرور من API
+        generateBtn.addEventListener("click", async () => {
+          try {
+            const res = await fetch(
+              "https://easyrentapi0.runasp.net/api/Auth/generate-password"
+            );
+            if (!res.ok) throw new Error("Failed to generate password");
+            const data = await res.json();
+            passwordSuggestion.value = data.password || "";
+            passwordInput.value = data.password || "";
+            checkPasswordStrength();
+            saveFormData();
+          } catch (err) {
+            alert("Error generating password: " + err.message);
           }
-  
-          // تحقق قوة كلمة المرور
-          function checkPasswordStrength() {
-            const val = passwordInput.value;
-            let strength = 0;
-            if (val.length >= 8) strength++;
-            if (/[A-Z]/.test(val)) strength++;
-            if (/[0-9]/.test(val)) strength++;
-            if (/[^A-Za-z0-9]/.test(val)) strength++;
-  
-            strengthBars.forEach((bar, i) => {
-              bar.style.background = i < strength ? "#4caf50" : "#e0e0e0";
-            });
-  
-            const texts = [
-              "Very Weak",
-              "Weak",
-              "Medium",
-              "Strong",
-              "Very Strong",
-            ];
-            strengthText.textContent = texts[strength];
-          }
-  
-          // حفظ بيانات النموذج مؤقتًا في localStorage
-          function saveFormData() {
-            const data = {
-              name: document.getElementById("firstNameID").value.trim(),
-              email: document.getElementById("email").value.trim(),
-              phone: document.getElementById("phone").value.trim(),
-              address: document.getElementById("address").value.trim(),
-              password: passwordInput.value,
-              universityId: uniSelect.value,
-              collegeId: collegeSelect.value,
-            };
-            localStorage.setItem("signupFormData", JSON.stringify(data));
-          }
-  
-          // تحميل بيانات محفوظة من localStorage
-          function loadFormData() {
-            const saved = localStorage.getItem("signupFormData");
-            if (!saved) return;
-            const data = JSON.parse(saved);
-            if (data.name)
-              document.getElementById("firstNameID").value = data.name;
-            if (data.email) document.getElementById("email").value = data.email;
-            if (data.phone) document.getElementById("phone").value = data.phone;
-            if (data.address)
-              document.getElementById("address").value = data.address;
-            if (data.password) {
-              passwordInput.value = data.password;
-              checkPasswordStrength();
-            }
-            if (data.universityId) uniSelect.value = data.universityId;
-            if (data.collegeId) collegeSelect.value = data.collegeId;
-          }
-  
-          // توليد كلمة مرور من API
-          generateBtn.addEventListener("click", async () => {
-            try {
-              const res = await fetch(
-                "https://easyrentapi0.runasp.net/api/Auth/generate-password"
-              );
-              if (!res.ok) throw new Error("Failed to generate password");
-              const data = await res.json();
-              passwordSuggestion.value = data.password || "";
-              passwordInput.value = data.password || "";
-              checkPasswordStrength();
-              saveFormData();
-            } catch (err) {
-              alert("Error generating password: " + err.message);
-            }
-          });
-  
-          // زر إظهار وإخفاء كلمة المرور
-          togglePasswordBtn.addEventListener("click", () => {
-            if (passwordInput.type === "password") {
-              passwordInput.type = "text";
-              togglePasswordBtn.textContent = "Hide";
-            } else {
-              passwordInput.type = "password";
-              togglePasswordBtn.textContent = "Show";
-            }
-          });
-  
-          // استماع لتغييرات الحقول لحفظ البيانات وتقييم كلمة المرور
-          document.querySelectorAll("input, select").forEach((el) => {
-            el.addEventListener("input", () => {
-              saveFormData();
-              if (el === passwordInput) checkPasswordStrength();
-            });
-          });
-  
-          // إرسال النموذج والتسجيل
-          form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-  
-            const payload = {
-              name: document.getElementById("firstNameID").value.trim(),
-              email: document.getElementById("email").value.trim(),
-              userName: document.getElementById("firstNameID").value.trim(),
-              password: passwordInput.value,
-              phoneNumber: document.getElementById("phone").value.trim(),
-              address: document.getElementById("address").value.trim(),
-              universityId: parseInt(uniSelect.value),
-              collegeId: parseInt(collegeSelect.value),
-            };
-  
-            if (!payload.name || !payload.email || !payload.password) {
-              alert("Please fill in all required fields.");
-              return;
-            }
-            if (payload.universityId === 0 || isNaN(payload.universityId)) {
-              alert("Please select a valid University.");
-              return;
-            }
-            if (payload.collegeId === 0 || isNaN(payload.collegeId)) {
-              alert("Please select a valid College.");
-              return;
-            }
-            if (payload.password.length < 8) {
-              alert("Password must be at least 8 characters.");
-              return;
-            }
-            const strongRegex =
-              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
-            if (!strongRegex.test(payload.password)) {
-              alert(
-                "Password must contain uppercase, lowercase, number, and special character."
-              );
-              return;
-            }
-  
-            try {
-              const res = await fetch(
-                "https://easyrentapi0.runasp.net/api/Student/register",
-                {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify(payload),
-                }
-              );
-              if (!res.ok) {
-                const errorText = await res.text();
-                alert("Error: " + errorText);
-                return;
-              }
-              alert("Registration successful!");
-              localStorage.removeItem("signupFormData");
-              // redirect to login or next page:
-                window.location.href = "login.html";
-            } catch (err) {
-              alert("Network error: " + err.message);
-            }
-          });
-  
-          // تهيئة الصفحة
-          (async function init() {
-            await loadUniversities();
-            await loadColleges();
-            loadFormData();
-          })();
         });
-      </script>
+
+        // تحديث زر إظهار/إخفاء كلمة المرور
+        togglePasswordBtn.addEventListener("click", () => {
+          const type = passwordInput.type === "password" ? "text" : "password";
+          passwordInput.type = type;
+          togglePasswordBtn.innerHTML = `
+            <i class="fas fa-eye${type === "password" ? "-slash" : ""}"></i>
+            <span>${type === "password" ? "Show" : "Hide"}</span>
+          `;
+        });
+
+        // استماع لتغييرات الحقول لحفظ البيانات وتقييم كلمة المرور
+        document.querySelectorAll("input, select").forEach((el) => {
+          el.addEventListener("input", () => {
+            saveFormData();
+            if (el === passwordInput) checkPasswordStrength();
+          });
+        });
+
+        // إرسال النموذج والتسجيل
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const payload = {
+            name: document.getElementById("firstNameID").value.trim(),
+            email: document.getElementById("email").value.trim(),
+            userName: document.getElementById("firstNameID").value.trim(),
+            password: passwordInput.value,
+            phoneNumber: document.getElementById("phone").value.trim(),
+            address: document.getElementById("address").value.trim(),
+            universityId: parseInt(uniSelect.value),
+            collegeId: parseInt(collegeSelect.value),
+          };
+
+          if (!payload.name || !payload.email || !payload.password) {
+            alert("Please fill in all required fields.");
+            return;
+          }
+          if (payload.universityId === 0 || isNaN(payload.universityId)) {
+            alert("Please select a valid University.");
+            return;
+          }
+          if (payload.collegeId === 0 || isNaN(payload.collegeId)) {
+            alert("Please select a valid College.");
+            return;
+          }
+          if (payload.password.length < 8) {
+            alert("Password must be at least 8 characters.");
+            return;
+          }
+          const strongRegex =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
+          if (!strongRegex.test(payload.password)) {
+            alert(
+              "Password must contain uppercase, lowercase, number, and special character."
+            );
+            return;
+          }
+
+          try {
+            const res = await fetch(
+              "https://easyrentapi0.runasp.net/api/Student/register",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload),
+              }
+            );
+            if (!res.ok) {
+              const errorText = await res.text();
+              alert("Error: " + errorText);
+              return;
+            }
+            alert("Registration successful!");
+            localStorage.removeItem("signupFormData");
+            // redirect to login or next page:
+            window.location.href = "login.html";
+          } catch (err) {
+            alert("Network error: " + err.message);
+          }
+        });
+
+        // تهيئة الصفحة
+        (async function init() {
+          await loadUniversities();
+          await loadColleges();
+          loadFormData();
+        })();
+      });
     </script>
   </body>
 </html>

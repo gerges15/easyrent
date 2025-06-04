@@ -247,81 +247,112 @@
       }
 
       .footer {
-        background: #1a193f;
-        padding: 60px 0 0;
-        margin-top: auto;
+        position: relative;
+        background: linear-gradient(135deg, #1a193f 0%, #242263 100%);
+        padding: 120px 0 0;
+        margin-top: 100px;
+        color: #fff;
       }
 
-      .footer__contanier {
+      .footer::before {
+        content: "";
+        position: absolute;
+        top: -70px;
+        left: 0;
+        width: 100%;
+        height: 70px;
+        background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNDQwIDEwMCI+PHBhdGggZmlsbD0iIzFhMTkzZiIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNMCwwIEMxNTAsMjAgNDUwLDgwIDcyMCw4MCBDOTkwLDgwIDEyOTAsMjAgMTQ0MCwwIEwxNDQwLDEwMCBMMCwxMDAgWiI+PC9wYXRoPjwvc3ZnPg==");
+        background-size: cover;
+        background-repeat: no-repeat;
+      }
+
+      .footer__container {
         max-width: 1200px;
         margin: 0 auto;
         padding: 0 20px;
         display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 40px;
+        grid-template-columns: 2fr 1fr 1.5fr;
+        gap: 60px;
+      }
+
+      .footer__col {
+        position: relative;
+      }
+
+      .footer__col::after {
+        content: "";
+        position: absolute;
+        right: -30px;
+        top: 0;
+        height: 100%;
+        width: 1px;
+        background: linear-gradient(
+          to bottom,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+      }
+
+      .footer__col:last-child::after {
+        display: none;
       }
 
       .footer__logo {
         display: flex;
         align-items: center;
         gap: 12px;
-        margin-bottom: 24px;
+        margin-bottom: 32px;
       }
 
-      .footer__logo div {
-        background: #82c9ff;
-        color: #1a193f;
-        width: 40px;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 8px;
-        font-weight: bold;
-        font-size: 24px;
-      }
-
-      .footer__logo span {
-        font-size: 24px;
-        font-weight: bold;
-        color: #82c9ff;
-      }
-
-      .section__description {
-        color: #a0a0a0;
-        line-height: 1.6;
-        margin-bottom: 24px;
+      .footer__description {
+        color: rgba(255, 255, 255, 0.7);
+        line-height: 1.8;
+        margin-bottom: 32px;
+        font-size: 15px;
       }
 
       .footer__socials {
         list-style: none;
         display: flex;
-        gap: 12px;
+        gap: 16px;
       }
 
-      .footer__socials a {
-        width: 40px;
-        height: 40px;
+      .footer__social-link {
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #82c9ff;
-        color: #1a193f;
-        border-radius: 8px;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
         font-size: 20px;
         transition: all 0.3s ease;
       }
 
-      .footer__socials a:hover {
-        background: #5aa8e6;
-        transform: translateY(-2px);
+      .footer__social-link:hover {
+        background: var(--logo-gradient-1);
+        transform: translateY(-3px);
       }
 
       .footer__col h4 {
         color: #fff;
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 600;
         margin-bottom: 24px;
+        position: relative;
+        padding-bottom: 12px;
+      }
+
+      .footer__col h4::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        width: 40px;
+        height: 2px;
+        background: var(--logo-gradient-1);
       }
 
       .footer__links {
@@ -333,61 +364,113 @@
       }
 
       .footer__links a {
-        color: #a0a0a0;
+        color: rgba(255, 255, 255, 0.7);
         text-decoration: none;
-        font-size: 14px;
-        transition: color 0.3s ease;
+        font-size: 15px;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
       }
 
       .footer__links a:hover {
-        color: #82c9ff;
-      }
-
-      .footer__links span {
-        color: #82c9ff;
-        margin-right: 8px;
-      }
-
-      .footer__links h5 {
         color: #fff;
-        font-size: 15px;
+        transform: translateX(5px);
+      }
+
+      .footer__links a i {
+        font-size: 18px;
+        color: var(--logo-gradient-1);
+      }
+
+      .footer__contact-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 16px;
+        margin-bottom: 24px;
+      }
+
+      .footer__contact-icon {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.1);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 20px;
+        color: var(--logo-gradient-1);
+        flex-shrink: 0;
+      }
+
+      .footer__contact-info h5 {
+        color: #fff;
+        font-size: 16px;
         margin-bottom: 4px;
       }
 
-      .footer__links p {
-        color: #a0a0a0;
-        font-size: 14px;
+      .footer__contact-info p {
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 15px;
+        line-height: 1.6;
       }
 
       .footer__bar {
+        position: relative;
         text-align: center;
-        padding: 20px;
-        color: #a0a0a0;
-        font-size: 14px;
-        border-top: 1px solid rgba(255, 255, 255, 0.1);
-        margin-top: 40px;
+        padding: 25px 0;
+        color: rgba(255, 255, 255, 0.7);
+        font-size: 15px;
+        margin-top: 60px;
       }
 
-      @media (max-width: 768px) {
-        main {
-          padding: 20px;
-        }
+      .footer__bar::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 80%;
+        height: 1px;
+        background: linear-gradient(
+          to right,
+          transparent,
+          rgba(255, 255, 255, 0.1),
+          transparent
+        );
+      }
 
-        .container {
-          padding: 24px;
-        }
-
-        .title {
-          font-size: 24px;
-          margin-bottom: 24px;
-        }
-
-        .footer__contanier {
-          grid-template-columns: 1fr;
+      @media (max-width: 992px) {
+        .footer__container {
+          grid-template-columns: 1fr 1fr;
         }
 
         .footer__col:first-child {
+          grid-column: 1 / -1;
+        }
+      }
+
+      @media (max-width: 768px) {
+        .footer {
+          padding: 80px 0 0;
+        }
+
+        .footer__container {
+          grid-template-columns: 1fr;
+          gap: 40px;
+        }
+
+        .footer__col::after {
+          display: none;
+        }
+
+        .footer__col {
           text-align: center;
+        }
+
+        .footer__col h4::after {
+          left: 50%;
+          transform: translateX(-50%);
         }
 
         .footer__logo {
@@ -396,6 +479,12 @@
 
         .footer__socials {
           justify-content: center;
+        }
+
+        .footer__contact-item {
+          flex-direction: column;
+          align-items: center;
+          text-align: center;
         }
       }
 
@@ -431,11 +520,94 @@
           padding: 40px 0 0;
         }
       }
+
+      :root {
+        --logo-gradient-1: #7c4dff;
+        --logo-gradient-2: #448aff;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        text-decoration: none;
+      }
+
+      .logo-icon {
+        background: linear-gradient(
+          135deg,
+          var(--logo-gradient-1) 0%,
+          var(--logo-gradient-2) 100%
+        );
+        color: var(--white);
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 24px;
+        box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .logo-icon:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(124, 77, 255, 0.4);
+      }
+
+      .logo-icon::before {
+        content: "ER";
+        background: linear-gradient(45deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-size: 26px;
+        font-weight: 800;
+      }
+
+      .logo-text {
+        font-size: 24px;
+        font-weight: 800;
+        background: linear-gradient(
+          45deg,
+          var(--logo-gradient-1),
+          var(--logo-gradient-2)
+        );
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        line-height: 1.2;
+        letter-spacing: -0.5px;
+      }
+
+      @media (max-width: 768px) {
+        .logo-icon {
+          width: 40px;
+          height: 40px;
+          font-size: 20px;
+        }
+
+        .logo-icon::before {
+          font-size: 22px;
+        }
+
+        .logo-text {
+          font-size: 20px;
+        }
+      }
     </style>
   </head>
   <body>
     <main>
       <div class="container">
+        <div class="logo">
+          <div class="logo-icon"></div>
+          <span class="logo-text">EASY<br />RENT</span>
+        </div>
         <h1 class="title">Welcome Back!</h1>
         <form id="loginForm">
           <div class="input-group">
@@ -506,62 +678,105 @@
     </main>
 
     <footer class="footer">
-      <div class="footer__contanier">
+      <div class="footer__container">
         <div class="footer__col">
           <div class="footer__logo">
-            <div>E</div>
-            <span>EASY<br />RENT</span>
+            <div class="logo-icon"></div>
+            <span class="logo-text">EASY<br />RENT</span>
           </div>
-          <p class="section__description">
+          <p class="footer__description">
             Easy rent is dedicated to simplifying the process of finding student
-            accommodations, it enables a seamless connection between students
-            and owners.
+            accommodations. We enable seamless connections between students and
+            property owners, making your housing search experience smooth and
+            efficient.
           </p>
           <ul class="footer__socials">
             <li>
-              <a href="#"><i class="ri-facebook-line"></i></a>
+              <a href="#" class="footer__social-link">
+                <i class="ri-facebook-fill"></i>
+              </a>
             </li>
             <li>
-              <a href="#"><i class="ri-instagram-line"></i></a>
+              <a href="#" class="footer__social-link">
+                <i class="ri-instagram-fill"></i>
+              </a>
             </li>
             <li>
-              <a href="#"><i class="ri-linkedin-line"></i></a>
+              <a href="#" class="footer__social-link">
+                <i class="ri-linkedin-fill"></i>
+              </a>
+            </li>
+            <li>
+              <a href="#" class="footer__social-link">
+                <i class="ri-twitter-fill"></i>
+              </a>
             </li>
           </ul>
         </div>
 
         <div class="footer__col">
-          <h4>Services</h4>
+          <h4>Quick Links</h4>
           <ul class="footer__links">
-            <li><a href="#">Online Booking</a></li>
-            <li><a href="privacypolicy.html">Privacy Policy</a></li>
-            <li><a href="#">Special Offers</a></li>
-            <li><a href="#">Room Customization</a></li>
-            <li><a href="#">Customer Support</a></li>
+            <li>
+              <a href="#">
+                <i class="ri-arrow-right-s-line"></i>
+                Online Booking
+              </a>
+            </li>
+            <li>
+              <a href="../privacypolicy.html">
+                <i class="ri-arrow-right-s-line"></i>
+                Privacy Policy
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="ri-arrow-right-s-line"></i>
+                Special Offers
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="ri-arrow-right-s-line"></i>
+                Room Customization
+              </a>
+            </li>
+            <li>
+              <a href="#">
+                <i class="ri-arrow-right-s-line"></i>
+                Customer Support
+              </a>
+            </li>
           </ul>
         </div>
 
         <div class="footer__col">
-          <h4>Contact Us</h4>
+          <h4>Contact Info</h4>
           <ul class="footer__links">
-            <li>
-              <span><i class="ri-phone-fill"></i></span>
-              <div>
+            <li class="footer__contact-item">
+              <span class="footer__contact-icon">
+                <i class="ri-phone-fill"></i>
+              </span>
+              <div class="footer__contact-info">
                 <h5>Phone Number</h5>
                 <p>+20 1224170048</p>
               </div>
             </li>
-            <li>
-              <span><i class="ri-record-mail-line"></i></span>
-              <div>
-                <h5>Email</h5>
+            <li class="footer__contact-item">
+              <span class="footer__contact-icon">
+                <i class="ri-mail-fill"></i>
+              </span>
+              <div class="footer__contact-info">
+                <h5>Email Address</h5>
                 <p>info@easyrent15.com</p>
               </div>
             </li>
-            <li>
-              <span><i class="ri-map-pin-2-fill"></i></span>
-              <div>
-                <h5>Location</h5>
+            <li class="footer__contact-item">
+              <span class="footer__contact-icon">
+                <i class="ri-map-pin-fill"></i>
+              </span>
+              <div class="footer__contact-info">
+                <h5>Office Location</h5>
                 <p>Minya st. Taha-Hessien</p>
               </div>
             </li>
@@ -570,7 +785,7 @@
       </div>
 
       <div class="footer__bar">
-        EasyRent copyright 2025 web Design. All rights reserved.
+        Copyright © 2025 EasyRent. All rights reserved.
       </div>
     </footer>
 
