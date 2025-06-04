@@ -3,117 +3,370 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Forgot Password</title>
+    <title>Reset Password | EasyRent</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
     <style>
+      :root {
+        --primary-color: #2563eb;
+        --primary-hover: #1d4ed8;
+        --primary-light: rgba(37, 99, 235, 0.1);
+        --text-primary: #1a1f36;
+        --text-secondary: #6b7280;
+        --border-color: #e5e7eb;
+        --background-light: #f9fafb;
+        --success-bg: #ecfdf5;
+        --success-text: #065f46;
+        --success-border: #a7f3d0;
+        --error-bg: #fef2f2;
+        --error-text: #991b1b;
+        --error-border: #fecaca;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
       body {
-        background: #f0f2f5;
-        font-family: Arial, sans-serif;
+        background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);
+        font-family: "Poppins", sans-serif;
         display: flex;
         justify-content: center;
         align-items: center;
-        height: 100vh;
+        min-height: 100vh;
+        padding: 20px;
+        line-height: 1.5;
       }
+
       .container {
-        background: #fff;
-        padding: 2em;
-        border-radius: 8px;
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        width: 500px;
+        background: #ffffff;
+        padding: 2.5rem;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05),
+                    0 20px 48px rgba(0, 0, 0, 0.05),
+                    0 1px 4px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 440px;
+        position: relative;
+        overflow: hidden;
       }
+
+      .container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), #4f46e5);
+      }
+
+      .logo {
+        text-align: center;
+        margin-bottom: 2rem;
+      }
+
+      .logo img {
+        height: 40px;
+        transition: transform 0.3s ease;
+      }
+
+      .logo img:hover {
+        transform: scale(1.05);
+      }
+
       h2 {
-        margin-bottom: 1em;
-        color: #333;
+        color: var(--text-primary);
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin-bottom: 0.75rem;
         text-align: center;
       }
-      input[type="email"] {
-        width: 100%;
-        padding: 0.5em;
-        margin-bottom: 1em;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        font-size: 16px;
+
+      .description {
+        color: var(--text-secondary);
+        text-align: center;
+        margin-bottom: 2rem;
+        font-size: 0.95rem;
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
       }
-      button {
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-label {
+        display: block;
+        margin-bottom: 0.5rem;
+        color: var(--text-primary);
+        font-size: 0.875rem;
+        font-weight: 500;
+        transition: color 0.2s;
+      }
+
+      .form-control {
         width: 100%;
-        padding: 0.6em;
-        background: #8abff8;
-        color: #fff;
+        padding: 0.875rem 1rem;
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background: var(--background-light);
+        font-family: inherit;
+      }
+
+      .form-control:hover {
+        border-color: #cbd5e1;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        background: #ffffff;
+        box-shadow: 0 0 0 4px var(--primary-light);
+      }
+
+      .btn {
+        width: 100%;
+        padding: 0.875rem 1.5rem;
+        background: var(--primary-color);
+        color: #ffffff;
         border: none;
-        border-radius: 4px;
+        border-radius: 12px;
+        font-size: 1rem;
+        font-weight: 500;
         cursor: pointer;
-        font-size: 16px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+        font-family: inherit;
       }
-      button:hover {
-        background: #609dde;
+
+      .btn:hover {
+        background: var(--primary-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
       }
+
+      .btn:active {
+        transform: translateY(0);
+      }
+
+      .btn:disabled {
+        background: #93c5fd;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .btn .spinner {
+        display: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid #ffffff;
+        border-top: 2px solid transparent;
+        border-radius: 50%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% { transform: translate(-50%, -50%) rotate(0deg); }
+        100% { transform: translate(-50%, -50%) rotate(360deg); }
+      }
+
+      .btn.loading .spinner {
+        display: block;
+      }
+
+      .btn.loading span {
+        visibility: hidden;
+      }
+
       .message {
-        margin-top: 1em;
-        font-size: 14px;
+        margin-top: 1rem;
+        padding: 1rem;
+        border-radius: 12px;
+        font-size: 0.875rem;
+        display: none;
+        animation: slideIn 0.3s ease;
+      }
+
+      @keyframes slideIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .message.success {
+        display: block;
+        background: var(--success-bg);
+        color: var(--success-text);
+        border: 1px solid var(--success-border);
+      }
+
+      .message.error {
+        display: block;
+        background: var(--error-bg);
+        color: var(--error-text);
+        border: 1px solid var(--error-border);
+      }
+
+      .back-to-login {
+        text-align: center;
+        margin-top: 1.75rem;
+      }
+
+      .back-to-login a {
+        color: var(--primary-color);
+        text-decoration: none;
+        font-size: 0.875rem;
+        font-weight: 500;
+        display: inline-flex;
+        align-items: center;
+        transition: all 0.3s ease;
+      }
+
+      .back-to-login a:hover {
+        color: var(--primary-hover);
+        transform: translateX(-4px);
+      }
+
+      .back-to-login a svg {
+        margin-right: 0.5rem;
+        width: 16px;
+        height: 16px;
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          padding: 2rem;
+          border-radius: 16px;
+        }
+
+        h2 {
+          font-size: 1.5rem;
+        }
+
+        .form-control {
+          padding: 0.75rem 1rem;
+        }
       }
     </style>
   </head>
   <body>
     <div class="container">
-      <h2>Forgot Password</h2>
+      <div class="logo">
+        <img src="assets/logo.png" alt="EasyRent Logo" />
+        <h2>Reset Password</h2>
+      </div>
+      <p class="description">
+        Enter your email address and we'll send you a code to reset your password.
+      </p>
+
       <form id="forgotPasswordForm">
-        <input
-          type="email"
-          id="email"
-          placeholder="Enter your email"
-          required
-        />
-        <button onclick="location.href"codeforgot.html type="submit">
-          Reset Password
+        <div class="form-group">
+          <label for="email" class="form-label">Email address</label>
+          <input
+            type="email"
+            id="email"
+            class="form-control"
+            placeholder="Enter your email address"
+            required
+            autocomplete="email"
+          />
+        </div>
+
+        <button type="submit" class="btn" id="submitButton">
+          <div class="spinner"></div>
+          <span>Send Reset Code</span>
         </button>
       </form>
+
       <div class="message" id="message"></div>
+
+      <div class="back-to-login">
+        <a href="login.html">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          </svg>
+          Back to Login
+        </a>
+      </div>
     </div>
 
     <script>
-      document
-        .getElementById("forgotPasswordForm")
-        .addEventListener("submit", async function (e) {
-          e.preventDefault();
-          const email = document.getElementById("email").value.trim();
-          const messageEl = document.getElementById("message");
+      document.getElementById("forgotPasswordForm").addEventListener("submit", async function (e) {
+        e.preventDefault();
 
-          if (!email) {
-            messageEl.style.color = "red";
-            messageEl.textContent = "Please enter your email.";
-            return;
+        const email = document.getElementById("email").value.trim();
+        const messageEl = document.getElementById("message");
+        const submitButton = document.getElementById("submitButton");
+
+        // Reset message
+        messageEl.className = "message";
+        messageEl.textContent = "";
+
+        if (!email) {
+          messageEl.className = "message error";
+          messageEl.textContent = "Please enter your email address.";
+          return;
+        }
+
+        // Show loading state
+        submitButton.disabled = true;
+        submitButton.classList.add("loading");
+
+        try {
+          // Store email in localStorage for the next page
+          localStorage.setItem("resetEmail", email);
+          
+          const res = await fetch("http://localhost:3000/api/send-code", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ email }),
+          });
+
+          const data = await res.json();
+
+          if (res.ok) {
+            messageEl.className = "message success";
+            messageEl.textContent = "Reset code sent! Check your email inbox.";
+
+            // Redirect after 2 seconds
+            setTimeout(() => {
+              window.location.href = "codeforgot.html";
+            }, 2000);
+          } else {
+            messageEl.className = "message error";
+            messageEl.textContent = data.message || "Failed to send reset code. Please try again.";
           }
-
-          try {
-            const res = await fetch("http://localhost:3000/api/send-code", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({ email }),
-            });
-
-            const data = await res.json();
-
-            if (res.ok) {
-              messageEl.style.color = "green";
-              messageEl.textContent =
-                "If this email is registered, a 6-digit reset code has been sent. It will expire in 10 minutes.";
-
-              // ⏳ التوجيه بعد 1.5 ثانية
-              setTimeout(() => {
-                window.location.href = "codeforgot.html";
-              }, 1500);
-            } else {
-              messageEl.style.color = "red";
-              messageEl.textContent = data.message || "Something went wrong.";
-            }
-          } catch (error) {
-            messageEl.style.color = "red";
-            messageEl.textContent =
-              "An error occurred. Please try again later.";
-            console.error("Error:", error);
-          }
-        });
+        } catch (error) {
+          messageEl.className = "message error";
+          messageEl.textContent = "Network error. Please check your connection and try again.";
+          console.error("Error:", error);
+        } finally {
+          // Remove loading state
+          submitButton.disabled = false;
+          submitButton.classList.remove("loading");
+        }
+      });
     </script>
   </body>
 </html>

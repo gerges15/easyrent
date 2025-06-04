@@ -3,87 +3,251 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Sign in</title>
+    <title>Sign in - Google Accounts</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500&family=Roboto:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
     <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
       body {
-        font-family: Arial, sans-serif;
-        background: #f8f9fa;
+        font-family: "Roboto", Arial, sans-serif;
+        background: #ffffff;
         margin: 0;
         display: flex;
         justify-content: center;
         align-items: flex-start;
-        height: 100vh;
-        padding-top: 50px;
+        min-height: 100vh;
+        padding: 48px 20px;
+        color: #202124;
       }
+
       .card {
-        background: white;
-        border: 1px solid #ddd;
+        background: #ffffff;
+        border: 1px solid #dadce0;
         border-radius: 8px;
-        width: 420px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        padding: 30px;
+        width: 100%;
+        max-width: 450px;
+        padding: 48px 40px 36px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
       }
+
       .header {
         display: flex;
+        flex-direction: column;
         align-items: center;
-        margin-bottom: 20px;
+        margin-bottom: 32px;
+        width: 100%;
       }
+
       .google-logo {
         height: 24px;
-        width: 24px;
-        margin-right: 10px;
+        margin-bottom: 16px;
       }
-      h2 {
-        font-weight: 500;
-        font-size: 22px;
-        margin: 0;
+
+      h1 {
+        font-family: "Google Sans", "Roboto", Arial, sans-serif;
+        font-size: 24px;
+        font-weight: 400;
+        margin: 8px 0;
+        color: #202124;
       }
+
       .subtitle {
-        font-size: 14px;
-        color: #555;
-        margin-bottom: 30px;
+        font-size: 16px;
+        font-weight: 400;
+        color: #202124;
+        margin-bottom: 32px;
+        text-align: center;
       }
+
+      .accounts-container {
+        width: 100%;
+        margin-bottom: 32px;
+      }
+
       .account {
         display: flex;
         align-items: center;
-        padding: 12px;
-        border: 1px solid #ccc;
-        border-radius: 8px;
+        padding: 16px;
+        border: 1px solid #dadce0;
+        border-radius: 16px;
         cursor: pointer;
-        transition: background 0.2s;
-        margin-bottom: 15px;
+        transition: background-color 0.2s, border-color 0.2s;
+        margin-bottom: 16px;
+        position: relative;
       }
+
       .account:hover {
-        background: #f1f1f1;
+        background-color: #f7f8f9;
+        border-color: #dadce0;
       }
+
+      .account:focus {
+        outline: none;
+        border-color: #1a73e8;
+        box-shadow: 0 0 0 2px #e8f0fe;
+      }
+
       .avatar {
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
         border-radius: 50%;
-        background: #ddd;
-        margin-right: 14px;
-      }
-      .email-info {
+        background: #e8f0fe;
+        margin-right: 16px;
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        color: #1a73e8;
+        font-size: 20px;
       }
+
+      .avatar img {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        object-fit: cover;
+      }
+
+      .email-info {
+        flex: 1;
+      }
+
       .name {
+        font-family: "Google Sans", "Roboto", Arial, sans-serif;
+        font-size: 14px;
         font-weight: 500;
+        color: #202124;
+        margin-bottom: 4px;
       }
+
       .email {
-        font-size: 13px;
-        color: #666;
+        font-size: 14px;
+        color: #5f6368;
       }
+
+      .divider {
+        width: 100%;
+        height: 1px;
+        background: #dadce0;
+        margin: 32px 0;
+      }
+
       .footer {
         font-size: 12px;
-        color: #777;
-        margin-top: 40px;
+        color: #5f6368;
         text-align: center;
-        line-height: 1.6;
+        line-height: 1.5;
+        margin-top: auto;
       }
-      .link {
+
+      .footer a {
         color: #1a73e8;
         text-decoration: none;
+        font-weight: 500;
+      }
+
+      .footer a:hover {
+        text-decoration: underline;
+      }
+
+      .browse-privately {
+        display: flex;
+        align-items: center;
+        color: #1a73e8;
+        font-family: "Google Sans", "Roboto", Arial, sans-serif;
+        font-size: 14px;
+        text-decoration: none;
+        margin-top: 16px;
+        padding: 8px 12px;
+        border-radius: 20px;
+        transition: background-color 0.2s;
+      }
+
+      .browse-privately:hover {
+        background-color: #e8f0fe;
+      }
+
+      .browse-privately i {
+        margin-right: 8px;
+        font-size: 16px;
+      }
+
+      .language-selector {
+        position: absolute;
+        bottom: 24px;
+        left: 24px;
+        font-size: 12px;
+        color: #5f6368;
+      }
+
+      .language-selector select {
+        background: none;
+        border: none;
+        color: #5f6368;
+        font-size: 12px;
+        cursor: pointer;
+        padding-right: 16px;
+      }
+
+      .language-selector select:focus {
+        outline: none;
+      }
+
+      @media (max-width: 480px) {
+        .card {
+          padding: 24px;
+          border: none;
+          box-shadow: none;
+        }
+
+        body {
+          padding: 0;
+          background: #ffffff;
+        }
+
+        .language-selector {
+          position: static;
+          margin-top: 24px;
+          text-align: center;
+        }
+      }
+
+      .success-message {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #0f9d58;
+        color: white;
+        padding: 16px 24px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        display: none;
+        animation: slideIn 0.3s ease-out;
+        z-index: 1000;
+        font-family: "Google Sans", "Roboto", Arial, sans-serif;
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateX(100%);
+          opacity: 0;
+        }
+        to {
+          transform: translateX(0);
+          opacity: 1;
+        }
       }
     </style>
   </head>
@@ -91,37 +255,89 @@
     <div class="card">
       <div class="header">
         <img
-          src="https://www.gstatic.com/images/branding/googleg/1x/googleg_standard_color_128dp.png"
+          src="https://www.google.com/images/branding/googlelogo/1x/googlelogo_color_272x92dp.png"
+          alt="Google"
           class="google-logo"
-          alt="Google Logo"
         />
-        <h2>Sign in with Google</h2>
-      </div>
-
-      <div class="subtitle">
-        Choose an account to continue to <strong>EasyRent15.com</strong>
-      </div>
-
-      <div class="account">
-        <div class="avatar"></div>
-        <div class="email-info">
-          <div class="name">Ereny Hany</div>
-          <div class="email">erenyhany690@gmail.com</div>
+        <h1>Sign in</h1>
+        <div class="subtitle">
+          to continue to <strong>EasyRent15.com</strong>
         </div>
       </div>
 
-      <div class="account" onclick="window.location.href='another.html'">
-        <div class="avatar">+</div>
-        <div class="email-info">
-          <div class="name">Use another account</div>
+      <div class="accounts-container">
+        <div class="account" onclick="handleLogin()">
+          <div class="avatar">
+            <img
+              src="https://lh3.googleusercontent.com/a/default-user"
+              alt="User avatar"
+            />
+          </div>
+          <div class="email-info">
+            <div class="name">Ereny Hany</div>
+            <div class="email">erenyhany690@gmail.com</div>
+          </div>
+        </div>
+
+        <div class="account" onclick="window.location.href='another.html'">
+          <div class="avatar">
+            <i class="fas fa-user-plus"></i>
+          </div>
+          <div class="email-info">
+            <div class="name">Use another account</div>
+          </div>
         </div>
       </div>
+
+      <a href="#" class="browse-privately">
+        <i class="fas fa-user-secret"></i>
+        Browse privately
+      </a>
 
       <div class="footer">
-        Before using this app, you can review
-        <a href="#" class="link"> EasyRnt15.com's privacy policy</a> and
-        <a href="#" class="link">terms of service</a>.
+        <div>Not your computer? Use Guest mode to sign in privately.</div>
+        <div style="margin-top: 24px">
+          <a href="#">Learn more</a> about using Guest mode
+        </div>
+        <div class="divider"></div>
+        <div>
+          Before using this app, review
+          <a href="#">EasyRent15.com's privacy policy</a> and
+          <a href="#">terms of service</a>
+        </div>
       </div>
     </div>
+
+    <div class="language-selector">
+      <select onchange="changeLanguage(this.value)">
+        <option value="en">English (United States)</option>
+        <option value="ar">العربية</option>
+        <option value="fr">Français</option>
+        <option value="es">Español</option>
+        <option value="de">Deutsch</option>
+      </select>
+    </div>
+
+    <div id="successMessage" class="success-message">
+      Login successful! Welcome back, Ereny Hany
+    </div>
+
+    <script>
+      function handleLogin() {
+        // Show success message
+        const successMessage = document.getElementById("successMessage");
+        successMessage.style.display = "block";
+
+        // Wait for 2 seconds before redirecting
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 2000);
+      }
+
+      function changeLanguage(lang) {
+        // Handle language change
+        console.log("Language changed to:", lang);
+      }
+    </script>
   </body>
 </html>

@@ -492,7 +492,8 @@
       </div>
 
       <!-- أزرار طرق التسجيل الأخرى -->
-      <button class="btn-outline btn-apple">
+      <button class="btn-outline btn-apple"  onclick="window.location.href='loginApple.html'"
+      >
         <i class="fa-brands fa-apple btn-icon"></i>
         Continue with Apple
       </button>
@@ -639,7 +640,7 @@
 
       import API from "./js/api.js";
 
-      const api = new API("http://easyrentapi0.runasp.net/api/Student/login");
+      const api = new API("https://easyrentapi0.runasp.net/api/Student/login");
 
       document
         .getElementById("loginForm")

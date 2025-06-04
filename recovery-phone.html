@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Phone Verification - EasyRent</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Firebase App (the core Firebase SDK) -->
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"></script>
+    <!-- Firebase Auth -->
+    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-auth.js"></script>
+
+    <style>
+      :root {
+        --primary-color: #2563eb;
+        --primary-hover: #1d4ed8;
+        --primary-light: rgba(37, 99, 235, 0.1);
+        --text-primary: #1a1f36;
+        --text-secondary: #6b7280;
+        --border-color: #e5e7eb;
+        --background-light: #f9fafb;
+        --success-bg: #ecfdf5;
+        --success-text: #065f46;
+        --success-border: #a7f3d0;
+        --error-bg: #fef2f2;
+        --error-text: #991b1b;
+        --error-border: #fecaca;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);
+        font-family: "Poppins", sans-serif;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+        padding: 20px;
+        line-height: 1.5;
+      }
+
+      .container {
+        max-width: 450px;
+        margin: 40px auto;
+        padding: 2.5rem;
+        text-align: center;
+        background-color: #ffffff;
+        border-radius: 20px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05),
+                    0 20px 48px rgba(0, 0, 0, 0.05),
+                    0 1px 4px rgba(0, 0, 0, 0.1);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 4px;
+        background: linear-gradient(90deg, var(--primary-color), #4f46e5);
+      }
+
+      .logo {
+        margin-bottom: 24px;
+      }
+
+      .logo img {
+        max-width: 150px;
+        height: auto;
+        transition: transform 0.3s ease;
+      }
+
+      .logo img:hover {
+        transform: scale(1.05);
+      }
+
+      h1 {
+        font-size: 1.75rem;
+        font-weight: 600;
+        margin-bottom: 16px;
+        color: var(--text-primary);
+      }
+
+      .subtitle {
+        font-size: 1rem;
+        color: var(--text-secondary);
+        margin-bottom: 24px;
+        max-width: 90%;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .phone-form {
+        margin-bottom: 24px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .phone-input-container {
+        display: flex;
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+
+      .country-code {
+        width: 120px;
+        padding: 0.875rem 1rem;
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        font-size: 1rem;
+        background: var(--background-light);
+        font-family: inherit;
+      }
+
+      .phone-input {
+        flex: 1;
+        padding: 0.875rem 1rem;
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        font-size: 1rem;
+        background: var(--background-light);
+        font-family: inherit;
+      }
+
+      .phone-input:hover, .country-code:hover {
+        border-color: #cbd5e1;
+      }
+
+      .phone-input:focus, .country-code:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        background: #ffffff;
+        box-shadow: 0 0 0 4px var(--primary-light);
+      }
+
+      .verification-form {
+        display: none;
+      }
+
+      .verification-code {
+        display: flex;
+        gap: 8px;
+        justify-content: center;
+        margin: 24px 0;
+      }
+
+      .code-input {
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        font-size: 20px;
+        border: 2px solid var(--border-color);
+        border-radius: 12px;
+        background-color: var(--background-light);
+        transition: all 0.3s ease;
+        font-family: inherit;
+      }
+
+      .code-input:hover {
+        border-color: #cbd5e1;
+      }
+
+      .code-input:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        background-color: #ffffff;
+        box-shadow: 0 0 0 4px var(--primary-light);
+      }
+
+      .code-input.error {
+        border-color: var(--error-border);
+        background-color: var(--error-bg);
+      }
+
+      .next-btn {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        width: 100%;
+        transition: all 0.3s ease;
+        font-family: inherit;
+      }
+
+      .next-btn:hover:not(:disabled) {
+        background-color: var(--primary-hover);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
+      }
+
+      .next-btn:active:not(:disabled) {
+        transform: translateY(0);
+      }
+
+      .next-btn:disabled {
+        background-color: #93c5fd;
+        color: #ffffff;
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+
+      .continue-btn {
+        background-color: #10b981;
+        color: white;
+        border: none;
+        border-radius: 12px;
+        padding: 12px 24px;
+        font-size: 1rem;
+        font-weight: 500;
+        cursor: pointer;
+        width: 100%;
+        transition: all 0.3s ease;
+        display: none;
+        margin-top: 16px;
+      }
+
+      .continue-btn:hover {
+        background-color: #059669;
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+      }
+
+      .error-message {
+        color: var(--error-text);
+        font-size: 0.875rem;
+        margin-top: 8px;
+        padding: 8px;
+        background-color: var(--error-bg);
+        border: 1px solid var(--error-border);
+        border-radius: 8px;
+        display: none;
+      }
+
+      .success-message {
+        color: var(--success-text);
+        font-size: 0.875rem;
+        margin-top: 8px;
+        padding: 8px;
+        background-color: var(--success-bg);
+        border: 1px solid var(--success-border);
+        border-radius: 8px;
+        animation: slideIn 0.3s ease;
+      }
+
+      .footer {
+        background-color: var(--background-light);
+        padding: 24px;
+        text-align: center;
+        color: var(--text-secondary);
+        font-size: 0.75rem;
+        border-top: 1px solid var(--border-color);
+        margin-top: auto;
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+        margin-top: 8px;
+      }
+
+      .footer-links a {
+        color: var(--text-secondary);
+        text-decoration: none;
+        transition: color 0.3s ease;
+      }
+
+      .footer-links a:hover {
+        color: var(--primary-color);
+      }
+
+      @media (max-width: 480px) {
+        .container {
+          margin: 20px;
+          padding: 1.5rem;
+        }
+
+        .verification-code {
+          gap: 6px;
+        }
+
+        .code-input {
+          width: 35px;
+          height: 35px;
+          font-size: 18px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="logo">
+        <img src="assets/logo.png" alt="EasyRent Logo" />
+      </div>
+
+      <h1 id="title">Phone Verification</h1>
+      <div class="subtitle" id="subtitle">
+        Enter your phone number to receive a verification code
+      </div>
+
+      <form id="phoneForm" class="phone-form">
+        <div class="form-group">
+          <div class="phone-input-container">
+            <select class="country-code" id="countryCode">
+              <option value="+20">+20 (Egypt)</option>
+              <option value="+966">+966 (Saudi Arabia)</option>
+              <option value="+971">+971 (UAE)</option>
+              <option value="+974">+974 (Qatar)</option>
+              <option value="+965">+965 (Kuwait)</option>
+              <option value="+968">+968 (Oman)</option>
+              <option value="+973">+973 (Bahrain)</option>
+            </select>
+          <input
+              type="tel"
+              id="phoneNumber"
+              class="phone-input"
+              placeholder="Enter your phone number"
+              required
+            />
+          </div>
+        </div>
+        <button type="submit" class="next-btn" id="sendCodeBtn">
+          Send Code
+        </button>
+      </form>
+
+      <form id="verificationForm" class="verification-form">
+        <div class="verification-code">
+          <input type="text" class="code-input" maxlength="1" inputmode="numeric" pattern="\d*" />
+          <input type="text" class="code-input" maxlength="1" inputmode="numeric" pattern="\d*" />
+          <input type="text" class="code-input" maxlength="1" inputmode="numeric" pattern="\d*" />
+          <input type="text" class="code-input" maxlength="1" inputmode="numeric" pattern="\d*" />
+          <input type="text" class="code-input" maxlength="1" inputmode="numeric" pattern="\d*" />
+          <input type="text" class="code-input" maxlength="1" inputmode="numeric" pattern="\d*" />
+        </div>
+
+        <button type="submit" class="next-btn" id="verifyBtn" disabled>
+          Verify
+        </button>
+
+        <button type="button" class="continue-btn" id="continueBtn" onclick="window.location.href='index.html'">
+          Continue to Homepage
+        </button>
+      </form>
+    </div>
+
+    <div class="footer">
+      <div class="footer-links">
+        <a href="#" id="helpLink">Help</a>
+        <a href="#" id="privacyLink">Privacy</a>
+        <a href="#" id="termsLink">Terms</a>
+      </div>
+    </div>
+
+    <script type="module">
+      // Import Firebase
+      import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js';
+      import { getAuth, signInWithPhoneNumber, RecaptchaVerifier } from 'https://www.gstatic.com/firebasejs/9.x.x/firebase-auth.js';
+
+      // Firebase configuration
+      const firebaseConfig = {
+        apiKey: "YOUR_API_KEY",
+        authDomain: "your-app.firebaseapp.com",
+        projectId: "your-project-id",
+        storageBucket: "your-app.appspot.com",
+        messagingSenderId: "your-sender-id",
+        appId: "your-app-id"
+      };
+
+      // Initialize Firebase
+      const app = initializeApp(firebaseConfig);
+      const auth = getAuth(app);
+
+      class PhoneVerification {
+        constructor() {
+          this.elements = {
+            phoneForm: document.getElementById("phoneForm"),
+            verificationForm: document.getElementById("verificationForm"),
+            countryCode: document.getElementById("countryCode"),
+            phoneNumber: document.getElementById("phoneNumber"),
+            sendCodeBtn: document.getElementById("sendCodeBtn"),
+            verifyBtn: document.getElementById("verifyBtn"),
+            continueBtn: document.getElementById("continueBtn"),
+            codeInputs: document.querySelectorAll('.code-input')
+          };
+
+          this.confirmationResult = null;
+          this.setupRecaptcha();
+          this.setupEventListeners();
+        }
+
+        setupRecaptcha() {
+          this.recaptchaVerifier = new RecaptchaVerifier(auth, 'sendCodeBtn', {
+            'size': 'invisible',
+            'callback': (response) => {
+              // reCAPTCHA solved, allow signInWithPhoneNumber.
+              this.sendVerificationCode();
+            }
+          });
+        }
+
+        setupEventListeners() {
+          // Handle phone form submission
+          this.elements.phoneForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            await this.sendVerificationCode();
+          });
+
+          // Handle code inputs
+          this.elements.codeInputs.forEach((input, index) => {
+            input.addEventListener('input', (e) => {
+              e.target.value = e.target.value.replace(/[^0-9]/g, '');
+              
+              if (e.target.value && index < this.elements.codeInputs.length - 1) {
+                this.elements.codeInputs[index + 1].focus();
+              }
+              
+              this.checkVerificationCode();
+            });
+
+            input.addEventListener('keydown', (e) => {
+              if (e.key === 'Backspace' && !e.target.value && index > 0) {
+                this.elements.codeInputs[index - 1].focus();
+              }
+            });
+
+            input.addEventListener('paste', (e) => {
+              e.preventDefault();
+              const pastedText = e.clipboardData.getData('text').replace(/[^0-9]/g, '');
+              
+              for (let i = 0; i < Math.min(pastedText.length, this.elements.codeInputs.length); i++) {
+                this.elements.codeInputs[i].value = pastedText[i];
+                if (i < this.elements.codeInputs.length - 1) {
+                  this.elements.codeInputs[i + 1].focus();
+                }
+              }
+              
+              this.checkVerificationCode();
+            });
+          });
+
+          // Handle verification form submission
+          this.elements.verificationForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            this.verifyCode();
+          });
+        }
+
+        validatePhoneNumber(phone) {
+          return phone.length >= 8;
+        }
+
+        async sendVerificationCode() {
+          const phoneNumber = this.elements.countryCode.value + this.elements.phoneNumber.value;
+
+          if (!this.validatePhoneNumber(phoneNumber)) {
+            this.showError("Please enter a valid phone number");
+            return;
+          }
+
+          try {
+            this.showLoading(this.elements.sendCodeBtn);
+            
+            // Send verification code through Firebase
+            this.confirmationResult = await signInWithPhoneNumber(auth, phoneNumber, this.recaptchaVerifier);
+            
+            // Show verification form
+            this.elements.phoneForm.style.display = 'none';
+            this.elements.verificationForm.style.display = 'block';
+            
+            this.showSuccess("Verification code sent to your phone");
+          } catch (error) {
+            console.error("Send Code Error:", error);
+            this.showError("Error sending code. Please try again.");
+            // Reset reCAPTCHA
+            this.recaptchaVerifier.render().then(widgetId => {
+              grecaptcha.reset(widgetId);
+            });
+          } finally {
+            this.hideLoading(this.elements.sendCodeBtn);
+          }
+        }
+
+        checkVerificationCode() {
+          const code = Array.from(this.elements.codeInputs)
+            .map(input => input.value)
+            .join('');
+          this.elements.verifyBtn.disabled = code.length !== 6;
+        }
+
+        async verifyCode() {
+          const code = Array.from(this.elements.codeInputs)
+            .map(input => input.value)
+            .join('');
+
+          try {
+            this.showLoading(this.elements.verifyBtn);
+
+            // Verify code through Firebase
+            const result = await this.confirmationResult.confirm(code);
+            
+            if (result.user) {
+              this.showSuccess("Verification successful!");
+              this.elements.verifyBtn.style.display = 'none';
+              this.elements.continueBtn.style.display = 'block';
+            }
+          } catch (error) {
+            console.error("Verification Error:", error);
+            this.showError("Invalid verification code");
+            this.clearInputs();
+          } finally {
+            this.hideLoading(this.elements.verifyBtn);
+          }
+        }
+
+        showLoading(button) {
+          button.disabled = true;
+          button.innerHTML = '<span>Please wait...</span>';
+        }
+
+        hideLoading(button) {
+          button.disabled = false;
+          button.innerHTML = button.id === 'sendCodeBtn' ? 'Send Code' : 'Verify';
+        }
+
+        showSuccess(message) {
+          const successDiv = document.createElement("div");
+          successDiv.className = "success-message";
+          successDiv.textContent = message;
+          this.elements.verificationForm.insertAdjacentElement('beforebegin', successDiv);
+          setTimeout(() => successDiv.remove(), 5000);
+        }
+
+        showError(message) {
+          const errorDiv = document.createElement("div");
+          errorDiv.className = "error-message";
+          errorDiv.style.display = "block";
+          errorDiv.textContent = message;
+          this.elements.verificationForm.insertAdjacentElement('beforebegin', errorDiv);
+          setTimeout(() => errorDiv.remove(), 5000);
+        }
+
+        clearInputs() {
+          this.elements.codeInputs.forEach(input => {
+            input.value = '';
+            input.classList.add('error');
+          });
+          this.elements.codeInputs[0].focus();
+          
+          setTimeout(() => {
+            this.elements.codeInputs.forEach(input => {
+              input.classList.remove('error');
+            });
+          }, 2000);
+        }
+      }
+
+      // Initialize when DOM is loaded
+      document.addEventListener("DOMContentLoaded", () => {
+        new PhoneVerification();
+      });
+    </script>
+  </body>
+</html>
