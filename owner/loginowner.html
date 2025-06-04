@@ -3,8 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Log in or sign up</title>
-    <!-- أيقونات Font Awesome لأزرار وسائل التواصل -->
+    <title>Log in - EasyRent</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -13,266 +12,316 @@
       href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
       rel="stylesheet"
     />
-
     <style>
-      /* إعادة ضبط أساسية */
+      @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
+
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: Arial, sans-serif;
+        font-family: "Poppins", sans-serif;
       }
+
       body {
         display: flex;
         flex-direction: column;
         min-height: 100vh;
-        background: #fff;
+        background: #f5f7fb;
         color: #333;
-      }
-      header {
-        background: #fff;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-        padding: 10px 20px;
-      }
-      .header-container {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        max-width: 1200px;
-        margin: 0 auto;
-      }
-      .logo {
-        display: flex;
-        align-items: center;
-      }
-      .logo img {
-        width: 50px;
-        height: 50px;
-      }
-      .logo span {
-        font-size: 28px;
-        font-weight: bold;
-        color: #82c9ff;
-        margin-left: 10px;
-      }
-      nav {
-        display: flex;
-        gap: 15px;
-      }
-      nav a {
-        text-decoration: none;
-        color: #333;
-        font-size: 16px;
-      }
-      .container {
-        width: 90%;
-        max-width: 400px;
-        margin: auto;
-      }
-      h1 {
-        font-size: 50px;
-        font-weight: bold;
-      }
-      /* عنوان الصفحة */
-      .title {
-        text-align: center;
-        font-size: 1.7rem;
-        font-weight: bold;
-        margin-bottom: 1.5rem;
-        color: #1a193f;
       }
 
-      /* صندوق المدخلات */
+      main {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 40px 20px;
+      }
+
+      .container {
+        width: 100%;
+        max-width: 440px;
+        background: #fff;
+        border-radius: 16px;
+        padding: 40px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+      }
+
+      .title {
+        text-align: center;
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 32px;
+        color: #1a1a1a;
+      }
+
       .input-group {
-        margin-bottom: 1rem;
-        font-size: 0.6rem;
+        margin-bottom: 24px;
       }
 
       .input-group label {
         display: block;
-        font-size: 0.9rem;
-        margin-bottom: 0.5rem;
-        color: #444;
+        font-size: 15px;
+        margin-bottom: 8px;
+        color: #333;
+        font-weight: 500;
       }
 
       select,
       input[type="text"],
-      input[type="tel"] {
+      input[type="tel"],
+      input[type="password"],
+      input[type="email"] {
         width: 100%;
-        padding: 0.75rem;
-        font-size: 0.99rem;
-        border: 1px solid #ccc;
-        border-radius: 6px;
+        padding: 14px 16px;
+        font-size: 15px;
+        border: 2px solid #e1e5ee;
+        border-radius: 8px;
         outline: none;
-        appearance: none; /* لإخفاء سهم select في بعض المتصفحات */
+        transition: all 0.3s ease;
+        background: #f8fafd;
       }
-        /* تأثير الإطار الأزرق عند التركيز */
-        input:focus,
-        select:focus {
-          border-color: #007bff; /* لون الإطار الأزرق */
-          box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* تأثير الظل */
-        }
 
-      /* الملاحظة أسفل حقل رقم الهاتف */
+      select:focus,
+      input:focus {
+        border-color: #82c9ff;
+        box-shadow: 0 0 0 4px rgba(130, 201, 255, 0.1);
+        background: #fff;
+      }
+
       .note {
-        font-size: 0.8rem;
+        font-size: 13px;
         color: #666;
-        margin-bottom: 1.5rem;
-        line-height: 1.4;
+        margin-bottom: 24px;
+        line-height: 1.5;
+        padding: 12px;
+        background: #f8fafd;
+        border-radius: 8px;
+        border-left: 4px solid #82c9ff;
+      }
+
+      .password-wrapper {
+        position: relative;
+      }
+
+      #password {
+        padding-right: 100px;
+      }
+
+      #togglePasswordBtn {
+        position: absolute;
+        right: 16px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
+        border: none;
+        color: #82c9ff;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: color 0.3s ease;
+      }
+
+      #togglePasswordBtn:hover {
+        color: #5aa8e6;
       }
 
       .btn-primary {
         width: 100%;
-        background: rgb(127, 163, 241);
-        color: #1a193f;
+        background: #82c9ff;
+        color: #fff;
         border: none;
-        font-weight: bold;
-        border-radius: 6px;
-        padding: 0.9rem;
-        font-size: 1.5rem;
+        font-weight: 600;
+        border-radius: 8px;
+        padding: 16px;
+        font-size: 16px;
         cursor: pointer;
-        margin-bottom: 1.2rem;
+        transition: all 0.3s ease;
+        margin-bottom: 16px;
       }
 
       .btn-primary:hover {
-        background: rgb(141, 183, 240);
+        background: #5aa8e6;
+        transform: translateY(-2px);
       }
+
+      .btn-primary:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+      }
+
       .separator {
         display: flex;
         align-items: center;
         text-align: center;
-        margin: 1.5rem 0;
+        margin: 24px 0;
       }
 
       .separator .line {
         flex: 1;
         height: 1px;
-        background-color: #ccc;
+        background-color: #e1e5ee;
       }
 
       .separator .separator-text {
-        padding: 0 1rem;
+        padding: 0 16px;
         color: #666;
-        font-size: 0.9rem;
+        font-size: 14px;
+        font-weight: 500;
       }
-      #password {
-        padding-right: 60px; /* مساحة للزر */
+
+      .social-buttons {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 24px;
       }
-      /* الأزرار الأخرى (التسجيل بالبريد، Apple، Google، Facebook) */
-      .btn-outline {
-        width: 100%;
-        border: 1px solid #ccc;
-        background: #fff;
-        color: #333;
-        border-radius: 6px;
-        padding: 0.9rem;
-        font-size: 1rem;
-        cursor: pointer;
-        margin-bottom: 0.8rem;
+
+      .btn-social {
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 0.5rem;
+        gap: 12px;
+        width: 100%;
+        padding: 14px;
+        border: 2px solid #e1e5ee;
+        border-radius: 8px;
+        font-size: 15px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
       }
 
-      .btn-outline:hover {
-        background: #f8f8f8;
+      .btn-social:hover {
+        transform: translateY(-2px);
       }
 
-      .btn-icon {
-        font-size: 1.1rem;
+      .btn-google {
+        background: #fff;
+        color: #333;
       }
 
-      /* تمييز زر Apple باللون الأسود */
+      .btn-google:hover {
+        background: #f8fafd;
+        border-color: #82c9ff;
+      }
+
       .btn-apple {
-        border: 1px solid #333;
         background: #000;
         color: #fff;
+        border-color: #000;
       }
 
       .btn-apple:hover {
         background: #333;
+        border-color: #333;
       }
 
-      /* تمييز زر Facebook بالأزرق */
       .btn-facebook {
-        border: 1px solid #4267b2;
         background: #4267b2;
         color: #fff;
+        border-color: #4267b2;
       }
 
       .btn-facebook:hover {
         background: #365899;
+        border-color: #365899;
       }
 
-      .btnbook {
-        background-color: #82c9ff;
-        color: #fff;
-        font-size: 20px;
-        cursor: pointer;
-        width: 20%;
-        border: none;
-        padding: 0.5rem;
-        margin: 0.3rem;
-        border-radius: 4px;
+      .forgot-password {
+        text-align: center;
+        margin-bottom: 24px;
       }
 
-      /* Footer Styles */
+      .forgot-password a {
+        color: #82c9ff;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 500;
+        transition: color 0.3s ease;
+      }
+
+      .forgot-password a:hover {
+        color: #5aa8e6;
+        text-decoration: underline;
+      }
+
       .footer {
         background: #1a193f;
+        padding: 60px 0 0;
+        margin-top: auto;
       }
 
       .footer__contanier {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr; /* 3 أعمدة */
-        gap: 4rem 2rem;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px;
       }
 
       .footer__logo {
-        margin-bottom: 2rem;
-        color: #82c9ff;
-      }
-
-      .footer__logo span {
-        font-size: 2rem;
-        font-family: "playfair Display", serif;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-bottom: 24px;
       }
 
       .footer__logo div {
-        font-size: 2rem;
+        background: #82c9ff;
+        color: #1a193f;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 24px;
+      }
+
+      .footer__logo span {
+        font-size: 24px;
+        font-weight: bold;
         color: #82c9ff;
-        background-color: #fcfcfc;
+      }
+
+      .section__description {
+        color: #a0a0a0;
+        line-height: 1.6;
+        margin-bottom: 24px;
       }
 
       .footer__socials {
         list-style: none;
-        margin-top: 2rem;
         display: flex;
-        align-items: center;
-        gap: 1rem;
+        gap: 12px;
       }
 
       .footer__socials a {
-        padding: 6px 10px;
-        font-size: 1.25rem;
-        color: #aaa9a9;
-        background-color: azure;
-        border-radius: 100%;
-        cursor: pointer;
-        transition: 0.3s;
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #82c9ff;
+        color: #1a193f;
+        border-radius: 8px;
+        font-size: 20px;
+        transition: all 0.3s ease;
       }
 
       .footer__socials a:hover {
-        color: #f8f8f8;
-        background-color: #9cb5ff;
+        background: #5aa8e6;
+        transform: translateY(-2px);
       }
 
       .footer__col h4 {
-        margin-bottom: 2.5rem;
-        font-size: 1.25rem;
-        font-weight: 800;
-        font-family: "playfair Display", serif;
-        color: #f8f8f8;
+        color: #fff;
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 24px;
       }
 
       .footer__links {
@@ -280,405 +329,332 @@
       }
 
       .footer__links li {
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
+        margin-bottom: 16px;
       }
 
       .footer__links a {
-        color: #fff;
-        transition: 0.3s;
-        gap: 1rem;
+        color: #a0a0a0;
+        text-decoration: none;
+        font-size: 14px;
+        transition: color 0.3s ease;
       }
 
       .footer__links a:hover {
         color: #82c9ff;
       }
 
-      .footer__col:last-child .footer__links li {
-        margin-bottom: 2rem;
-      }
-
       .footer__links span {
-        font-size: 2rem;
         color: #82c9ff;
+        margin-right: 8px;
       }
 
       .footer__links h5 {
-        margin-bottom: 0.5rem;
-        font-size: 1rem;
-        font-weight: 800;
-        font-family: sans-serif;
         color: #fff;
+        font-size: 15px;
+        margin-bottom: 4px;
       }
 
       .footer__links p {
-        color: #fff;
+        color: #a0a0a0;
+        font-size: 14px;
       }
 
       .footer__bar {
-        padding: 1rem;
-        font-size: 0.8rem;
-        color: white;
         text-align: center;
-      }
-      .section__description {
-        color: #fcfcfc;
-      }
-
-      /* New styles for forgot password link */
-      .forgot-password {
-        text-align: center;
-        margin: 1rem 0;
+        padding: 20px;
+        color: #a0a0a0;
+        font-size: 14px;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 40px;
       }
 
-      .forgot-password a {
-        color: #82c9ff;
-        text-decoration: none;
-        font-size: 0.9rem;
-      }
-
-      .forgot-password a:hover {
-        text-decoration: underline;
-      }
-      select,
-      input[type="text"],
-      input[type="tel"],
-      input[type="password"] {
-        width: 100%;
-        padding: 0.75rem;
-        font-size: 0.99rem;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        outline: none;
-        appearance: none;
-      }
-      .password-wrapper {
-        position: relative;
-        display: inline-block;
-      }
-      #password {
-        padding-right: 60px; /* مساحة للزر */
-      }
-      #togglePasswordBtn {
-        position: absolute;
-        right: 5px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: transparent;
-        border: none;
-        cursor: pointer;
-        color: #007bff;
-        font-weight: bold;
-      }
-      #togglePasswordBtn:focus {
-        outline: none;
-      }
-
-      /* تحسين للخطوط الصغيرة في الشاشات الضيقة */
-      @media (max-width: 320px) {
-        .btn-primary,
-        .btn-outline {
-          font-size: 0.9rem;
-          padding: 0.7rem;
+      @media (max-width: 768px) {
+        main {
+          padding: 20px;
         }
+
+        .container {
+          padding: 24px;
+        }
+
         .title {
-          font-size: 1rem;
+          font-size: 24px;
+          margin-bottom: 24px;
+        }
+
+        .footer__contanier {
+          grid-template-columns: 1fr;
+        }
+
+        .footer__col:first-child {
+          text-align: center;
+        }
+
+        .footer__logo {
+          justify-content: center;
+        }
+
+        .footer__socials {
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        main {
+          padding: 16px;
+        }
+
+        .container {
+          padding: 20px;
+        }
+
+        .title {
+          font-size: 22px;
+        }
+
+        select,
+        input[type="text"],
+        input[type="tel"],
+        input[type="password"],
+        input[type="email"] {
+          font-size: 14px;
+          padding: 12px 14px;
+        }
+
+        .btn-primary,
+        .btn-social {
+          padding: 12px;
+          font-size: 14px;
+        }
+
+        .footer {
+          padding: 40px 0 0;
         }
       }
     </style>
   </head>
   <body>
-    <form id="loginForm">
-    <!-- اختيار الدولة ورقم الهاتف -->
-    <div class="container">
-      <h1 class="title">Let's Start! LOGIN</h1>
-      <!-- اختيار الدولة ورقم الهاتف -->
-      <div class="input-group">
-        <label for="country">Country/Region</label>
-        <select id="country" name="country" required>
-          <option value="" disabled selected>Select your country</option>
-          <option value="eg">Egypt (+20)</option>
-          <option value="AF">Afghanistan (+93)</option>
-          <option value="AX">Åland Islands (+358)</option>
-          <option value="AL">Albania (+355)</option>
-          <option value="DZ">Algeria (+213)</option>
-          <option value="AS">American Samoa (+1-684)</option>
-          <option value="AD">Andorra (+376)</option>
-          <option value="AO">Angola (+244)</option>
-          <option value="AI">Anguilla (+1-264)</option>
-          <option value="AG">Antigua and Barbuda (+1-268)</option>
-          <option value="AR">Argentina (+54)</option>
-          <option value="AM">Armenia (+374)</option>
-          <option value="AW">Aruba (+297)</option>
-          <option value="AU">Australia (+61)</option>
-          <option value="AT">Austria (+43)</option>
-          <option value="AZ">Azerbaijan (+994)</option>
-          <option value="BS">Bahamas (+1-242)</option>
-          <option value="BH">Bahrain (+973)</option>
-          <option value="BD">Bangladesh (+880)</option>
-          <option value="BB">Barbados (+1-246)</option>
-          <option value="BY">Belarus (+375)</option>
-          <option value="BE">Belgium (+32)</option>
-          <option value="BZ">Belize (+501)</option>
-          <option value="BJ">Benin (+229)</option>
-          <option value="BM">Bermuda (+1-441)</option>
-          <option value="BT">Bhutan (+975)</option>
-          <option value="BO">Bolivia (+591)</option>
-          <option value="BA">Bosnia and Herzegovina (+387)</option>
-          <option value="BW">Botswana (+267)</option>
-          <option value="BR">Brazil (+55)</option>
-          <option value="IO">British Indian Ocean Territory (+246)</option>
-          <option value="BN">Brunei Darussalam (+673)</option>
-          <option value="BG">Bulgaria (+359)</option>
-          <option value="BF">Burkina Faso (+226)</option>
-          <option value="BI">Burundi (+257)</option>
-          <option value="KH">Cambodia (+855)</option>
-          <option value="CM">Cameroon (+237)</option>
-          <option value="CA">Canada (+1)</option>
-          <option value="CV">Cape Verde (+238)</option>
-          <option value="KY">Cayman Islands (+1-345)</option>
-          <option value="CF">Central African Republic (+236)</option>
-          <option value="TD">Chad (+235)</option>
-          <option value="CL">Chile (+56)</option>
-          <option value="CN">China (+86)</option>
-          <option value="CX">Christmas Island (+61)</option>
-          <option value="CC">Cocos (Keeling) Islands (+61)</option>
-          <option value="CO">Colombia (+57)</option>
-          <option value="KM">Comoros (+269)</option>
-          <option value="CG">Congo (+242)</option>
-          <option value="CD">
-            Congo, the Democratic Republic of the (+243)
-          </option>
-          <option value="CK">Cook Islands (+682)</option>
-          <option value="CR">Costa Rica (+506)</option>
-          <option value="CI">Côte d'Ivoire (+225)</option>
-          <option value="HR">Croatia (+385)</option>
-          <option value="CU">Cuba (+53)</option>
-          <option value="CY">Cyprus (+357)</option>
-          <option value="CZ">Czech Republic (+420)</option>
-          <option value="DK">Denmark (+45)</option>
-          <option value="DJ">Djibouti (+253)</option>
-          <option value="DM">Dominica (+1-767)</option>
-          <option value="DO">
-            Dominican Republic (+1-809, +1-829, +1-849)
-          </option>
-          <option value="EC">Ecuador (+593)</option>
-          <option value="EG">Egypt (+20)</option>
-          <option value="SV">El Salvador (+503)</option>
-          <option value="GQ">Equatorial Guinea (+240)</option>
-          <option value="ER">Eritrea (+291)</option>
-          <option value="EE">Estonia (+372)</option>
-          <option value="ET">Ethiopia (+251)</option>
-          <option value="FK">Falkland Islands (Malvinas) (+500)</option>
-          <option value="FO">Faroe Islands (+298)</option>
-          <option value="FJ">Fiji (+679)</option>
-          <option value="FI">Finland (+358)</option>
-          <option value="FR">France (+33)</option>
-          <option value="GF">French Guiana (+594)</option>
-          <option value="PF">French Polynesia (+689)</option>
+    <main>
+      <div class="container">
+        <h1 class="title">Welcome Back!</h1>
+        <form id="loginForm">
+          <div class="input-group">
+            <label for="emailOrPhone">Email or Phone Number</label>
+            <input
+              type="text"
+              id="emailOrPhone"
+              placeholder="Enter your email or phone number"
+              required
+            />
+          </div>
 
-          <!-- باقي الدول -->
-        </select>
+          <div class="input-group">
+            <label for="password">Password</label>
+            <div class="password-wrapper">
+              <input
+                type="password"
+                id="password"
+                placeholder="Enter your password"
+                required
+              />
+              <button type="button" id="togglePasswordBtn">Show</button>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-primary" id="loginBtn">
+            Sign In
+          </button>
+
+          <div class="forgot-password">
+            <a href="../forgetpass.html">Forgot password?</a>
+          </div>
+
+          <div class="separator">
+            <div class="line"></div>
+            <span class="separator-text">or continue with</span>
+            <div class="line"></div>
+          </div>
+
+          <div class="social-buttons">
+            <button
+              type="button"
+              class="btn-social btn-google"
+              onclick="window.location.href='../logingoogle.html'"
+            >
+              <i class="fab fa-google"></i>
+              Continue with Google
+            </button>
+            <button
+              type="button"
+              class="btn-social btn-apple"
+              onclick="window.location.href='../loginApple.html'"
+            >
+              <i class="fab fa-apple"></i>
+              Continue with Apple
+            </button>
+            <button
+              type="button"
+              class="btn-social btn-facebook"
+              onclick="window.location.href='../face.html'"
+            >
+              <i class="fab fa-facebook-f"></i>
+              Continue with Facebook
+            </button>
+          </div>
+        </form>
       </div>
+    </main>
 
-      <!-- حقل إدخال رقم الهاتف أو البريد الإلكتروني -->
-      <div class="input-group">
-        <label for="phone">Phone number or email</label>
-        <input
-          type="text"
-          id="emailOrPhone"
-          placeholder="Enter your phone number or email"
-        />
-      </div>
-
-      <p class="note">
-        We'll call or text to confirm your number. Standard message and data
-        rates apply.
-      </p>
-      <div class="input-group">
-        <label for="password">Password</label>
-        <div class="password-wrapper">
-          <input type="password" id="password" />
-        </div>
-        </div>
-        
-
-      <button type="submit" class="btn-primary" id="loginBtn">Continue</button>
-      </form>
-
-      <!-- Forgot password link -->
-      <div class="forgot-password">
-        <a href="../forgetpass.html">Forgot password?</a>
-      </div>
-
-      <div class="separator">
-        <div class="line"></div>
-        <span class="separator-text">or</span>
-        <div class="line"></div>
-      </div>
-
-      <!-- أزرار طرق التسجيل الأخرى -->
-      <button class="btn-outline btn-apple" onclick="window.location.href='../loginApple.html'">
-        <i class="fa-brands fa-apple btn-icon"></i>
-        Continue with Apple
-      </button>
-
-      <button
-        class="btn-outline"
-        onclick="window.location.href='../logingoogle.html'"
-      >
-        <i class="fa-brands fa-google btn-icon"></i>
-        Continue with Google
-      </button>
-
-      <button
-        class="btn-outline btn-facebook"
-        onclick="window.location.href='../face.html'"
-      >
-        <i class="fa-brands fa-facebook-f btn-icon"></i>
-        Continue with Facebook
-      </button>
-    </div>
-
-    <footer class="footer" id="contact">
-      <div class="section__contanier footer__contanier">
+    <footer class="footer">
+      <div class="footer__contanier">
         <div class="footer__col">
-        
-        <div class="logo footer__logo">
-          <div>E</div>
-          <span >EASY <br />RENT</span>
+          <div class="footer__logo">
+            <div>E</div>
+            <span>EASY<br />RENT</span>
+          </div>
+          <p class="section__description">
+            Easy rent is dedicated to simplifying the process of finding student
+            accommodations, it enables a seamless connection between students
+            and owners.
+          </p>
+          <ul class="footer__socials">
+            <li>
+              <a href="#"><i class="ri-facebook-line"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="ri-instagram-line"></i></a>
+            </li>
+            <li>
+              <a href="#"><i class="ri-linkedin-line"></i></a>
+            </li>
+          </ul>
         </div>
-        <p class="section__description">
-          Easy rent is dedicated to  simplifying the process of finding student accommandations, it enables a seamless connection between students and owners.
-        </p>
-        <ul class="footer__socials">
-          <li><a href="#" target="_blank"><i class="ri-facebook-line"></i></a></li>
-          <li><a href="#" target="_blank"><i class="ri-instagram-line"></i></a></li>
-          <li><a href="#" target="_blank"><i class="ri-linkedin-line"></i></a></li>
-        </ul>
-      </div>
-      <div class="footer__col">
-        <h4>Services </h4>
-        <div class="footer__links">
-          <li ><a href="#">Online Booking</a></li>
-          <li><a href="privacypolicy.html">Privacy Policy</a></li>
-          <li ><a href="#"> Special Offers</a></li>
-          <li ><a href="#">Room Customization</a></li>
-          <li ><a href="#">Customer Support</a></li>
+
+        <div class="footer__col">
+          <h4>Services</h4>
+          <ul class="footer__links">
+            <li><a href="#">Online Booking</a></li>
+            <li><a href="privacypolicy.html">Privacy Policy</a></li>
+            <li><a href="#">Special Offers</a></li>
+            <li><a href="#">Room Customization</a></li>
+            <li><a href="#">Customer Support</a></li>
+          </ul>
+        </div>
+
+        <div class="footer__col">
+          <h4>Contact Us</h4>
+          <ul class="footer__links">
+            <li>
+              <span><i class="ri-phone-fill"></i></span>
+              <div>
+                <h5>Phone Number</h5>
+                <p>+20 1224170048</p>
+              </div>
+            </li>
+            <li>
+              <span><i class="ri-record-mail-line"></i></span>
+              <div>
+                <h5>Email</h5>
+                <p>info@easyrent15.com</p>
+              </div>
+            </li>
+            <li>
+              <span><i class="ri-map-pin-2-fill"></i></span>
+              <div>
+                <h5>Location</h5>
+                <p>Minya st. Taha-Hessien</p>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
-      <div class="footer__col">
-        <h4>Contact Us</h4>
-        <div class="footer__links">
-          <li>
-            <span><i class="ri-phone-fill"></i></span>
-            <div>
-              <h5>Phone Number</h5>
-              <p>+20 1224170048</p>
-            </div>
-          </li>
-          <li>
-            <span><i class="ri-record-mail-line"></i></span>
-            <div>
-              <h5>Email</h5>
-              <p>info@easyrent15.com</p>
-            </div>
-          </li>
-          <li>
-            <span><i class="ri-map-pin-2-fill"></i></span>
-            <div>
-              <h5>Location</h5>
-              <p>Minya st. Taha-Hessien</p>
-            </div>
-          </li>
-        </div>
-      </div>
-      </div>
+
       <div class="footer__bar">
-        EasyRent copyright  2025 web Design .All rights reserved.
+        EasyRent copyright 2025 web Design. All rights reserved.
       </div>
     </footer>
-    
-    <script type="module">
 
+    <script>
       const passwordInput = document.getElementById("password");
       const togglePasswordBtn = document.createElement("button");
       togglePasswordBtn.type = "button";
       togglePasswordBtn.id = "togglePasswordBtn";
       togglePasswordBtn.textContent = "Show";
-      
+
       passwordInput.parentNode.appendChild(togglePasswordBtn);
-      
+
       togglePasswordBtn.addEventListener("click", () => {
         const isPassword = passwordInput.type === "password";
         passwordInput.type = isPassword ? "text" : "password";
         togglePasswordBtn.textContent = isPassword ? "Hide" : "Show";
       });
-      
-      document.getElementById("loginForm").addEventListener("submit", async function (e) {
-        e.preventDefault();
-      
-        const country = document.getElementById("country").value;
-        const emailOrPhone = document.getElementById("emailOrPhone").value.trim();
-        const password = document.getElementById("password").value;
-      
-        if (!emailOrPhone || !password || !country) {
-          alert("Please fill all fields.");
-          return;
-        }
-      
-        try {
-          const loginRes = await fetch("https://easyrentapi0.runasp.net/api/Owner/login", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-              emailOrPhone,
-              password // مباشرة بدون تشفير
-            })
-          });
-      
-          if (!loginRes.ok) {
-            let errorMsg = await loginRes.text();
-            try {
-              const errObj = JSON.parse(errorMsg);
-              errorMsg = errObj.message || errorMsg;
-            } catch {}
-            alert(errorMsg || "Login failed. Please try again.");
+
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
+
+          const country = document.getElementById("country").value;
+          const emailOrPhone = document
+            .getElementById("emailOrPhone")
+            .value.trim();
+          const password = document.getElementById("password").value;
+
+          if (!emailOrPhone || !password || !country) {
+            alert("Please fill all fields.");
             return;
           }
-      
-          const data = await loginRes.json();
-console.log(data); // عشان تتأكد من شكل البيانات
 
-// حفظ البيانات
-localStorage.setItem("user", JSON.stringify(data));
-localStorage.setItem("ownerId", data.ownerId); // ✅ التصحيح هنا
-// لو عندك توكن أضفها هنا كمان:
-localStorage.setItem("token", data.token); // لو التوكن جاية ضمن الاستجابة
+          try {
+            const loginRes = await fetch(
+              "https://easyrentapi0.runasp.net/api/Owner/login",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  emailOrPhone,
+                  password, // مباشرة بدون تشفير
+                }),
+              }
+            );
 
-// التوجيه حسب الدور (افتراض إن دي صفحة المالك فقط)
-location.href = "../owner/dashbord.html";
+            if (!loginRes.ok) {
+              let errorMsg = await loginRes.text();
+              try {
+                const errObj = JSON.parse(errorMsg);
+                errorMsg = errObj.message || errorMsg;
+              } catch {}
+              alert(errorMsg || "Login failed. Please try again.");
+              return;
+            }
 
-          // توجيه حسب الدور
-          if (data.role === "admin") {
-            location.href = "admin.html";
-          } else if (data.role === "Owner") {
+            const data = await loginRes.json();
+            console.log(data); // عشان تتأكد من شكل البيانات
+
+            // حفظ البيانات
+            localStorage.setItem("user", JSON.stringify(data));
+            localStorage.setItem("ownerId", data.ownerId); // ✅ التصحيح هنا
+            // لو عندك توكن أضفها هنا كمان:
+            localStorage.setItem("token", data.token); // لو التوكن جاية ضمن الاستجابة
+
+            // التوجيه حسب الدور (افتراض إن دي صفحة المالك فقط)
             location.href = "../owner/dashbord.html";
-          } else {
-            location.href = "dashbord.html"; // صفحة الطالب
+
+            // توجيه حسب الدور
+            if (data.role === "admin") {
+              location.href = "admin.html";
+            } else if (data.role === "Owner") {
+              location.href = "../owner/dashbord.html";
+            } else {
+              location.href = "dashbord.html"; // صفحة الطالب
+            }
+          } catch (err) {
+            console.error("Unexpected error:", err);
+            alert(
+              err.message || "Something went wrong. Please try again later."
+            );
           }
-          
-          
-      
-        } catch (err) {
-          console.error("Unexpected error:", err);
-          alert(err.message || "Something went wrong. Please try again later.");
-        }
-      });
-      
-      
-            
-    </script>           
-</body> 
+        });
+    </script>
+  </body>
 </html>

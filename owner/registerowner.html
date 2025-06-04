@@ -2,10 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta
-      name="viewport"
-      content="width=1200, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Owner Signing Up</title>
 
     <link
@@ -20,159 +17,215 @@
     <style>
       @import url("https://fonts.googleapis.com/css2?family=playfair+Display:wght@100..400&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 
-      /* القواعد العامة */
       * {
         margin: 0;
         padding: 0;
         box-sizing: border-box;
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
-          Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
-          sans-serif;
+        font-family: "Poppins", sans-serif;
       }
 
       body {
-        background: #fff;
+        background: #f5f7fb;
         display: flex;
         justify-content: center;
         align-items: center;
         min-height: 100vh;
         color: #333;
-        padding: 10px;
+        padding: 0;
         flex-direction: column;
-        width: 1200px; /* عرض ثابت للصفحة */
-        margin: 0 auto; /* توسيط الصفحة */
+        width: 100%;
+        margin: 0;
+        overflow-x: hidden;
+      }
+
+      main {
+        width: 100%;
+        max-width: 1440px;
+        padding: 40px 20px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - 200px);
       }
 
       .container {
         width: 100%;
-        flex: 1;
-        max-width: 420px;
+        max-width: 480px;
         margin: 0 auto;
-        padding: 10px;
+        padding: 40px;
+        background: #fff;
+        border-radius: 16px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       }
-      /* عنوان الصفحة */
+
       .title {
-        font-size: 24px; /* حجم ثابت */
-        font-weight: bold;
-        margin: 20px 0; /* هوامش ثابتة */
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 30px;
+        color: #1a1a1a;
         text-align: left;
+        font-family: "Playfair Display", serif;
       }
-      /* حاوية الإدخالات */
+
       .form-group {
-        margin-bottom: 15px; /* هوامش ثابتة */
+        margin-bottom: 24px;
       }
 
       .form-group label {
         display: block;
-        font-size: 16px; /* حجم ثابت */
-        margin-bottom: 5px; /* هوامش ثابتة */
-        color: #444;
+        font-size: 15px;
+        margin-bottom: 8px;
+        color: #333;
         font-weight: 500;
+        letter-spacing: 0.3px;
       }
+
       .form-group input {
         width: 100%;
-        padding: 10px; /* هوامش ثابتة */
-        font-size: 16px; /* حجم ثابت */
-        border: 1px solid #ccc;
-        border-radius: 6px;
+        padding: 12px 16px;
+        font-size: 15px;
+        border: 2px solid #e1e5ee;
+        border-radius: 8px;
         outline: none;
+        transition: all 0.3s ease;
+        background: #f8fafd;
       }
-      /* ملاحظة توضيحية تحت حقل الاسم */
+
+      .form-group input:focus {
+        border-color: #82c9ff;
+        box-shadow: 0 0 0 4px rgba(130, 201, 255, 0.1);
+        background: #fff;
+      }
+
       .sub-note {
-        font-size: 14px; /* حجم ثابت */
+        font-size: 13px;
         color: #666;
-        line-height: 1.4;
-        margin: 5px 0 15px 0; /* هوامش ثابتة */
+        line-height: 1.5;
+        margin: 8px 0 20px 0;
       }
-      /* تاريخ الميلاد */
+
       .date-note {
-        font-size: 14px; /* حجم ثابت */
+        font-size: 13px;
         color: #666;
-        line-height: 1.4;
-        margin-bottom: 15px; /* هوامش ثابتة */
+        line-height: 1.5;
+        margin-bottom: 20px;
+        padding: 12px;
+        background: #f8fafd;
+        border-radius: 8px;
+        border-left: 4px solid #82c9ff;
       }
-      /* حقل البريد */
-      /* حقل كلمة المرور مع زر إظهار */
+
       .password-container {
         position: relative;
-        margin-bottom: 20px; /* هوامش ثابتة */
+        margin-bottom: 24px;
       }
+
       .password-container input {
         width: 100%;
-        padding: 10px; /* هوامش ثابتة */
-        font-size: 16px; /* حجم ثابت */
-        border: 1px solid #ccc;
-        border-radius: 6px;
+        padding: 12px 16px;
+        padding-right: 120px;
+        font-size: 15px;
+        border: 2px solid #e1e5ee;
+        border-radius: 8px;
         outline: none;
+        transition: all 0.3s ease;
+        background: #f8fafd;
       }
-      .password-container label {
-        display: block;
-        font-size: 16px; /* حجم ثابت */
-        margin-bottom: 5px; /* هوامش ثابتة */
-        color: #444;
-        font-weight: 700;
+
+      .password-container input:focus {
+        border-color: #82c9ff;
+        box-shadow: 0 0 0 4px rgba(130, 201, 255, 0.1);
+        background: #fff;
       }
+
       .show-password {
         position: absolute;
-        right: 10px;
+        right: 16px;
         top: 50%;
         transform: translateY(-50%);
         background: none;
         border: none;
-        color: #0554a9;
-        font-size: 14px; /* حجم ثابت */
+        color: #82c9ff;
+        font-size: 14px;
         cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
       }
 
-      /* تنسيق القسم السفلي (الموافقة على الشروط) */
+      .show-password:hover {
+        color: #5aa8e6;
+      }
 
-      /* زر الإكمال */
       .btn-submit {
-        width: 60%;
-        padding: 10px; /* هوامش ثابتة */
-        font-size: 16px; /* حجم ثابت */
-        background: rgb(162, 190, 251);
+        width: 100%;
+        padding: 14px;
+        font-size: 16px;
+        font-weight: 600;
+        background: #82c9ff;
         color: #fff;
         border: none;
-        border-radius: 6px;
+        border-radius: 8px;
         cursor: pointer;
-        transition: all 0.3s ease-in-out;
-      }
-      .btn-submit:hover {
-        background: rgb(145, 175, 240);
-        transform: scale(1.05);
+        transition: all 0.3s ease;
+        margin-top: 10px;
       }
 
-      /* رسالة الخطأ */
+      .btn-submit:hover {
+        background: #5aa8e6;
+        transform: translateY(-2px);
+      }
+
+      .btn-submit:disabled {
+        background: #ccc;
+        cursor: not-allowed;
+        transform: none;
+      }
+
       .error-message {
         color: #dc3545;
-        font-size: 14px;
-        margin-top: 5px;
+        font-size: 13px;
+        margin-top: 6px;
         display: none;
+        padding: 8px 12px;
+        background: #fff5f5;
+        border-radius: 6px;
+        border-left: 4px solid #dc3545;
       }
 
       /* Footer Styles */
       .footer {
         background: #1a193f;
+        width: 100%;
+        padding: 60px 0 0;
+        margin: 0;
       }
 
       .footer__contanier {
+        max-width: 1440px;
+        margin: 0 auto;
+        padding: 0 40px;
         display: grid;
-        grid-template-columns: 1fr 1fr 1fr; /* 3 أعمدة */
+        grid-template-columns: 1fr 1fr 1fr;
         gap: 4rem 2rem;
       }
 
       .footer__logo {
         margin-bottom: 2rem;
         color: #82c9ff;
+        display: flex;
+        align-items: center;
+        gap: 12px;
       }
+
       .footer__logo span {
         line-height: 1.2;
-        font-family: "playfair Display", serif;
+        font-family: "Playfair Display", serif;
         font-size: 26px;
         font-weight: bold;
         color: #82c9ff;
       }
+
       .footer__logo div {
         background: #82c9ff;
         color: #1a193f;
@@ -181,40 +234,48 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        border-radius: 0px;
+        border-radius: 8px;
         font-weight: bold;
         font-size: 24px;
       }
 
+      .section__description {
+        color: #a0a0a0;
+        line-height: 1.6;
+        margin-bottom: 24px;
+      }
+
       .footer__socials {
         list-style: none;
-        margin-top: 2rem;
         display: flex;
         align-items: center;
-        gap: 1rem;
+        gap: 16px;
       }
 
       .footer__socials a {
-        padding: 6px 10px;
-        font-size: 1.25rem;
-        color: var(--text-light);
-        background-color: azure;
-        border-radius: 100%;
+        padding: 10px;
+        font-size: 20px;
+        color: #1a193f;
+        background-color: #82c9ff;
+        border-radius: 8px;
         cursor: pointer;
         transition: 0.3s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
 
       .footer__socials a:hover {
-        color: #f8f8f8;
-        background-color: #9cb5ff;
+        background-color: #5aa8e6;
+        transform: translateY(-2px);
       }
 
       .footer__col h4 {
-        margin-bottom: 2.5rem;
-        font-size: 1.25rem;
-        font-weight: 800;
-        font-family: "playfair Display", serif;
-        color: #f8f8f8;
+        margin-bottom: 24px;
+        font-size: 20px;
+        font-weight: 700;
+        font-family: "Playfair Display", serif;
+        color: #fff;
       }
 
       .footer__links {
@@ -222,85 +283,129 @@
       }
 
       .footer__links li {
-        margin-bottom: 1rem;
-        display: flex;
-        align-items: center;
+        margin-bottom: 16px;
       }
 
       .footer__links a {
-        color: #fff;
+        color: #a0a0a0;
+        text-decoration: none;
         transition: 0.3s;
-        gap: 1rem;
+        font-size: 15px;
       }
 
       .footer__links a:hover {
         color: #82c9ff;
       }
 
-      .footer__col:last-child .footer__links li {
-        margin-bottom: 2rem;
-      }
-
       .footer__links span {
-        font-size: 2rem;
+        font-size: 24px;
         color: #82c9ff;
+        margin-right: 12px;
       }
 
       .footer__links h5 {
-        margin-bottom: 0.5rem;
-        font-size: 1rem;
-        font-weight: 800;
-        font-family: "playfair Display", serif;
+        margin-bottom: 6px;
+        font-size: 16px;
+        font-weight: 600;
         color: #fff;
       }
 
       .footer__links p {
-        color: #fff;
+        color: #a0a0a0;
+        font-size: 14px;
       }
 
       .footer__bar {
-        padding: 1rem;
-        font-size: 0.8rem;
-        color: white;
+        padding: 20px;
+        font-size: 14px;
+        color: #a0a0a0;
         text-align: center;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        margin-top: 40px;
       }
-      .section__description {
-        color: #fcfcfc;
-      }
+
       .custom-divider {
-        border: none;
-        height: 1px;
-        background-color: rgba(0, 0, 0, 0.1);
-        margin: 50px auto 30px;
-        width: 85%;
+        display: none;
       }
-      @media (max-width: 375px) {
-        body {
-          padding: 15px;
+
+      @media (max-width: 1024px) {
+        .footer__contanier {
+          padding: 0 20px;
+          gap: 2rem;
+        }
+      }
+
+      @media (max-width: 768px) {
+        main {
+          padding: 20px;
+          min-height: auto;
+        }
+
+        .container {
+          padding: 24px;
         }
 
         .title {
-          font-size: 22px;
+          font-size: 24px;
+        }
+
+        .footer__contanier {
+          grid-template-columns: 1fr;
+          gap: 40px;
+          padding: 0 20px;
+        }
+
+        .footer__col:first-child {
+          text-align: center;
+        }
+
+        .footer__socials {
+          justify-content: center;
+        }
+
+        .footer__logo {
+          justify-content: center;
+        }
+      }
+
+      @media (max-width: 480px) {
+        main {
+          padding: 16px;
+        }
+
+        .container {
+          padding: 20px;
         }
 
         .form-group input,
-        .input-group select {
-          padding: 10px;
-          font-size: 15px;
+        .password-container input {
+          font-size: 14px;
+          padding: 10px 12px;
+        }
+
+        .show-password {
+          font-size: 12px;
         }
 
         .btn-submit {
           padding: 12px;
-          margin-bottom: 40px;
           font-size: 15px;
         }
 
-        .footer__contanier {
-          grid-template-columns: repeat(2, 1fr);
+        .footer {
+          padding: 40px 0 0;
         }
 
-        .footer__col:first-child {
-          grid-column: 1/3;
+        .footer__contanier {
+          padding: 0 16px;
+        }
+
+        .footer__logo span {
+          font-size: 22px;
+        }
+
+        .footer__col h4 {
+          font-size: 18px;
         }
       }
     </style>
