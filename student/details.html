@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Property Details - Easy Rent</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #d62612;
+        --light-color: #ecf0f1;
+        --dark-color: #2c3e50;
+        --success-color: #2ecc71;
+        --border-radius: 8px;
+        --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", sans-serif;
+      }
+
+      body {
+        background-color: #f8f9fa;
+        color: #333;
+        line-height: 1.6;
+      }
+
+      header {
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        color: white;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .property-header {
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 2rem;
+        align-items: start;
+        margin-bottom: 2rem;
+      }
+
+      .property-title {
+        font-size: 2.5rem;
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+      }
+
+      .property-location {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #666;
+        margin-bottom: 1rem;
+      }
+
+      .property-price {
+        font-size: 2rem;
+        color: var(--secondary-color);
+        font-weight: bold;
+      }
+
+      .price-period {
+        font-size: 1rem;
+        color: #666;
+      }
+
+      .gallery-container {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 1rem;
+        margin-bottom: 2rem;
+      }
+
+      .main-image {
+        width: 100%;
+        height: 400px;
+        object-fit: cover;
+        border-radius: var(--border-radius);
+      }
+
+      .thumbnail-container {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+      }
+
+      .thumbnail {
+        width: 100%;
+        height: 195px;
+        object-fit: cover;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        transition: transform 0.3s ease;
+      }
+
+      .thumbnail:hover {
+        transform: scale(1.05);
+      }
+
+      .property-details {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        gap: 2rem;
+        margin-top: 2rem;
+      }
+
+      .details-section {
+        background: white;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        margin-bottom: 2rem;
+      }
+
+      .section-title {
+        font-size: 1.5rem;
+        color: var(--dark-color);
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid var(--light-color);
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .feature-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        padding: 0.5rem;
+        background: var(--light-color);
+        border-radius: var(--border-radius);
+      }
+
+      .feature-item i {
+        color: var(--secondary-color);
+      }
+
+      .booking-card {
+        background: white;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        position: sticky;
+        top: 2rem;
+      }
+
+      .btn-book {
+        background-color: var(--secondary-color);
+        color: white;
+        border: none;
+        padding: 1rem 2rem;
+        border-radius: var(--border-radius);
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        width: 100%;
+        transition: all 0.3s ease;
+      }
+
+      .btn-book:hover {
+        background-color: var(--primary-color);
+        transform: translateY(-2px);
+      }
+
+      .amenities-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .amenity-item {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .amenity-item i {
+        color: var(--success-color);
+      }
+
+      .map-container {
+        height: 300px;
+        border-radius: var(--border-radius);
+        overflow: hidden;
+        margin-top: 1rem;
+      }
+
+      .map-container iframe {
+        width: 100%;
+        height: 100%;
+        border: none;
+      }
+
+      @media (max-width: 768px) {
+        .property-header {
+          grid-template-columns: 1fr;
+        }
+
+        .gallery-container {
+          grid-template-columns: 1fr;
+        }
+
+        .property-details {
+          grid-template-columns: 1fr;
+        }
+
+        .main-image {
+          height: 300px;
+        }
+
+        .thumbnail {
+          height: 150px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <h1><i class="fas fa-house-chimney"></i> Easy Rent Properties</h1>
+      </div>
+    </header>
+
+    <div class="container">
+      <div class="property-header">
+        <div>
+          <h1 class="property-title">
+            Luxury Student Apartment - Taha Hussein
+          </h1>
+          <p class="property-location">
+            <i class="fas fa-map-marker-alt"></i>
+            Taha Hussein Street, Minia - 500m from Minia University
+          </p>
+        </div>
+        <div class="property-price">
+          2,500 EGP <span class="price-period">/month</span>
+        </div>
+      </div>
+
+      <div class="gallery-container">
+        <img
+          src="../images/K2S115.webp"
+          alt="Main view"
+          class="main-image"
+          id="mainImage"
+        />
+        <div class="thumbnail-container">
+          <img
+            src="../images/is.jpg"
+            alt="Living room"
+            class="thumbnail"
+            onclick="updateMainImage(this.src)"
+          />
+          <img
+            src="../images/dining-room-3108037_1280.jpg"
+            alt="Kitchen"
+            class="thumbnail"
+            onclick="updateMainImage(this.src)"
+          />
+          <img
+            src="../images/K2S115.webp"
+            alt="Bedroom"
+            class="thumbnail"
+            onclick="updateMainImage(this.src)"
+          />
+          <img
+            src="../images/is.jpg"
+            alt="Bathroom"
+            class="thumbnail"
+            onclick="updateMainImage(this.src)"
+          />
+        </div>
+      </div>
+
+      <div class="property-details">
+        <div class="main-content">
+          <div class="details-section">
+            <h2 class="section-title">Description</h2>
+            <p>
+              Modern and fully furnished apartment in Taha Hussein district,
+              just 5 minutes walk from Minia University. Perfect for students
+              looking for a comfortable and convenient living space.
+            </p>
+
+            <div class="features-grid">
+              <div class="feature-item">
+                <i class="fas fa-bed"></i>
+                <span>3 Bedrooms</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-bath"></i>
+                <span>2 Bathrooms</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-ruler-combined"></i>
+                <span>150 m²</span>
+              </div>
+              <div class="feature-item">
+                <i class="fas fa-couch"></i>
+                <span>Fully Furnished</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="details-section">
+            <h2 class="section-title">Amenities</h2>
+            <div class="amenities-list">
+              <div class="amenity-item">
+                <i class="fas fa-wifi"></i>
+                <span>High-Speed WiFi</span>
+              </div>
+              <div class="amenity-item">
+                <i class="fas fa-snowflake"></i>
+                <span>Air Conditioning</span>
+              </div>
+              <div class="amenity-item">
+                <i class="fas fa-tv"></i>
+                <span>Smart TV</span>
+              </div>
+              <div class="amenity-item">
+                <i class="fas fa-utensils"></i>
+                <span>Equipped Kitchen</span>
+              </div>
+              <div class="amenity-item">
+                <i class="fas fa-tshirt"></i>
+                <span>Washing Machine</span>
+              </div>
+              <div class="amenity-item">
+                <i class="fas fa-shield-alt"></i>
+                <span>24/7 Security</span>
+              </div>
+              <div class="amenity-item">
+                <i class="fas fa-broom"></i>
+                <span>Weekly Cleaning</span>
+              </div>
+              <div class="amenity-item">
+                <i class="fas fa-door-open"></i>
+                <span>Balcony</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="details-section">
+            <h2 class="section-title">Location</h2>
+            <p>
+              Located in the heart of Taha Hussein district, this property
+              offers easy access to:
+            </p>
+            <ul style="margin: 1rem 0 1rem 1.5rem">
+              <li>Minia University (5 minutes walk)</li>
+              <li>Supermarkets and shops (2 minutes walk)</li>
+              <li>Restaurants and cafes (5 minutes walk)</li>
+              <li>Public transportation (3 minutes walk)</li>
+            </ul>
+            <div class="map-container">
+              <iframe
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3557.744812542237!2d30.750000!3d28.100000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMjjCsDA2JzAwLjAiTiAzMMKwNDUnMDAuMCJF!5e0!3m2!1sen!2seg!4v1234567890!5m2!1sen!2seg"
+                allowfullscreen=""
+                loading="lazy"
+              ></iframe>
+            </div>
+          </div>
+        </div>
+
+        <div class="sidebar">
+          <div class="booking-card">
+            <h3 class="section-title">Book This Property</h3>
+            <p style="margin-bottom: 1rem">
+              Available from: <strong>September 1, 2023</strong>
+            </p>
+            <p style="margin-bottom: 1rem">
+              Minimum stay: <strong>6 months</strong>
+            </p>
+            <p style="margin-bottom: 2rem">
+              Security deposit: <strong>2,500 EGP</strong>
+            </p>
+            <button class="btn-book" onclick="bookProperty()">
+              <i class="fas fa-calendar-check"></i> Book Now
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function updateMainImage(src) {
+        document.getElementById("mainImage").src = src;
+      }
+
+      function bookProperty() {
+        // Get room ID from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const roomId = urlParams.get("id") || "1";
+
+        // Check if user is logged in (you need to implement this)
+        if (!isAuthenticated()) {
+          alert("Please login to book this property");
+          window.location.href = "../login.html";
+          return;
+        }
+
+        // Redirect to payment page
+        window.location.href = "payment.html?id=" + roomId;
+      }
+
+      function isAuthenticated() {
+        return !!localStorage.getItem("token");
+      }
+    </script>
+  </body>
+</html>

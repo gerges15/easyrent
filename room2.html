@@ -6,49 +6,62 @@
     <title>Minia Student Housing</title>
     <style>
       :root {
-        --primary-color: #3a79d6;
-        --secondary-color: #8fc0f9;
-        --accent-color: #4fc3f7;
-        --light-color: #f8f9fa;
-        --dark-color: #343a40;
+        --primary-color: #2c3e50;
+        --secondary-color: #3498db;
+        --accent-color: #d62612;
+        --light-color: #ecf0f1;
+        --dark-color: #2c3e50;
+        --success-color: #2ecc71;
+        --text-color: #34495e;
+        --border-radius: 8px;
+        --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        --transition: all 0.3s ease;
       }
 
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
-        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        font-family: "Poppins", sans-serif;
       }
 
       body {
-        background-color: #f5f5f5;
-        color: #333;
+        background-color: #f8f9fa;
+        color: var(--text-color);
         line-height: 1.6;
-      }
-      /* Updated Logo Styling */
-      .logo-container {
-        text-align: center;
-        margin-bottom: 30px;
-        padding-bottom: 15px;
-        border-bottom: 2px solid #b8bcbe;
-      }
-      .logo {
-        color: var(--success-color);
-        font-size: 28px;
-        font-weight: bold;
-        margin: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 10px;
       }
 
       header {
-        background-color: var(--primary-color);
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
         color: white;
-        padding: 1rem 0;
+        padding: 2rem 0;
+        margin-bottom: 2rem;
+        box-shadow: var(--box-shadow);
+      }
+
+      .logo-container {
         text-align: center;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        padding: 1rem 0;
+      }
+
+      .logo {
+        color: white;
+        font-size: 2.5rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      .logo i {
+        color: var(--accent-color);
       }
 
       .container {
@@ -59,110 +72,132 @@
 
       .search-section {
         background-color: white;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        margin: 20px 0;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        margin: 2rem 0;
+      }
+
+      .search-section h2 {
+        color: var(--primary-color);
+        margin-bottom: 1.5rem;
+        font-size: 1.8rem;
+        font-weight: 600;
       }
 
       .search-form {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 15px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
       }
 
       .form-group {
-        flex: 1;
-        min-width: 200px;
+        margin-bottom: 1rem;
       }
 
       label {
         display: block;
-        margin-bottom: 5px;
-        font-weight: 600;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+        color: var(--text-color);
       }
 
       input,
       select {
         width: 100%;
-        padding: 10px;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        font-size: 16px;
+        padding: 0.8rem;
+        border: 2px solid #e1e1e1;
+        border-radius: var(--border-radius);
+        font-size: 1rem;
+        transition: var(--transition);
+      }
+
+      input:focus,
+      select:focus {
+        border-color: var(--secondary-color);
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
       }
 
       button {
-        background-color: var(--primary-color);
+        background-color: var(--secondary-color);
         color: white;
         border: none;
-        padding: 10px 20px;
-        border-radius: 4px;
+        padding: 1rem 2rem;
+        border-radius: var(--border-radius);
         cursor: pointer;
-        font-size: 16px;
-        transition: background-color 0.3s;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        transition: var(--transition);
       }
 
       button:hover {
-        background-color: var(--secondary-color);
+        background-color: var(--primary-color);
+        transform: translateY(-2px);
       }
 
       .search-btn {
-        align-self: flex-end;
-        height: 40px;
+        width: 100%;
+        margin-top: 1rem;
       }
 
       .rooms-container {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-        gap: 25px;
-        margin: 30px 0;
+        grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
       }
 
       .room-card {
         background-color: white;
-        border-radius: 8px;
+        border-radius: var(--border-radius);
         overflow: hidden;
-        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s;
+        box-shadow: var(--box-shadow);
+        transition: var(--transition);
+        position: relative;
       }
 
       .room-card:hover {
         transform: translateY(-5px);
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
       }
 
       .room-image {
-        height: 200px;
+        height: 220px;
         width: 100%;
         object-fit: cover;
       }
 
       .room-details {
-        padding: 20px;
+        padding: 1.5rem;
       }
 
       .room-title {
-        font-size: 1.3rem;
-        margin-bottom: 10px;
-        color: var(--dark-color);
+        font-size: 1.4rem;
+        font-weight: 600;
+        color: var(--primary-color);
+        margin-bottom: 1rem;
       }
 
       .room-location {
         color: #666;
-        margin-bottom: 10px;
+        margin-bottom: 1rem;
         display: flex;
         align-items: center;
+        font-size: 0.95rem;
       }
 
       .room-location i {
-        margin-right: 5px;
-        color: var(--primary-color);
+        color: var(--accent-color);
+        margin-right: 0.5rem;
       }
 
       .room-price {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: var(--primary-color);
-        margin: 10px 0;
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: var(--secondary-color);
+        margin: 1rem 0;
       }
 
       .price-period {
@@ -174,38 +209,49 @@
       .room-features {
         display: flex;
         flex-wrap: wrap;
-        gap: 15px;
-        margin: 15px 0;
+        gap: 1rem;
+        margin: 1rem 0;
+        padding: 1rem 0;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
       }
 
       .feature {
         display: flex;
         align-items: center;
+        font-size: 0.9rem;
+        color: var(--text-color);
       }
 
       .feature i {
-        margin-right: 5px;
-        color: var(--accent-color);
+        color: var(--secondary-color);
+        margin-right: 0.5rem;
       }
 
       .room-actions {
         display: flex;
-        justify-content: space-between;
-        margin-top: 20px;
+        gap: 1rem;
+        margin-top: 1.5rem;
       }
 
       .btn-book {
-        background-color: var(--primary-color);
-        flex: 1;
+        background-color: var(--secondary-color);
+        flex: 2;
       }
 
       .btn-view {
         background-color: transparent;
-        border: 1px solid var(--primary-color);
-        color: var(--primary-color);
-        margin-right: 10px;
+        border: 2px solid var(--secondary-color);
+        color: var(--secondary-color);
+        flex: 1;
       }
 
+      .btn-view:hover {
+        background-color: var(--secondary-color);
+        color: white;
+      }
+
+      /* Modal Styles */
       .modal {
         display: none;
         position: fixed;
@@ -213,7 +259,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(0, 0, 0, 0.5);
+        background-color: rgba(0, 0, 0, 0.7);
         z-index: 1000;
         justify-content: center;
         align-items: center;
@@ -221,23 +267,99 @@
 
       .modal-content {
         background-color: white;
-        padding: 30px;
-        border-radius: 8px;
-        max-width: 600px;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        max-width: 700px;
         width: 90%;
         max-height: 90vh;
         overflow-y: auto;
+        position: relative;
       }
 
       .close-modal {
-        float: right;
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
         font-size: 1.5rem;
         cursor: pointer;
+        color: var(--text-color);
+        transition: var(--transition);
       }
 
-      .booking-form input,
-      .booking-form select {
-        margin-bottom: 15px;
+      .close-modal:hover {
+        color: var(--accent-color);
+      }
+
+      /* Feedback Section Styles */
+      #feedbackSection {
+        background-color: white;
+        padding: 2rem;
+        border-radius: var(--border-radius);
+        box-shadow: var(--box-shadow);
+        margin-top: 2rem;
+      }
+
+      .star-rating {
+        margin: 1rem 0;
+      }
+
+      #commentInput {
+        width: 100%;
+        padding: 1rem;
+        border: 2px solid #e1e1e1;
+        border-radius: var(--border-radius);
+        margin: 1rem 0;
+        min-height: 100px;
+        resize: vertical;
+      }
+
+      #ratingStars {
+        display: flex;
+        gap: 0.5rem;
+        margin: 1rem 0;
+      }
+
+      .star {
+        font-size: 2rem;
+        cursor: pointer;
+        color: #ddd;
+        transition: var(--transition);
+      }
+
+      .star.active {
+        color: #ffd700;
+      }
+
+      .feedback-item {
+        background-color: var(--light-color);
+        border-radius: var(--border-radius);
+        padding: 1rem;
+        margin-bottom: 1rem;
+      }
+
+      .feedback-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.5rem;
+      }
+
+      .feedback-rating {
+        color: #ffd700;
+      }
+
+      @media (max-width: 768px) {
+        .search-form {
+          grid-template-columns: 1fr;
+        }
+
+        .room-actions {
+          flex-direction: column;
+        }
+
+        .modal-content {
+          padding: 1rem;
+        }
       }
 
       .room-gallery {
@@ -262,94 +384,142 @@
         font-size: 1.2rem;
         color: #666;
       }
-      .star-rating {
-        display: flex;
-        flex-direction: column;
+
+      /* Feedback Section Styles */
+      .feedback-section {
+        margin-top: 30px;
+        padding-top: 20px;
+        border-top: 1px solid #eee;
       }
 
-      .stars {
-        display: flex;
-        flex-direction: row-reverse;
-        justify-content: flex-start;
-        gap: 5px;
-      }
-
-      .stars input[type="radio"] {
-        display: none;
-      }
-
-      .stars label {
-        font-size: 25px;
-        color: #ddd;
-        cursor: pointer;
-        transition: color 0.3s;
-      }
-
-      .stars label:hover,
-      .stars label:hover ~ label,
-      .stars input[type="radio"]:checked ~ label {
-        color: gold;
-      }
-      .feedback-item {
-        border: 1px solid #ddd;
+      .feedback-form {
+        background: #f8f9fa;
+        padding: 20px;
         border-radius: 8px;
-        padding: 12px;
-        margin-bottom: 10px;
-        background-color: #f9f9f9;
+        margin: 20px 0;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
       }
-      
+
+      .rating-container {
+        margin-bottom: 20px;
+      }
+
+      .rating-container label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: 500;
+        color: #333;
+      }
+
+      #commentInput {
+        width: 100%;
+        padding: 12px;
+        border: 2px solid #e1e1e1;
+        border-radius: 8px;
+        resize: vertical;
+        min-height: 100px;
+        font-family: inherit;
+        transition: border-color 0.3s ease;
+      }
+
+      #commentInput:focus {
+        border-color: var(--secondary-color);
+        outline: none;
+      }
+
+      .submit-feedback {
+        background-color: var(--primary-color);
+        color: white;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: 600;
+        transition: all 0.3s ease;
+        width: 100%;
+        margin-top: 15px;
+      }
+
+      .submit-feedback:hover {
+        background-color: var(--secondary-color);
+        transform: translateY(-2px);
+      }
+
+      .submit-feedback:active {
+        transform: translateY(0);
+      }
+
+      .feedbacks-list {
+        margin-top: 20px;
+      }
+
+      .feedback-item {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 15px;
+        border: 1px solid #e1e1e1;
+      }
+
       .feedback-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-      }
-      
-      .feedback-rating .fa-star {
-        color: #ccc;
-      }
-      
-      .feedback-rating .fa-star.selected {
-        color: gold;
-      }
-      
-      .feedback-comment {
-        margin-top: 8px;
-        font-size: 14px;
-      }
-      
-
-      #feedbackList {
-        max-height: 200px;
-        overflow-y: auto;
-        border-top: 1px solid #ccc;
-        padding-top: 10px;
-      }
-
-      .feedback-item {
-        background-color: #f0f0f0;
-        border-radius: 6px;
-        padding: 10px;
         margin-bottom: 10px;
       }
 
-      .feedback-stars {
-        color: gold;
-        margin-bottom: 5px;
+      .feedback-rating {
+        color: #ffd700;
+        font-size: 18px;
+      }
+
+      .feedback-date {
+        color: #666;
+        font-size: 0.9em;
       }
 
       .feedback-comment {
-        font-size: 14px;
         color: #333;
+        line-height: 1.5;
       }
 
       @media (max-width: 768px) {
-        .rooms-container {
-          grid-template-columns: 1fr;
+        .feedback-section {
+          padding: 15px;
         }
 
-        .room-gallery {
-          grid-template-columns: repeat(2, 1fr);
+        .feedback-form {
+          padding: 15px;
         }
+
+        .star {
+          font-size: 20px;
+        }
+      }
+
+      /* تصميم النجوم */
+      .stars {
+        display: flex;
+        flex-direction: row-reverse;
+        gap: 5px;
+        margin: 10px 0;
+      }
+
+      .star {
+        font-size: 28px;
+        cursor: pointer;
+        transition: color 0.2s ease, transform 0.2s ease;
+        color: #ddd;
+        user-select: none;
+      }
+
+      .star:hover {
+        transform: scale(1.1);
+      }
+
+      .star:hover ~ .star,
+      .star:hover {
+        color: #ffd700;
       }
     </style>
     <link
@@ -372,20 +542,19 @@
 
     <div class="container">
       <section class="search-section">
-        <h2>Search for Rooms in Minia</h2>
+        <h2>Search for Female Student Accommodation</h2>
         <form class="search-form" id="searchform">
           <div class="form-group">
             <label for="location">Location in Minia</label>
             <select id="location">
-              <option value="">All Minia Locations</option>
+              <option value="">All Locations</option>
               <option value="taha-hussein">Taha Hussein</option>
-              <option value="damaris">Damaris</option>
-              <option value="mahatta">Mahatta</option>
-              <option value="shalaby">Shalaby</option>
-              <option value="adnan">Adnan</option>
-              <option value="minia-elgededa">Minia Elgededa</option>
-              <option value="medan-elsaa">Medan Elsaa</option>
-              <option value="medan-lepnan">Medan Lepnan</option>
+              <option value="university-district">University District</option>
+              <option value="minia-gardens">Minia Gardens</option>
+              <option value="engineering-campus">
+                Near Engineering Faculty
+              </option>
+              <option value="city-center">City Center</option>
             </select>
           </div>
 
@@ -402,11 +571,12 @@
           <div class="form-group">
             <label for="room-type">Room Type</label>
             <select id="room-type">
-              <option value="">Any Type</option>
-              <option value="single">Single Room</option>
-              <option value="shared">Shared Room</option>
-              <option value="apartment">Triple Room</option>
-              <option value="studio">Quadruple</option>
+              <option value="">All Types</option>
+              <option value="single">Single Room - Private</option>
+              <option value="shared">Shared Twin Room</option>
+              <option value="triple">Triple Room</option>
+              <option value="studio">Studio Apartment</option>
+              <option value="suite">Premium Suite</option>
             </select>
           </div>
 
@@ -438,47 +608,66 @@
         </p>
 
         <div class="room-gallery">
-          <img src="./images/K2S115.webp" class="gallery-img" />
-          <img src="./images/is.jpg" class="gallery-img" />
-          <img
-            src="./images/dining-room-3108037_1280.jpg"
-            class="gallery-img"
-          />
+          <!-- Images will be dynamically inserted here -->
         </div>
 
         <h3>Description</h3>
         <p id="modalRoomDescription">
-          This cozy single room is perfect for students looking for affordable
-          accommodation close to Minia University. The room comes furnished with
-          a single bed, study desk, chair, and wardrobe. Shared kitchen and
-          bathroom facilities are available on each floor. High-speed WiFi is
-          included in the rent.
+          Modern and secure single room in female-only student residence. The
+          room comes furnished with all essential amenities for comfortable
+          student living.
         </p>
 
         <h3>Features</h3>
         <div class="room-features" id="modalRoomFeatures">
-          <span class="feature"><i class="fas fa-bed"></i> Single bed</span>
-          <span class="feature"
-            ><i class="fas fa-ruler-combined"></i> 12m²</span
-          >
-          <span class="feature"><i class="fas fa-wifi"></i> WiFi</span>
-          <span class="feature"
-            ><i class="fas fa-utensils"></i> Kitchen access</span
-          >
-          <span class="feature"
-            ><i class="fas fa-tshirt"></i> Laundry facilities</span
-          >
-          <span class="feature"
-            ><i class="fas fa-bicycle"></i> Bike storage</span
-          >
+          <!-- Features will be dynamically added here -->
         </div>
 
         <h3>Availability</h3>
-        <p>Available from: <strong>September 1, 2023</strong></p>
-        <p>Minimum stay: <strong>6 months</strong></p>
+        <p>Available from: <strong>September 1, 2024</strong></p>
+        <p>Minimum stay: <strong>Academic Year</strong></p>
+
+        <div class="feedback-section">
+          <h3>Reviews and Comments</h3>
+          <div id="feedbackForm" class="feedback-form">
+            <form onsubmit="submitFeedback(event)">
+              <div class="rating-container">
+                <label>Rate this accommodation:</label>
+                <div class="stars">
+                  <span class="star" data-value="5">★</span>
+                  <span class="star" data-value="4">★</span>
+                  <span class="star" data-value="3">★</span>
+                  <span class="star" data-value="2">★</span>
+                  <span class="star" data-value="1">★</span>
+                </div>
+                <input type="hidden" id="rating" value="1" />
+              </div>
+
+              <div class="comment-container">
+                <textarea
+                  id="commentInput"
+                  placeholder="Write your review here..."
+                  rows="4"
+                  required
+                ></textarea>
+              </div>
+
+              <button type="submit" class="submit-feedback">
+                Submit Review
+              </button>
+            </form>
+          </div>
+
+          <div id="feedbackContainer" class="feedbacks-list">
+            <!-- Reviews will appear here -->
+          </div>
+        </div>
 
         <div style="text-align: center; margin-top: 20px">
-          <button class="btn-book" onclick="openBookingModal(1)">
+          <button
+            class="btn-book"
+            onclick="openBookingModal(getCurrentRoomId())"
+          >
             Book This Room
           </button>
         </div>
@@ -523,11 +712,11 @@
           <label for="moveInDate">Move-in Date</label>
           <input type="date" id="moveInDate" required />
 
-          <label for="duration">Duration (months)</label>
+          <label for="duration">Duration</label>
           <select id="duration" required>
-            <option value="6">6 months</option>
-            <option value="9">9 months</option>
-            <option value="12">12 months</option>
+            <option value="academic_year">Academic Year</option>
+            <option value="two_semesters">Two Semesters</option>
+            <option value="one_semester">One Semester</option>
           </select>
 
           <label for="specialRequests">Special Requests</label>
@@ -536,53 +725,232 @@
           <div style="margin-top: 20px">
             <button type="submit" class="btn-book">Submit Booking</button>
           </div>
-      <!-- Feedback Section -->
-<section id="feedbackSection" style="margin-top: 30px">
-  <h3>Feedback & Ratings</h3>
-
-  <form id="feedbackForm">
-    <div class="star-rating">
-      <label>Rate this room:</label>
-      <textarea id="commentInput" placeholder="اكتب تعليقك هنا..."></textarea>
-      <div id="ratingStars">
-        <span class="star" data-value="1">★</span>
-        <span class="star" data-value="2">★</span>
-        <span class="star" data-value="3">★</span>
-        <span class="star" data-value="4">★</span>
-        <span class="star" data-value="5">★</span>
+        </form>
       </div>
-      <input type="hidden" id="rating" value="0">
-    
-      
-
-    <button
-      id="sendFeedbackBtn"
-      type="submit"
-      
-      style="
-        margin-top: 10px;
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 8px 15px;
-        border-radius: 4px;
-        cursor: pointer;
-      "
-    >
-      Submit Feedback
-    </button>
     </div>
-  </form>
 
-  <div id="feedbackList" style="margin-top: 20px">
-    <h4>Previous Feedbacks</h4>
-    <div id="feedbackContainer">
-      <!-- Feedback items will appear here -->
-    </div>
-  </div>
-</section>
+    <!-- Feedback Section -->
+    <section id="feedbackSection" style="margin-top: 30px">
+      <h3>Feedback & Ratings</h3>
 
+      <form id="feedbackForm">
+        <div class="star-rating">
+          <label>Rate this room:</label>
+          <textarea
+            id="commentInput"
+            placeholder="اكتب تعليقك هنا..."
+          ></textarea>
+          <div id="ratingStars">
+            <span class="star" data-value="1">★</span>
+            <span class="star" data-value="2">★</span>
+            <span class="star" data-value="3">★</span>
+            <span class="star" data-value="4">★</span>
+            <span class="star" data-value="5">★</span>
+          </div>
+          <input type="hidden" id="rating" value="0" />
 
-   <script type="module" src="./js/rooms2.js"></script>
+          <button
+            id="sendFeedbackBtn"
+            type="submit"
+            style="
+              margin-top: 10px;
+              background-color: var(--primary-color);
+              color: white;
+              border: none;
+              padding: 8px 15px;
+              border-radius: 4px;
+              cursor: pointer;
+            "
+          >
+            Submit Feedback
+          </button>
+        </div>
+      </form>
+
+      <div id="feedbackList" style="margin-top: 20px">
+        <h4>Previous Feedbacks</h4>
+        <div id="feedbackContainer">
+          <!-- Feedback items will appear here -->
+        </div>
+      </div>
+    </section>
+
+    <script type="module" src="./js/rooms2.js"></script>
+    <script type="module">
+      const API_BASE_URL = "https://easyrentapi0.runasp.net/api";
+
+      // Check authentication status
+      function isAuthenticated() {
+        const token = localStorage.getItem("token");
+        return !!token;
+      }
+
+      // Get user data
+      function getUserData() {
+        const userData = localStorage.getItem("user");
+        return userData ? JSON.parse(userData) : null;
+      }
+
+      // Submit feedback function
+      window.submitFeedback = async function (event) {
+        event.preventDefault();
+
+        if (!isAuthenticated()) {
+          alert("Please login to submit a review");
+          window.location.href = "login.html";
+          return;
+        }
+
+        const rating = document.getElementById("rating").value;
+        const comment = document.getElementById("commentInput").value;
+        const urlParams = new URLSearchParams(window.location.search);
+        const unitId = urlParams.get("id") || getCurrentRoomId();
+
+        if (!rating || !comment) {
+          alert("Please provide both rating and comment");
+          return;
+        }
+
+        try {
+          const token = localStorage.getItem("token");
+          const userData = getUserData();
+
+          const response = await fetch(`${API_BASE_URL}/Feedback`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              comment: comment,
+              rating: parseInt(rating),
+              userId: userData?.id,
+              unitId: parseInt(unitId),
+            }),
+          });
+
+          if (!response.ok) {
+            throw new Error("Failed to submit review");
+          }
+
+          // Clear form
+          document.getElementById("rating").value = "1";
+          document.getElementById("commentInput").value = "";
+          document
+            .querySelectorAll(".star")
+            .forEach((star) => star.classList.remove("active"));
+
+          alert("Thank you for your review!");
+
+          // Refresh feedback list
+          await loadFeedbacks(unitId);
+        } catch (error) {
+          console.error("Error submitting review:", error);
+          alert("Unable to submit review. Please try again later.");
+        }
+      };
+
+      // Star rating functionality
+      document.addEventListener("DOMContentLoaded", function () {
+        const stars = document.querySelectorAll(".star");
+        stars.forEach((star) => {
+          star.addEventListener("click", function () {
+            const value = this.getAttribute("data-value");
+            document.getElementById("rating").value = value;
+
+            // Update stars visual
+            stars.forEach((s) => {
+              if (parseInt(s.getAttribute("data-value")) <= parseInt(value)) {
+                s.classList.add("active");
+              } else {
+                s.classList.remove("active");
+              }
+            });
+          });
+        });
+      });
+
+      function getCurrentRoomId() {
+        // Get room ID from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get("roomId") || "0";
+      }
+
+      window.openBookingModal = function (roomId) {
+        if (!checkAuthAndRedirect()) return;
+        bookRoom(roomId);
+      };
+
+      function checkAuthAndRedirect() {
+        if (!isAuthenticated()) {
+          window.location.href = "login.html";
+          return false;
+        }
+        return true;
+      }
+
+      function bookRoom(roomId) {
+        window.location.href = `student/payment.html?id=${roomId}`;
+      }
+
+      // Load existing feedbacks
+      async function loadFeedbacks(unitId) {
+        try {
+          const response = await fetch(
+            `${API_BASE_URL}/Feedback?unitId=${unitId}`,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to load feedbacks");
+          }
+
+          const feedbacks = await response.json();
+
+          const feedbackContainer =
+            document.getElementById("feedbackContainer");
+          if (feedbacks && feedbacks.length > 0) {
+            feedbackContainer.innerHTML = feedbacks
+              .map(
+                (feedback) => `
+              <div class="feedback-item">
+                <div class="feedback-header">
+                  <div class="feedback-rating">
+                    ${Array(5)
+                      .fill("★")
+                      .map(
+                        (star, index) =>
+                          `<span style="color: ${
+                            index < feedback.rating ? "#ffd700" : "#ddd"
+                          }">${star}</span>`
+                      )
+                      .join("")}
+                  </div>
+                  <div class="feedback-date">${new Date(
+                    feedback.date
+                  ).toLocaleDateString()}</div>
+                </div>
+                <div class="feedback-comment">${feedback.comment || ""}</div>
+              </div>
+            `
+              )
+              .join("");
+          } else {
+            feedbackContainer.innerHTML =
+              '<p style="text-align: center; color: #666;">No feedbacks yet</p>';
+          }
+        } catch (error) {
+          console.error("Error loading feedbacks:", error);
+          const feedbackContainer =
+            document.getElementById("feedbackContainer");
+          feedbackContainer.innerHTML =
+            '<p style="text-align: center; color: #666;">Error loading feedbacks</p>';
+        }
+      }
+    </script>
   </body>
 </html>

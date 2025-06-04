@@ -881,9 +881,26 @@
               return;
             }
 
-            const data = await res.json();
-            localStorage.setItem("token", data.token);
-            localStorage.setItem("user", JSON.stringify(data));
+            const contentType = res.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+              // Handle JSON response
+              const data = await res.json();
+              localStorage.setItem("token", data.token);
+              localStorage.setItem("user", JSON.stringify(data));
+            } else {
+              // Handle text response
+              const text = await res.text();
+              if (text.includes("Login successful")) {
+                // If no token is provided in text response, you might want to set some default values
+                localStorage.setItem("token", "default_token");
+                localStorage.setItem(
+                  "user",
+                  JSON.stringify({ message: "Login successful" })
+                );
+              }
+            }
+
+            // Redirect after successful login
             window.location.href = "index.html";
           } catch (err) {
             console.error("Login Error:", err);

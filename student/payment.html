@@ -37,52 +37,209 @@
       /* Payment Methods */
       .payment-methods {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
         gap: 1.5rem;
-        margin: 2rem 0;
+        margin: 2.5rem 0;
       }
 
       .payment-card {
         background: white;
-        border-radius: 10px;
-        padding: 1.5rem;
+        border-radius: 15px;
+        padding: 2rem 1.5rem;
         cursor: pointer;
         transition: all 0.3s ease;
         border: 2px solid #e9ecef;
         text-align: center;
+        position: relative;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+      }
+
+      .payment-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 4px;
+        background: transparent;
+        transition: all 0.3s ease;
+      }
+
+      .payment-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
       }
 
       .payment-card.active {
         border-color: #2196f3;
-        background: #f8f9ff;
-        box-shadow: 0 5px 15px rgba(33, 150, 243, 0.2);
+        background: linear-gradient(to bottom, #f8f9ff, white);
+        box-shadow: 0 8px 25px rgba(33, 150, 243, 0.2);
+      }
+
+      .payment-card.active::before {
+        background: #2196f3;
+      }
+
+      .payment-icon-wrapper {
+        width: 70px;
+        height: 70px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 1rem;
+        background: #f8f9fa;
+        transition: all 0.3s ease;
+      }
+
+      .payment-card:hover .payment-icon-wrapper {
+        transform: scale(1.1);
       }
 
       .payment-icon {
-        font-size: 2.5rem;
-        margin-bottom: 1rem;
-        color: #495057;
+        font-size: 2rem;
+        transition: all 0.3s ease;
       }
 
-      .payment-card.active .payment-icon {
-        color: #2196f3;
+      .payment-card.active .payment-icon-wrapper {
+        background: #e3f2fd;
       }
 
-      /* Icons Colors */
-      .fa-cc-visa {
+      .payment-card h3 {
+        margin: 0;
+        font-size: 1.2rem;
+        color: #2c3e50;
+        font-weight: 600;
+      }
+
+      .payment-card p {
+        margin: 0;
+        color: #6c757d;
+        font-size: 0.9rem;
+        line-height: 1.4;
+      }
+
+      /* Payment Icons Colors */
+      .payment-card[data-method="visa"] .payment-icon {
         color: #1a1f71;
       }
-      .fa-cc-mastercard {
+
+      .payment-card[data-method="mastercard"] .payment-icon {
         color: #eb001b;
       }
-      .fa-mobile-alt {
-        color: #4caf50;
+
+      .payment-card[data-method="vodafone"] .payment-icon {
+        color: #e60000;
       }
-      .fa-wallet {
-        color: #9c27b0;
+
+      .payment-card[data-method="etisalat"] .payment-icon {
+        color: #7ed321;
       }
-      .fa-coins {
-        color: #ff9800;
+
+      .payment-card[data-method="orange"] .payment-icon {
+        color: #ff7900;
+      }
+
+      .payment-card[data-method="fawry"] .payment-icon {
+        color: #22146b;
+      }
+
+      .payment-card[data-method="meeza"] .payment-icon {
+        color: #005aab;
+      }
+
+      .payment-card[data-method="aman"] .payment-icon {
+        color: #ed1b2e;
+      }
+
+      .payment-card[data-method="instapay"] .payment-icon-wrapper {
+        background: linear-gradient(135deg, #00a651, #007c3e);
+      }
+
+      .payment-card[data-method="instapay"] .payment-icon {
+        color: white;
+      }
+
+      .payment-card[data-method="instapay"].active {
+        border-color: #00a651;
+        background: linear-gradient(to bottom, #f0fff7, white);
+      }
+
+      .payment-card[data-method="instapay"].active::before {
+        background: #00a651;
+      }
+
+      .instapay-form {
+        background: #f8f9fa;
+        padding: 2rem;
+        border-radius: 15px;
+        margin-top: 1rem;
+      }
+
+      .instapay-steps {
+        margin: 1.5rem 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .instapay-steps li {
+        display: flex;
+        align-items: flex-start;
+        gap: 1rem;
+        margin-bottom: 1rem;
+        padding: 1rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      }
+
+      .instapay-steps .step-number {
+        width: 24px;
+        height: 24px;
+        background: #00a651;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.9rem;
+        flex-shrink: 0;
+      }
+
+      .instapay-steps .step-content {
+        flex: 1;
+      }
+
+      .instapay-steps h4 {
+        margin: 0 0 0.5rem 0;
+        color: #2c3e50;
+      }
+
+      .instapay-steps p {
+        margin: 0;
+        color: #6c757d;
+        font-size: 0.9rem;
+      }
+
+      .multi-icons {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .multi-icons .payment-icon {
+        font-size: 1.5rem;
+      }
+
+      .payment-logo {
+        max-height: 40px;
+        width: auto;
+        object-fit: contain;
       }
 
       /* Form Styles */
@@ -97,19 +254,128 @@
         position: relative;
       }
 
+      .form-group small {
+        color: #6c757d;
+        display: block;
+        margin-top: 0.25rem;
+      }
+
       label {
         display: block;
         margin-bottom: 0.5rem;
         font-weight: 500;
+        color: #2c3e50;
       }
 
       input,
       select {
         width: 100%;
-        padding: 0.875rem 2.5rem 0.875rem 1rem;
+        padding: 0.875rem 1rem;
         border: 1px solid #ced4da;
         border-radius: 8px;
         font-size: 1rem;
+        transition: all 0.3s ease;
+      }
+
+      input:focus,
+      select:focus {
+        border-color: #2196f3;
+        box-shadow: 0 0 0 0.2rem rgba(33, 150, 243, 0.25);
+        outline: none;
+      }
+
+      input:invalid {
+        border-color: #dc3545;
+      }
+
+      input:invalid:focus {
+        box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.25);
+      }
+
+      /* Method Sections */
+      .method-section {
+        grid-column: span 2;
+        padding: 1.5rem;
+        background: #f8f9fa;
+        border-radius: 12px;
+        margin-bottom: 1.5rem;
+      }
+
+      /* Bank Details */
+      .bank-details {
+        background: white;
+        padding: 1.5rem;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        border: 1px solid #e9ecef;
+      }
+
+      .bank-details h4 {
+        margin: 0 0 1rem 0;
+        color: #2c3e50;
+      }
+
+      .bank-details p {
+        margin: 0.5rem 0;
+        color: #495057;
+      }
+
+      /* Success Message */
+      .success-message {
+        text-align: center;
+        padding: 2rem;
+        background: #d4edda;
+        border-radius: 12px;
+        margin: 2rem 0;
+        color: #155724;
+      }
+
+      .success-message i {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        color: #28a745;
+      }
+
+      .success-message h3 {
+        margin: 1rem 0;
+        color: #155724;
+      }
+
+      /* Alert Styles */
+      .alert {
+        padding: 1rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+      }
+
+      .alert-success {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+      }
+
+      .alert-danger {
+        background-color: #f8d7da;
+        border: 1px solid #f5c6cb;
+        color: #721c24;
+      }
+
+      /* Responsive Design */
+      @media (max-width: 768px) {
+        .payment-form {
+          grid-template-columns: 1fr;
+        }
+
+        .method-section {
+          grid-column: span 1;
+        }
+
+        .submit-btn {
+          grid-column: span 1;
+        }
       }
 
       /* Input Icons */
@@ -122,15 +388,80 @@
 
       /* OTP Section */
       .otp-container {
-        display: none;
-        grid-template-columns: repeat(6, 1fr);
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 1000;
+      }
+
+      .otp-verification {
+        background: white;
+        padding: 2rem;
+        border-radius: 15px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+      }
+
+      .otp-verification h3 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+      }
+
+      .otp-verification p {
+        color: #6c757d;
+        margin-bottom: 1.5rem;
+      }
+
+      .otp-inputs {
+        display: flex;
         gap: 0.5rem;
+        justify-content: center;
+        margin-bottom: 1.5rem;
       }
 
       .otp-input {
-        width: 100%;
+        width: 40px;
+        height: 40px;
         text-align: center;
-        padding: 1rem;
+        font-size: 1.2rem;
+        border: 2px solid #ced4da;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+      }
+
+      .otp-input:focus {
+        border-color: #2196f3;
+        box-shadow: 0 0 0 0.2rem rgba(33, 150, 243, 0.25);
+        outline: none;
+      }
+
+      .verify-otp-btn {
+        background: #2196f3;
+        color: white;
+        border: none;
+        padding: 0.75rem 2rem;
+        border-radius: 8px;
+        font-size: 1rem;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      }
+
+      .verify-otp-btn:hover {
+        background: #1976d2;
+        transform: translateY(-2px);
+      }
+
+      .verify-otp-btn:disabled {
+        background: #90caf9;
+        cursor: not-allowed;
       }
 
       /* Receipt Section */
@@ -243,107 +574,400 @@
 
       <!-- Payment Methods -->
       <div class="payment-methods">
-        <div class="payment-card active" data-method="card">
-          <i class="payment-icon fa-brands fa-cc-visa"></i>
-          <div>Credit/Debit Card</div>
+        <div class="payment-card active" data-method="visa">
+          <div class="payment-icon-wrapper multi-icons">
+            <i class="payment-icon fa-brands fa-cc-visa"></i>
+            <i class="payment-icon fa-brands fa-cc-mastercard"></i>
+          </div>
+          <h3>Credit/Debit Cards</h3>
+          <p>Visa, Mastercard, and Meeza cards</p>
+        </div>
+
+        <div class="payment-card" data-method="vodafone">
+          <div class="payment-icon-wrapper">
+            <i class="payment-icon fa-solid fa-v"></i>
+          </div>
+          <h3>Vodafone Cash</h3>
+          <p>Quick mobile payment via Vodafone</p>
         </div>
 
         <div class="payment-card" data-method="instapay">
-          <i class="payment-icon fa-solid fa-mobile-alt"></i>
-          <div>Instapay</div>
+          <div class="payment-icon-wrapper">
+            <i class="payment-icon fa-solid fa-mobile-screen"></i>
+          </div>
+          <h3>InstaPay</h3>
+          <p>Pay using InstaPay mobile wallet</p>
         </div>
 
-        <div class="payment-card" data-method="feza">
-          <i class="payment-icon fa-solid fa-wallet"></i>
-          <div>Feza Wallet</div>
+        <div class="payment-card" data-method="etisalat">
+          <div class="payment-icon-wrapper">
+            <i class="payment-icon fa-solid fa-e"></i>
+          </div>
+          <h3>Etisalat Cash</h3>
+          <p>Pay using Etisalat mobile wallet</p>
+        </div>
+
+        <div class="payment-card" data-method="orange">
+          <div class="payment-icon-wrapper">
+            <i class="payment-icon fa-solid fa-o"></i>
+          </div>
+          <h3>Orange Cash</h3>
+          <p>Pay via Orange mobile wallet</p>
+        </div>
+
+        <div class="payment-card" data-method="fawry">
+          <div class="payment-icon-wrapper">
+            <i class="payment-icon fa-solid fa-store"></i>
+          </div>
+          <h3>Fawry</h3>
+          <p>Pay at any Fawry outlet</p>
+        </div>
+
+        <div class="payment-card" data-method="meeza">
+          <div class="payment-icon-wrapper">
+            <i class="payment-icon fa-solid fa-credit-card"></i>
+          </div>
+          <h3>Meeza Card</h3>
+          <p>Pay using Meeza digital payment</p>
+        </div>
+
+        <div class="payment-card" data-method="bank">
+          <div class="payment-icon-wrapper">
+            <i class="payment-icon fa-solid fa-building-columns"></i>
+          </div>
+          <h3>Bank Transfer</h3>
+          <p>Direct bank transfer to our account</p>
         </div>
       </div>
 
       <!-- Payment Form -->
       <form class="payment-form" id="paymentForm">
-        <!-- Personal Info -->
-        <div class="personal-info">
-          <div class="form-group">
-            <label><i class="fas fa-user"></i> Full Name</label>
-            <input type="text" required />
-            <i class="fas fa-signature input-icon"></i>
-          </div>
+        <!-- Booking Details -->
+        <div class="form-group">
+          <label><i class="fas fa-calendar"></i> Start Date</label>
+          <input type="date" id="startDate" required />
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-calendar"></i> End Date</label>
+          <input type="date" id="endDate" required />
+        </div>
 
+        <!-- Payment Method Specific Forms -->
+        <!-- Credit Card Form -->
+        <div class="method-section" data-method="visa">
           <div class="form-group">
-            <label><i class="fas fa-id-card"></i> Student ID</label>
+            <label><i class="fas fa-user"></i> Cardholder Name</label>
             <input
               type="text"
-              pattern="[A-Z]{3}\d{5}"
-              placeholder="ABC12345"
+              id="cardholderName"
+              name="cardholderName"
               required
             />
-            <i class="fas fa-hashtag input-icon"></i>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-credit-card"></i> Card Details</label>
+            <div id="card-element"></div>
+            <div id="card-errors" class="error" role="alert"></div>
           </div>
         </div>
 
-        <!-- Payment Details -->
-        <div class="payment-details">
-          <!-- Card Payment -->
-          <div class="method-section" data-method="card">
-            <div class="form-group">
-              <label><i class="fas fa-credit-card"></i> Card Details</label>
-              <div id="card-element"></div>
-              <div id="card-errors" class="error" role="alert"></div>
-            </div>
-
-            <!-- أضف قسم الأخطاء العام -->
-            <div id="payment-errors" class="error"></div>
-
-            <div class="form-group">
-              <label><i class="fas fa-calendar-alt"></i> Expiry Date</label>
-              <input type="month" required />
-              <i class="fas fa-calendar input-icon"></i>
-            </div>
+        <!-- Vodafone Cash Form -->
+        <div
+          class="method-section"
+          data-method="vodafone"
+          style="display: none"
+        >
+          <div class="form-group">
+            <label><i class="fas fa-phone"></i> Vodafone Cash Number</label>
+            <input
+              type="tel"
+              id="vodafoneNumber"
+              name="vodafoneNumber"
+              pattern="^01[0-9]{9}$"
+              placeholder="01XXXXXXXXX"
+              required
+            />
+            <small class="form-text text-muted"
+              >Enter your Vodafone Cash registered number</small
+            >
           </div>
+        </div>
 
-          <!-- Instapay -->
-          <div
-            class="method-section"
-            data-method="instapay"
-            style="display: none"
-          >
+        <!-- InstaPay Form -->
+        <div
+          class="method-section"
+          data-method="instapay"
+          style="display: none"
+        >
+          <div class="instapay-form">
+            <h3><i class="fas fa-mobile-screen"></i> Pay with InstaPay</h3>
+            <p class="text-muted">
+              Fast and secure payment through your InstaPay mobile wallet
+            </p>
+
+            <div class="instapay-steps">
+              <li>
+                <div class="step-number">1</div>
+                <div class="step-content">
+                  <h4>Enter Your Mobile Number</h4>
+                  <p>Use the number registered with your InstaPay account</p>
+                </div>
+              </li>
+              <li>
+                <div class="step-number">2</div>
+                <div class="step-content">
+                  <h4>Verify Your Identity</h4>
+                  <p>We'll send a verification code to your mobile number</p>
+                </div>
+              </li>
+              <li>
+                <div class="step-number">3</div>
+                <div class="step-content">
+                  <h4>Complete Payment</h4>
+                  <p>Confirm the payment in your InstaPay mobile app</p>
+                </div>
+              </li>
+            </div>
+
             <div class="form-group">
-              <label><i class="fas fa-phone"></i> Mobile Number</label>
+              <label
+                ><i class="fas fa-mobile"></i> InstaPay Mobile Number</label
+              >
               <input
                 type="tel"
-                pattern="\+20\d{10}"
-                placeholder="+201234567890"
+                id="instapayNumber"
+                name="instapayNumber"
+                pattern="^01[0-9]{9}$"
+                placeholder="01XXXXXXXXX"
                 required
               />
-              <i class="fas fa-mobile-alt input-icon"></i>
+              <small class="form-text text-muted"
+                >Enter your InstaPay registered mobile number</small
+              >
             </div>
-          </div>
 
-          <!-- Feza -->
-          <div class="method-section" data-method="feza" style="display: none">
             <div class="form-group">
-              <label><i class="fas fa-wallet"></i> Feza ID</label>
-              <input type="text" pattern="FEZA\d{8}" required />
-              <i class="fas fa-id-badge input-icon"></i>
+              <label><i class="fas fa-id-card"></i> National ID</label>
+              <input
+                type="text"
+                id="instapayNationalId"
+                name="instapayNationalId"
+                pattern="^[0-9]{14}$"
+                placeholder="14-digit National ID"
+                required
+              />
+              <small class="form-text text-muted"
+                >Enter your National ID linked to InstaPay account</small
+              >
             </div>
           </div>
 
-          <!-- OTP Section -->
-          <div class="otp-container" id="otpSection">
-            <h3><i class="fas fa-shield-alt"></i> OTP Verification</h3>
-            <input type="text" class="otp-input" maxlength="1" pattern="\d" />
-            <input type="text" class="otp-input" maxlength="1" pattern="\d" />
-            <input type="text" class="otp-input" maxlength="1" pattern="\d" />
-            <input type="text" class="otp-input" maxlength="1" pattern="\d" />
-            <input type="text" class="otp-input" maxlength="1" pattern="\d" />
-            <input type="text" class="otp-input" maxlength="1" pattern="\d" />
+          <!-- OTP Verification Modal -->
+          <div class="otp-container" id="otpContainer" style="display: none">
+            <div class="otp-verification">
+              <i
+                class="fas fa-shield-alt"
+                style="font-size: 2rem; color: #00a651; margin-bottom: 1rem"
+              ></i>
+              <h3>Verify Your InstaPay Payment</h3>
+              <p>Enter the 6-digit code sent to your mobile number</p>
+              <div class="otp-inputs">
+                <input
+                  type="text"
+                  class="otp-input"
+                  maxlength="1"
+                  pattern="\d"
+                  required
+                />
+                <input
+                  type="text"
+                  class="otp-input"
+                  maxlength="1"
+                  pattern="\d"
+                  required
+                />
+                <input
+                  type="text"
+                  class="otp-input"
+                  maxlength="1"
+                  pattern="\d"
+                  required
+                />
+                <input
+                  type="text"
+                  class="otp-input"
+                  maxlength="1"
+                  pattern="\d"
+                  required
+                />
+                <input
+                  type="text"
+                  class="otp-input"
+                  maxlength="1"
+                  pattern="\d"
+                  required
+                />
+                <input
+                  type="text"
+                  class="otp-input"
+                  maxlength="1"
+                  pattern="\d"
+                  required
+                />
+              </div>
+              <button class="verify-otp-btn" id="verifyOtpBtn">
+                <i class="fas fa-check-circle"></i> Verify Code
+              </button>
+              <p class="text-muted" style="margin-top: 1rem; font-size: 0.9rem">
+                Didn't receive the code?
+                <a href="#" id="resendOtp">Resend Code</a>
+              </p>
+            </div>
           </div>
         </div>
 
+        <!-- Etisalat Form -->
+        <div
+          class="method-section"
+          data-method="etisalat"
+          style="display: none"
+        >
+          <div class="form-group">
+            <label><i class="fas fa-phone"></i> Etisalat Number</label>
+            <input
+              type="tel"
+              id="etisalatNumber"
+              name="etisalatNumber"
+              pattern="^01[0-9]{9}$"
+              placeholder="01XXXXXXXXX"
+              required
+            />
+            <small class="form-text text-muted"
+              >Enter your Etisalat registered number</small
+            >
+          </div>
+        </div>
+
+        <!-- Orange Form -->
+        <div class="method-section" data-method="orange" style="display: none">
+          <div class="form-group">
+            <label><i class="fas fa-phone"></i> Orange Number</label>
+            <input
+              type="tel"
+              id="orangeNumber"
+              name="orangeNumber"
+              pattern="^01[0-9]{9}$"
+              placeholder="01XXXXXXXXX"
+              required
+            />
+            <small class="form-text text-muted"
+              >Enter your Orange registered number</small
+            >
+          </div>
+        </div>
+
+        <!-- Fawry Form -->
+        <div class="method-section" data-method="fawry" style="display: none">
+          <div class="form-group">
+            <label><i class="fas fa-phone"></i> Mobile Number</label>
+            <input
+              type="tel"
+              id="fawryNumber"
+              name="fawryNumber"
+              pattern="^01[0-9]{9}$"
+              placeholder="01XXXXXXXXX"
+              required
+            />
+            <small class="form-text text-muted"
+              >You will receive the Fawry code on this number</small
+            >
+          </div>
+        </div>
+
+        <!-- Aman Form -->
+        <div class="method-section" data-method="aman" style="display: none">
+          <div class="form-group">
+            <label><i class="fas fa-phone"></i> Mobile Number</label>
+            <input
+              type="tel"
+              id="amanNumber"
+              name="amanNumber"
+              pattern="^01[0-9]{9}$"
+              placeholder="01XXXXXXXXX"
+              required
+            />
+            <small class="form-text text-muted"
+              >You will receive the Aman reference number on this number</small
+            >
+          </div>
+        </div>
+
+        <!-- Meeza Form -->
+        <div class="method-section" data-method="meeza" style="display: none">
+          <div class="form-group">
+            <label><i class="fas fa-credit-card"></i> Meeza Card Number</label>
+            <input
+              type="text"
+              id="meezaNumber"
+              name="meezaNumber"
+              pattern="[0-9]{16}"
+              placeholder="XXXXXXXXXXXXXXXX"
+              required
+            />
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-calendar"></i> Expiry Date</label>
+            <input type="month" id="meezaExpiry" name="meezaExpiry" required />
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-lock"></i> CVV</label>
+            <input
+              type="text"
+              id="meezaCvv"
+              name="meezaCvv"
+              pattern="[0-9]{3}"
+              maxlength="3"
+              required
+            />
+          </div>
+        </div>
+
+        <!-- Bank Transfer Form -->
+        <div class="method-section" data-method="bank" style="display: none">
+          <div class="bank-details">
+            <h4><i class="fas fa-university"></i> Bank Account Details</h4>
+            <p><strong>Bank Name:</strong> Example Bank</p>
+            <p><strong>Account Name:</strong> University Housing</p>
+            <p><strong>Account Number:</strong> XXXXXXXXXXXXX</p>
+            <p><strong>IBAN:</strong> EGXXXXXXXXXXXXXXXXX</p>
+          </div>
+          <div class="form-group">
+            <label><i class="fas fa-receipt"></i> Transfer Receipt</label>
+            <input
+              type="file"
+              id="transferReceipt"
+              name="transferReceipt"
+              accept="image/*,.pdf"
+              required
+            />
+            <small class="form-text text-muted"
+              >Please upload your transfer receipt</small
+            >
+          </div>
+        </div>
+
+        <!-- Submit Button -->
         <button type="submit" class="submit-btn" id="submit-btn">
-          <i class="fas fa-lock"></i> Secure Payment ($1,250.00)
+          <i class="fas fa-lock"></i> Proceed with Payment
         </button>
       </form>
+
+      <!-- Success Message -->
+      <div class="success-message" style="display: none">
+        <i class="fas fa-check-circle"></i>
+        <h3>Payment Successful!</h3>
+        <p>Your booking has been confirmed. Check your email for details.</p>
+      </div>
 
       <!-- Receipt Section -->
       <div class="receipt-section" id="receiptSection">
