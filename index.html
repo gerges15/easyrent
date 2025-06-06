@@ -3,6 +3,15 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
+    <!-- Favicons -->
+    <link rel="shortcut icon" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <meta name="theme-color" content="#7c4dff">
+    <meta name="msapplication-TileColor" content="#7c4dff">
+    <meta name="msapplication-TileImage" content="images/android-chrome-192x192.png">
     <link
       href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
       rel="stylesheet"
@@ -567,13 +576,10 @@
             <button class="btn" onclick='window.location.href="./student/payment.html"'>BOOK NOW</button>
           </div>
           <div class="intro__video">
-            <video autoplay muted loop playsinline width="100%" style="border-radius: 10px;">
+            <video autoplay muted loop playsinline style="border-radius: 10px; width: 100%; max-width: 1200px; height: auto; min-height: 500px; object-fit: cover;">
               <source src="./images/rooms.mov" type="video/mp4">
               المتصفح لا يدعم عرض الفيديو.
             </video>
-            
-            
-            
         </div>
       </section>
 
@@ -707,105 +713,143 @@
           </button>
           
           <div class="more-content" id="more-content">
-            <div class="size-options">
-              <div class="filter-group">
-                <label>Property Size</label>
+            <div class="filter-sections">
+              <!-- Property Size Section -->
+              <div class="filter-section">
+                <h4 class="filter-section-title">
+                  <i class="ri-ruler-2-line"></i>
+                  Property Size
+                </h4>
                 <div class="size-row">
                   <div class="size-option">
-                    <label>Select Min</label>
-                    <select id="minSize">
-                      <option value="1"></option>
-                      <option value="2">70</option>
-                      <option value="3">150</option>
-                      <option value="4">200</option>
-                      <option value="5">350</option>
-                      <option value="6">450</option>
-                      <option value="7">500</option>
-                      <option value="8">600</option>
-                      <option value="9">1000</option>
-                      <option value="10">2000</option>
-                      <option value="11">2500</option>
-                      <option value="12">5000</option>
-                      <option value="13">10000</option>
-                      <option value="14">12000</option>
+                    <label class="size-label">Min Size</label>
+                    <select id="minSize" class="styled-select">
+                      <option value="">Select Min</option>
+                      <option value="70">70 m²</option>
+                      <option value="150">150 m²</option>
+                      <option value="200">200 m²</option>
+                      <option value="350">350 m²</option>
+                      <option value="450">450 m²</option>
+                      <option value="500">500 m²</option>
                     </select>
                   </div>
                   <div class="size-option">
-                    <label>Select Max</label>
-                    <select id="maxSize">
-                      <option value="1"></option>
-                      <option value="2">70</option>
-                      <option value="3">150</option>
-                      <option value="4">200</option>
-                      <option value="5">350</option>
-                      <option value="6">450</option>
-                      <option value="7">500</option>
-                      <option value="8">600</option>
-                      <option value="9">1000</option>
-                      <option value="10">2000</option>
-                      <option value="11">2500</option>
-                      <option value="12">5000</option>
-                      <option value="13">10000</option>
-                      <option value="14">12000</option>
+                    <label class="size-label">Max Size</label>
+                    <select id="maxSize" class="styled-select">
+                      <option value="">Select Max</option>
+                      <option value="500">500 m²</option>
+                      <option value="1000">1000 m²</option>
+                      <option value="2000">2000 m²</option>
+                      <option value="5000">5000 m²</option>
+                      <option value="10000">10000 m²</option>
                     </select>
                   </div>
                 </div>
               </div>
               
-              <div class="currency-area">
-                <div class="filter-group">
-                  <label>Currency</label>
-                  <select id="currency">
-                    <option value="all"></option>
-                    <option value="euro">€</option>
-                    <option value="usd">$</option>
-                    <option value="gbp">£</option>
-                  </select>
+              <!-- Price Range Section -->
+              <div class="filter-section">
+                <h4 class="filter-section-title">
+                  <i class="ri-money-euro-circle-line"></i>
+                  Price Range
+                </h4>
+                <div class="price-range-container">
+                  <input 
+                    type="range" 
+                    id="priceRange" 
+                    class="price-range-slider"
+                    min="0" 
+                    max="20000" 
+                    step="100" 
+                    value="10000"
+                  >
+                  <div class="price-display">
+                    <span id="priceValue">€10,000</span>
                 </div>
-                
-                <div class="filter-group">
-                  <label>Property Area</label>
-                  <select id="areaUnit">
-                    <option value="sqft">sq feet</option>
-                    <option value="meters"> meters</option>
-                    <option value="sq yard">sq yard</option>
-                    <option value="feed"> feed</option>
-                  </select>
+                </div>
+              </div>
+              </div>
+              
+              <!-- Rooms Configuration -->
+              <div class="filter-section">
+                <h4 class="filter-section-title">
+                  <i class="ri-home-4-line"></i>
+                  Rooms
+                </h4>
+                <div class="rooms-grid">
+                  <div class="room-counter">
+                    <label>
+                      <i class="ri-hotel-bed-line"></i>
+                      Bedrooms
+                    </label>
+                    <div class="counter-controls">
+                      <button type="button" class="counter-btn" onclick="decrement('bedrooms')">
+                        <i class="ri-subtract-line"></i>
+                      </button>
+                      <span id="bedroomsCount" class="counter-value">1</span>
+                      <button type="button" class="counter-btn" onclick="increment('bedrooms')">
+                        <i class="ri-add-line"></i>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="room-counter">
+                    <label>
+                      <i class="ri-shower-line"></i>
+                      Bathrooms
+                    </label>
+                    <div class="counter-controls">
+                      <button type="button" class="counter-btn" onclick="decrement('bathrooms')">
+                        <i class="ri-subtract-line"></i>
+                      </button>
+                      <span id="bathroomsCount" class="counter-value">1</span>
+                      <button type="button" class="counter-btn" onclick="increment('bathrooms')">
+                        <i class="ri-add-line"></i>
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
               
-              <div class="filter-group">
-                <label>Bathroom</label>
-                <select id="bathroomCount">
-                  <option value="">Select Count</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                </select>
+              <!-- Amenities Section -->
+              <div class="filter-section">
+                <h4 class="filter-section-title">
+                  <i class="ri-function-line"></i>
+                  Amenities
+                </h4>
+                <div class="amenities-grid">
+                  <label class="amenity-checkbox">
+                    <input type="checkbox" name="amenities" value="wifi">
+                    <i class="ri-wifi-line"></i>
+                    Wi-Fi
+                  </label>
+                  <label class="amenity-checkbox">
+                    <input type="checkbox" name="amenities" value="parking">
+                    <i class="ri-parking-line"></i>
+                    Parking
+                  </label>
+                  <label class="amenity-checkbox">
+                    <input type="checkbox" name="amenities" value="ac">
+                    <i class="ri-temp-hot-line"></i>
+                    AC
+                  </label>
+                  <label class="amenity-checkbox">
+                    <input type="checkbox" name="amenities" value="kitchen">
+                    <i class="ri-restaurant-2-line"></i>
+                    Kitchen
+                  </label>
               </div>
-              
-              <div class="filter-group">
-                <label>Bedroom</label>
-                <select id="bedroomCount">
-                  <option value="">Select Count</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                  <option value="3">3</option>
-                  <option value="4">4</option>
-                </select>
               </div>
-              
-              <div class="filter-group">
-                <label>Kitchen</label>
-                <select id="kitchenCount">
-                  <option value="">Select Count</option>
-                  <option value="1">1</option>
-                  <option value="2">2</option>
-                </select>
-              </div>
-              <div class="button-group">
-                <button class="reset-btn" id="reset-filters">Reset</button>
-                <button class="apply-btn" id="apply-filters">Apply Filters</button>
+
+              <!-- Action Buttons -->
+              <div class="filter-actions">
+                <button class="reset-btn" id="reset-filters">
+                  <i class="ri-refresh-line"></i>
+                  Reset
+                </button>
+                <button class="apply-btn" id="apply-filters">
+                  <i class="ri-check-line"></i>
+                  Apply Filters
+                </button>
               </div>
             </div>
           </div>
@@ -939,7 +983,7 @@
                 Privacy Policy
               </a>
             </li>
-            <li>
+        
               <a href="#">
                 <i class="ri-arrow-right-s-line"></i>
                 Special Offers
@@ -1075,7 +1119,347 @@
     }
     </style>
 
-    <script type="module" src="js/cookie-consent.js"></script> <!-- فقط إذا تريد تحميله مستقلاً -->
+    <!-- Add new styles for More Details section -->
+    <style>
+      .filter-group {
+        position: relative;
+        margin-bottom: 15px;
+      }
+
+      .dropdown-btn {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 10px 15px;
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 14px;
+        color: #333;
+        transition: all 0.3s ease;
+      }
+
+      .dropdown-btn:hover {
+        border-color: #7c4dff;
+        box-shadow: 0 2px 8px rgba(124, 77, 255, 0.1);
+      }
+
+      .dropdown-btn i {
+        transition: transform 0.3s ease;
+      }
+
+      .dropdown-btn.active i {
+        transform: rotate(180deg);
+      }
+
+      .more-content {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 300px;
+        background: #fff;
+        border: 1px solid #e0e0e0;
+        border-radius: 5px;
+        padding: 15px;
+        margin-top: 5px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        display: none;
+        z-index: 1000;
+      }
+
+      .more-content.active {
+        display: block;
+        animation: fadeIn 0.3s ease;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .size-options {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .size-row {
+        display: flex;
+        gap: 10px;
+      }
+
+      .size-option {
+        flex: 1;
+      }
+
+      .size-option select,
+      .filter-group select {
+        width: 100%;
+        padding: 8px 12px;
+        border: 1px solid #e0e0e0;
+        border-radius: 4px;
+        font-size: 14px;
+        color: #333;
+      }
+
+      .button-group {
+        display: flex;
+        gap: 10px;
+        margin-top: 15px;
+      }
+
+      .reset-btn,
+      .apply-btn {
+        flex: 1;
+        padding: 8px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .reset-btn {
+        background: #f5f5f5;
+        color: #666;
+      }
+
+      .apply-btn {
+        background: #7c4dff;
+        color: #fff;
+      }
+
+      .reset-btn:hover {
+        background: #e0e0e0;
+      }
+
+      .apply-btn:hover {
+        background: #6b42e8;
+      }
+
+      .currency-area {
+        display: flex;
+        gap: 10px;
+          }
+
+      .currency-area .filter-group {
+        flex: 1;
+      }
+
+      /* New Additional Filters Styles */
+      .filter-sections {
+        padding: 15px;
+      }
+
+      .filter-section {
+        padding: 15px;
+        border-bottom: 1px solid #eee;
+      }
+
+      .filter-section:last-child {
+        border-bottom: none;
+      }
+
+      .filter-section-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #333;
+        font-size: 16px;
+        margin-bottom: 15px;
+      }
+
+      .filter-section-title i {
+        color: #7c4dff;
+        font-size: 18px;
+      }
+
+      .styled-select {
+        appearance: none;
+        background: #f8f9fa url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23333' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") no-repeat right 10px center;
+        padding-right: 30px;
+      }
+
+      .size-label {
+        display: block;
+        color: #666;
+        font-size: 13px;
+        margin-bottom: 5px;
+      }
+
+      /* Price Range Slider */
+      .range-slider {
+        position: relative;
+        padding: 10px 0;
+      }
+
+      .range-slider input[type="range"] {
+        width: 100%;
+        height: 5px;
+        background: #e0e0e0;
+        border-radius: 5px;
+        outline: none;
+        -webkit-appearance: none;
+      }
+
+      .range-slider input[type="range"]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        background: #7c4dff;
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(124, 77, 255, 0.2);
+      }
+
+      .range-value {
+        text-align: center;
+        margin-top: 10px;
+        color: #333;
+        font-weight: 500;
+      }
+
+      /* Rooms Counter */
+      .rooms-grid {
+        display: grid;
+        gap: 15px;
+      }
+
+      .room-counter {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      .room-counter label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: #333;
+        }
+
+      .room-counter label i {
+        color: #7c4dff;
+      }
+
+      .counter-controls {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .counter-btn {
+        width: 28px;
+        height: 28px;
+        border: 1px solid #e0e0e0;
+        background: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        color: #333;
+        transition: all 0.2s ease;
+      }
+
+      .counter-btn:hover {
+        background: #7c4dff;
+        color: white;
+        border-color: #7c4dff;
+      }
+
+      /* Amenities Grid */
+      .amenities-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+      }
+
+      .amenity-checkbox {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px;
+        background: #f8f9fa;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+
+      .amenity-checkbox:hover {
+        background: #f0f0f0;
+      }
+
+      .amenity-checkbox input[type="checkbox"] {
+        width: 16px;
+        height: 16px;
+        border: 2px solid #7c4dff;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+
+      .amenity-checkbox i {
+        color: #7c4dff;
+      }
+
+      /* Action Buttons */
+      .filter-actions {
+        display: flex;
+        gap: 10px;
+        padding: 15px;
+        border-top: 1px solid #eee;
+        margin-top: 15px;
+      }
+
+      .filter-actions button {
+        flex: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 12px;
+        border-radius: 8px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+      }
+
+      .filter-actions button i {
+        font-size: 18px;
+      }
+
+      .more-content {
+        width: 350px;
+      }
+
+      @media (max-width: 768px) {
+        .more-content {
+          width: 100%;
+          position: fixed;
+          bottom: 0;
+          left: 0;
+          border-radius: 20px 20px 0 0;
+          max-height: 80vh;
+          overflow-y: auto;
+      }
+
+        .amenities-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+
+    <script type="module" src="js/cookie-consent.js"></script>
 
     
     <script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
@@ -1083,86 +1467,6 @@
     <script type="module" src="js/main.js"></script>
     <script type="module" scr="./js/property-filter.js"></script>
     
-    <script>
-      function handleLogout() {
-        Swal.fire({
-          title: 'Logout Confirmation',
-          text: 'Are you sure you want to logout?',
-          icon: 'warning',
-          iconColor: '#ff6b6b',
-          showCancelButton: true,
-          confirmButtonColor: '#82c9ff',
-          cancelButtonColor: '#ff6b6b',
-          confirmButtonText: 'Yes, Logout',
-          cancelButtonText: 'Cancel',
-          background: '#ffffff',
-          customClass: {
-            popup: 'swal-rtl',
-            title: 'swal-title',
-            confirmButton: 'swal-confirm',
-            cancelButton: 'swal-cancel'
-          }
-        }).then((result) => {
-          if (result.isConfirmed) {
-            Swal.fire({
-              title: 'تم تسجيل الخروج بنجاح',
-              text: 'سيتم تحويلك للصفحة الرئيسية...',
-              icon: 'success',
-              timer: 2000,
-              showConfirmButton: false
-            }).then(() => {
-              window.location.href = './login.html';
-            });
-          }
-        });
-      }
-
-      // Mobile Menu
-      const menuBtn = document.getElementById('menu-btn');
-      const navRightItems = document.querySelector('.nav-right-items');
-      
-      menuBtn.addEventListener('click', () => {
-        navRightItems.classList.toggle('open');
-        document.body.style.overflow = navRightItems.classList.contains('open') ? 'hidden' : 'auto';
-      });
-
-      // Close menu when clicking outside
-      document.addEventListener('click', (e) => {
-        if (!navRightItems.contains(e.target) && !menuBtn.contains(e.target) && navRightItems.classList.contains('open')) {
-          navRightItems.classList.remove('open');
-          document.body.style.overflow = 'auto';
-        }
-      });
-
-      function showCookieConsent() {
-        const cookieConsent = document.getElementById('cookieConsent');
-        setTimeout(() => {
-          cookieConsent.style.display = 'block';
-        }, 1500);
-      }
-
-      function acceptCookies() {
-        const cookieConsent = document.getElementById('cookieConsent');
-        cookieConsent.style.opacity = '0';
-        localStorage.setItem('cookieConsent', 'accepted');
-        setTimeout(() => {
-          cookieConsent.style.display = 'none';
-        }, 300);
-      }
-
-      function rejectCookies() {
-        const cookieConsent = document.getElementById('cookieConsent');
-        cookieConsent.style.opacity = '0';
-        localStorage.setItem('cookieConsent', 'rejected');
-        setTimeout(() => {
-          cookieConsent.style.display = 'none';
-        }, 300);
-      }
-
-      // Check if user has already made a choice
-      if (!localStorage.getItem('cookieConsent')) {
-        showCookieConsent();
-      }
-    </script>
+    <script type="module" src="js/main.js"></script>
   </body>
 </html>

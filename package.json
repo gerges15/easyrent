@@ -1,5 +1,12 @@
 {
+  "name": "easyrent",
+  "version": "1.0.0",
+  "description": "EasyRent website",
+  "scripts": {
+    "generate-favicons": "node generate-favicons.js"
+  },
   "dependencies": {
-    "firebase": "^11.9.0"
+    "sharp": "^0.32.6",
+    "sharp-ico": "^0.1.5"
   }
 }

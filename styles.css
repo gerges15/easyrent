@@ -761,108 +761,196 @@ nav {
 
 .search-filters {
   display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-bottom: 30px;
   flex-wrap: wrap;
-  align-items: flex-end;
-  max-width: var(--max-width);
-  margin: 0 auto 30px;
-  padding: 0 20px;
+  align-items: center;
+  gap: 15px;
+  padding: 20px;
+  background: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
 }
 
 .filter-group {
-  display: flex;
-  flex-direction: column;
-  min-height: 73px;
-  min-width: 200px; /* Set minimum width */
-  flex: 1; /* Allow equal growth */
+  flex: 1;
+  min-width: 200px;
+  margin: 0;
+  position: relative;
 }
 
 .filter-group label {
-  font-weight: 600;
+  display: block;
   margin-bottom: 8px;
+  font-weight: 500;
   color: var(--text-dark);
-  font-size: 14px;
-  display: flex;
-  align-items: center;
 }
 
-/* Make all select elements and inputs the same size */
 .filter-group select,
-.filter-group input,
-.more-label,
-.search-btn {
-  height: 45px;
-  min-width: 200px; /* Minimum width */
+.filter-group input {
   width: 100%;
   padding: 12px 15px;
-  border-radius: 6px;
-  font-size: 14px;
-  box-sizing: border-box;
-}
-
-.filter-group select {
   border: 1px solid var(--border-color);
+  border-radius: 6px;
   background-color: var(--white);
-  appearance: none;
-  background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 16px;
   color: var(--text-dark);
+  font-size: 14px;
+  transition: all 0.3s ease;
+  height: 45px;
 }
 
+/* Search Button */
 .search-btn {
+  height: 45px;
+  padding: 0 25px;
+  border: none;
+  border-radius: 6px;
   background: linear-gradient(to right, var(--secondary-color), #41adf5);
   color: white;
-  border: none;
-  cursor: pointer;
   font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
   display: flex;
   align-items: center;
-  justify-content: center;
-  transition: all 0.3s ease;
-  margin-top: 28px;
-  min-width: 200px;
+  gap: 8px;
+}
+
+.search-btn i {
+  font-size: 18px;
+}
+
+/* More Details Button */
+.dropdown-btn {
   height: 45px;
-  padding: 12px 25px;
+  width: 100%;
+  padding: 0 15px;
+  border: 1px solid var(--border-color);
   border-radius: 6px;
+  background: var(--white);
+  color: var(--text-dark);
   font-size: 14px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
-.search-btn:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  background: linear-gradient(to right, #65b7ed, var(--secondary-color));
+/* Responsive Layout */
+@media (min-width: 768px) {
+  .search-filters {
+    flex-wrap: nowrap;
+  }
+
+  .filter-group {
+    flex: 1;
+  }
+
+  .search-btn {
+    flex: 0 0 auto;
+  }
 }
 
-.search-btn:active {
-  transform: translateY(1px);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+@media (max-width: 767px) {
+  .search-filters {
+    gap: 10px;
+  }
+
+  .filter-group {
+    flex: 1 1 calc(50% - 10px);
+  }
+
+  .search-btn {
+    width: 100%;
+    justify-content: center;
+  }
 }
 
+/* Filter Sections Layout */
+.filter-sections {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.filter-section {
+  background: var(--white);
+  padding: 20px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+}
+
+/* Size Options Layout */
+.size-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+
+/* Rooms Grid Layout */
+.rooms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+/* Amenities Grid Layout */
+.amenities-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+
+/* Mobile Adjustments */
+@media (max-width: 768px) {
+  .search-filters {
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 15px;
+  }
+
+  .filter-group {
+    flex: 1 1 calc(50% - 10px);
+    min-width: 150px;
+  }
+
+  .filter-sections {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+
+  .size-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .rooms-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .amenities-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* Property Grid Layout */
 .property-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 25px;
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0 20px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 20px;
 }
 
 .property-card {
-  background-color: var(--card-bg);
-  border-radius: 8px;
+  background: var(--white);
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease;
 }
 
 .property-card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .property-image {
@@ -1201,12 +1289,6 @@ nav {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
   gap: 20px;
-}
-
-.size-row {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
 }
 
 .currency-area {

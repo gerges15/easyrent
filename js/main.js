@@ -89,79 +89,67 @@ document.addEventListener("DOMContentLoaded", () => {
     console.warn("ScrollReveal library not loaded - animations disabled");
   }
 
-  // ---- بيانات العقارات ----
+  // بيانات العقارات
   const properties = [
     {
       id: 1,
-      image:
-        "https://i.pinimg.com/474x/4a/5d/ec/4a5dec2b4b5449645d1ec94c21c7b13e.jpg",
-      price: "€ 2,850",
       title: "Unit no. 411 Admiral Elite Premium Residence",
-      location: "Adnan, Minya, Egypt",
-      type: "APARTMENTS",
-      size: "899 sq feet",
-      beds: 2,
-      added: "2 days ago",
+      location: "Minya taha_hessen",
+      price: 2850,
+      type: "Single",
+      size: 899,
+      bedrooms: 1,
+      bathrooms: 1,
+      amenities: ["wifi", "ac", "kitchen"],
+      image: "images/1,hrud.jpg",
     },
     {
       id: 2,
-      image:
-        "https://i.pinimg.com/474x/61/79/2b/61792b67866bf092917ea64fbace6f10.jpg",
-      price: "€ 9,000",
       title: "Unit no. 410 Admiral Elite Premium Residence",
-      location: "New Minya City, Egypt",
-      type: "APARTMENTS",
-      size: "1237 sq feet",
-      beds: 3,
-      added: "1 week ago",
+      location: "New Minya City",
+      price: 9000,
+      type: "Double",
+      size: 1237,
+      bedrooms: 2,
+      bathrooms: 2,
+      amenities: ["wifi", "parking", "ac", "kitchen"],
+      image: "images/K2S115.webp",
     },
     {
       id: 3,
-      image:
-        "https://i.pinimg.com/474x/ef/ac/10/efac10e6ffab391d8840a603e4f12d5e.jpg",
-      price: "€ 1,300",
       title: "Unit no. 409 Admiral Elite Premium Residence",
-      location: "medan balas, Minya, Egypt",
-      type: "APARTMENTS",
-      size: "473 sq feet",
-      beds: 1,
-      added: "3 days ago",
+      location: "palace square",
+      price: 15000,
+      type: "Triple",
+      size: 1500,
+      bedrooms: 3,
+      bathrooms: 2,
+      amenities: ["wifi", "parking", "ac", "kitchen"],
+      image: "images/SZC08-2.webp",
     },
     {
       id: 4,
-      image:
-        "https://i.pinimg.com/474x/30/b2/57/30b25726e795a88c92ebbf1d0941463f.jpg",
-      price: "€ 10,000",
-      title: "Unit no. 411 Admiral Elite Premium Residence",
-      location: "Taha-Heseen, Minya, Egypt",
-      type: "APARTMENTS",
-      size: "899 sq feet",
-      beds: 2,
-      added: "Just added",
+      title: "Unit no. 408 Student Residence",
+      location: "Adnan st",
+      price: 5000,
+      type: "Single",
+      size: 750,
+      bedrooms: 1,
+      bathrooms: 1,
+      amenities: ["wifi", "kitchen"],
+      image: "images/1,hrud.jpg",
     },
     {
       id: 5,
-      image:
-        "https://i.pinimg.com/474x/8d/c3/78/8dc378a1bb88a143b66c250b1ad23a5f.jpg",
-      price: "€8,000",
-      title: "Unit no. 410 Admiral Elite Premium Residence",
-      location: "New Minya City,the first neighburhood, Egypt",
-      type: "APARTMENTS",
-      size: "120 m²",
-      beds: 3,
-      added: "1 day ago",
-    },
-    {
-      id: 6,
-      image:
-        "https://i.pinimg.com/474x/cf/58/65/cf58652fb2d68e7e044adbb615eb4362.jpg",
-      price: "€400",
-      title: "Unit no. 410 Admiral Elite Premium Residence",
-      location: "Minya City, Egypt",
-      type: "APARTMENTS",
-      size: "900 sq feet",
-      beds: 1,
-      added: "2 weeks ago",
+      title: "Unit no. 407 Luxury Suite",
+      location: "Alhseny st",
+      price: 12000,
+      type: "Double",
+      size: 1100,
+      bedrooms: 2,
+      bathrooms: 2,
+      amenities: ["wifi", "parking", "ac", "kitchen"],
+      image: "images/K2S115.webp",
     },
   ];
 
@@ -186,8 +174,10 @@ document.addEventListener("DOMContentLoaded", () => {
       const propertyCard = document.createElement("div");
       propertyCard.className = "property-card";
       propertyCard.innerHTML = `
-        <div class="property-image" style="background-image: url('${property.image}')"></div>
-        <div class="property-price">${property.price}</div>
+        <div class="property-image" style="background-image: url('${
+          property.image
+        }')"></div>
+        <div class="property-price">€${property.price.toLocaleString()}</div>
         <div class="property-details">
           <h3>${property.title}</h3>
           <p class="property-location">
@@ -196,14 +186,27 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="property-features">
             <span class="feature-item">
               <i class="ri-hotel-bed-line"></i>
-              <span class="feature-value">${property.beds}</span>
+              <span class="feature-value">${property.bedrooms} Bed${
+        property.bedrooms > 1 ? "s" : ""
+      }</span>
             </span>
             <span class="property-size">
-              <i class="ri-ruler-line"></i> ${property.size}
+              <i class="ri-ruler-line"></i> ${property.size} sq feet
             </span>
           </div>
           <div class="property-type">${property.type}</div>
-          <div class="property-added">${property.added}</div>
+          <div class="property-amenities">
+            ${property.amenities
+              .map(
+                (amenity) => `
+              <span class="amenity-tag">
+                <i class="ri-${getAmenityIcon(amenity)}"></i>
+                ${capitalizeFirstLetter(amenity)}
+              </span>
+            `
+              )
+              .join("")}
+          </div>
         </div>
       `;
       propertyGrid.appendChild(propertyCard);
@@ -503,4 +506,666 @@ document.addEventListener("DOMContentLoaded", () => {
       // Here you can add logic to show room details modal or navigate to room page
     });
   });
+
+  // تهيئة الأحداث عند تحميل الصفحة
+  document.addEventListener("DOMContentLoaded", function () {
+    // تهيئة قائمة More Details
+    initMoreDetails();
+
+    // تهيئة أزرار الفلتر
+    initFilterButtons();
+
+    // تهيئة عدادات الغرف
+    initRoomCounters();
+
+    // تهيئة نطاق السعر
+    initPriceRange();
+  });
+
+  // تهيئة قائمة More Details
+  function initMoreDetails() {
+    const moreDetailsBtn = document.getElementById("more-details-btn");
+    const moreContent = document.getElementById("more-content");
+
+    if (moreDetailsBtn && moreContent) {
+      moreDetailsBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        moreContent.classList.toggle("show");
+        this.classList.toggle("active");
+      });
+
+      // إغلاق القائمة عند النقر خارجها
+      document.addEventListener("click", function (e) {
+        if (
+          !moreContent.contains(e.target) &&
+          !moreDetailsBtn.contains(e.target)
+        ) {
+          moreContent.classList.remove("show");
+          moreDetailsBtn.classList.remove("active");
+        }
+      });
+
+      // إغلاق القائمة عند الضغط على ESC
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") {
+          moreContent.classList.remove("show");
+          moreDetailsBtn.classList.remove("active");
+        }
+      });
+    }
+  }
+
+  // تهيئة أزرار الفلتر
+  function initFilterButtons() {
+    const applyBtn = document.getElementById("apply-filters");
+    const resetBtn = document.getElementById("reset-filters");
+    const searchBtn = document.getElementById("execute-search");
+
+    if (applyBtn) {
+      applyBtn.addEventListener("click", function () {
+        applyFilters();
+        closeMoreDetails();
+      });
+    }
+
+    if (resetBtn) {
+      resetBtn.addEventListener("click", function () {
+        resetFilters();
+      });
+    }
+
+    if (searchBtn) {
+      searchBtn.addEventListener("click", function () {
+        applyFilters();
+      });
+    }
+  }
+
+  // تطبيق الفلاتر
+  function applyFilters() {
+    const filters = collectFilterValues();
+    updatePropertyDisplay(filters);
+
+    // إغلاق قائمة More Details بعد تطبيق الفلاتر
+    const moreContent = document.getElementById("more-content");
+    if (moreContent) {
+      moreContent.classList.remove("show");
+    }
+  }
+
+  // جمع قيم الفلاتر
+  function collectFilterValues() {
+    return {
+      location: document.getElementById("location")?.value || "all",
+      price: document.getElementById("priceRange")?.value || 10000,
+      type: document.getElementById("type")?.value || "all",
+      minSize: document.getElementById("minSize")?.value || "",
+      maxSize: document.getElementById("maxSize")?.value || "",
+      bedrooms: document.getElementById("bedroomsCount")?.textContent || "1",
+      bathrooms: document.getElementById("bathroomsCount")?.textContent || "1",
+      amenities: Array.from(
+        document.querySelectorAll(".amenity-checkbox input:checked")
+      ).map((cb) => cb.value),
+    };
+  }
+
+  // إعادة تعيين الفلاتر
+  function resetFilters() {
+    const inputs = {
+      location: "all",
+      priceRange: 10000,
+      type: "all",
+      minSize: "",
+      maxSize: "",
+      bedroomsCount: "1",
+      bathroomsCount: "1",
+    };
+
+    Object.entries(inputs).forEach(([id, value]) => {
+      const element = document.getElementById(id);
+      if (element) {
+        if (element.tagName === "SELECT") {
+          element.value = value;
+        } else {
+          element.textContent = value;
+        }
+      }
+    });
+
+    // إعادة تعيين مربعات الاختيار
+    document
+      .querySelectorAll(".amenity-checkbox input")
+      .forEach((cb) => (cb.checked = false));
+
+    // تحديث نطاق السعر
+    updatePriceRangeDisplay();
+
+    // تطبيق الفلاتر بعد إعادة التعيين
+    applyFilters();
+  }
+
+  // تهيئة عدادات الغرف
+  function initRoomCounters() {
+    // العثور على جميع أزرار العداد
+    const counterButtons = document.querySelectorAll(".counter-btn");
+
+    counterButtons.forEach((button) => {
+      button.addEventListener("click", handleCounterClick);
+    });
+  }
+
+  // معالجة النقر على أزرار العداد
+  function handleCounterClick(event) {
+    const button = event.currentTarget;
+    const type = button.dataset.type; // bedrooms or bathrooms
+    const action = button.dataset.action; // increase or decrease
+    const counterElement = document.getElementById(`${type}Count`);
+
+    if (!counterElement) return;
+
+    let currentValue = parseInt(counterElement.textContent);
+
+    if (action === "increase") {
+      // زيادة القيمة حتى 10 كحد أقصى
+      if (currentValue < 10) {
+        currentValue++;
+        animateValue(counterElement, "increase");
+      } else {
+        shakeButton(button); // تأثير الاهتزاز إذا وصلنا للحد الأقصى
+      }
+    } else if (action === "decrease") {
+      // تقليل القيمة حتى 1 كحد أدنى
+      if (currentValue > 1) {
+        currentValue--;
+        animateValue(counterElement, "decrease");
+      } else {
+        shakeButton(button); // تأثير الاهتزاز إذا وصلنا للحد الأدنى
+      }
+    }
+
+    counterElement.textContent = currentValue;
+
+    // تحديث تأثير الأزرار
+    updateButtonStates(type, currentValue);
+
+    // تطبيق الفلاتر تلقائياً
+    applyFilters();
+  }
+
+  // تحديث حالة الأزرار (تعطيل/تفعيل)
+  function updateButtonStates(type, value) {
+    const decreaseBtn = document.querySelector(
+      `[data-type="${type}"][data-action="decrease"]`
+    );
+    const increaseBtn = document.querySelector(
+      `[data-type="${type}"][data-action="increase"]`
+    );
+
+    if (decreaseBtn) {
+      decreaseBtn.disabled = value <= 1;
+      decreaseBtn.classList.toggle("disabled", value <= 1);
+    }
+
+    if (increaseBtn) {
+      increaseBtn.disabled = value >= 10;
+      increaseBtn.classList.toggle("disabled", value >= 10);
+    }
+  }
+
+  // تأثير حركي عند تغيير القيمة
+  function animateValue(element, direction) {
+    element.classList.add("counter-animation", direction);
+    setTimeout(() => {
+      element.classList.remove("counter-animation", direction);
+    }, 300);
+  }
+
+  // تأثير الاهتزاز للأزرار
+  function shakeButton(button) {
+    button.classList.add("shake");
+    setTimeout(() => {
+      button.classList.remove("shake");
+    }, 500);
+  }
+
+  // إضافة الأنماط للتأثيرات الحركية
+  const style = document.createElement("style");
+  style.textContent = `
+    .counter-value {
+        display: inline-block;
+        min-width: 30px;
+        text-align: center;
+        transition: all 0.3s ease;
+    }
+
+    .counter-animation {
+        animation: pulse 0.3s ease-out;
+    }
+
+    .counter-animation.increase {
+        animation: slideUp 0.3s ease-out;
+    }
+
+    .counter-animation.decrease {
+        animation: slideDown 0.3s ease-out;
+    }
+
+    .shake {
+        animation: shake 0.5s ease-in-out;
+    }
+
+    .counter-btn.disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+
+    @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.2); }
+        100% { transform: scale(1); }
+    }
+
+    @keyframes slideUp {
+        0% { transform: translateY(10px); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes slideDown {
+        0% { transform: translateY(-10px); opacity: 0; }
+        100% { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        25% { transform: translateX(-5px); }
+        75% { transform: translateX(5px); }
+    }
+  `;
+  document.head.appendChild(style);
+
+  // تهيئة نطاق السعر
+  function initPriceRange() {
+    const range = document.getElementById("priceRange");
+    if (range) {
+      range.addEventListener("input", updatePriceRangeDisplay);
+      updatePriceRangeDisplay(); // تحديث العرض الأولي
+    }
+  }
+
+  function updatePriceRangeDisplay() {
+    const range = document.getElementById("priceRange");
+    const value = document.getElementById("priceValue");
+    if (range && value) {
+      const priceValue = parseInt(range.value);
+      value.textContent = `€${priceValue.toLocaleString()}`;
+
+      // تحديث شريط التقدم
+      const progress =
+        ((priceValue - range.min) / (range.max - range.min)) * 100;
+      range.style.background = `linear-gradient(to right, var(--primary-color) ${progress}%, #e0e0e0 ${progress}%)`;
+    }
+  }
+
+  // تعريف الدوال بشكل عام
+  window.updateFilters = function (type, value) {
+    // تحديث قيمة العداد في الواجهة
+    const countElement = document.getElementById(`${type}Count`);
+    if (countElement) {
+      countElement.textContent = value;
+    }
+
+    // جمع جميع قيم الفلاتر الحالية
+    const filters = {
+      location: document.getElementById("location")?.value || "all",
+      price: parseInt(document.getElementById("priceRange")?.value || 10000),
+      type: document.getElementById("type")?.value || "all",
+      bedrooms: parseInt(
+        document.getElementById("bedroomsCount")?.textContent || "1"
+      ),
+      bathrooms: parseInt(
+        document.getElementById("bathroomsCount")?.textContent || "1"
+      ),
+      amenities: Array.from(
+        document.querySelectorAll(".amenity-checkbox input:checked")
+      ).map((cb) => cb.value),
+    };
+
+    // تحديث عرض العقارات
+    updatePropertyDisplay(filters);
+  };
+
+  // تحديث عرض العقارات
+  function updatePropertyDisplay(filters) {
+    const propertyGrid = document.getElementById("property-grid");
+    if (!propertyGrid) return;
+
+    const properties = Array.from(propertyGrid.children);
+    let hasVisibleProperties = false;
+
+    properties.forEach((property) => {
+      if (property.classList.contains("no-results")) return;
+
+      const matches = checkPropertyMatches(property, filters);
+      if (matches) {
+        property.style.display = "block";
+        fadeIn(property);
+        hasVisibleProperties = true;
+      } else {
+        fadeOut(property);
+      }
+    });
+
+    // عرض رسالة إذا لم يتم العثور على نتائج
+    const noResultsElement = document.querySelector(".no-results");
+    if (!hasVisibleProperties) {
+      if (!noResultsElement) {
+        const noResults = document.createElement("div");
+        noResults.className = "no-results";
+        noResults.innerHTML = `
+          <i class="ri-search-line"></i>
+          <h3>لم يتم العثور على نتائج</h3>
+          <p>حاول تغيير معايير البحث</p>
+        `;
+        propertyGrid.appendChild(noResults);
+      }
+    } else if (noResultsElement) {
+      noResultsElement.remove();
+    }
+  }
+
+  // تحديث دوال الزيادة والنقصان
+  window.increment = function (type) {
+    const countElement = document.getElementById(`${type}Count`);
+    if (countElement) {
+      let value = parseInt(countElement.textContent);
+      if (value < 10) {
+        value++;
+        countElement.textContent = value;
+        animateCounter(countElement, "up");
+        updateCounterButtons(type, value);
+        window.updateFilters(type, value); // استخدام النسخة العامة من الدالة
+      } else {
+        shakeElement(countElement);
+      }
+    }
+  };
+
+  window.decrement = function (type) {
+    const countElement = document.getElementById(`${type}Count`);
+    if (countElement) {
+      let value = parseInt(countElement.textContent);
+      if (value > 1) {
+        value--;
+        countElement.textContent = value;
+        animateCounter(countElement, "down");
+        updateCounterButtons(type, value);
+        window.updateFilters(type, value); // استخدام النسخة العامة من الدالة
+      } else {
+        shakeElement(countElement);
+      }
+    }
+  };
+
+  // إضافة باقي الدوال المساعدة للنافذة العامة
+  window.checkPropertyMatches = function (property, filters) {
+    const bedroomsMatch = checkRoomCount(
+      property,
+      "bedrooms",
+      filters.bedrooms
+    );
+    const bathroomsMatch = checkRoomCount(
+      property,
+      "bathrooms",
+      filters.bathrooms
+    );
+    const priceMatch = checkPrice(property, filters.price);
+    const locationMatch = checkLocation(property, filters.location);
+    const typeMatch = checkType(property, filters.type);
+    const amenitiesMatch = checkAmenities(property, filters.amenities);
+
+    return (
+      bedroomsMatch &&
+      bathroomsMatch &&
+      priceMatch &&
+      locationMatch &&
+      typeMatch &&
+      amenitiesMatch
+    );
+  };
+
+  function checkRoomCount(property, type, filterValue) {
+    const roomElement = property.querySelector(`.property-${type}`);
+    if (!roomElement) return true;
+
+    const roomCount = parseInt(
+      roomElement.textContent.match(/\d+/)?.[0] || "0"
+    );
+    return roomCount >= filterValue;
+  }
+
+  function checkPrice(property, maxPrice) {
+    const priceElement = property.querySelector(".property-price");
+    if (!priceElement) return true;
+
+    const price = parseInt(
+      priceElement.textContent.replace(/[^0-9]/g, "") || "0"
+    );
+    return price <= maxPrice;
+  }
+
+  function checkLocation(property, filterLocation) {
+    if (filterLocation === "all") return true;
+
+    const locationElement = property.querySelector(".property-location");
+    return (
+      locationElement &&
+      locationElement.textContent
+        .toLowerCase()
+        .includes(filterLocation.toLowerCase())
+    );
+  }
+
+  function checkType(property, filterType) {
+    if (filterType === "all") return true;
+
+    const typeElement = property.querySelector(".property-type");
+    return (
+      typeElement &&
+      typeElement.textContent.toLowerCase().includes(filterType.toLowerCase())
+    );
+  }
+
+  function checkAmenities(property, filterAmenities) {
+    if (!filterAmenities || filterAmenities.length === 0) return true;
+
+    const propertyAmenities = Array.from(
+      property.querySelectorAll(".property-amenity")
+    ).map((amenity) => amenity.dataset.amenity);
+
+    return filterAmenities.every((amenity) =>
+      propertyAmenities.includes(amenity)
+    );
+  }
+
+  function fadeIn(element) {
+    element.style.opacity = "0";
+    element.style.transform = "translateY(20px)";
+    element.style.display = "block";
+
+    requestAnimationFrame(() => {
+      element.style.opacity = "1";
+      element.style.transform = "translateY(0)";
+      element.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+    });
+  }
+
+  function fadeOut(element) {
+    element.style.opacity = "0";
+    element.style.transform = "translateY(20px)";
+    element.style.transition = "opacity 0.3s ease, transform 0.3s ease";
+
+    setTimeout(() => {
+      element.style.display = "none";
+    }, 300);
+  }
+
+  // إضافة مستمع لزر تطبيق الفلاتر
+  document.addEventListener("DOMContentLoaded", function () {
+    const applyButton = document.getElementById("apply-filters");
+    if (applyButton) {
+      applyButton.addEventListener("click", function () {
+        window.updateFilters();
+      });
+    }
+
+    // مستمع لتغييرات نطاق السعر
+    const priceRange = document.getElementById("priceRange");
+    if (priceRange) {
+      priceRange.addEventListener("input", function () {
+        const priceValue = document.getElementById("priceValue");
+        if (priceValue) {
+          priceValue.textContent = `€${parseInt(this.value).toLocaleString()}`;
+        }
+        window.updateFilters("price", this.value);
+      });
+    }
+
+    // مستمعات أخرى للفلاتر
+    const filters = ["location", "type"];
+    filters.forEach((filter) => {
+      const element = document.getElementById(filter);
+      if (element) {
+        element.addEventListener("change", function () {
+          window.updateFilters(filter, this.value);
+        });
+      }
+    });
+
+    // مستمع لتغييرات المرافق
+    const amenityCheckboxes = document.querySelectorAll(
+      ".amenity-checkbox input"
+    );
+    amenityCheckboxes.forEach((checkbox) => {
+      checkbox.addEventListener("change", function () {
+        window.updateFilters(
+          "amenities",
+          Array.from(
+            document.querySelectorAll(".amenity-checkbox input:checked")
+          ).map((cb) => cb.value)
+        );
+      });
+    });
+  });
+
+  // الحصول على أيقونة المرفق
+  function getAmenityIcon(amenity) {
+    const icons = {
+      wifi: "wifi-line",
+      parking: "parking-line",
+      ac: "temp-hot-line",
+      kitchen: "restaurant-2-line",
+    };
+    return icons[amenity] || "checkbox-circle-line";
+  }
+
+  // تحويل أول حرف إلى كبير
+  function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
+
+  // إضافة أنماط CSS للعناصر الجديدة
+  const propertyStyles = document.createElement("style");
+  propertyStyles.textContent = `
+    .property-info {
+        display: flex;
+        gap: 15px;
+        margin: 10px 0;
+    }
+
+    .property-info span {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        color: var(--text-color);
+        font-size: 14px;
+    }
+
+    .property-amenities {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+    }
+
+    .amenity-tag {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        padding: 4px 8px;
+        background: var(--light-bg);
+        border-radius: 4px;
+        font-size: 12px;
+        color: var(--text-color);
+    }
+
+    .amenity-tag i {
+        color: var(--primary-color);
+        font-size: 14px;
+    }
+
+    /* تحسين شريط نطاق السعر */
+    #priceRange {
+        -webkit-appearance: none;
+        width: 100%;
+        height: 6px;
+        background: #e0e0e0;
+        border-radius: 3px;
+        outline: none;
+    }
+
+    #priceRange::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        width: 20px;
+        height: 20px;
+        background: var(--primary-color);
+        border-radius: 50%;
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        transition: all 0.3s ease;
+    }
+
+    #priceRange::-webkit-slider-thumb:hover {
+        transform: scale(1.1);
+    }
+
+    #priceValue {
+        font-weight: 600;
+        color: var(--primary-color);
+    }
+
+    .no-results {
+        text-align: center;
+        padding: 40px;
+        background: var(--white);
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+
+    .no-results i {
+        font-size: 48px;
+        color: var(--primary-color);
+        margin-bottom: 15px;
+    }
+
+    .no-results h3 {
+        font-size: 20px;
+        color: var(--text-dark);
+        margin-bottom: 10px;
+    }
+
+    .no-results p {
+        color: var(--text-light);
+    }
+  `;
+  document.head.appendChild(propertyStyles);
 });
