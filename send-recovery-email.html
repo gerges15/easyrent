@@ -3,15 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Phone Verification - EasyRent</title>
+    <title>Account Recovery - EasyRent</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@400;500;600&family=Cairo:wght@400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <!-- Firebase App (the core Firebase SDK) -->
-    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-app.js"></script>
-    <!-- Firebase Auth -->
-    <script src="https://www.gstatic.com/firebasejs/9.x.x/firebase-auth.js"></script>
+
+    <!-- Firebase App (v9 compat) -->
+    <!-- ✅ السكربتات المطلوبة لاستخدام `firebase` بالطريقة التقليدية -->
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
+    <script>
+      // تهيئة Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyBfbTXLfkcHCPOcqL4ydfyjToZB-u78wF8",
+        authDomain: "easyrent-c855f.firebaseapp.com",
+        projectId: "easyrent-c855f",
+        storageBucket: "easyrent-c855f.appspot.com",
+        messagingSenderId: "721562923241",
+        appId: "1:721562923241:web:eb42356bee20b2ba134078",
+        measurementId: "G-RGMHSSPZSJ",
+      };
+
+      // ⚠️ يجب أن يتم بعد تحميل السكربتات أعلاه
+      firebase.initializeApp(firebaseConfig);
+    </script>
 
     <style>
       :root {
@@ -37,24 +54,25 @@
       }
 
       body {
-        font-family: "Poppins", sans-serif;
+        font-family: "Poppins", "Cairo", sans-serif;
         background: linear-gradient(135deg, #f6f9fc 0%, #eef2f7 100%);
         min-height: 100vh;
         display: flex;
         flex-direction: column;
-        padding: 20px;
+        padding: 16px;
       }
 
       .container {
-        max-width: 450px;
-        margin: 40px auto;
-        padding: 2.5rem;
+        max-width: 480px;
+        margin: 20px auto;
+        padding: 2rem;
         text-align: center;
         background-color: #ffffff;
-        border-radius: 20px;
+        border-radius: 24px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05),
           0 20px 48px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.1);
         position: relative;
+        overflow: hidden;
       }
 
       .container::before {
@@ -69,15 +87,15 @@
 
       .logo {
         margin-bottom: 24px;
-      }
-
-      .logo img {
-        max-width: 150px;
-        height: auto;
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary-color);
+        text-decoration: none;
+        display: inline-block;
         transition: transform 0.3s ease;
       }
 
-      .logo img:hover {
+      .logo:hover {
         transform: scale(1.05);
       }
 
@@ -86,26 +104,66 @@
         font-weight: 600;
         margin-bottom: 16px;
         color: var(--text-primary);
+        line-height: 1.2;
       }
 
       .subtitle {
         font-size: 1rem;
         color: var(--text-secondary);
         margin-bottom: 24px;
+        line-height: 1.5;
       }
 
-      .email-display {
-        font-size: 1rem;
-        font-weight: 500;
+      .input-group {
         margin-bottom: 24px;
-        padding: 12px;
-        background-color: var(--background-light);
-        border-radius: 12px;
+      }
+
+      .input-label {
+        display: block;
+        text-align: start;
+        margin-bottom: 8px;
+        color: var(--text-primary);
+        font-weight: 500;
+      }
+
+      .input-field {
+        width: 100%;
+        padding: 12px 16px;
         border: 2px solid var(--border-color);
+        border-radius: 12px;
+        font-size: 1rem;
+        transition: all 0.3s ease;
+        background-color: var(--background-light);
+        direction: ltr;
+      }
+
+      .input-field:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        background-color: #ffffff;
+        box-shadow: 0 0 0 4px var(--primary-light);
+      }
+
+      .input-field.error {
+        border-color: var(--error-border);
+        background-color: var(--error-bg);
+      }
+
+      .contact-display {
+        font-size: 1.125rem;
+        font-weight: 500;
+        margin: 24px 0;
+        padding: 16px;
+        background-color: var(--background-light);
+        border-radius: 16px;
+        border: 2px solid var(--border-color);
+        transition: all 0.3s ease;
+        display: none;
+        direction: ltr;
       }
 
       .verification-form {
-        margin-top: 24px;
+        display: none;
       }
 
       .verification-code {
@@ -117,9 +175,10 @@
 
       .code-input {
         width: 40px;
-        height: 40px;
+        height: 48px;
         text-align: center;
         font-size: 20px;
+        font-weight: 600;
         border: 2px solid var(--border-color);
         border-radius: 12px;
         background-color: var(--background-light);
@@ -142,26 +201,29 @@
         background-color: var(--error-bg);
       }
 
-      .next-btn {
+      .verify-btn,
+      .send-code-btn {
         background-color: var(--primary-color);
         color: white;
         border: none;
         border-radius: 12px;
-        padding: 12px 24px;
+        padding: 14px 24px;
         font-size: 1rem;
-        font-weight: 500;
+        font-weight: 600;
         cursor: pointer;
         width: 100%;
         transition: all 0.3s ease;
       }
 
-      .next-btn:hover:not(:disabled) {
+      .verify-btn:hover:not(:disabled),
+      .send-code-btn:hover:not(:disabled) {
         background-color: var(--primary-hover);
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(37, 99, 235, 0.2);
       }
 
-      .next-btn:disabled {
+      .verify-btn:disabled,
+      .send-code-btn:disabled {
         background-color: #93c5fd;
         color: #ffffff;
         cursor: not-allowed;
@@ -172,6 +234,7 @@
         color: var(--primary-color);
         cursor: pointer;
         font-size: 0.875rem;
+        font-weight: 500;
       }
 
       .try-another-way:hover {
@@ -182,29 +245,25 @@
         color: var(--error-text);
         font-size: 0.875rem;
         margin-top: 8px;
-        padding: 8px;
+        padding: 8px 12px;
         background-color: var(--error-bg);
         border: 1px solid var(--error-border);
         border-radius: 8px;
         display: none;
       }
 
-      .success-message {
-        color: var(--success-text);
+      .timer {
         font-size: 0.875rem;
-        margin-top: 8px;
-        padding: 8px;
-        background-color: var(--success-bg);
-        border: 1px solid var(--success-border);
-        border-radius: 8px;
+        color: var(--text-secondary);
+        margin-top: 16px;
       }
 
       .footer {
         background-color: var(--background-light);
-        padding: 24px;
+        padding: 20px;
         text-align: center;
         color: var(--text-secondary);
-        font-size: 0.75rem;
+        font-size: 0.875rem;
         border-top: 1px solid var(--border-color);
         margin-top: auto;
       }
@@ -220,6 +279,7 @@
         color: var(--text-secondary);
         text-decoration: none;
         transition: color 0.3s ease;
+        font-weight: 500;
       }
 
       .footer-links a:hover {
@@ -229,20 +289,65 @@
       [dir="rtl"] {
         text-align: right;
       }
+
+      [dir="rtl"] .input-label {
+        text-align: end;
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 12px;
+          background: #ffffff;
+        }
+
+        .container {
+          margin: 0 auto;
+          padding: 1.5rem;
+          box-shadow: none;
+          border-radius: 0;
+        }
+
+        .verification-code {
+          gap: 6px;
+        }
+
+        .code-input {
+          width: 36px;
+          height: 44px;
+          font-size: 18px;
+        }
+
+        .footer {
+          margin-top: 24px;
+          padding: 16px;
+        }
+      }
     </style>
   </head>
   <body>
     <div class="container">
-      <div class="logo">
-        <img src="assets/logo.png" alt="EasyRent Logo" />
-      </div>
+      <a href="/" class="logo">EasyRent</a>
 
-      <h1 id="title">Forgot password?</h1>
+      <h1 id="title">Account Recovery</h1>
       <div class="subtitle" id="subtitle">
-        Enter the verification code sent to your recovery email
+        Enter your phone number to receive a verification code
       </div>
 
-      <div class="email-display" id="displayEmail">r*******n@gmail.com</div>
+      <div id="contactForm">
+        <div class="input-group">
+          <label class="input-label" id="contactLabel">Phone Number</label>
+          <input
+            type="tel"
+            class="input-field"
+            id="contactInput"
+            placeholder="Enter your phone number"
+          />
+          <div class="error-message" id="contactError"></div>
+        </div>
+        <button class="send-code-btn" id="sendCodeBtn">Send Code</button>
+      </div>
+
+      <div class="contact-display" id="contactDisplay"></div>
 
       <form id="verificationForm" class="verification-form">
         <div class="verification-code">
@@ -290,7 +395,9 @@
           />
         </div>
 
-        <button type="submit" class="next-btn" id="verifyBtn" disabled>
+        <div class="timer" id="timer"></div>
+
+        <button type="submit" class="verify-btn" id="verifyBtn" disabled>
           Verify Code
         </button>
 
@@ -299,8 +406,10 @@
         </div>
       </form>
 
-      <div class="try-another-way" id="tryAnotherWay">Didn't get the code?</div>
+      <div class="try-another-way" id="tryAnotherWay">Resend code</div>
     </div>
+
+    <div id="recaptcha-container"></div>
 
     <div class="footer">
       <div class="footer-links">
@@ -312,62 +421,86 @@
     </div>
 
     <script>
-      class EmailVerification {
+      class AccountRecovery {
         constructor() {
           this.elements = {
             form: document.getElementById("verificationForm"),
+            contactForm: document.getElementById("contactForm"),
+            contactInput: document.getElementById("contactInput"),
+            contactLabel: document.getElementById("contactLabel"),
+            contactError: document.getElementById("contactError"),
+            sendCodeBtn: document.getElementById("sendCodeBtn"),
             codeInputs: document.querySelectorAll(".code-input"),
             verifyBtn: document.getElementById("verifyBtn"),
             errorMessage: document.getElementById("errorMessage"),
             tryAnother: document.getElementById("tryAnotherWay"),
             langToggle: document.getElementById("languageToggle"),
+            timer: document.getElementById("timer"),
+            contactDisplay: document.getElementById("contactDisplay"),
           };
 
           this.translations = {
             en: {
-              title: "Forgot password?",
+              title: "Account Recovery",
               subtitle:
-                "Enter the verification code sent to your recovery email",
+                "Enter your phone number to receive a verification code",
               verify: "Verify Code",
+              sendCode: "Send Code",
               error: "Invalid verification code. Please try again.",
-              tryAnother: "Didn't get the code?",
+              tryAnother: "Resend code",
               help: "Help",
               privacy: "Privacy",
               terms: "Terms",
               language: "العربية",
+              phoneLabel: "Phone Number",
+              phonePlaceholder: "Enter your phone number",
+              invalidPhone: "Please enter a valid phone number",
+              resendIn: "Resend code in",
+              seconds: "seconds",
             },
             ar: {
-              title: "هل نسيت كلمة المرور؟",
-              subtitle: "أدخل رمز التحقق المرسل إلى بريدك الإلكتروني للاسترداد",
+              title: "استعادة الحساب",
+              subtitle: "أدخل رقم هاتفك لتلقي رمز التحقق",
               verify: "تحقق من الرمز",
+              sendCode: "إرسال الرمز",
               error: "رمز التحقق غير صحيح. حاول مرة أخرى.",
-              tryAnother: "لم يصلك الرمز؟",
+              tryAnother: "إعادة إرسال الرمز",
               help: "المساعدة",
               privacy: "الخصوصية",
               terms: "الشروط",
               language: "English",
+              phoneLabel: "رقم الهاتف",
+              phonePlaceholder: "أدخل رقم هاتفك",
+              invalidPhone: "يرجى إدخال رقم هاتف صحيح",
+              resendIn: "إعادة الإرسال خلال",
+              seconds: "ثانية",
             },
           };
 
           this.currentLang = localStorage.getItem("lang") || "en";
+          this.timerDuration = 60;
           this.setupEventListeners();
           this.applyTranslations();
-          this.initializeEmailDisplay();
         }
 
         setupEventListeners() {
-          // Handle code inputs
+          this.elements.contactInput.addEventListener("input", () => {
+            this.validateContact();
+          });
+
+          this.elements.sendCodeBtn.addEventListener("click", () => {
+            this.sendCode();
+          });
+
           this.elements.codeInputs.forEach((input, index) => {
             input.addEventListener("input", (e) => {
               e.target.value = e.target.value.replace(/[^0-9]/g, "");
-
               if (
                 e.target.value &&
                 index < this.elements.codeInputs.length - 1
               ) {
                 this.elements.codeInputs[index + 1].focus();
               }
-
               this.checkVerificationCode();
             });
 
@@ -382,7 +515,6 @@
               const pastedText = e.clipboardData
                 .getData("text")
                 .replace(/[^0-9]/g, "");
-
               for (
                 let i = 0;
                 i <
@@ -394,28 +526,139 @@
                   this.elements.codeInputs[i + 1].focus();
                 }
               }
-
               this.checkVerificationCode();
             });
           });
 
-          // Handle form submission
           this.elements.form.addEventListener("submit", (e) => {
             e.preventDefault();
             this.verifyCode();
           });
 
-          // Language toggle
           this.elements.langToggle.addEventListener("click", () => {
             this.currentLang = this.currentLang === "en" ? "ar" : "en";
             localStorage.setItem("lang", this.currentLang);
             this.applyTranslations();
           });
 
-          // Try another way
           this.elements.tryAnother.addEventListener("click", () => {
-            window.location.href = "another-way.html";
+            if (this.timerDuration === 0) {
+              this.resendCode();
+            }
           });
+        }
+
+        validateContact() {
+          const phone = this.elements.contactInput.value.trim();
+          const t = this.translations[this.currentLang];
+          // تحقق من رقم الهاتف بصيغة +123456789 أو أرقام فقط مع المسافات والواصلات
+          const isValid = /^\+?[\d\s-]{8,}$/.test(phone);
+          this.elements.contactError.textContent = t.invalidPhone;
+          this.elements.contactError.style.display = isValid ? "none" : "block";
+          this.elements.sendCodeBtn.disabled = !isValid;
+          return isValid;
+        }
+
+        async sendCode() {
+          if (!this.validateContact()) return;
+
+          try {
+            this.showLoading(true);
+            const phone = this.elements.contactInput.value.trim();
+
+            // تهيئة reCAPTCHA invisibly
+            window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+              "sendCodeBtn",
+              { size: "invisible" }
+            );
+            const appVerifier = window.recaptchaVerifier;
+
+            // إرسال رمز التحقق عبر SMS فقط
+            const confirmationResult = await firebase
+              .auth()
+              .signInWithPhoneNumber(phone, appVerifier);
+            this.confirmationResult = confirmationResult;
+
+            // إخفاء فورم الإدخال، عرض رقم الهاتف مع إخفاء جزء منه
+            this.elements.contactForm.style.display = "none";
+            this.elements.contactDisplay.textContent = this.maskContact(phone);
+            this.elements.contactDisplay.style.display = "block";
+
+            // عرض فورم إدخال الرمز
+            this.elements.form.style.display = "block";
+
+            this.startResendTimer();
+            this.elements.codeInputs[0].focus();
+          } catch (error) {
+            this.elements.contactError.textContent = error.message;
+            this.elements.contactError.style.display = "block";
+          } finally {
+            this.showLoading(false);
+          }
+        }
+
+        async verifyCode() {
+          const code = Array.from(this.elements.codeInputs)
+            .map((i) => i.value)
+            .join("");
+          try {
+            this.showLoading();
+            const result = await this.confirmationResult.confirm(code);
+            const user = result.user;
+
+            // إعادة التوجيه مع تمرير رقم الهاتف والطريقة sms
+            window.location.href = `reset-password.html?contact=${encodeURIComponent(
+              user.phoneNumber
+            )}&method=sms`;
+          } catch (error) {
+            this.showError();
+            this.clearInputs();
+          } finally {
+            this.hideLoading();
+          }
+        }
+
+        startResendTimer() {
+          this.timerDuration = 60;
+          this.elements.tryAnother.style.opacity = "0.5";
+          this.elements.tryAnother.style.cursor = "not-allowed";
+
+          const updateTimer = () => {
+            const t = this.translations[this.currentLang];
+            if (this.timerDuration > 0) {
+              this.elements.timer.textContent = `${t.resendIn} ${this.timerDuration} ${t.seconds}`;
+              this.timerDuration--;
+              setTimeout(updateTimer, 1000);
+            } else {
+              this.elements.timer.textContent = "";
+              this.elements.tryAnother.style.opacity = "1";
+              this.elements.tryAnother.style.cursor = "pointer";
+            }
+          };
+
+          updateTimer();
+        }
+
+        showLoading(isSending = false) {
+          const t = this.translations[this.currentLang];
+          if (isSending) {
+            this.elements.sendCodeBtn.disabled = true;
+            this.elements.sendCodeBtn.textContent = "Sending...";
+          } else {
+            this.elements.verifyBtn.disabled = true;
+            this.elements.verifyBtn.textContent = "Verifying...";
+          }
+        }
+
+        hideLoading(isSending = false) {
+          const t = this.translations[this.currentLang];
+          if (isSending) {
+            this.elements.sendCodeBtn.disabled = false;
+            this.elements.sendCodeBtn.textContent = t.sendCode;
+          } else {
+            this.elements.verifyBtn.disabled = false;
+            this.elements.verifyBtn.textContent = t.verify;
+          }
         }
 
         checkVerificationCode() {
@@ -432,57 +675,6 @@
           }
         }
 
-        async verifyCode() {
-          const code = Array.from(this.elements.codeInputs)
-            .map((input) => input.value)
-            .join("");
-
-          const email = this.getEmailFromUrl();
-
-          try {
-            this.showLoading();
-
-            const response = await fetch(
-              "https://easyrentapi0.runasp.net/api/Auth/verify-code",
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                  email: email,
-                  verificationCode: code,
-                }),
-              }
-            );
-
-            if (!response.ok) {
-              throw new Error("Invalid code");
-            }
-
-            // Verification successful
-            window.location.href = `reset-password.html?email=${encodeURIComponent(
-              email
-            )}`;
-          } catch (error) {
-            this.showError();
-            this.clearInputs();
-          } finally {
-            this.hideLoading();
-          }
-        }
-
-        showLoading() {
-          this.elements.verifyBtn.disabled = true;
-          this.elements.verifyBtn.textContent = "Verifying...";
-        }
-
-        hideLoading() {
-          this.elements.verifyBtn.disabled = false;
-          this.elements.verifyBtn.textContent =
-            this.translations[this.currentLang].verify;
-        }
-
         showError() {
           this.elements.errorMessage.style.display = "block";
           this.elements.codeInputs.forEach((input) =>
@@ -493,15 +685,10 @@
         clearInputs() {
           this.elements.codeInputs.forEach((input) => {
             input.value = "";
-            input.classList.add("error");
+            input.classList.remove("error");
           });
           this.elements.codeInputs[0].focus();
-
-          setTimeout(() => {
-            this.elements.codeInputs.forEach((input) => {
-              input.classList.remove("error");
-            });
-          }, 2000);
+          this.elements.errorMessage.style.display = "none";
         }
 
         applyTranslations() {
@@ -513,38 +700,31 @@
           document.getElementById("title").textContent = t.title;
           document.getElementById("subtitle").textContent = t.subtitle;
           this.elements.verifyBtn.textContent = t.verify;
+          this.elements.sendCodeBtn.textContent = t.sendCode;
           this.elements.errorMessage.textContent = t.error;
           this.elements.tryAnother.textContent = t.tryAnother;
           document.getElementById("helpLink").textContent = t.help;
           document.getElementById("privacyLink").textContent = t.privacy;
           document.getElementById("termsLink").textContent = t.terms;
           this.elements.langToggle.textContent = t.language;
+          this.elements.contactLabel.textContent = t.phoneLabel;
+          this.elements.contactInput.placeholder = t.phonePlaceholder;
+
+          if (this.timerDuration > 0) {
+            this.elements.timer.textContent = `${t.resendIn} ${this.timerDuration} ${t.seconds}`;
+          }
         }
 
-        initializeEmailDisplay() {
-          const email = this.getEmailFromUrl();
-          document.getElementById("displayEmail").textContent =
-            this.maskEmail(email);
-        }
-
-        getEmailFromUrl() {
-          const urlParams = new URLSearchParams(window.location.search);
-          return urlParams.get("email") || "recoveryemail@gmail.com";
-        }
-
-        maskEmail(email) {
-          const [username, domain] = email.split("@");
-          const maskedUsername =
-            username.charAt(0) +
-            "*".repeat(username.length - 2) +
-            username.charAt(username.length - 1);
-          return maskedUsername + "@" + domain;
+        maskContact(phone) {
+          // إخفاء جزء من رقم الهاتف للحماية
+          return (
+            phone.slice(0, 3) + "*".repeat(phone.length - 7) + phone.slice(-4)
+          );
         }
       }
 
-      // Initialize when DOM is loaded
       document.addEventListener("DOMContentLoaded", () => {
-        new EmailVerification();
+        new AccountRecovery();
       });
     </script>
   </body>

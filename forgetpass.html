@@ -47,8 +47,7 @@
         padding: 2.5rem;
         border-radius: 20px;
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05),
-                    0 20px 48px rgba(0, 0, 0, 0.05),
-                    0 1px 4px rgba(0, 0, 0, 0.1);
+          0 20px 48px rgba(0, 0, 0, 0.05), 0 1px 4px rgba(0, 0, 0, 0.1);
         width: 100%;
         max-width: 440px;
         position: relative;
@@ -180,8 +179,12 @@
       }
 
       @keyframes spin {
-        0% { transform: translate(-50%, -50%) rotate(0deg); }
-        100% { transform: translate(-50%, -50%) rotate(360deg); }
+        0% {
+          transform: translate(-50%, -50%) rotate(0deg);
+        }
+        100% {
+          transform: translate(-50%, -50%) rotate(360deg);
+        }
       }
 
       .btn.loading .spinner {
@@ -275,7 +278,8 @@
         <h2>Reset Password</h2>
       </div>
       <p class="description">
-        Enter your email address and we'll send you a code to reset your password.
+        Enter your email address and we'll send you a code to reset your
+        password.
       </p>
 
       <form id="forgotPasswordForm">
@@ -301,8 +305,18 @@
 
       <div class="back-to-login">
         <a href="login.html">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M10 19l-7-7m0 0l7-7m-7 7h18"
+            />
           </svg>
           Back to Login
         </a>
@@ -310,63 +324,68 @@
     </div>
 
     <script>
-      document.getElementById("forgotPasswordForm").addEventListener("submit", async function (e) {
-        e.preventDefault();
+      document
+        .getElementById("forgotPasswordForm")
+        .addEventListener("submit", async function (e) {
+          e.preventDefault();
 
-        const email = document.getElementById("email").value.trim();
-        const messageEl = document.getElementById("message");
-        const submitButton = document.getElementById("submitButton");
+          const email = document.getElementById("email").value.trim();
+          const messageEl = document.getElementById("message");
+          const submitButton = document.getElementById("submitButton");
 
-        // Reset message
-        messageEl.className = "message";
-        messageEl.textContent = "";
+          // Reset message
+          messageEl.className = "message";
+          messageEl.textContent = "";
 
-        if (!email) {
-          messageEl.className = "message error";
-          messageEl.textContent = "Please enter your email address.";
-          return;
-        }
-
-        // Show loading state
-        submitButton.disabled = true;
-        submitButton.classList.add("loading");
-
-        try {
-          // Store email in localStorage for the next page
-          localStorage.setItem("resetEmail", email);
-          
-          const res = await fetch("http://localhost:3000/api/send-code", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ email }),
-          });
-
-          const data = await res.json();
-
-          if (res.ok) {
-            messageEl.className = "message success";
-            messageEl.textContent = "Reset code sent! Check your email inbox.";
-
-            // Redirect after 2 seconds
-            setTimeout(() => {
-              window.location.href = "codeforgot.html";
-            }, 2000);
-          } else {
+          if (!email) {
             messageEl.className = "message error";
-            messageEl.textContent = data.message || "Failed to send reset code. Please try again.";
+            messageEl.textContent = "Please enter your email address.";
+            return;
           }
-        } catch (error) {
-          messageEl.className = "message error";
-          messageEl.textContent = "Network error. Please check your connection and try again.";
-          console.error("Error:", error);
-        } finally {
-          // Remove loading state
-          submitButton.disabled = false;
-          submitButton.classList.remove("loading");
-        }
-      });
+
+          // Show loading state
+          submitButton.disabled = true;
+          submitButton.classList.add("loading");
+
+          try {
+            // Store email in localStorage for the next page
+            localStorage.setItem("resetEmail", email);
+
+            const res = await fetch("http://localhost:3000/api/send-code", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({ email }),
+            });
+
+            const data = await res.json();
+
+            if (res.ok) {
+              messageEl.className = "message success";
+              messageEl.textContent =
+                "Reset code sent! Check your email inbox.";
+
+              // Redirect after 2 seconds
+              setTimeout(() => {
+                window.location.href = "codeforgot.html";
+              }, 2000);
+            } else {
+              messageEl.className = "message error";
+              messageEl.textContent =
+                data.message || "Failed to send reset code. Please try again.";
+            }
+          } catch (error) {
+            messageEl.className = "message error";
+            messageEl.textContent =
+              "Network error. Please check your connection and try again.";
+            console.error("Error:", error);
+          } finally {
+            // Remove loading state
+            submitButton.disabled = false;
+            submitButton.classList.remove("loading");
+          }
+        });
     </script>
   </body>
 </html>
