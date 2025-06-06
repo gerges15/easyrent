@@ -1,18 +1,32 @@
 // Add API base URL at the top of the file
 const API_BASE_URL = "https://easyrentapi0.runasp.net/api";
 
-// التحقق من تسجيل الدخول
+// التحقق من تسجيل الدخول وصلاحية التوكن
 function isAuthenticated() {
-  return !!localStorage.getItem("token");
+  const token = localStorage.getItem("token");
+  const user = localStorage.getItem("user");
+  return !!(token && user);
 }
 
 // التحقق من تسجيل الدخول وتوجيه المستخدم إلى صفحة تسجيل الدخول إذا لم يكن مسجلاً
 function checkAuthAndRedirect() {
   if (!isAuthenticated()) {
+    alert("يرجى تسجيل الدخول أولاً");
     window.location.href = "login.html";
     return false;
   }
   return true;
+}
+
+// الحصول على بيانات المستخدم
+function getUserData() {
+  try {
+    const userData = localStorage.getItem("user");
+    return userData ? JSON.parse(userData) : null;
+  } catch (error) {
+    console.error("Error parsing user data:", error);
+    return null;
+  }
 }
 
 // بيانات الوحدات يتم جلبها من API بدلاً من البيانات الثابتة
@@ -156,7 +170,7 @@ Features include:
 - Balcony
 - Female-Only Building`,
     location: "City Center, Minia - 1km from Minia University",
-    price: 1500,
+    price: 3500,
     type: "studio",
     images: [
       "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267",
@@ -172,7 +186,7 @@ Features include:
       "Study Area",
       "Balcony",
       "24/7 Security",
-      "Female Only",
+      "Male Only",
     ],
     availability: {
       availableFrom: "2024-09-01",
@@ -221,21 +235,10 @@ Features include:
   },
 ];
 
-// جلب الوحدات من API
-async function fetchUnits() {
-  try {
-    // في حالة نجاح الاتصال بال API، سنضيف الوحدات الجديدة إلى المصفوفة
-    const res = await fetch("https://easyrentapi0.runasp.net/api/Unit");
-    if (res.ok) {
-      const apiUnits = await res.json();
-      units = [...units, ...apiUnits]; // دمج الوحدات المحلية مع وحدات API
-    }
-    renderRooms(units);
-  } catch (error) {
-    console.error(error);
-    // في حالة فشل الاتصال بال API، سنعرض الوحدات المحلية على الأقل
-    renderRooms(units);
-  }
+// تحديث دالة جلب الوحدات لتستخدم البيانات المحلية فقط
+function fetchUnits() {
+  // استخدام البيانات المحلية مباشرة
+  renderRooms(units);
 }
 
 // دالة عرض الوحدات (الغرف) في الصفحة
@@ -253,13 +256,21 @@ function renderRooms(roomsToRender) {
     const roomCard = document.createElement("div");
     roomCard.className = "room-card";
 
-    // تأكد من وجود صور، استخدم صورة افتراضية إذا لم توجد
     const imageSrc =
       room.images && room.images.length > 0
         ? room.images[0]
         : "./images/default-room.jpg";
 
-    // استخدم بيانات من API (تعديل على الحقول حسب استجابة API الحقيقية)
+    // التحقق من حالة الغرفة (محجوزة أم لا)
+    const isBooked = room.isBooked || false;
+    const bookingPeriod = room.bookingPeriod || {};
+    const bookingStatus = isBooked
+      ? `<div class="booking-status booked">
+           محجوزة من ${new Date(bookingPeriod.startDate).toLocaleDateString()} 
+           إلى ${new Date(bookingPeriod.endDate).toLocaleDateString()}
+         </div>`
+      : '<div class="booking-status available">متاحة للحجز</div>';
+
     roomCard.innerHTML = `
       <img src="${imageSrc}" alt="${room.title || "Unit"}" class="room-image" />
       <div class="room-details">
@@ -270,6 +281,7 @@ function renderRooms(roomsToRender) {
         <p class="room-price">${Number(
           room.price
         ).toLocaleString()} EGP <span class="price-period">/شهر</span></p>
+        ${bookingStatus}
         <div class="room-features">
           ${renderFeatures(room.features || [])}
         </div>
@@ -277,9 +289,11 @@ function renderRooms(roomsToRender) {
           <button class="btn-view" onclick="openRoomDetails(${
             room.id
           })">تفاصيل الوحدة</button>
-          <button class="btn-book" onclick="openBookingModal(${
-            room.id
-          })">حجز الآن</button>
+          ${
+            !isBooked
+              ? `<button class="btn-book" onclick="openBookingModal(${room.id})">حجز الآن</button>`
+              : ""
+          }
         </div>
       </div>
     `;
@@ -293,23 +307,7 @@ function renderFeatures(features) {
   return features
     .slice(0, 4)
     .map((feature) => {
-      const icon = feature.includes("bed")
-        ? "fa-bed"
-        : feature.includes("m²")
-        ? "fa-ruler-combined"
-        : feature.includes("WiFi")
-        ? "fa-wifi"
-        : feature.includes("kitchen")
-        ? "fa-utensils"
-        : feature.includes("TV")
-        ? "fa-tv"
-        : feature.includes("bathroom")
-        ? "fa-bath"
-        : feature.includes("laundry")
-        ? "fa-tshirt"
-        : feature.includes("bike")
-        ? "fa-bicycle"
-        : "fa-check";
+      const icon = getFeatureIcon(feature);
       return `<span class="feature"><i class="fas ${icon}"></i> ${feature}</span>`;
     })
     .join("");
@@ -327,9 +325,7 @@ function filterRooms() {
     const locationMatch =
       !location ||
       (room.location && room.location.toLowerCase().includes(location));
-
     const priceMatch = room.price >= minPrice && room.price <= maxPrice;
-
     const typeMatch =
       !roomType || (room.type && room.type.toLowerCase() === roomType);
 
@@ -352,7 +348,7 @@ window.openRoomDetails = function (roomId) {
   document.getElementById("modalRoomDescription").textContent =
     room.description;
 
-  // Update gallery
+  // تحديث المعرض
   const galleryContainer = document.querySelector(".room-gallery");
   galleryContainer.innerHTML = "";
 
@@ -367,7 +363,7 @@ window.openRoomDetails = function (roomId) {
     });
   }
 
-  // Update features
+  // تحديث المميزات
   const featuresContainer = document.getElementById("modalRoomFeatures");
   featuresContainer.innerHTML = "";
   (room.features || []).forEach((feature) => {
@@ -378,9 +374,29 @@ window.openRoomDetails = function (roomId) {
     featuresContainer.appendChild(featureElement);
   });
 
-  // Update availability
+  // إضافة زر الحذف للغرف المحجوزة
+  const actionsContainer = document.querySelector(
+    "#roomDetailsModal .room-actions"
+  );
+  if (actionsContainer) {
+    actionsContainer.innerHTML = `
+      <button class="btn-book" onclick="openBookingModal(${room.id})">
+        ${room.isBooked ? "تم الحجز" : "حجز الآن"}
+      </button>
+      ${
+        room.isBooked
+          ? `
+        <button class="btn-danger" onclick="deleteUnit(${room.id})">
+          حذف الغرفة
+        </button>
+      `
+          : ""
+      }
+    `;
+  }
+
+  // تحديث حالة الحجز
   if (room.availability) {
-    // Find the availability paragraphs by their content
     const availabilityParagraphs = document.querySelectorAll(
       "#roomDetailsModal p"
     );
@@ -393,7 +409,7 @@ window.openRoomDetails = function (roomId) {
     });
   }
 
-  // Load reviews
+  // تحميل التعليقات
   loadFeedbacks(roomId);
 
   document.getElementById("roomDetailsModal").style.display = "flex";
@@ -401,74 +417,22 @@ window.openRoomDetails = function (roomId) {
 
 // دالة مساعدة للحصول على أيقونة الميزة
 function getFeatureIcon(feature) {
-  if (feature.includes("غرف نوم")) return "fa-bed";
+  if (feature.includes("bed")) return "fa-bed";
   if (feature.includes("m²")) return "fa-ruler-combined";
   if (feature.includes("WiFi")) return "fa-wifi";
-  if (feature.includes("مطبخ")) return "fa-utensils";
-  if (feature.includes("تكييف")) return "fa-snowflake";
-  if (feature.includes("غسالة")) return "fa-tshirt";
-  if (feature.includes("ثلاجة")) return "fa-refrigerator";
-  if (feature.includes("تلفاز")) return "fa-tv";
-  if (feature.includes("شرفة")) return "fa-door-open";
-  if (feature.includes("أمن")) return "fa-shield-alt";
+  if (feature.includes("kitchen")) return "fa-utensils";
+  if (feature.includes("TV")) return "fa-tv";
+  if (feature.includes("bathroom")) return "fa-bath";
+  if (feature.includes("laundry")) return "fa-tshirt";
+  if (feature.includes("security")) return "fa-shield-alt";
+  if (feature.includes("balcony")) return "fa-door-open";
   return "fa-check";
-}
-
-// فتح نافذة الحجز
-function openBookingModal(roomId) {
-  if (!checkAuthAndRedirect()) return;
-  bookRoom(roomId);
 }
 
 // إغلاق النوافذ المنبثقة
 function closeModal(modalId) {
   document.getElementById(modalId).style.display = "none";
 }
-
-// معالجة إرسال نموذج الحجز
-document
-  .querySelector(".booking-form")
-  .addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    if (!checkAuthAndRedirect()) return;
-
-    const bookingData = {
-      roomId: document.getElementById("roomId").value,
-      fullName: document.getElementById("fullName").value,
-      email: document.getElementById("email").value,
-      phone: document.getElementById("phone").value,
-      studentId: document.getElementById("studentId").value,
-      university: document.getElementById("university").value,
-      moveInDate: document.getElementById("moveInDate").value,
-      duration: document.getElementById("duration").value,
-      specialRequests: document.getElementById("specialRequests").value,
-    };
-
-    try {
-      const response = await fetch(
-        "https://easyrentapi0.runasp.net/api/Booking",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify(bookingData),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("فشل في إرسال طلب الحجز");
-      }
-
-      alert("تم إرسال طلب الحجز بنجاح!");
-      closeModal("bookingModal");
-    } catch (error) {
-      console.error("خطأ في إرسال طلب الحجز:", error);
-      alert("حدث خطأ في إرسال طلب الحجز. يرجى المحاولة مرة أخرى.");
-    }
-  });
 
 // معالجة نموذج البحث
 document.getElementById("searchform").addEventListener("submit", function (e) {
@@ -492,7 +456,6 @@ if (student) {
   document.getElementById("fullName").value = student.name || "";
   document.getElementById("email").value = student.email || "";
   document.getElementById("university").value = student.universityName || "";
-  // يمكنك إضافة المزيد حسب الحقول المتوفرة لديك
 }
 
 // تحميل الوحدات عند تحميل الصفحة
@@ -500,173 +463,54 @@ fetchUnits();
 
 // ********* جزء التعليقات (Feedback) **********
 
-// إرسال التعليق
-async function sendFeedback(comment, rating, unitId) {
-  if (!isAuthenticated()) {
-    window.location.href = "login.html";
-    return;
-  }
-
+// دالة لجلب تفاصيل تعليق معين
+async function getFeedbackDetails(feedbackId) {
   try {
-    const token = localStorage.getItem("token");
-    const userData = getUserData();
-
-    const feedbackData = {
-      comment: comment || "",
-      rating: rating || 1,
-      userId: userData?.id,
-      unitId: unitId,
-    };
-
-    const response = await fetch(`${API_BASE_URL}/Feedback`, {
-      method: "POST",
+    const response = await fetch(`${API_BASE_URL}/Feedback/${feedbackId}`, {
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
-      body: JSON.stringify(feedbackData),
     });
 
     if (!response.ok) {
-      throw new Error("Failed to submit review");
-    }
-
-    // Clear form
-    document.getElementById("rating").value = "1";
-    document.getElementById("commentInput").value = "";
-    document
-      .querySelectorAll(".star")
-      .forEach((star) => star.classList.remove("active"));
-
-    // Show success message
-    alert("Thank you for your review!");
-
-    // Refresh feedback list
-    await loadFeedbacks(unitId);
-  } catch (error) {
-    console.error("Error submitting review:", error);
-    alert("Unable to submit review. Please try again later.");
-  }
-}
-
-// جلب التعليقات
-async function fetchFeedback() {
-  try {
-    const response = await fetch(
-      "https://easyrentapi0.runasp.net/api/Feedbacks",
-      {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error("فشل في جلب التعليقات");
+      throw new Error("Failed to get feedback details");
     }
 
     return await response.json();
   } catch (error) {
-    console.error("خطأ في جلب التعليقات:", error);
-    return [];
+    console.error("Error getting feedback details:", error);
+    return null;
   }
 }
 
-// معالجة إضافة التعليق
-document
-  .getElementById("feedbackForm")
-  .addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    if (!checkAuthAndRedirect()) return;
-
-    const comment = document.getElementById("commentInput").value.trim();
-    const rating = parseInt(document.getElementById("rating").value) || 1;
-    const userData = JSON.parse(localStorage.getItem("user"));
-
-    if (!userData) {
-      alert("يرجى تسجيل الدخول أولاً");
-      window.location.href = "login.html";
-      return;
-    }
-
-    if (!comment) {
-      alert("يرجى إدخال تعليق");
-      return;
-    }
-
-    const currentRoomId = getCurrentRoomId();
-    const studentId = userData.id || 0;
-
-    try {
-      const response = await fetch(
-        "https://easyrentapi0.runasp.net/api/Feedbacks",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({
-            comment: comment,
-            rating: rating,
-            studentId: studentId,
-            unitId: currentRoomId,
-          }),
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("فشل في إرسال التعليق");
-      }
-
-      alert("تم إرسال تعليقك بنجاح!");
-
-      // إعادة تعيين النموذج
-      document.getElementById("commentInput").value = "";
-      document.getElementById("rating").value = "1";
-      document
-        .querySelectorAll(".star")
-        .forEach((s) => s.classList.remove("active"));
-
-      // تحديث قائمة التعليقات
-      await loadFeedbacks(currentRoomId);
-    } catch (error) {
-      console.error("خطأ في إرسال التعليق:", error);
-      alert("حدث خطأ في إرسال التعليق. يرجى المحاولة مرة أخرى.");
-    }
-  });
-
-// تحميل التعليقات للوحدة
-async function loadFeedbacks(unitId) {
+// دالة لحذف تعليق
+async function deleteFeedback(feedbackId) {
   try {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      document.getElementById("feedbackContainer").innerHTML =
-        '<p style="text-align: center; color: #666;">Please login to view reviews</p>';
-      return;
-    }
-
-    if (!unitId) {
-      console.warn("No unit ID provided for feedback loading");
-      document.getElementById("feedbackContainer").innerHTML =
-        '<p style="text-align: center; color: #666;">No reviews available</p>';
-      return;
-    }
-
-    const response = await fetch(
-      `${API_BASE_URL}/Feedbacks/GetByUnitId/${unitId}`,
-      {
-        method: "GET",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const response = await fetch(`${API_BASE_URL}/Feedback/${feedbackId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    });
 
     if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
+      throw new Error("Failed to delete feedback");
+    }
+
+    return true;
+  } catch (error) {
+    console.error("Error deleting feedback:", error);
+    return false;
+  }
+}
+
+// تحديث دالة تحميل التعليقات لتشمل زر الحذف للمستخدم صاحب التعليق
+async function loadFeedbacks(unitId) {
+  try {
+    const response = await fetch(`${API_BASE_URL}/Feedback?unitId=${unitId}`);
+
+    if (!response.ok) {
+      throw new Error("Failed to load feedbacks");
     }
 
     const feedbacks = await response.json();
@@ -674,79 +518,177 @@ async function loadFeedbacks(unitId) {
 
     if (!feedbacks || feedbacks.length === 0) {
       container.innerHTML =
-        '<p style="text-align: center; color: #666;">No reviews yet</p>';
+        '<p style="text-align: center; color: #666;">لا توجد تعليقات بعد</p>';
       return;
     }
 
     container.innerHTML = feedbacks
       .map(
         (feedback) => `
-      <div class="feedback-item">
-        <div class="feedback-header">
-          <div class="feedback-rating">
-            ${Array(5)
-              .fill("★")
-              .map(
-                (star, index) =>
-                  `<span style="color: ${
-                    index < feedback.rating ? "#ffd700" : "#ddd"
-                  }">${star}</span>`
-              )
-              .join("")}
+          <div class="feedback-item">
+            <div class="feedback-header">
+              <div class="feedback-rating">
+                ${Array(5)
+                  .fill("★")
+                  .map(
+                    (star, index) =>
+                      `<span style="color: ${
+                        index < feedback.rating ? "#ffd700" : "#ddd"
+                      }">${star}</span>`
+                  )
+                  .join("")}
+              </div>
+              <div class="feedback-date">${new Date(
+                feedback.createdAt || feedback.date
+              ).toLocaleDateString()}</div>
+            </div>
+            <div class="feedback-content">
+              <div class="feedback-comment">${feedback.comment || ""}</div>
+            </div>
           </div>
-          <div class="feedback-date">${new Date(
-            feedback.createdAt || feedback.date || new Date()
-          ).toLocaleDateString()}</div>
-        </div>
-        <div class="feedback-comment">${feedback.comment || ""}</div>
-      </div>
-    `
+        `
       )
       .join("");
   } catch (error) {
     console.error("Error loading feedbacks:", error);
-    document.getElementById("feedbackContainer").innerHTML =
-      '<p style="text-align: center; color: #666;">Unable to load reviews at this time. Please try again later.</p>';
+    const container = document.getElementById("feedbackContainer");
+    container.innerHTML =
+      '<p style="text-align: center; color: #666;">تعذر تحميل التعليقات حالياً.</p>';
   }
 }
 
-// تفعيل النجوم
-document.addEventListener("DOMContentLoaded", function () {
+// دالة معالجة حذف التعليق
+window.handleDeleteFeedback = async function (feedbackId) {
+  if (!confirm("هل أنت متأكد من حذف هذا التعليق؟")) {
+    return;
+  }
+
+  const deleted = await deleteFeedback(feedbackId);
+  if (deleted) {
+    // حذف التعليق من واجهة المستخدم
+    const feedbackElement = document.getElementById(`feedback-${feedbackId}`);
+    if (feedbackElement) {
+      feedbackElement.remove();
+    }
+    alert("تم حذف التعليق بنجاح");
+  } else {
+    alert("فشل في حذف التعليق");
+  }
+};
+
+// جعل الدوال متاحة عالمياً
+window.getFeedbackDetails = getFeedbackDetails;
+window.deleteFeedback = deleteFeedback;
+window.loadFeedbacks = loadFeedbacks;
+
+// إرسال التعليق
+async function submitFeedback(event) {
+  event.preventDefault();
+
+  const comment = document.getElementById("commentInput").value.trim();
+  const rating = parseInt(document.getElementById("rating").value) || 1;
+  const currentRoomId = getCurrentRoomId();
+
+  if (!comment) {
+    alert("يرجى كتابة تعليق");
+    return;
+  }
+
+  try {
+    const response = await fetch(`${API_BASE_URL}/Feedback`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        comment,
+        rating,
+        unitId: currentRoomId,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error("فشل في إرسال التعليق");
+    }
+
+    alert("✅ تم إرسال تعليقك بنجاح!");
+
+    // إعادة تعيين النموذج
+    document.getElementById("feedbackForm").reset();
+    document
+      .querySelectorAll(".star")
+      .forEach((s) => s.classList.remove("active"));
+
+    // تحديث قائمة التعليقات
+    await loadFeedbacks(currentRoomId);
+  } catch (error) {
+    console.error("❌ خطأ في إرسال التعليق:", error);
+    alert("حدث خطأ في إرسال التعليق. يرجى المحاولة مرة أخرى.");
+  }
+}
+
+// تهيئة نظام التقييم بالنجوم
+function initializeStarRating() {
   const stars = document.querySelectorAll(".star");
+  if (!stars.length) return;
 
   stars.forEach((star) => {
-    // عند تحريك الماوس فوق النجمة
-    star.addEventListener("mouseover", function () {
-      const value = parseInt(this.getAttribute("data-value"));
-      highlightStars(value);
-    });
-
-    // عند إزالة الماوس من النجمة
-    star.addEventListener("mouseout", function () {
-      const currentRating = parseInt(document.getElementById("rating").value);
-      highlightStars(currentRating);
-    });
-
-    // عند النقر على النجمة
     star.addEventListener("click", function () {
-      const value = parseInt(this.getAttribute("data-value"));
+      const value = this.getAttribute("data-value");
       document.getElementById("rating").value = value;
-      highlightStars(value);
+
+      // تحديث شكل النجوم
+      stars.forEach((s) => {
+        const starValue = parseInt(s.getAttribute("data-value"));
+        if (starValue <= parseInt(value)) {
+          s.classList.add("active");
+        } else {
+          s.classList.remove("active");
+        }
+      });
+    });
+
+    // إضافة تأثيرات التحويم
+    star.addEventListener("mouseover", function () {
+      const value = this.getAttribute("data-value");
+      highlightStars(parseInt(value));
+    });
+
+    star.addEventListener("mouseout", function () {
+      const currentRating = document.getElementById("rating").value;
+      highlightStars(parseInt(currentRating));
     });
   });
+}
 
-  // دالة لتحديث لون النجوم
-  function highlightStars(rating) {
-    stars.forEach((star) => {
-      const starValue = parseInt(star.getAttribute("data-value"));
-      if (starValue <= rating) {
-        star.style.color = "#ffd700"; // لون ذهبي للنجوم المحددة
-      } else {
-        star.style.color = "#ddd"; // لون رمادي للنجوم غير المحددة
-      }
-    });
+// دالة تظليل النجوم
+function highlightStars(rating) {
+  const stars = document.querySelectorAll(".star");
+  stars.forEach((star) => {
+    const starValue = parseInt(star.getAttribute("data-value"));
+    if (starValue <= rating) {
+      star.classList.add("active");
+    } else {
+      star.classList.remove("active");
+    }
+  });
+}
+
+// تحديث إضافة مستمع الأحداث عند تحميل الصفحة
+document.addEventListener("DOMContentLoaded", function () {
+  // تهيئة النجوم
+  initializeStarRating();
+
+  // تحميل التعليقات إذا كان هناك معرف للوحدة
+  const unitId = getCurrentRoomId();
+  if (unitId !== "0") {
+    loadFeedbacks(unitId);
   }
 });
+
+// جعل الدوال متاحة عالمياً
+window.initializeStarRating = initializeStarRating;
+window.highlightStars = highlightStars;
 
 // Function to handle room details button click
 function viewRoomDetails(roomId) {
@@ -755,19 +697,15 @@ function viewRoomDetails(roomId) {
 
 // Function to handle booking button click
 function bookRoom(roomId) {
-  if (!isAuthenticated()) {
-    alert("Please login to book a room");
-    window.location.href = "login.html";
+  if (!checkAuthAndRedirect()) {
     return;
   }
   window.location.href = `student/payment.html?id=${roomId}`;
 }
 
 // Make functions globally accessible
-window.viewRoomDetails = function (roomId) {
-  window.location.href = `student/details.html?id=${roomId}`;
-};
-
+window.viewRoomDetails = viewRoomDetails;
+window.bookRoom = bookRoom;
 window.closeModal = function (modalId) {
   document.getElementById(modalId).style.display = "none";
 };
@@ -778,70 +716,126 @@ function getCurrentRoomId() {
   return urlParams.get("id") || urlParams.get("roomId") || "0";
 }
 
-// Update the feedback submission function
-async function submitFeedback(event) {
-  event.preventDefault();
+// تحديث حالة الغرفة بعد الحجز
+async function updateRoomBookingStatus(roomId, bookingData) {
+  try {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No authentication token found");
+      return false;
+    }
 
-  if (!isAuthenticated()) {
-    alert("Please login to submit a review");
-    window.location.href = "login.html";
+    const response = await fetch(
+      `${API_BASE_URL}/Unit/${roomId}/booking-status`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({
+          isBooked: true,
+          bookingPeriod: {
+            startDate: bookingData.startDate,
+            endDate: bookingData.endDate,
+          },
+        }),
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error("Failed to update room status");
+    }
+
+    // تحديث حالة الغرفة في المصفوفة المحلية
+    const roomIndex = units.findIndex((unit) => unit.id === roomId);
+    if (roomIndex !== -1) {
+      units[roomIndex] = {
+        ...units[roomIndex],
+        isBooked: true,
+        bookingPeriod: {
+          startDate: bookingData.startDate,
+          endDate: bookingData.endDate,
+        },
+      };
+    }
+
+    // تحديث عرض الغرف
+    renderRooms(units);
+
+    return true;
+  } catch (error) {
+    console.error("Error updating room status:", error);
+    return false;
+  }
+}
+
+// تحديث دالة فتح نافذة الحجز
+window.openBookingModal = function (roomId) {
+  const room = units.find((r) => r.id === roomId);
+
+  if (room.isBooked) {
+    alert("هذه الغرفة محجوزة بالفعل");
     return;
   }
 
-  const rating = parseInt(document.getElementById("rating").value);
-  const comment = document.getElementById("commentInput").value;
-  const userData = getUserData();
-  const unitId = parseInt(getCurrentRoomId());
-
-  if (!rating || !comment) {
-    alert("Please provide both rating and comment");
+  if (!isAuthenticated()) {
+    if (
+      confirm(
+        "يجب تسجيل الدخول أولاً للحجز. هل تريد الانتقال إلى صفحة تسجيل الدخول؟"
+      )
+    ) {
+      window.location.href = "login.html";
+    }
     return;
+  }
+
+  const modal = document.getElementById("bookingModal");
+  if (room && modal) {
+    document.getElementById("bookingRoomTitle").textContent = room.title;
+    document.getElementById("bookingRoomPrice").textContent = `${Number(
+      room.price
+    ).toLocaleString()} EGP/month`;
+    document.getElementById("roomId").value = roomId;
+    modal.style.display = "flex";
+  }
+};
+
+// دالة حذف الغرفة
+async function deleteUnit(roomId) {
+  if (!confirm("هل أنت متأكد من حذف هذه الغرفة؟")) {
+    return false;
   }
 
   try {
     const token = localStorage.getItem("token");
+    if (!token) {
+      console.error("No authentication token found");
+      return false;
+    }
 
-    // Create the feedback object exactly as required by the API
-    const feedbackData = {
-      comment: comment,
-      rating: rating,
-      studentId: userData?.id || 0,
-      unitId: unitId || 0,
-    };
-
-    const response = await fetch(`${API_BASE_URL}/Feedbacks/Add`, {
-      method: "POST",
+    const response = await fetch(`${API_BASE_URL}/Unit/${roomId}`, {
+      method: "DELETE",
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(feedbackData),
     });
 
     if (!response.ok) {
-      const errorData = await response.text();
-      console.error("Feedback submission error:", errorData);
-      throw new Error("Failed to submit review");
+      throw new Error("Failed to delete unit");
     }
 
-    // Clear form
-    document.getElementById("rating").value = "1";
-    document.getElementById("commentInput").value = "";
-    document
-      .querySelectorAll(".star")
-      .forEach((star) => star.classList.remove("active"));
+    // حذف الغرفة من المصفوفة المحلية
+    units = units.filter((unit) => unit.id !== roomId);
 
-    alert("Thank you for your review!");
+    // تحديث عرض الغرف
+    renderRooms(units);
 
-    // Refresh feedback list
-    await loadFeedbacks(unitId);
+    alert("تم حذف الغرفة بنجاح");
+    return true;
   } catch (error) {
-    console.error("Error submitting review:", error);
-    alert("Unable to submit review. Please try again later.");
+    console.error("Error deleting unit:", error);
+    alert("حدث خطأ أثناء حذف الغرفة");
+    return false;
   }
 }
-
-// Make functions globally accessible
-window.submitFeedback = submitFeedback;
-window.getCurrentRoomId = getCurrentRoomId;
-window.loadFeedbacks = loadFeedbacks;

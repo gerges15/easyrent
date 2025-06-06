@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="200" height="200" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- House Base -->
+  <path d="M100 20L20 100V180H180V100L100 20Z" fill="#6f42c1"/>
+  
+  <!-- Roof -->
+  <path d="M100 10L10 90L30 90L100 20L170 90L190 90L100 10Z" fill="#0dcaf0"/>
+  
+  <!-- Door -->
+  <rect x="85" y="120" width="30" height="60" fill="#ffffff"/>
+  
+  <!-- Windows -->
+  <rect x="40" y="110" width="25" height="25" fill="#ffffff"/>
+  <rect x="135" y="110" width="25" height="25" fill="#ffffff"/>
+  
+  <!-- Text -->
+  <text x="100" y="195" font-family="Arial" font-size="14" fill="#ffffff" text-anchor="middle" font-weight="bold">EASY RENT</text>
+  
+  <!-- Decorative Elements -->
+  <circle cx="100" y="140" r="3" fill="#0dcaf0"/>
+</svg> 
