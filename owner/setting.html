@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600;800&display=swap"
       rel="stylesheet"
     />
     <link
@@ -19,6 +19,8 @@
         --light-gray: #f8f9fa;
         --border-color: #dee2e6;
         --success-color: #20115b;
+        --logo-gradient-1: #7c4dff;
+        --logo-gradient-2: #448aff;
       }
 
       * {
@@ -48,14 +50,46 @@
         border-bottom: 2px solid #b8bcbe;
       }
       .logo {
-        color: var(--success-color);
-        font-size: 28px;
-        font-weight: bold;
-        margin: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 10px;
+        gap: 12px;
+        text-decoration: none;
+      }
+
+      .logo-icon {
+        background: linear-gradient(135deg, var(--logo-gradient-1) 0%, var(--logo-gradient-2) 100%);
+        color: var(--white);
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 24px;
+        box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .logo-icon::before {
+        content: "ER";
+        background: linear-gradient(45deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-size: 26px;
+        font-weight: 800;
+      }
+
+      .logo-text {
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--logo-gradient-1);
+        line-height: 1.2;
+        letter-spacing: -0.5px;
+        font-family: 'Poppins', sans-serif;
       }
 
       .sidebar a {
@@ -370,10 +404,10 @@
     <div class="sidebar">
       <!-- Updated Logo Section -->
       <div class="logo-container">
-        <h1 class="logo">
-          <i class="fas fa-house-chimney"></i>
-          Easy Rent
-        </h1>
+        <a href="../index.html" class="logo">
+          <div class="logo-icon"></div>
+          <span class="logo-text">Easy Rent</span>
+        </a>
       </div>
         <a href="dashbord.html"><i class="fas fa-chart-line"></i> Dashboard</a>
         <a href="createrooms.html"><i class="fas fa-plus"></i> Add Property</a>
@@ -388,7 +422,7 @@
 
     <div class="main">
       <div class="header">
-        <strong>🏗 Easy Rent: Evolution in Progress!</strong> — We’re building
+        <strong>🏗 Easy Rent: Evolution in Progress!</strong> — We're building
         something amazing—exciting improvements are on the way!
       </div>
       <!-- Main Content Area -->

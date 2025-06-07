@@ -5,6 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Easy Rent - My Properties</title>
     <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Poppins:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
@@ -15,6 +19,8 @@
         --light-gray: #f8f9fa;
         --border-color: #dee2e6;
         --success-color: #20115b;
+        --logo-gradient-1: #7c4dff;
+        --logo-gradient-2: #448aff;
       }
       * {
         box-sizing: border-box;
@@ -36,17 +42,53 @@
         text-align: center;
         margin-bottom: 30px;
         padding-bottom: 15px;
-        border-bottom: 2px solid #adbbc5;
+        border-bottom: 2px solid #b8bcbe;
       }
       .logo {
-        color: var(--success-color);
-        font-size: 28px;
-        font-weight: bold;
-        margin: 0;
         display: flex;
         align-items: center;
         justify-content: center;
-        gap: 10px;
+        gap: 12px;
+        text-decoration: none;
+      }
+
+      .logo-icon {
+        background: linear-gradient(
+          135deg,
+          var(--logo-gradient-1) 0%,
+          var(--logo-gradient-2) 100%
+        );
+        color: var(--white);
+        width: 48px;
+        height: 48px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 12px;
+        font-weight: bold;
+        font-size: 24px;
+        box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
+        position: relative;
+        overflow: hidden;
+      }
+
+      .logo-icon::before {
+        content: "ER";
+        background: linear-gradient(45deg, #ffffff, #e0e7ff);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+        font-size: 26px;
+        font-weight: 800;
+      }
+
+      .logo-text {
+        font-size: 24px;
+        font-weight: 800;
+        color: var(--logo-gradient-1);
+        line-height: 1.2;
+        letter-spacing: -0.5px;
+        font-family: "Poppins", sans-serif;
       }
       .sidebar a {
         display: flex;
@@ -208,10 +250,10 @@
   <body>
     <div class="sidebar">
       <div class="logo-container">
-        <h1 class="logo">
-          <i class="fas fa-house-chimney"></i>
-          Easy Rent
-        </h1>
+        <a href="../index.html" class="logo">
+          <div class="logo-icon"></div>
+          <span class="logo-text">Easy Rent</span>
+        </a>
       </div>
 
       <a href="dashbord.html"><i class="fas fa-chart-line"></i> Dashboard</a>
