@@ -597,23 +597,40 @@ form.addEventListener("submit", async function (e) {
   const token = localStorage.getItem("token");
   const ownerId = localStorage.getItem("ownerId");
 
-  if (!token || !ownerId) {
-    alert("يجب تسجيل الدخول أولاً.");
-    return;
-  }
+     if (!token || !ownerId) {
+     alert("يجب تسجيل الدخول أولاً.");
+     return;
+   }
 
-  // جلب القيم من الحقول
-  const title = document.getElementById("title").value;
-  const priceForMonth = parseFloat(document.getElementById("price").value);
-  const address = document.getElementById("address").value;
+   // التحقق من البيانات المطلوبة
+   const title = document.getElementById("title").value;
+   const priceForMonth = parseFloat(document.getElementById("price").value);
+   const address = document.getElementById("address").value;
 
-  // تجهيز بيانات الوحدة
-  const requestBody = {
-    title,
-    priceForMonth,
-    address,
-    ownerId_FK: parseInt(ownerId),
-  };
+   // التحقق من صحة البيانات
+   if (!title || title.trim() === "") {
+     alert("❌ يجب إدخال عنوان الوحدة");
+     return;
+   }
+   if (isNaN(priceForMonth) || priceForMonth <= 0) {
+     alert("❌ يجب إدخال سعر صحيح للوحدة");
+     return;
+   }
+   if (!address || address.trim() === "") {
+     alert("❌ يجب إدخال عنوان الوحدة");
+     return;
+   }
+
+    // تجهيز بيانات الوحدة بالشكل المطلوب
+   const requestBody = {
+     id: 0, // API will assign real ID
+     title: title,
+     priceForMonth: priceForMonth,
+     address: address,
+     status: "Available", // Default status for new units
+     ownerName: localStorage.getItem("userName") || "unknown",
+     ownerId_FK: parseInt(ownerId)
+   };
 
   try {
     const response = await fetch("https://easyrentapi0.runasp.net/api/Unit", {
