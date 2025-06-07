@@ -466,26 +466,25 @@
             <input type="tel" placeholder="+20..." required />
           </div>
 
-          <div class="form-group">
-            <label>WhatsApp No.</label>
+        <div class="form-group">
+          <label>WhatsApp No.</label>
             <input type="tel" placeholder="+20..." />
-          </div>
+        </div>
 
-          <div class="form-group">
-            <label>Email *</label>
+        <div class="form-group">
+          <label>Email *</label>
             <input type="email" placeholder="Enter Property Email" required />
           </div>
 
           <button class="submit-btn" type="submit">Submit</button>
         </div>
-      </form>
-    </div>
-    <script>
-      const dropZone = document.getElementById("dropZone");
+    </form>
+  </div>
+  <script>
+    const dropZone = document.getElementById("dropZone");
 const imageInput = document.getElementById("imageUpload");
 const uploadButton = document.getElementById("uploadButton");
-const imagePreviewContainer = document.getElementById("previewContainer"); // صححت الاسم
-
+const imagePreviewContainer = document.getElementById("previewContainer");
 const form = document.getElementById("propertyForm");
 const deleteAllBtn = document.getElementById("deleteAllBtn");
 
@@ -590,6 +589,20 @@ deleteAllBtn.addEventListener("click", () => {
   imagePreviewContainer.innerHTML = "";
 });
 
+// دالة لتحويل base64 إلى Blob
+function dataURLtoBlob(dataurl) {
+  const arr = dataurl.split(',');
+  const mimeMatch = arr[0].match(/:(.*?);/);
+  const mime = mimeMatch ? mimeMatch[1] : '';
+  const bstr = atob(arr[1]);
+  let n = bstr.length;
+  const u8arr = new Uint8Array(n);
+  while (n--) {
+    u8arr[n] = bstr.charCodeAt(n);
+  }
+  return new Blob([u8arr], { type: mime });
+}
+
 // إرسال البيانات
 form.addEventListener("submit", async function (e) {
   e.preventDefault();
@@ -597,40 +610,40 @@ form.addEventListener("submit", async function (e) {
   const token = localStorage.getItem("token");
   const ownerId = localStorage.getItem("ownerId");
 
-     if (!token || !ownerId) {
-     alert("يجب تسجيل الدخول أولاً.");
-     return;
-   }
+  if (!token || !ownerId) {
+    alert("يجب تسجيل الدخول أولاً.");
+    return;
+  }
 
-   // التحقق من البيانات المطلوبة
-   const title = document.getElementById("title").value;
-   const priceForMonth = parseFloat(document.getElementById("price").value);
-   const address = document.getElementById("address").value;
+  // التحقق من البيانات المطلوبة
+  const title = document.getElementById("title").value;
+  const priceForMonth = parseFloat(document.getElementById("price").value);
+  const address = document.getElementById("address").value;
 
-   // التحقق من صحة البيانات
-   if (!title || title.trim() === "") {
-     alert("❌ يجب إدخال عنوان الوحدة");
-     return;
-   }
-   if (isNaN(priceForMonth) || priceForMonth <= 0) {
-     alert("❌ يجب إدخال سعر صحيح للوحدة");
-     return;
-   }
-   if (!address || address.trim() === "") {
-     alert("❌ يجب إدخال عنوان الوحدة");
-     return;
-   }
+  // التحقق من صحة البيانات
+  if (!title || title.trim() === "") {
+    alert("❌ يجب إدخال عنوان الوحدة");
+    return;
+  }
+  if (isNaN(priceForMonth) || priceForMonth <= 0) {
+    alert("❌ يجب إدخال سعر صحيح للوحدة");
+    return;
+  }
+  if (!address || address.trim() === "") {
+    alert("❌ يجب إدخال عنوان الوحدة");
+    return;
+  }
 
-    // تجهيز بيانات الوحدة بالشكل المطلوب
-   const requestBody = {
-     id: 0, // API will assign real ID
-     title: title,
-     priceForMonth: priceForMonth,
-     address: address,
-     status: "Available", // Default status for new units
-     ownerName: localStorage.getItem("userName") || "unknown",
-     ownerId_FK: parseInt(ownerId)
-   };
+  // تجهيز بيانات الوحدة بالشكل المطلوب
+  const requestBody = {
+    id: 0,
+    title: title,
+    priceForMonth: priceForMonth,
+    address: address,
+    status: "Available",
+    ownerName: localStorage.getItem("userName") || "unknown",
+    ownerId_FK: parseInt(ownerId)
+  };
 
   try {
     const response = await fetch("https://easyrentapi0.runasp.net/api/Unit", {
@@ -644,11 +657,39 @@ form.addEventListener("submit", async function (e) {
 
     if (response.ok) {
       const data = await response.json();
-      alert("✅ تم إنشاء الوحدة بنجاح!");
+      console.log("API Response:", data);
 
-      // ✅ تحميل الصور المخزنة (اختياري: إرسالها إلى API آخر أو حفظها محلياً)
+      const unitId = data.unitid; // استخدام unitid وليس id
+      if (!unitId) {
+        alert("خطأ: لم يتم استلام معرف الوحدة (unitId) من الخادم.");
+        return;
+      }
+
+      // رفع الصور
       const images = JSON.parse(localStorage.getItem("propertyImages") || "[]");
-      console.log("صور الوحدة:", images); // يمكنك إرسالها إلى API لاحقاً
+      if (images.length > 0) {
+        const formData = new FormData();
+
+        images.forEach((base64Str, index) => {
+          const blob = dataURLtoBlob(base64Str);
+          formData.append("photos", blob, `photo${index}.jpg`);
+        });
+
+        const uploadResponse = await fetch(`https://easyrentapi0.runasp.net/api/Unit/${unitId}/upload-photos`, {
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          body: formData,
+        });
+
+        if (!uploadResponse.ok) {
+          alert("❌ فشل رفع الصور.");
+          return;
+        }
+      }
+
+      alert("✅ تم إنشاء الوحدة ورفع الصور بنجاح!");
 
       // إعادة تعيين النموذج وحذف الصور من localStorage
       form.reset();
@@ -664,7 +705,8 @@ form.addEventListener("submit", async function (e) {
   }
 });
 
- </script>
+
+  </script>
   
   </body>
 </html>
