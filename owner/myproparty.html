@@ -294,94 +294,115 @@
     </div>
 
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        // Get only properties added by current user (using user ID from localStorage)
-        const currentUserId = localStorage.getItem("currentUserId") || "user1";
-        const allProperties =
-          JSON.parse(localStorage.getItem("properties")) || [];
-        const userProperties = allProperties.filter(
-          (prop) => prop.userId === currentUserId
-        );
+      document.addEventListener("DOMContentLoaded", () => {
+        loadAndRenderUnits();
+        document
+          .getElementById("propertiesContainer")
+          .addEventListener("click", handleDelete);
+      });
 
-        const propertiesContainer = document.getElementById(
-          "propertiesContainer"
-        );
-        const totalListings = document.getElementById("totalListings");
+      // ⚙️ دالة لإضافة هيدر المصادقة
+      function getAuthHeader() {
+        const token = localStorage.getItem("authToken"); // تأكد أنك خزنت التوكن بعد تسجيل الدخول
+        return token
+          ? {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "application/json",
+            }
+          : { "Content-Type": "application/json" };
+      }
 
-        // Update stats
-        function updateStats() {
-          totalListings.textContent = userProperties.length;
+      async function fetchAllUnits() {
+        const res = await fetch(
+          "https://easyrentapi0.runasp.net/api/Unit/GetAllUnits",
+          { headers: getAuthHeader() }
+        );
+        if (!res.ok) {
+          if (res.status === 401)
+            throw new Error("Unauthorized – login required");
+          throw new Error("Failed to fetch units");
         }
+        const { $values } = await res.json();
+        return $values;
+      }
 
-        // Display only user's properties
-        function displayUserProperties() {
-          if (userProperties.length === 0) {
-            propertiesContainer.innerHTML = `
-                        <div class="empty-state">
-                            <p>No properties found. Add properties from the "Add Property" page!</p>
-                        </div>
-                    `;
+      async function deleteUnit(unitId) {
+        if (!confirm("هل أنت متأكد أنك تريد حذف هذه الوحدة؟")) return;
+        const res = await fetch(
+          `https://easyrentapi0.runasp.net/api/Unit/${unitId}`,
+          { method: "DELETE", headers: getAuthHeader() }
+        );
+        if (res.ok) {
+          alert("تم حذف الوحدة بنجاح");
+          loadAndRenderUnits();
+        } else if (res.status === 401) {
+          alert("غير مصرح: يجب تسجيل الدخول مجددًا.");
+          // يمكنك إعادة التوجيه لصفحة تسجيل الدخول
+        } else {
+          alert("فشل حذف الوحدة");
+        }
+      }
+
+      function handleDelete(e) {
+        const btn = e.target.closest(".delete-btn");
+        if (btn) deleteUnit(btn.dataset.id);
+      }
+
+      async function loadAndRenderUnits() {
+        const container = document.getElementById("propertiesContainer");
+        const total = document.getElementById("totalListings");
+        try {
+          const all = await fetchAllUnits();
+          const userId = localStorage.getItem("currentUserId") || "33";
+          const units = all.filter((u) => u.ownerId_FK == userId);
+          total.textContent = units.length;
+
+          if (!units.length) {
+            container.innerHTML = `
+              <div class="empty-state">
+                <p>No properties found. Add from "Add Property".</p>
+              </div>`;
             return;
           }
 
-          propertiesContainer.innerHTML = "";
-          userProperties.forEach((property, index) => {
-            const propertyCard = document.createElement("div");
-            propertyCard.className = "property-card";
-            propertyCard.innerHTML = `
-                        <img src="${property.image}" alt="${property.title}" class="property-image">
-                        <div class="property-details">
-                            <h3 class="property-title">${property.title}</h3>
-                            <div class="property-info">
-                                <span><i class="fas fa-map-marker-alt"></i> ${property.location}</span>
-                                <span><i class="fas fa-bed"></i> ${property.bedrooms} beds</span>
-                            </div>
-                            <div class="property-info">
-                                <span><i class="fas fa-bath"></i> ${property.bathrooms} baths</span>
-                                <span class="property-price">$${property.price}/mo</span>
-                            </div>
-                            <div class="property-actions">
-                                <button class="action-btn delete-btn" data-id="${property.id}">
-                                    <i class="fas fa-trash"></i> Delete
-                                </button>
-                            </div>
-                        </div>
-                    `;
-            propertiesContainer.appendChild(propertyCard);
+          container.innerHTML = "";
+          units.forEach((u) => {
+            const imgSrc = u.imageUrl
+              ? u.imageUrl
+              : `https://picsum.photos/seed/apartment-${u.id}/300/200`;
+
+            const card = document.createElement("div");
+            card.className = "property-card";
+            card.innerHTML = `
+              <img src="${imgSrc}"
+                   alt="${u.title}"
+                   class="property-image"
+                   onerror="this.onerror=null; this.src='https://picsum.photos/300/200?random';" />
+              <div class="property-details">
+                <h3 class="property-title">${u.title}</h3>
+                <div class="property-info">
+                  <span><i class="fas fa-map-marker-alt"></i> ${u.address}</span>
+                </div>
+                <div class="property-info">
+                  <span class="property-price">$${u.priceForMonth}/mo</span>
+                </div>
+                <div class="property-actions">
+                  <button class="action-btn delete-btn" data-id="${u.id}">
+                    <i class="fas fa-trash"></i> Delete
+                  </button>
+                </div>
+              </div>`;
+            container.appendChild(card);
           });
-        }
-
-        // Delete property
-        propertiesContainer.addEventListener("click", function (e) {
-          if (
-            e.target.classList.contains("delete-btn") ||
-            e.target.parentElement.classList.contains("delete-btn")
-          ) {
-            const button = e.target.classList.contains("delete-btn")
-              ? e.target
-              : e.target.parentElement;
-            const propertyId = button.getAttribute("data-id");
-
-            if (confirm("Are you sure you want to delete this property?")) {
-              // Remove from all properties
-              const updatedProperties = allProperties.filter(
-                (prop) => prop.id !== propertyId
-              );
-              localStorage.setItem(
-                "properties",
-                JSON.stringify(updatedProperties)
-              );
-
-              // Refresh display
-              window.location.reload();
-            }
+        } catch (err) {
+          if (err.message.includes("Unauthorized")) {
+            container.innerHTML = "<p>Unauthorized – please log in.</p>";
+          } else {
+            container.innerHTML = "<p>Error loading properties.</p>";
           }
-        });
-
-        // Initialize
-        displayUserProperties();
-        updateStats();
-      });
+          console.error(err);
+        }
+      }
     </script>
   </body>
 </html>

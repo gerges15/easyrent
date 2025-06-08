@@ -890,13 +890,12 @@
             }
 
             const data = await loginRes.json();
-            console.log(data); // عشان تتأكد من شكل البيانات
+            console.log(data); // للتأكد من شكل البيانات
 
             // حفظ البيانات
             localStorage.setItem("user", JSON.stringify(data));
-            localStorage.setItem("ownerId", data.ownerId); // ✅ التصحيح هنا
-            // لو عندك توكن أضفها هنا كمان:
-            localStorage.setItem("token", data.token); // لو التوكن جاية ضمن الاستجابة
+            localStorage.setItem("ownerId", data.ownerId);
+            localStorage.setItem("token", data.token);
 
             // التوجيه حسب الدور (افتراض إن دي صفحة المالك فقط)
             location.href = "../owner/dashbord.html";
