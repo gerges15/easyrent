@@ -292,31 +292,43 @@
         </p>
       </div>
     </div>
-
     <script>
       document.addEventListener("DOMContentLoaded", () => {
+        const token = localStorage.getItem("authToken");
+        const ownerIdStr = localStorage.getItem("ownerId");
+
+        if (!token || !ownerIdStr) {
+          alert("يرجى تسجيل الدخول أولاً.");
+          window.location.href = "loginowner.html";
+          return;
+        }
+
         loadAndRenderUnits();
         document
           .getElementById("propertiesContainer")
           .addEventListener("click", handleDelete);
       });
-
-      // ⚙️ دالة لإضافة هيدر المصادقة
       function getAuthHeader() {
-        const token = localStorage.getItem("authToken"); // تأكد أنك خزنت التوكن بعد تسجيل الدخول
-        return token
-          ? {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            }
-          : { "Content-Type": "application/json" };
+        const token = localStorage.getItem("authToken");
+        if (!token) return null;
+        return {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        };
       }
 
+      // باقي الدوال كما هي...
+
       async function fetchAllUnits() {
+        const headers = getAuthHeader();
+        if (!headers) {
+          throw new Error("Unauthorized – login required");
+        }
         const res = await fetch(
           "https://easyrentapi0.runasp.net/api/Unit/GetAllUnits",
-          { headers: getAuthHeader() }
+          { headers }
         );
+        console.log("fetchAllUnits status:", res.status);
         if (!res.ok) {
           if (res.status === 401)
             throw new Error("Unauthorized – login required");
@@ -327,80 +339,89 @@
       }
 
       async function deleteUnit(unitId) {
+        const headers = getAuthHeader();
+        console.log("Attempt delete with token:", headers?.Authorization);
+        if (!headers) {
+          alert("يرجى تسجيل الدخول أولًا.");
+          window.location.href = "loginowner.html";
+          return;
+        }
         if (!confirm("هل أنت متأكد أنك تريد حذف هذه الوحدة؟")) return;
+        console.log("Token before DELETE:", headers?.Authorization);
+
         const res = await fetch(
           `https://easyrentapi0.runasp.net/api/Unit/${unitId}`,
-          { method: "DELETE", headers: getAuthHeader() }
+          { method: "DELETE", headers }
         );
+        console.log("DELETE Status:", res.status);
         if (res.ok) {
           alert("تم حذف الوحدة بنجاح");
           loadAndRenderUnits();
         } else if (res.status === 401) {
-          alert("غير مصرح: يجب تسجيل الدخول مجددًا.");
-          // يمكنك إعادة التوجيه لصفحة تسجيل الدخول
+          alert("غير مصرح – الرجاء تسجيل الدخول مجددًا.");
+          window.location.href = "loginowner.html";
         } else {
-          alert("فشل حذف الوحدة");
+          alert("فشل حذف الوحدة: " + res.status);
         }
       }
 
       function handleDelete(e) {
         const btn = e.target.closest(".delete-btn");
-        if (btn) deleteUnit(btn.dataset.id);
+        if (btn && btn.dataset.id) deleteUnit(btn.dataset.id);
       }
 
       async function loadAndRenderUnits() {
         const container = document.getElementById("propertiesContainer");
         const total = document.getElementById("totalListings");
         try {
-          const all = await fetchAllUnits();
-          const userId = localStorage.getItem("currentUserId") || "33";
-          const units = all.filter((u) => u.ownerId_FK == userId);
+          const allUnits = await fetchAllUnits();
+          const userIdStr = localStorage.getItem("ownerId");
+          const userId = userIdStr ? Number(userIdStr) : null;
+          console.log("Parsed ownerId:", userId);
+          if (!userId) {
+            alert("يرجى تسجيل الدخول.");
+            window.location.href = "loginowner.html";
+            return;
+          }
+          const units = allUnits.filter((u) => u.ownerId_FK === userId);
           total.textContent = units.length;
 
-          if (!units.length) {
-            container.innerHTML = `
-              <div class="empty-state">
-                <p>No properties found. Add from "Add Property".</p>
-              </div>`;
+          if (units.length === 0) {
+            container.innerHTML = `<div class="empty-state"><p>ليس لديك أي وحدات لعرضها.</p></div>`;
             return;
           }
 
           container.innerHTML = "";
           units.forEach((u) => {
-            const imgSrc = u.imageUrl
-              ? u.imageUrl
-              : `https://picsum.photos/seed/apartment-${u.id}/300/200`;
+            const urls = u.photoUrls?.$values;
+            const imgTag =
+              Array.isArray(urls) && urls.length > 0
+                ? `<img src="https://easyrentapi0.runasp.net/${urls[0]}" alt="${u.title}" class="property-image"/>`
+                : "";
 
             const card = document.createElement("div");
             card.className = "property-card";
             card.innerHTML = `
-              <img src="${imgSrc}"
-                   alt="${u.title}"
-                   class="property-image"
-                   onerror="this.onerror=null; this.src='https://picsum.photos/300/200?random';" />
+              ${imgTag}
               <div class="property-details">
                 <h3 class="property-title">${u.title}</h3>
-                <div class="property-info">
-                  <span><i class="fas fa-map-marker-alt"></i> ${u.address}</span>
-                </div>
-                <div class="property-info">
-                  <span class="property-price">$${u.priceForMonth}/mo</span>
-                </div>
-                <div class="property-actions">
-                  <button class="action-btn delete-btn" data-id="${u.id}">
-                    <i class="fas fa-trash"></i> Delete
-                  </button>
-                </div>
+                <div class="property-info"><i class="fas fa-map-marker-alt"></i> ${u.address}</div>
+                <div class="property-price">$${u.priceForMonth}/mo</div>
+                <button class="action-btn delete-btn" data-id="${u.id}">
+                  <i class="fas fa-trash"></i> حذف
+                </button>
               </div>`;
             container.appendChild(card);
           });
         } catch (err) {
-          if (err.message.includes("Unauthorized")) {
-            container.innerHTML = "<p>Unauthorized – please log in.</p>";
-          } else {
-            container.innerHTML = "<p>Error loading properties.</p>";
-          }
           console.error(err);
+          const msg = err.message.includes("Unauthorized")
+            ? "غير مصرح – الرجاء تسجيل الدخول."
+            : "حدث خطأ أثناء التحميل.";
+          container.innerHTML = `<p>${msg}</p>`;
+          if (err.message.includes("Unauthorized")) {
+            window.location.href = "loginowner.html";
+          }
         }
       }
     </script>

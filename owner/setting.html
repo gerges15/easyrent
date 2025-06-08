@@ -398,6 +398,34 @@
         margin-top: 10px;
         display: none;
       }
+         /* Add these new styles at the end of your existing styles */
+      
+      /* Message box styling */
+      .message-box {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background-color: #4CAF50;
+        color: white;
+        padding: 15px 25px;
+        border-radius: 4px;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        z-index: 1000;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity 0.3s ease, transform 0.3s ease;
+      }
+      
+      .message-box.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      
+      /* WhatsApp input when readonly */
+      #whatsapp[readonly] {
+        background-color: #f0f0f0;
+        cursor: not-allowed;
+      }
     </style>
   </head>
   <body>
@@ -582,17 +610,20 @@
         </div>
       </div>
     </div>
+  
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-        // DOM Elements
+        // DOM elements
         const uploadArea = document.getElementById("uploadArea");
         const fileInput = document.getElementById("imageUpload");
         const preview = document.getElementById("preview");
         const saveButton = document.getElementById("saveButton");
-        const saveMessage = document.getElementById("saveMessage");
-        const sameAsContact = document.getElementById("sameAsContact");
-
+        const messageBox = document.createElement('div');
+        messageBox.className = 'message-box';
+        document.body.appendChild(messageBox);
+        
         // Form fields
+        const sameAsContact = document.getElementById("sameAsContact");
         const firstName = document.getElementById("firstName");
         const lastName = document.getElementById("lastName");
         const zipCode = document.getElementById("zipCode");
@@ -601,59 +632,64 @@
         const mobile = document.getElementById("mobile");
         const landline = document.getElementById("landline");
         const whatsapp = document.getElementById("whatsapp");
-
-        // Load saved data from localStorage
+      
+        // Configuration
+        const unitId = localStorage.getItem("currentUnitId") || "12345"; // More dynamic unit ID
+        const authToken = localStorage.getItem("authToken");
+        const API_BASE_URL = "https://easyrentapi0.runasp.net/api";
+    
+        // Initialize
+        if (!authToken) {
+          showMessage("Please login to continue", "error");
+          return;
+        }
+    
+        loadProfileData();
+        updateWhatsappField();
+    
+        // Main functions
         function loadProfileData() {
           const savedData = localStorage.getItem("profileData");
           if (savedData) {
-            const profileData = JSON.parse(savedData);
-
-            // Fill form fields
-            firstName.value = profileData.firstName || "";
-            lastName.value = profileData.lastName || "";
-            zipCode.value = profileData.zipCode || "";
-            about.value = profileData.about || "";
-            email.value = profileData.email || "";
-            mobile.value = profileData.mobile || "";
-            landline.value = profileData.landline || "";
-            whatsapp.value = profileData.whatsapp || "";
-            sameAsContact.checked = profileData.sameAsContact || false;
-
-            // Load profile image if exists
-            if (profileData.profileImage) {
-              preview.src = profileData.profileImage;
-              preview.style.display = "block";
+            try {
+              const profileData = JSON.parse(savedData);
+              firstName.value = profileData.firstName || "";
+              lastName.value = profileData.lastName || "";
+              zipCode.value = profileData.zipCode || "";
+              about.value = profileData.about || "";
+              email.value = profileData.email || "";
+              mobile.value = profileData.mobile || "";
+              landline.value = profileData.landline || "";
+              whatsapp.value = profileData.whatsapp || "";
+              
+              sameAsContact.checked = profileData.sameAsContact || false;
+              updateWhatsappField();
+    
+              if (profileData.profileImage) {
+                preview.src = profileData.profileImage;
+                preview.style.display = "block";
+              }
+            } catch (e) {
+              console.error("Error loading profile:", e);
             }
           }
         }
-
-        // Handle drag and drop
-        uploadArea.addEventListener("dragover", (e) => {
-          e.preventDefault();
-          uploadArea.classList.add("highlight");
-        });
-
-        uploadArea.addEventListener("dragleave", () => {
-          uploadArea.classList.remove("highlight");
-        });
-
-        uploadArea.addEventListener("drop", (e) => {
-          e.preventDefault();
-          uploadArea.classList.remove("highlight");
-          if (e.dataTransfer.files.length) {
-            fileInput.files = e.dataTransfer.files;
-            showPreview(fileInput.files[0]);
+    
+        function updateWhatsappField() {
+          whatsapp.readOnly = sameAsContact.checked;
+          whatsapp.style.backgroundColor = sameAsContact.checked ? "#f0f0f0" : "";
+          if (sameAsContact.checked) {
+            whatsapp.value = mobile.value;
           }
-        });
-
-        // Handle file selection
-        fileInput.addEventListener("change", (e) => {
-          if (e.target.files.length) {
-            showPreview(e.target.files[0]);
-          }
-        });
-
-        // Show image preview
+        }
+    
+        function showMessage(message, type = "success") {
+          messageBox.textContent = message;
+          messageBox.style.backgroundColor = type === "success" ? "#4CAF50" : "#f44336";
+          messageBox.classList.add('show');
+          setTimeout(() => messageBox.classList.remove('show'), 3000);
+        }
+    
         function showPreview(file) {
           const reader = new FileReader();
           reader.onload = (e) => {
@@ -662,28 +698,63 @@
           };
           reader.readAsDataURL(file);
         }
-
-        // Click on upload area triggers file input
-        uploadArea.addEventListener("click", () => {
-          fileInput.click();
-        });
-
-        // Same as contact checkbox
-        sameAsContact.addEventListener("change", function () {
-          if (this.checked) {
-            whatsapp.value = mobile.value;
+    
+        async function verifyEndpoint() {
+          try {
+            const response = await fetch(`${API_BASE_URL}/Unit/test-endpoint`, {
+              headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+            return response.ok;
+          } catch (error) {
+            console.error("Endpoint verification failed:", error);
+            return false;
           }
-        });
-
-        // Save profile data
-        saveButton.addEventListener("click", function () {
-          // Get the image data if exists
-          let profileImage = null;
-          if (preview.style.display === "block") {
-            profileImage = preview.src;
+        }
+    
+        async function uploadImage(file) {
+          if (!file) return;
+          
+          showPreview(file);
+    
+          // First verify the endpoint exists
+          const endpointExists = await verifyEndpoint();
+          if (!endpointExists) {
+            showMessage("Service unavailable. Please try later.", "error");
+            return;
           }
-
-          // Prepare data object
+    
+          const formData = new FormData();
+          formData.append("file", file);  // Changed from "photos" to "file"
+          formData.append("unitId", unitId);
+    
+          try {
+            const response = await fetch(`${API_BASE_URL}/Unit/upload-photos`, {
+              method: "POST",
+              body: formData,
+              headers: { 'Authorization': `Bearer ${authToken}` }
+            });
+    
+            if (!response.ok) {
+              const errorData = await response.json().catch(() => ({}));
+              throw new Error(errorData.message || "Upload failed");
+            }
+    
+            const data = await response.json();
+            console.log("Upload successful:", data);
+            showMessage("Photo uploaded successfully!");
+            
+            // Update profile image in local storage
+            const profileData = JSON.parse(localStorage.getItem("profileData") || "{}");
+            profileData.profileImage = data.imageUrl || preview.src;
+            localStorage.setItem("profileData", JSON.stringify(profileData));
+    
+          } catch (error) {
+            console.error("Upload failed:", error);
+            showMessage(`Upload error: ${error.message}`, "error");
+          }
+        }
+    
+        function saveProfile() {
           const profileData = {
             firstName: firstName.value,
             lastName: lastName.value,
@@ -694,22 +765,44 @@
             landline: landline.value,
             whatsapp: whatsapp.value,
             sameAsContact: sameAsContact.checked,
-            profileImage: profileImage,
+            profileImage: preview.style.display === "block" ? preview.src : null
           };
-
-          // Save to localStorage
+    
           localStorage.setItem("profileData", JSON.stringify(profileData));
-
-          // Show success message
-          saveMessage.style.display = "block";
-          setTimeout(() => {
-            saveMessage.style.display = "none";
-          }, 3000);
+          showMessage("Profile saved successfully!");
+        }
+    
+        // Event listeners
+        sameAsContact.addEventListener("change", updateWhatsappField);
+        mobile.addEventListener("input", () => {
+          if (sameAsContact.checked) whatsapp.value = mobile.value;
         });
-
-        // Load profile data when page loads
-        loadProfileData();
+    
+        uploadArea.addEventListener("dragover", (e) => {
+          e.preventDefault();
+          uploadArea.classList.add("highlight");
+        });
+    
+        uploadArea.addEventListener("dragleave", () => {
+          uploadArea.classList.remove("highlight");
+        });
+    
+        uploadArea.addEventListener("drop", (e) => {
+          e.preventDefault();
+          uploadArea.classList.remove("highlight");
+          if (e.dataTransfer.files.length) {
+            fileInput.files = e.dataTransfer.files;
+            uploadImage(fileInput.files[0]);
+          }
+        });
+    
+        fileInput.addEventListener("change", (e) => {
+          if (e.target.files.length) uploadImage(e.target.files[0]);
+        });
+    
+        uploadArea.addEventListener("click", () => fileInput.click());
+        saveButton.addEventListener("click", saveProfile);
       });
     </script>
-  </body>
+    </body>
 </html>

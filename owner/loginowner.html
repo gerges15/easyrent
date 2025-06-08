@@ -874,7 +874,7 @@
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                   emailOrPhone,
-                  password, // مباشرة بدون تشفير
+                  password,
                 }),
               }
             );
@@ -890,23 +890,24 @@
             }
 
             const data = await loginRes.json();
-            console.log(data); // للتأكد من شكل البيانات
 
-            // حفظ البيانات
-            localStorage.setItem("user", JSON.stringify(data));
+            // حفظ البيانات في localStorage
+            if (data.token) localStorage.setItem("authToken", data.token);
             localStorage.setItem("ownerId", data.ownerId);
-            localStorage.setItem("token", data.token);
 
-            // التوجيه حسب الدور (افتراض إن دي صفحة المالك فقط)
-            location.href = "../owner/dashbord.html";
+            // تحقق من التخزين
+            console.log("Saved token:", localStorage.getItem("authToken"));
+            console.log("Saved ownerId:", localStorage.getItem("ownerId"));
 
-            // توجيه حسب الدور
-            if (data.role === "admin") {
-              location.href = "admin.html";
-            } else if (data.role === "Owner") {
-              location.href = "../owner/dashbord.html";
+            // التوجيه حسب الدور
+            const role = data.role ? data.role.toLowerCase() : null;
+
+            if (role === "owner") {
+              location.href = "./myproparty.html";
+            } else if (role === "admin") {
+              location.href = "../admin/dashboard.html";
             } else {
-              location.href = "dashbord.html"; // صفحة الطالب
+              location.href = "./dashbord.html";
             }
           } catch (err) {
             console.error("Unexpected error:", err);
