@@ -274,7 +274,7 @@
   <body>
     <div class="container">
       <div class="logo">
-        <img src="assets/logo.png" alt="EasyRent Logo" />
+        <img src="images/favicon.svg" alt="EasyRent Logo" />
         <h2>Reset Password</h2>
       </div>
       <p class="description">
@@ -326,64 +326,49 @@
     <script>
       document
         .getElementById("forgotPasswordForm")
-        .addEventListener("submit", async function (e) {
+        .addEventListener("submit", async (e) => {
           e.preventDefault();
-
           const email = document.getElementById("email").value.trim();
-          const messageEl = document.getElementById("message");
-          const submitButton = document.getElementById("submitButton");
+          const msg = document.getElementById("message");
+          const btn = document.getElementById("submitButton");
 
-          // Reset message
-          messageEl.className = "message";
-          messageEl.textContent = "";
+          msg.className = "message";
+          msg.textContent = "";
+          if (!email)
+            return (
+              (msg.className = "message error"),
+              (msg.textContent = "Please enter your email.")
+            );
 
-          if (!email) {
-            messageEl.className = "message error";
-            messageEl.textContent = "Please enter your email address.";
-            return;
-          }
-
-          // Show loading state
-          submitButton.disabled = true;
-          submitButton.classList.add("loading");
+          btn.disabled = true;
+          btn.classList.add("loading");
+          localStorage.setItem("resetEmail", email);
 
           try {
-            // Store email in localStorage for the next page
-            localStorage.setItem("resetEmail", email);
-
-            const res = await fetch("http://localhost:3000/api/send-code", {
+            const res = await fetch("/api/forgot-password", {
               method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
+              headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ email }),
             });
-
             const data = await res.json();
 
             if (res.ok) {
-              messageEl.className = "message success";
-              messageEl.textContent =
-                "Reset code sent! Check your email inbox.";
-
-              // Redirect after 2 seconds
-              setTimeout(() => {
-                window.location.href = "codeforgot.html";
-              }, 2000);
+              msg.className = "message success";
+              msg.textContent = "Reset code sent! Check your email.";
+              setTimeout(
+                () => (window.location.href = "codeforgot.html"),
+                2000
+              );
             } else {
-              messageEl.className = "message error";
-              messageEl.textContent =
-                data.message || "Failed to send reset code. Please try again.";
+              msg.className = "message error";
+              msg.textContent = data.message || "Error sending reset code.";
             }
-          } catch (error) {
-            messageEl.className = "message error";
-            messageEl.textContent =
-              "Network error. Please check your connection and try again.";
-            console.error("Error:", error);
+          } catch {
+            msg.className = "message error";
+            msg.textContent = "Network error. Please check your connection.";
           } finally {
-            // Remove loading state
-            submitButton.disabled = false;
-            submitButton.classList.remove("loading");
+            btn.disabled = false;
+            btn.classList.remove("loading");
           }
         });
     </script>

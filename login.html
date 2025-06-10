@@ -188,6 +188,29 @@
         cursor: pointer;
         transition: all 0.3s ease;
       }
+      /* Add this to your existing styles */
+      .success-message {
+        display: none;
+        background-color: #4caf50;
+        color: white;
+        padding: 16px;
+        border-radius: 8px;
+        text-align: center;
+        margin-bottom: 20px;
+        animation: slideIn 0.5s ease-out;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(-20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
 
       .btn-social:hover {
         transform: translateY(-2px);
@@ -655,6 +678,10 @@
   <body>
     <main>
       <div class="container">
+        <div id="successMessage" class="success-message">
+          <i class="fas fa-check-circle" style="margin-right: 8px"></i>
+          Successfully registered! Welcome to EasyRent.
+        </div>
         <div class="welcome-header">
           <div class="welcome-logo"></div>
           <h1 class="title">Welcome Back</h1>
@@ -908,6 +935,15 @@
           }
         });
       });
+      function showSuccessMessage() {
+        const successMessage = document.getElementById("successMessage");
+        successMessage.style.display = "block";
+
+        // Automatically hide the message after 5 seconds
+        setTimeout(() => {
+          successMessage.style.display = "none";
+        }, 5000);
+      }
     </script>
   </body>
 </html>
