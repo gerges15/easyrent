@@ -850,7 +850,6 @@
         Copyright © 2025 EasyRent. All rights reserved.
       </div>
     </footer>
-
     <script>
       const passwordInput = document.getElementById("password");
       const togglePasswordBtn = document.createElement("button");
@@ -881,6 +880,11 @@
             return;
           }
 
+          // Add loading state
+          const loginBtn = document.getElementById("loginBtn");
+          loginBtn.disabled = true;
+          loginBtn.textContent = "Signing in...";
+
           try {
             const loginRes = await fetch(
               "https://easyrentapi0.runasp.net/api/Owner/login",
@@ -895,40 +899,62 @@
             );
 
             if (!loginRes.ok) {
-              let errorMsg = await loginRes.text();
+              let errorMsg = "فشل تسجيل الدخول. حاول مرة أخرى.";
+
+              // محاولة قراءة الرسالة سواء كانت JSON أو نص عادي
               try {
-                const errObj = JSON.parse(errorMsg);
-                errorMsg = errObj.message || errorMsg;
-              } catch {}
-              alert(errorMsg || "Login failed. Please try again.");
+                const errorText = await loginRes.text();
+                try {
+                  const errorData = JSON.parse(errorText);
+                  errorMsg = errorData.message || errorMsg;
+                } catch {
+                  // إذا لم تكن JSON نستخدم النص كما هو
+                  errorMsg = errorText || errorMsg;
+                }
+              } catch (e) {
+                console.error("خطأ في قراءة رسالة الخطأ:", e);
+              }
+
+              if (loginRes.status === 401) {
+                errorMsg = "البريد الإلكتروني أو كلمة المرور غير صحيحة";
+              }
+
+              alert(errorMsg);
               return;
             }
-
             const data = await loginRes.json();
 
-            // حفظ البيانات في localStorage
-            if (data.token) localStorage.setItem("authToken", data.token);
-            localStorage.setItem("ownerId", data.ownerId);
+            // Store authentication data
+            if (data.token) {
+              localStorage.setItem("authToken", data.token);
+              localStorage.setItem("ownerId", data.ownerId);
+              console.log("Login successful. Token stored.");
 
-            // تحقق من التخزين
-            console.log("Saved token:", localStorage.getItem("authToken"));
-            console.log("Saved ownerId:", localStorage.getItem("ownerId"));
-
-            // التوجيه حسب الدور
-            const role = data.role ? data.role.toLowerCase() : null;
-
-            if (role === "owner") {
-              location.href = "./myproparty.html";
-            } else if (role === "admin") {
-              location.href = "../admin/dashboard.html";
+              // Redirect based on role
+              const role = data.role ? data.role.toLowerCase() : null;
+              if (role === "owner") {
+                window.location.href = "./myproparty.html";
+              } else if (role === "admin") {
+                window.location.href = "../admin/dashboard.html";
+              } else {
+                window.location.href = "./dashbord.html";
+              }
             } else {
-              location.href = "./dashbord.html";
+              throw new Error("No authentication token received");
             }
           } catch (err) {
-            console.error("Unexpected error:", err);
-            alert(
-              err.message || "Something went wrong. Please try again later."
-            );
+            console.error("Login error:", err);
+            if (
+              err.name === "TypeError" &&
+              err.message.includes("Failed to fetch")
+            ) {
+              alert("Network error - please check your internet connection");
+            } else {
+              alert(err.message || "An unexpected error occurred during login");
+            }
+          } finally {
+            loginBtn.disabled = false;
+            loginBtn.textContent = "Sign In";
           }
         });
     </script>
