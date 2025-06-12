@@ -773,13 +773,57 @@
             <label for="universityId">University</label>
             <select id="universityId" required>
               <option value="" disabled selected>Select your university</option>
+              <option value="0" disabled selected>
+                Choose your university
+              </option>
+              <option value="1">Minia University</option>
+              <option value="2">Minia National University</option>
+              <option value="4">
+                Higher Institute of Engineering and Technology
+              </option>
+              <option value="5">Languages Institute</option>
             </select>
           </div>
 
           <div class="input-group">
-            <label for="collegeId">Faculty</label>
+            <label for="collegeId">College</label>
             <select id="collegeId" required>
-              <option value="" disabled selected>Select your faculty</option>
+              <option value="" disabled selected>Select your college</option>
+              <option value="0" disabled selected>Choose your college</option>
+              <option value="101">Faculty of Medicine</option>
+              <option value="102">Faculty of Engineering</option>
+              <option value="103">Faculty of Pharmacy</option>
+              <option value="104">Faculty of Dentistry</option>
+              <option value="105">Faculty of Science</option>
+              <option value="106">Faculty of Nursing</option>
+              <option value="107">Faculty of Agriculture</option>
+              <option value="108">Faculty of Education</option>
+              <option value="109">Faculty of Physical Education</option>
+              <option value="110">Faculty of Al-Alsun</option>
+              <option value="111">Faculty of Arts</option>
+              <option value="112">Faculty of Specific Education</option>
+              <option value="113">Faculty of Physical Education</option>
+              <option value="114">Faculty of Al-Alsun</option>
+              <option value="115">Faculty of Arts</option>
+              <option value="116">Faculty of Dar Al-Uloom</option>
+              <option value="117">Faculty of Tourism and Hotels</option>
+              <option value="118">Faculty of Computers and Information</option>
+              <option value="119">Faculty of Early Childhood Education</option>
+              <option value="120">Faculty of Physical Therapy</option>
+              <option value="121">Faculty of Engineering</option>
+              <option value="122">Faculty of Artificial Intelligence</option>
+              <option value="123">Faculty of Business Administration</option>
+              <option value="124">Faculty of Law</option>
+              <option value="125">Faculty of Civil Engineering</option>
+              <option value="125">
+                Faculty of Electronics and Communication Engineering
+              </option>
+              <option value="126">
+                Electrical Power and Machines Engineering
+              </option>
+              <option value="127">Faculty of English Language</option>
+              <option value="128">Faculty of German Language</option>
+              <option value="129">Faculty of French Language</option>
             </select>
           </div>
 
@@ -1115,14 +1159,15 @@
           }
         });
 
-        // تحديث زر إظهار/إخفاء كلمة المرور
+        // زر إظهار وإخفاء كلمة المرور
         togglePasswordBtn.addEventListener("click", () => {
-          const type = passwordInput.type === "password" ? "text" : "password";
-          passwordInput.type = type;
-          togglePasswordBtn.innerHTML = `
-            <i class="fas fa-eye${type === "password" ? "-slash" : ""}"></i>
-            <span>${type === "password" ? "Show" : "Hide"}</span>
-          `;
+          if (passwordInput.type === "password") {
+            passwordInput.type = "text";
+            togglePasswordBtn.textContent = "Hide";
+          } else {
+            passwordInput.type = "password";
+            togglePasswordBtn.textContent = "Show";
+          }
         });
 
         // استماع لتغييرات الحقول لحفظ البيانات وتقييم كلمة المرور

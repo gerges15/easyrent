@@ -678,6 +678,23 @@
   <body>
     <main>
       <div class="container">
+        <div class="input-group">
+          <label for="userType">Login as</label>
+          <select id="userType" name="userType" required>
+            <option value="" disabled selected>Select user type</option>
+            <option value="Admin">Admin</option>
+            <option value="Owner">Owner</option>
+            <option value="Student">Student</option>
+          </select>
+          <div
+            class="error-message"
+            id="userTypeError"
+            style="display: none; color: red"
+          >
+            Please select a user type.
+          </div>
+        </div>
+
         <div id="successMessage" class="success-message">
           <i class="fas fa-check-circle" style="margin-right: 8px"></i>
           Successfully registered! Welcome to EasyRent.
@@ -693,6 +710,7 @@
               type="text"
               id="phone"
               placeholder="Enter your phone number or email"
+              name="emailOrPhone"
               required
             />
           </div>
@@ -704,6 +722,7 @@
                 type="password"
                 id="password"
                 placeholder="Enter your password"
+                name="password"
                 required
               />
               <button type="button" id="togglePasswordBtn">Show</button>
@@ -864,86 +883,6 @@
       </div>
     </footer>
 
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const passwordInput = document.getElementById("password");
-        const togglePasswordBtn = document.getElementById("togglePasswordBtn");
-        const loginForm = document.getElementById("loginForm");
-
-        togglePasswordBtn.addEventListener("click", () => {
-          const type = passwordInput.type === "password" ? "text" : "password";
-          passwordInput.type = type;
-          togglePasswordBtn.textContent = type === "password" ? "Show" : "Hide";
-        });
-
-        loginForm.addEventListener("submit", async (e) => {
-          e.preventDefault();
-
-          const input = document.getElementById("phone").value.trim();
-          const password = passwordInput.value;
-
-          if (!input || !password) {
-            alert("Please fill in all fields");
-            return;
-          }
-
-          try {
-            const res = await fetch(
-              "https://easyrentapi0.runasp.net/api/Student/login",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  emailOrPhone: input,
-                  password,
-                }),
-              }
-            );
-
-            if (!res.ok) {
-              const errorText = await res.text();
-              alert(
-                errorText || "Login failed. Please check your credentials."
-              );
-              return;
-            }
-
-            const contentType = res.headers.get("content-type");
-            if (contentType && contentType.includes("application/json")) {
-              // Handle JSON response
-              const data = await res.json();
-              localStorage.setItem("token", data.token);
-              localStorage.setItem("user", JSON.stringify(data));
-            } else {
-              // Handle text response
-              const text = await res.text();
-              if (text.includes("Login successful")) {
-                // If no token is provided in text response, you might want to set some default values
-                localStorage.setItem("token", "default_token");
-                localStorage.setItem(
-                  "user",
-                  JSON.stringify({ message: "Login successful" })
-                );
-              }
-            }
-
-            // Redirect after successful login
-            window.location.href = "index.html";
-          } catch (err) {
-            console.error("Login Error:", err);
-            alert("An error occurred. Please try again later.");
-          }
-        });
-      });
-      function showSuccessMessage() {
-        const successMessage = document.getElementById("successMessage");
-        successMessage.style.display = "block";
-
-        // Automatically hide the message after 5 seconds
-        setTimeout(() => {
-          successMessage.style.display = "none";
-        }, 5000);
-      }
-    </script>
+    <script defer type="module" src="./js/auth.js"></script>
   </body>
 </html>
