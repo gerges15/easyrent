@@ -269,3 +269,9 @@ document.addEventListener("DOMContentLoaded", function () {
     };
   }
 });
+// اجعلها متاحة عالميًا
+window.handleLogout = function () {
+  localStorage.clear();
+  window.location.href = "login.html";
+};
+window.handleSignup = handleSignup;
