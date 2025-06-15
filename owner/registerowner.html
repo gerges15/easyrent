@@ -738,7 +738,13 @@
         <form id="registerForm">
           <div class="form-group">
             <label for="legalName">Legal Name</label>
-            <input type="text" id="legalName" placeholder="First name on ID" />
+            <input
+              type="text"
+              id="legalName"
+              name="legalName"
+              placeholder="Full Name in your government ID"
+              required
+            />
             <div class="error-message" id="legalNameError">
               Please enter your legal name
             </div>
@@ -749,7 +755,13 @@
           </div>
           <div class="form-group">
             <label for="username">Username</label>
-            <input type="text" id="username" placeholder="Choose a username" />
+            <input
+              type="text"
+              id="username"
+              name="username"
+              placeholder="Choose a username"
+              required
+            />
             <div class="error-message" id="usernameError">
               Please choose a username
             </div>
@@ -763,7 +775,12 @@
           <!-- البريد الإلكتروني -->
           <div class="form-group">
             <label for="email">Email</label>
-            <input type="email" id="email" placeholder="user@gmail.com" />
+            <input
+              type="email"
+              id="email"
+              placeholder="user@gmail.com"
+              required
+            />
             <div class="error-message" id="emailError">
               Please enter a valid email
             </div>
@@ -776,6 +793,7 @@
               type="text"
               id="phone"
               placeholder="Enter your phone number"
+              required
             />
             <div class="error-message" id="phoneError">
               Please enter a valid phone number
@@ -788,6 +806,7 @@
                 type="text"
                 id="location"
                 placeholder="Enter your location"
+                required
               />
               <div class="error-message" id="locationError">
                 Please enter your location
@@ -799,6 +818,7 @@
                 type="password"
                 id="password"
                 placeholder="Enter your password"
+                required
               />
               <button
                 type="button"
@@ -942,9 +962,12 @@
       </div>
     </footer>
     <script>
+      const form = document.getElementById("registerForm");
       const passwordInput = document.getElementById("password");
       const togglePasswordBtn = document.getElementById("togglePasswordBtn");
-      const submitBtn = document.getElementById("submitBtn");
+      const generatePasswordBtn = document.getElementById(
+        "generatePasswordBtn"
+      );
 
       // إظهار وإخفاء كلمة السر
       togglePasswordBtn.addEventListener("click", () => {
@@ -965,9 +988,10 @@
         return re.test(phone);
       }
       // دالة توليد كلمة مرور عشوائية
-      function generateRandomPassword(length = 10) {
+
+      function generateRandomPassword(length = 12) {
         const chars =
-          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+~`|}{[]:;?><,./-=";
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*";
         let password = "";
         for (let i = 0; i < length; i++) {
           password += chars.charAt(Math.floor(Math.random() * chars.length));
@@ -975,154 +999,52 @@
         return password;
       }
 
-      // ربط زر توليد كلمة المرور
-      const generatePasswordBtn = document.getElementById(
-        "generatePasswordBtn"
-      );
+      togglePasswordBtn.addEventListener("click", () => {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+        togglePasswordBtn.textContent = isPassword ? "Hide" : "Show";
+      });
 
       generatePasswordBtn.addEventListener("click", () => {
-        const newPassword = generateRandomPassword(12); // طول 12 حرف مثلاً
+        const newPassword = generateRandomPassword();
         passwordInput.value = newPassword;
-        // غير نوع الحقل عشان يشوف المستخدم الباسورد الجديد (اختياري)
         passwordInput.type = "text";
         togglePasswordBtn.textContent = "Hide";
-        updateSubmitButtonState();
+        alert("تم توليد كلمة مرور: " + newPassword + "\nاحفظها قبل المتابعة.");
       });
 
-      // تحقق بسيط لتفعيل زر الإرسال
-      function canEnableSubmit() {
-        const legalName = document.getElementById("legalName").value.trim();
-        const username = document.getElementById("username").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const password = passwordInput.value;
-        const phone = document.getElementById("phone").value.trim();
-        const location = document.getElementById("location").value.trim();
-
-        return (
-          legalName !== "" &&
-          username !== "" &&
-          isValidEmail(email) &&
-          password.length >= 6 &&
-          isValidPhone(phone) &&
-          location !== ""
-        );
-      }
-
-      function updateSubmitButtonState() {
-        submitBtn.disabled = !canEnableSubmit();
-      }
-
-      // ربط التحقق على المدخلات
-      [
-        "legalName",
-        "username",
-        "email",
-        "password",
-        "phone",
-        "location",
-      ].forEach((id) => {
-        document
-          .getElementById(id)
-          .addEventListener("input", updateSubmitButtonState);
-      });
-
-      updateSubmitButtonState(); // تفعيل أولي
-
-      // التحقق من صحة النموذج وعرض رسائل الخطأ
-      function validateForm() {
-        let isValid = true;
-        document.querySelectorAll(".error-message").forEach((el) => {
-          el.style.display = "none";
-        });
-
-        const legalName = document.getElementById("legalName").value.trim();
-        const username = document.getElementById("username").value.trim();
-        const email = document.getElementById("email").value.trim();
-        const password = passwordInput.value;
-        const phone = document.getElementById("phone").value.trim();
-        const location = document.getElementById("location").value.trim();
-
-        if (legalName === "") {
-          document.getElementById("legalNameError").style.display = "block";
-          isValid = false;
-        }
-        if (username === "") {
-          document.getElementById("usernameError").style.display = "block";
-          isValid = false;
-        }
-        if (!isValidEmail(email)) {
-          document.getElementById("emailError").style.display = "block";
-          isValid = false;
-        }
-        if (password.length < 6) {
-          document.getElementById("passwordError").style.display = "block";
-          isValid = false;
-        }
-        if (!isValidPhone(phone)) {
-          document.getElementById("phoneError").style.display = "block";
-          isValid = false;
-        }
-        if (location === "") {
-          document.getElementById("locationError").style.display = "block";
-          isValid = false;
-        }
-
-        return isValid;
-      }
-
-      submitBtn.addEventListener("click", async (e) => {
+      form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        if (!validateForm()) return;
+        const data = {
+          name: document.getElementById("legalName").value.trim(),
+          userName: document.getElementById("username").value.trim(),
+          email: document.getElementById("email").value.trim(),
+          password: passwordInput.value.trim(),
+          phoneNumber: document.getElementById("phone").value.trim(),
+          address: document.getElementById("location").value.trim(),
+        };
 
         try {
-          // أولاً توليد كلمة المرور
-          const genRes = await fetch(
-            "https://easyrentapi0.runasp.net/api/Auth/generate-password"
-          );
-          if (!genRes.ok) throw new Error("فشل توليد كلمة المرور");
-
-          const genData = await genRes.json();
-          const generatedPassword = genData.password;
-
-          // بعدها تبني userData بالكلمة المولدة
-          const userData = {
-            name: document.getElementById("legalName").value.trim(),
-            userName: document.getElementById("username").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            password: generatedPassword, // استخدم الكلمة المولدة هنا
-            phoneNumber: document.getElementById("phone").value.trim(),
-            address: document.getElementById("location").value.trim(),
-          };
-
-          console.log("بيانات المستخدم التي سترسلها:", userData);
-
-          // إرسال بيانات التسجيل
-          const response = await fetch(
+          const res = await fetch(
             "https://easyrentapi0.runasp.net/api/Owner/register",
             {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify(userData),
+              body: JSON.stringify(data),
             }
           );
 
-          if (!response.ok) {
-            const text = await response.text();
-            console.error("Response error text:", text); // طباعة رسالة الخطأ الكاملة من السيرفر
-            let errorMsg = response.statusText;
-            try {
-              const errorData = JSON.parse(text);
-              errorMsg = errorData.message || errorMsg;
-            } catch {}
-            throw new Error(errorMsg);
+          if (!res.ok) {
+            const err = await res.text();
+            throw new Error(err);
           }
 
-          alert("تم التسجيل بنجاح! الرجاء تسجيل الدخول.");
+          alert("تم التسجيل بنجاح!");
           window.location.href = "loginowner.html";
         } catch (error) {
-          console.error("Detailed error message:", error);
-          alert("Error occurred: " + (error.message || error));
+          alert("حدث خطأ أثناء التسجيل:\n" + error.message);
+          console.error(error);
         }
       });
     </script>

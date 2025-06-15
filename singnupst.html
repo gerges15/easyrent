@@ -788,7 +788,6 @@
           <div class="input-group">
             <label for="collegeId">College</label>
             <select id="collegeId" required>
-              <option value="" disabled selected>Select your college</option>
               <option value="0" disabled selected>Choose your college</option>
               <option value="101">Faculty of Medicine</option>
               <option value="102">Faculty of Engineering</option>
@@ -1028,7 +1027,6 @@
         Copyright © 2025 EasyRent. All rights reserved.
       </div>
     </footer>
-
     <script type="module">
       document.addEventListener("DOMContentLoaded", () => {
         const form = document.getElementById("signupForm");
@@ -1048,14 +1046,40 @@
         ];
         const strengthText = document.getElementById("password-strength-text");
 
-        // تحميل الجامعات
+        function isPasswordStrong(password) {
+          const strongRegex =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
+          return strongRegex.test(password) && password.length >= 8;
+        }
+
+        function generateStrongPassword(length = 12) {
+          const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+          const lower = "abcdefghijklmnopqrstuvwxyz";
+          const numbers = "0123456789";
+          const symbols = "@#$!%&*?";
+          const all = upper + lower + numbers + symbols;
+          let password = [
+            upper[Math.floor(Math.random() * upper.length)],
+            lower[Math.floor(Math.random() * lower.length)],
+            numbers[Math.floor(Math.random() * numbers.length)],
+            symbols[Math.floor(Math.random() * symbols.length)],
+          ];
+          while (password.length < length) {
+            password.push(all[Math.floor(Math.random() * all.length)]);
+          }
+          return password.sort(() => Math.random() - 0.5).join("");
+        }
+
         async function loadUniversities() {
           try {
             const res = await fetch(
               "https://easyrentapi0.runasp.net/api/University"
             );
             if (!res.ok) throw new Error("Failed to load universities");
-            const data = await res.json();
+            const json = await res.json();
+            const data = json.$values;
+            if (!Array.isArray(data))
+              throw new Error("Unexpected response format");
             data.forEach((u) => {
               const option = document.createElement("option");
               option.value = u.id;
@@ -1067,14 +1091,16 @@
           }
         }
 
-        // تحميل الكليات
         async function loadColleges() {
           try {
             const res = await fetch(
               "https://easyrentapi0.runasp.net/api/Colleges"
             );
             if (!res.ok) throw new Error("Failed to load colleges");
-            const data = await res.json();
+            const json = await res.json();
+            const data = json.$values;
+            if (!Array.isArray(data))
+              throw new Error("Unexpected response format");
             data.forEach((c) => {
               const option = document.createElement("option");
               option.value = c.id;
@@ -1086,7 +1112,6 @@
           }
         }
 
-        // تحقق قوة كلمة المرور
         function checkPasswordStrength() {
           const val = passwordInput.value;
           let strength = 0;
@@ -1094,11 +1119,9 @@
           if (/[A-Z]/.test(val)) strength++;
           if (/[0-9]/.test(val)) strength++;
           if (/[^A-Za-z0-9]/.test(val)) strength++;
-
           strengthBars.forEach((bar, i) => {
             bar.style.background = i < strength ? "#4caf50" : "#e0e0e0";
           });
-
           const texts = [
             "Very Weak",
             "Weak",
@@ -1109,7 +1132,6 @@
           strengthText.textContent = texts[strength];
         }
 
-        // حفظ بيانات النموذج مؤقتًا في localStorage
         function saveFormData() {
           const data = {
             name: document.getElementById("firstNameID").value.trim(),
@@ -1123,7 +1145,6 @@
           localStorage.setItem("signupFormData", JSON.stringify(data));
         }
 
-        // تحميل بيانات محفوظة من localStorage
         function loadFormData() {
           const saved = localStorage.getItem("signupFormData");
           if (!saved) return;
@@ -1142,24 +1163,33 @@
           if (data.collegeId) collegeSelect.value = data.collegeId;
         }
 
-        // توليد كلمة مرور من API
         generateBtn.addEventListener("click", async () => {
           try {
             const res = await fetch(
               "https://easyrentapi0.runasp.net/api/Auth/generate-password"
             );
-            if (!res.ok) throw new Error("Failed to generate password");
+            if (!res.ok)
+              throw new Error("Failed to generate password from API");
             const data = await res.json();
-            passwordSuggestion.value = data.password || "";
-            passwordInput.value = data.password || "";
+            let password = data.password || "";
+            if (!isPasswordStrong(password)) {
+              console.warn("API password is weak. Generating local fallback.");
+              password = generateStrongPassword();
+            }
+            passwordSuggestion.value = password;
+            passwordInput.value = password;
             checkPasswordStrength();
             saveFormData();
           } catch (err) {
             alert("Error generating password: " + err.message);
+            const fallback = generateStrongPassword();
+            passwordSuggestion.value = fallback;
+            passwordInput.value = fallback;
+            checkPasswordStrength();
+            saveFormData();
           }
         });
 
-        // زر إظهار وإخفاء كلمة المرور
         togglePasswordBtn.addEventListener("click", () => {
           if (passwordInput.type === "password") {
             passwordInput.type = "text";
@@ -1170,7 +1200,6 @@
           }
         });
 
-        // استماع لتغييرات الحقول لحفظ البيانات وتقييم كلمة المرور
         document.querySelectorAll("input, select").forEach((el) => {
           el.addEventListener("input", () => {
             saveFormData();
@@ -1178,10 +1207,8 @@
           });
         });
 
-        // إرسال النموذج والتسجيل
         form.addEventListener("submit", async (e) => {
           e.preventDefault();
-
           const payload = {
             name: document.getElementById("firstNameID").value.trim(),
             email: document.getElementById("email").value.trim(),
@@ -1197,24 +1224,8 @@
             alert("Please fill in all required fields.");
             return;
           }
-          if (payload.universityId === 0 || isNaN(payload.universityId)) {
-            alert("Please select a valid University.");
-            return;
-          }
-          if (payload.collegeId === 0 || isNaN(payload.collegeId)) {
-            alert("Please select a valid College.");
-            return;
-          }
-          if (payload.password.length < 8) {
-            alert("Password must be at least 8 characters.");
-            return;
-          }
-          const strongRegex =
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
-          if (!strongRegex.test(payload.password)) {
-            alert(
-              "Password must contain uppercase, lowercase, number, and special character."
-            );
+          if (!isPasswordStrong(payload.password)) {
+            alert("Password is not strong enough.");
             return;
           }
 
@@ -1234,14 +1245,13 @@
             }
             alert("Registration successful!");
             localStorage.removeItem("signupFormData");
-            // redirect to login or next page:
             window.location.href = "login.html";
           } catch (err) {
             alert("Network error: " + err.message);
           }
         });
 
-        // تهيئة الصفحة
+        // بدء تحميل البيانات
         (async function init() {
           await loadUniversities();
           await loadColleges();
