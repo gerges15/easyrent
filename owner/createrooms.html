@@ -240,19 +240,21 @@
     </div>
     <div class="main">
       <div class="header">
+        class="form-container"
         <strong>🏗 Easy Rent: Evolution in Progress!</strong>
       </div>
-      <form id="propertyForm" class="form-container">
+      <form id="propertyForm">
         <div class="form-section">
           <h3>Property Info</h3>
           <hr />
           <div class="row">
             <div class="form-group">
-              <label>Price *</label
-              ><input
+              <label>Price *</label>
+              <input
                 type="number"
                 id="price"
-                placeholder="Enter Price"
+                name="price"
+                placeholder="Enter price"
                 required
               />
             </div>
@@ -268,11 +270,24 @@
           </div>
           <div class="row">
             <div class="form-group">
-              <label>Property Name *</label
-              ><input type="text" id="title" required />
+              <label>Property Name *</label>
+              <input
+                type="text"
+                id="title"
+                name="title"
+                placeholder="e.g., Cozy Student Room"
+                required
+              />
             </div>
             <div class="form-group">
-              <label>Home Type *</label><input type="text" required />
+              <label>Home Type *</label
+              ><input
+                type="text"
+                id="homeType"
+                name="homeType"
+                placeholder="e.g., Apartment"
+                required
+              />
             </div>
           </div>
           <div class="form-group">
@@ -280,17 +295,42 @@
             ><textarea id="address" rows="3" required></textarea>
           </div>
           <div class="form-group">
-            <label>Property Size *</label><input type="text" required />
+            <label>Property Size *</label
+            ><input
+              type="text"
+              id="propertySize"
+              name="propertySize"
+              placeholder="e.g., 1200 sqft"
+              required
+            />
           </div>
           <div class="row">
             <div class="form-group">
-              <label>Bedrooms</label><input type="number" placeholder="No." />
+              <label>Bedrooms</label
+              ><input
+                type="number"
+                id="bedrooms"
+                name="bedrooms"
+                placeholder="No."
+              />
             </div>
             <div class="form-group">
-              <label>Bathrooms</label><input type="number" placeholder="No." />
+              <label>Bathrooms</label
+              ><input
+                type="number"
+                id="bathrooms"
+                name="bathrooms"
+                placeholder="No."
+              />
             </div>
             <div class="form-group">
-              <label>Kitchens</label><input type="number" placeholder="No." />
+              <label>Kitchens</label
+              ><input
+                type="number"
+                id="kitchens"
+                name="kitchens"
+                placeholder="No."
+              />
             </div>
           </div>
           <div class="form-group">
@@ -299,18 +339,46 @@
           </div>
           <div class="row">
             <div class="form-group">
-              <label>Country *</label><input type="text" required />
+              <label>Country *</label
+              ><input
+                type="text"
+                id="country"
+                name="country"
+                placeholder="Enter country"
+                required
+              />
             </div>
             <div class="form-group">
-              <label>State *</label><input type="text" required />
+              <label>State *</label
+              ><input
+                type="text"
+                id="state"
+                name="state"
+                placeholder="Enter state"
+                required
+              />
             </div>
           </div>
           <div class="row">
             <div class="form-group">
-              <label>City *</label><input type="text" required />
+              <label>City *</label
+              ><input
+                type="text"
+                id="city"
+                name="city"
+                placeholder="Enter city"
+                required
+              />
             </div>
             <div class="form-group">
-              <label>Zip/Postal Code *</label><input type="text" required />
+              <label>Zip/Postal Code *</label
+              ><input
+                type="text"
+                id="zip"
+                name="zip"
+                placeholder="Enter Zip/Postal Code"
+                required
+              />
             </div>
           </div>
         </div>
@@ -350,141 +418,127 @@
       <div class="toast-container" id="toast-container"></div>
     </div>
     <script>
-      // Toast utility
-      let toastContainer;
-      function showToast(msg, type = "success", duration = 5000) {
-        if (!toastContainer)
-          toastContainer = document.getElementById("toast-container");
-        const t = document.createElement("div");
-        t.className = `toast ${type}`;
-        t.textContent = msg;
-        const btn = document.createElement("button");
-        btn.className = "close-btn";
-        btn.innerHTML = "&times;";
-        btn.onclick = () => t.remove();
-        t.appendChild(btn);
-        toastContainer.appendChild(t);
-        requestAnimationFrame(() => t.classList.add("show"));
-        setTimeout(() => {
-          t.classList.remove("show");
-          setTimeout(() => t.remove(), 300);
-        }, duration);
+      const dropZone = document.getElementById("dropZone");
+      const imageUpload = document.getElementById("imageUpload");
+      const previewContainer = document.getElementById("previewContainer");
+      const uploadButton = document.getElementById("uploadButton");
+      const deleteAllBtn = document.getElementById("deleteAllBtn");
+
+      dropZone.addEventListener("click", () => imageUpload.click());
+
+      dropZone.addEventListener("dragover", (e) => {
+        e.preventDefault();
+        dropZone.classList.add("drag-over");
+      });
+
+      dropZone.addEventListener("dragleave", () => {
+        dropZone.classList.remove("drag-over");
+      });
+
+      dropZone.addEventListener("drop", (e) => {
+        e.preventDefault();
+        dropZone.classList.remove("drag-over");
+        const files = Array.from(e.dataTransfer.files);
+        handleFiles(files);
+      });
+
+      uploadButton.addEventListener("click", () => {
+        imageUpload.click();
+      });
+
+      imageUpload.addEventListener("change", (e) => {
+        const files = Array.from(e.target.files);
+        handleFiles(files);
+      });
+
+      deleteAllBtn.addEventListener("click", () => {
+        previewContainer.innerHTML = "";
+        imageUpload.value = "";
+        localStorage.removeItem("propertyImages");
+      });
+
+      function handleFiles(files) {
+        for (let file of files) {
+          if (!file.type.startsWith("image/")) continue;
+          addImagePreview(file);
+        }
       }
 
-      // تحويل Base64 إلى Blob
-      function dataURLtoBlob(dataURL) {
-        const [h, b] = dataURL.split(",");
-        const mime = h.match(/:(.*?);/)[1];
-        const bin = atob(b);
-        const u8 = new Uint8Array(bin.length);
-        for (let i = 0; i < bin.length; i++) u8[i] = bin.charCodeAt(i);
-        return new Blob([u8], { type: mime });
-      }
+      function addImagePreview(file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          const wrapper = document.createElement("div");
+          wrapper.className = "preview-wrapper";
 
-      // إدارة المعاينة المحلية للصور
-      function addImagePreview(src) {
-        const w = document.createElement("div");
-        w.className = "preview-wrapper";
-        const img = document.createElement("img");
-        img.className = "preview-image";
-        img.src = src;
-        const d = document.createElement("button");
-        d.textContent = "❌";
-        d.className = "preview-delete";
-        d.onclick = () => {
-          w.remove();
-          const arr = JSON.parse(
-            localStorage.getItem("propertyImages") || "[]"
-          ).filter((i) => i !== src);
-          localStorage.setItem("propertyImages", JSON.stringify(arr));
+          const img = document.createElement("img");
+          img.className = "preview-image";
+          img.src = e.target.result;
+
+          const deleteBtn = document.createElement("button");
+          deleteBtn.className = "preview-delete";
+          deleteBtn.innerHTML = "&times;";
+          deleteBtn.onclick = () => wrapper.remove();
+
+          wrapper.appendChild(img);
+          wrapper.appendChild(deleteBtn);
+          previewContainer.appendChild(wrapper);
         };
-        w.append(img, d);
-        document.getElementById("previewContainer").appendChild(w);
+        reader.readAsDataURL(file);
       }
 
-      function previewImages(files) {
-        const arr = JSON.parse(localStorage.getItem("propertyImages") || "[]");
-        Array.from(files).forEach((file) => {
-          if (!file.type.startsWith("image/")) return;
-          const reader = new FileReader();
-          reader.onload = (e) => {
-            arr.push(e.target.result);
-            localStorage.setItem("propertyImages", JSON.stringify(arr));
-            addImagePreview(e.target.result);
-          };
-          reader.readAsDataURL(file);
-        });
+      function showToast(message, type = "success") {
+        const container = document.getElementById("toast-container");
+        const toast = document.createElement("div");
+        toast.className = `toast ${type}`;
+        toast.classList.add("show");
+        toast.innerHTML = `
+          <span>${message}</span>
+          <button class="close-btn" onclick="this.parentElement.remove()">&times;</button>
+        `;
+        container.appendChild(toast);
+
+        setTimeout(() => {
+          toast.classList.remove("show");
+          toast.remove();
+        }, 4000);
       }
 
-      // رفع الصور بعد نجاح عملية الإنشاء
-      async function uploadPhotos(unitId, photoUrls, token) {
-        if (!photoUrls.length) {
-          showToast("✅ لا توجد صور للرفع", "success");
-          return;
-        }
-        const fd = new FormData();
-        photoUrls.forEach((src, i) => {
-          fd.append("photos", dataURLtoBlob(src), `photo${i}.jpg`);
-        });
-        try {
-          const res = await fetch(
-            `https://easyrentapi0.runasp.net/api/Unit/${unitId}/upload-photos`,
-            {
-              method: "POST",
-              headers: { Authorization: `Bearer ${token}` },
-              body: fd,
-            }
-          );
-          if (!res.ok) {
-            const err = await res.json().catch(() => null);
-            return showToast(
-              "❌ فشل رفع الصور: " + (err?.message || res.status),
-              "error"
-            );
-          }
-          showToast("✅ تم رفع الصور بنجاح!", "success");
-        } catch {
-          showToast("❌ خطأ أثناء رفع الصور", "error");
-        }
-      }
-
-      // زر التحميل وربطه بملف input
-      document
-        .getElementById("uploadButton")
-        .addEventListener("click", () =>
-          document.getElementById("imageUpload").click()
-        );
-      document
-        .getElementById("imageUpload")
-        .addEventListener("change", function () {
-          previewImages(this.files);
-        });
-
-      // عند إرسال النموذج
       document
         .getElementById("propertyForm")
-        .addEventListener("submit", async (e) => {
+        .addEventListener("submit", async function (e) {
           e.preventDefault();
-          const token = localStorage.getItem("token");
+
+          const token = localStorage.getItem("authToken");
           const ownerId = localStorage.getItem("ownerId");
-          if (!token || !ownerId) {
-            showToast("❌ يرجى تسجيل الدخول أولاً.", "error");
-            return;
+          const ownerName = localStorage.getItem("ownerName"); // Make sure this is saved somewhere when login
+
+          if (!token || !ownerId || !ownerName) {
+            return showToast("❌ Please log in first.", "error");
           }
 
-          const photoUrls = JSON.parse(
-            localStorage.getItem("propertyImages") || "[]"
-          );
-          const body = {
+          const form = e.target;
+          const formData = new FormData(form);
+
+          // Collect base64 image previews
+          const photoUrls = Array.from(
+            document.querySelectorAll(".preview-image")
+          )
+            .map((img) => img.src)
+            .filter((src) => src.startsWith("data:image")); // only keep base64 data
+
+          // Build only the required object
+          const unitData = {
             id: 0,
-            title: document.getElementById("title").value.trim(),
-            priceForMonth: parseFloat(document.getElementById("price").value),
-            photoUrls,
-            address: document.getElementById("address").value.trim(),
-            status: "Available",
-            ownerName: localStorage.getItem("userName") || "unknown",
-            ownerId_FK: parseInt(ownerId, 10),
+            title: formData.get("title") || "",
+            priceForMonth: parseFloat(formData.get("price") || "0"),
+            photoUrls: photoUrls.length > 0 ? photoUrls : ["string"], // fallback
+            address: formData.get("address") || "",
+            status: "Pending", // or whatever you use
+            ownerName: ownerName,
+            ownerId_FK: parseInt(ownerId),
           };
+
+          console.log("Sending unitData:", unitData); // Debug
 
           try {
             const res = await fetch(
@@ -495,37 +549,27 @@
                   "Content-Type": "application/json",
                   Authorization: `Bearer ${token}`,
                 },
-                body: JSON.stringify(body),
+                body: JSON.stringify(unitData),
               }
             );
+
             const json = await res.json().catch(() => null);
+
             if (!res.ok) {
               return showToast(
-                "❌ فشل إنشاء الوحدة: " + (json?.message || res.status),
+                "❌ Failed to create unit: " + (json?.message || res.status),
                 "error"
               );
             }
 
-            showToast("✅ تم إنشاء الوحدة بنجاح", "success");
-
-            // رفع الصور باستخدام ID الوحدة التي تم إنشاؤها
-            await uploadPhotos(json.id, photoUrls, token);
-
-            e.target.reset();
-            document.getElementById("previewContainer").innerHTML = "";
-            localStorage.removeItem("propertyImages");
-          } catch {
-            showToast("❌ خطأ أثناء إنشاء الوحدة.", "error");
+            showToast("✅ Unit created successfully", "success");
+            form.reset();
+            previewContainer.innerHTML = "";
+          } catch (error) {
+            console.error("Submit Error:", error);
+            showToast("❌ Error submitting unit.", "error");
           }
         });
-
-      // إعادة عرض أي صور مخزنة عند فتح الصفحة
-      window.addEventListener("DOMContentLoaded", () => {
-        const saved = JSON.parse(
-          localStorage.getItem("propertyImages") || "[]"
-        );
-        saved.forEach(addImagePreview);
-      });
     </script>
   </body>
 </html>

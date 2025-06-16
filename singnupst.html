@@ -773,56 +773,13 @@
             <label for="universityId">University</label>
             <select id="universityId" required>
               <option value="" disabled selected>Select your university</option>
-              <option value="0" disabled selected>
-                Choose your university
-              </option>
-              <option value="1">Minia University</option>
-              <option value="2">Minia National University</option>
-              <option value="4">
-                Higher Institute of Engineering and Technology
-              </option>
-              <option value="5">Languages Institute</option>
             </select>
           </div>
 
           <div class="input-group">
-            <label for="collegeId">College</label>
+            <label for="collegeId">Faculty</label>
             <select id="collegeId" required>
-              <option value="0" disabled selected>Choose your college</option>
-              <option value="101">Faculty of Medicine</option>
-              <option value="102">Faculty of Engineering</option>
-              <option value="103">Faculty of Pharmacy</option>
-              <option value="104">Faculty of Dentistry</option>
-              <option value="105">Faculty of Science</option>
-              <option value="106">Faculty of Nursing</option>
-              <option value="107">Faculty of Agriculture</option>
-              <option value="108">Faculty of Education</option>
-              <option value="109">Faculty of Physical Education</option>
-              <option value="110">Faculty of Al-Alsun</option>
-              <option value="111">Faculty of Arts</option>
-              <option value="112">Faculty of Specific Education</option>
-              <option value="113">Faculty of Physical Education</option>
-              <option value="114">Faculty of Al-Alsun</option>
-              <option value="115">Faculty of Arts</option>
-              <option value="116">Faculty of Dar Al-Uloom</option>
-              <option value="117">Faculty of Tourism and Hotels</option>
-              <option value="118">Faculty of Computers and Information</option>
-              <option value="119">Faculty of Early Childhood Education</option>
-              <option value="120">Faculty of Physical Therapy</option>
-              <option value="121">Faculty of Engineering</option>
-              <option value="122">Faculty of Artificial Intelligence</option>
-              <option value="123">Faculty of Business Administration</option>
-              <option value="124">Faculty of Law</option>
-              <option value="125">Faculty of Civil Engineering</option>
-              <option value="125">
-                Faculty of Electronics and Communication Engineering
-              </option>
-              <option value="126">
-                Electrical Power and Machines Engineering
-              </option>
-              <option value="127">Faculty of English Language</option>
-              <option value="128">Faculty of German Language</option>
-              <option value="129">Faculty of French Language</option>
+              <option value="" disabled selected>Select your faculty</option>
             </select>
           </div>
 
@@ -1027,6 +984,7 @@
         Copyright © 2025 EasyRent. All rights reserved.
       </div>
     </footer>
+
     <script type="module">
       document.addEventListener("DOMContentLoaded", () => {
         const form = document.getElementById("signupForm");
@@ -1046,40 +1004,14 @@
         ];
         const strengthText = document.getElementById("password-strength-text");
 
-        function isPasswordStrong(password) {
-          const strongRegex =
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
-          return strongRegex.test(password) && password.length >= 8;
-        }
-
-        function generateStrongPassword(length = 12) {
-          const upper = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-          const lower = "abcdefghijklmnopqrstuvwxyz";
-          const numbers = "0123456789";
-          const symbols = "@#$!%&*?";
-          const all = upper + lower + numbers + symbols;
-          let password = [
-            upper[Math.floor(Math.random() * upper.length)],
-            lower[Math.floor(Math.random() * lower.length)],
-            numbers[Math.floor(Math.random() * numbers.length)],
-            symbols[Math.floor(Math.random() * symbols.length)],
-          ];
-          while (password.length < length) {
-            password.push(all[Math.floor(Math.random() * all.length)]);
-          }
-          return password.sort(() => Math.random() - 0.5).join("");
-        }
-
+        // تحميل الجامعات
         async function loadUniversities() {
           try {
             const res = await fetch(
               "https://easyrentapi0.runasp.net/api/University"
             );
             if (!res.ok) throw new Error("Failed to load universities");
-            const json = await res.json();
-            const data = json.$values;
-            if (!Array.isArray(data))
-              throw new Error("Unexpected response format");
+            const data = await res.json();
             data.forEach((u) => {
               const option = document.createElement("option");
               option.value = u.id;
@@ -1091,16 +1023,14 @@
           }
         }
 
+        // تحميل الكليات
         async function loadColleges() {
           try {
             const res = await fetch(
               "https://easyrentapi0.runasp.net/api/Colleges"
             );
             if (!res.ok) throw new Error("Failed to load colleges");
-            const json = await res.json();
-            const data = json.$values;
-            if (!Array.isArray(data))
-              throw new Error("Unexpected response format");
+            const data = await res.json();
             data.forEach((c) => {
               const option = document.createElement("option");
               option.value = c.id;
@@ -1112,6 +1042,7 @@
           }
         }
 
+        // تحقق قوة كلمة المرور
         function checkPasswordStrength() {
           const val = passwordInput.value;
           let strength = 0;
@@ -1119,9 +1050,11 @@
           if (/[A-Z]/.test(val)) strength++;
           if (/[0-9]/.test(val)) strength++;
           if (/[^A-Za-z0-9]/.test(val)) strength++;
+
           strengthBars.forEach((bar, i) => {
             bar.style.background = i < strength ? "#4caf50" : "#e0e0e0";
           });
+
           const texts = [
             "Very Weak",
             "Weak",
@@ -1132,6 +1065,7 @@
           strengthText.textContent = texts[strength];
         }
 
+        // حفظ بيانات النموذج مؤقتًا في localStorage
         function saveFormData() {
           const data = {
             name: document.getElementById("firstNameID").value.trim(),
@@ -1145,6 +1079,7 @@
           localStorage.setItem("signupFormData", JSON.stringify(data));
         }
 
+        // تحميل بيانات محفوظة من localStorage
         function loadFormData() {
           const saved = localStorage.getItem("signupFormData");
           if (!saved) return;
@@ -1163,43 +1098,34 @@
           if (data.collegeId) collegeSelect.value = data.collegeId;
         }
 
+        // توليد كلمة مرور من API
         generateBtn.addEventListener("click", async () => {
           try {
             const res = await fetch(
               "https://easyrentapi0.runasp.net/api/Auth/generate-password"
             );
-            if (!res.ok)
-              throw new Error("Failed to generate password from API");
+            if (!res.ok) throw new Error("Failed to generate password");
             const data = await res.json();
-            let password = data.password || "";
-            if (!isPasswordStrong(password)) {
-              console.warn("API password is weak. Generating local fallback.");
-              password = generateStrongPassword();
-            }
-            passwordSuggestion.value = password;
-            passwordInput.value = password;
+            passwordSuggestion.value = data.password || "";
+            passwordInput.value = data.password || "";
             checkPasswordStrength();
             saveFormData();
           } catch (err) {
             alert("Error generating password: " + err.message);
-            const fallback = generateStrongPassword();
-            passwordSuggestion.value = fallback;
-            passwordInput.value = fallback;
-            checkPasswordStrength();
-            saveFormData();
           }
         });
 
+        // تحديث زر إظهار/إخفاء كلمة المرور
         togglePasswordBtn.addEventListener("click", () => {
-          if (passwordInput.type === "password") {
-            passwordInput.type = "text";
-            togglePasswordBtn.textContent = "Hide";
-          } else {
-            passwordInput.type = "password";
-            togglePasswordBtn.textContent = "Show";
-          }
+          const type = passwordInput.type === "password" ? "text" : "password";
+          passwordInput.type = type;
+          togglePasswordBtn.innerHTML = `
+            <i class="fas fa-eye${type === "password" ? "-slash" : ""}"></i>
+            <span>${type === "password" ? "Show" : "Hide"}</span>
+          `;
         });
 
+        // استماع لتغييرات الحقول لحفظ البيانات وتقييم كلمة المرور
         document.querySelectorAll("input, select").forEach((el) => {
           el.addEventListener("input", () => {
             saveFormData();
@@ -1207,8 +1133,10 @@
           });
         });
 
+        // إرسال النموذج والتسجيل
         form.addEventListener("submit", async (e) => {
           e.preventDefault();
+
           const payload = {
             name: document.getElementById("firstNameID").value.trim(),
             email: document.getElementById("email").value.trim(),
@@ -1224,8 +1152,24 @@
             alert("Please fill in all required fields.");
             return;
           }
-          if (!isPasswordStrong(payload.password)) {
-            alert("Password is not strong enough.");
+          if (payload.universityId === 0 || isNaN(payload.universityId)) {
+            alert("Please select a valid University.");
+            return;
+          }
+          if (payload.collegeId === 0 || isNaN(payload.collegeId)) {
+            alert("Please select a valid College.");
+            return;
+          }
+          if (payload.password.length < 8) {
+            alert("Password must be at least 8 characters.");
+            return;
+          }
+          const strongRegex =
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
+          if (!strongRegex.test(payload.password)) {
+            alert(
+              "Password must contain uppercase, lowercase, number, and special character."
+            );
             return;
           }
 
@@ -1245,13 +1189,14 @@
             }
             alert("Registration successful!");
             localStorage.removeItem("signupFormData");
+            // redirect to login or next page:
             window.location.href = "login.html";
           } catch (err) {
             alert("Network error: " + err.message);
           }
         });
 
-        // بدء تحميل البيانات
+        // تهيئة الصفحة
         (async function init() {
           await loadUniversities();
           await loadColleges();
