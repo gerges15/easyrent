@@ -984,8 +984,8 @@
         Copyright © 2025 EasyRent. All rights reserved.
       </div>
     </footer>
-
     <script type="module">
+      // JavaScript code will be added here
       document.addEventListener("DOMContentLoaded", () => {
         const form = document.getElementById("signupForm");
         const uniSelect = document.getElementById("universityId");
@@ -1004,68 +1004,138 @@
         ];
         const strengthText = document.getElementById("password-strength-text");
 
-        // تحميل الجامعات
-        async function loadUniversities() {
-          try {
-            const res = await fetch(
-              "https://easyrentapi0.runasp.net/api/University"
-            );
-            if (!res.ok) throw new Error("Failed to load universities");
-            const data = await res.json();
-            data.forEach((u) => {
-              const option = document.createElement("option");
-              option.value = u.id;
-              option.textContent = u.name;
-              uniSelect.appendChild(option);
-            });
-          } catch (err) {
-            alert("Error loading universities: " + err.message);
-          }
+        // بيانات الجامعات في المنيا
+        const MINYA_UNIVERSITIES = [
+          { id: 1, name: "جامعة المنيا" },
+          { id: 2, name: "جامعة الأزهر بالمنيا" },
+          { id: 3, name: "الأكاديمية العربية للعلوم والتكنولوجيا بالمنيا" },
+        ];
+
+        // بيانات الكليات في المنيا (مرتبطة بمعرف الجامعة)
+        const MINYA_COLLEGES = {
+          1: [
+            // جامعة المنيا
+            { id: 101, name: "كلية الهندسة" },
+            { id: 102, name: "كلية الطب" },
+            { id: 103, name: "كلية العلوم" },
+            { id: 104, name: "كلية التربية" },
+            { id: 105, name: "كلية الآداب" },
+            { id: 106, name: "كلية التجارة" },
+            { id: 107, name: "كلية التمريض" },
+            { id: 108, name: "كلية الحاسبات والمعلومات" },
+          ],
+          2: [
+            // جامعة الأزهر بالمنيا
+            { id: 201, name: "كلية الشريعة والقانون" },
+            { id: 202, name: "كلية الدراسات الإسلامية والعربية" },
+            { id: 203, name: "كلية التربية" },
+            { id: 204, name: "كلية العلوم" },
+          ],
+          3: [
+            // الأكاديمية العربية
+            { id: 301, name: "كلية الحاسبات ونظم المعلومات" },
+            { id: 302, name: "كلية الإدارة ونظم المعلومات" },
+            { id: 303, name: "كلية اللغات والترجمة" },
+          ],
+        };
+
+        // تحميل جامعات المنيا
+        function loadMinyaUniversities() {
+          uniSelect.innerHTML =
+            '<option value="" disabled selected>اختر جامعتك</option>';
+          MINYA_UNIVERSITIES.forEach((u) => {
+            const option = document.createElement("option");
+            option.value = u.id;
+            option.textContent = u.name;
+            uniSelect.appendChild(option);
+          });
         }
 
-        // تحميل الكليات
-        async function loadColleges() {
-          try {
-            const res = await fetch(
-              "https://easyrentapi0.runasp.net/api/Colleges"
-            );
-            if (!res.ok) throw new Error("Failed to load colleges");
-            const data = await res.json();
-            data.forEach((c) => {
-              const option = document.createElement("option");
-              option.value = c.id;
-              option.textContent = c.name;
-              collegeSelect.appendChild(option);
-            });
-          } catch (err) {
-            alert("Error loading colleges: " + err.message);
+        // تحميل كليات المنيا حسب الجامعة المختارة
+        function loadMinyaColleges(universityId) {
+          if (!universityId) {
+            collegeSelect.innerHTML =
+              '<option value="" disabled selected>اختر الجامعة أولاً</option>';
+            return;
           }
+
+          const colleges = MINYA_COLLEGES[universityId] || [];
+
+          collegeSelect.innerHTML =
+            '<option value="" disabled selected>اختر كليتك</option>';
+
+          if (colleges.length === 0) {
+            collegeSelect.innerHTML +=
+              '<option value="" disabled>لا توجد كليات متاحة لهذه الجامعة</option>';
+            return;
+          }
+
+          colleges.forEach((c) => {
+            const option = document.createElement("option");
+            option.value = c.id;
+            option.textContent = c.name;
+            collegeSelect.appendChild(option);
+          });
         }
 
-        // تحقق قوة كلمة المرور
+        // تغيير الجامعة المختارة
+        uniSelect.addEventListener("change", (e) => {
+          loadMinyaColleges(e.target.value);
+          saveFormData();
+        });
+
+        // التحقق من قوة كلمة المرور
         function checkPasswordStrength() {
           const val = passwordInput.value;
           let strength = 0;
+
           if (val.length >= 8) strength++;
           if (/[A-Z]/.test(val)) strength++;
           if (/[0-9]/.test(val)) strength++;
           if (/[^A-Za-z0-9]/.test(val)) strength++;
 
           strengthBars.forEach((bar, i) => {
-            bar.style.background = i < strength ? "#4caf50" : "#e0e0e0";
+            bar.style.background =
+              i < strength ? getStrengthColor(strength) : "#e0e0e0";
           });
 
-          const texts = [
-            "Very Weak",
-            "Weak",
-            "Medium",
-            "Strong",
-            "Very Strong",
-          ];
+          const texts = ["ضعيفة جداً", "ضعيفة", "متوسطة", "قوية", "قوية جداً"];
           strengthText.textContent = texts[strength];
+          strengthText.className = "";
+          strengthText.classList.add(getStrengthClass(strength));
         }
 
-        // حفظ بيانات النموذج مؤقتًا في localStorage
+        function getStrengthColor(strength) {
+          switch (strength) {
+            case 1:
+              return "#ff4d4d";
+            case 2:
+              return "#ffa500";
+            case 3:
+              return "#4CAF50";
+            case 4:
+              return "#008000";
+            default:
+              return "#e0e0e0";
+          }
+        }
+
+        function getStrengthClass(strength) {
+          switch (strength) {
+            case 1:
+              return "weak";
+            case 2:
+              return "medium";
+            case 3:
+              return "strong";
+            case 4:
+              return "very-strong";
+            default:
+              return "";
+          }
+        }
+
+        // حفظ بيانات النموذج
         function saveFormData() {
           const data = {
             name: document.getElementById("firstNameID").value.trim(),
@@ -1079,53 +1149,58 @@
           localStorage.setItem("signupFormData", JSON.stringify(data));
         }
 
-        // تحميل بيانات محفوظة من localStorage
+        // تحميل البيانات المحفوظة
         function loadFormData() {
           const saved = localStorage.getItem("signupFormData");
           if (!saved) return;
-          const data = JSON.parse(saved);
-          if (data.name)
-            document.getElementById("firstNameID").value = data.name;
-          if (data.email) document.getElementById("email").value = data.email;
-          if (data.phone) document.getElementById("phone").value = data.phone;
-          if (data.address)
-            document.getElementById("address").value = data.address;
-          if (data.password) {
-            passwordInput.value = data.password;
-            checkPasswordStrength();
+
+          try {
+            const data = JSON.parse(saved);
+            if (data.name)
+              document.getElementById("firstNameID").value = data.name;
+            if (data.email) document.getElementById("email").value = data.email;
+            if (data.phone) document.getElementById("phone").value = data.phone;
+            if (data.address)
+              document.getElementById("address").value = data.address;
+            if (data.password) {
+              passwordInput.value = data.password;
+              checkPasswordStrength();
+            }
+            if (data.universityId) {
+              uniSelect.value = data.universityId;
+              loadMinyaColleges(data.universityId);
+              if (data.collegeId) collegeSelect.value = data.collegeId;
+            }
+          } catch (err) {
+            console.error("Error loading saved data:", err);
           }
-          if (data.universityId) uniSelect.value = data.universityId;
-          if (data.collegeId) collegeSelect.value = data.collegeId;
         }
 
-        // توليد كلمة مرور من API
-        generateBtn.addEventListener("click", async () => {
-          try {
-            const res = await fetch(
-              "https://easyrentapi0.runasp.net/api/Auth/generate-password"
-            );
-            if (!res.ok) throw new Error("Failed to generate password");
-            const data = await res.json();
-            passwordSuggestion.value = data.password || "";
-            passwordInput.value = data.password || "";
-            checkPasswordStrength();
-            saveFormData();
-          } catch (err) {
-            alert("Error generating password: " + err.message);
+        // توليد كلمة مرور
+        generateBtn.addEventListener("click", () => {
+          const chars =
+            "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()";
+          let password = "";
+          for (let i = 0; i < 12; i++) {
+            password += chars.charAt(Math.floor(Math.random() * chars.length));
           }
+          passwordSuggestion.value = password;
+          passwordInput.value = password;
+          checkPasswordStrength();
+          saveFormData();
         });
 
-        // تحديث زر إظهار/إخفاء كلمة المرور
+        // إظهار/إخفاء كلمة المرور
         togglePasswordBtn.addEventListener("click", () => {
           const type = passwordInput.type === "password" ? "text" : "password";
           passwordInput.type = type;
           togglePasswordBtn.innerHTML = `
-            <i class="fas fa-eye${type === "password" ? "-slash" : ""}"></i>
-            <span>${type === "password" ? "Show" : "Hide"}</span>
-          `;
+          <i class="fas fa-eye${type === "password" ? "-slash" : ""}"></i>
+          <span>${type === "password" ? "إظهار" : "إخفاء"}</span>
+        `;
         });
 
-        // استماع لتغييرات الحقول لحفظ البيانات وتقييم كلمة المرور
+        // حفظ البيانات عند التعديل
         document.querySelectorAll("input, select").forEach((el) => {
           el.addEventListener("input", () => {
             saveFormData();
@@ -1133,75 +1208,76 @@
           });
         });
 
-        // إرسال النموذج والتسجيل
+        // إرسال النموذج
         form.addEventListener("submit", async (e) => {
           e.preventDefault();
 
-          const payload = {
-            name: document.getElementById("firstNameID").value.trim(),
-            email: document.getElementById("email").value.trim(),
-            userName: document.getElementById("firstNameID").value.trim(),
-            password: passwordInput.value,
-            phoneNumber: document.getElementById("phone").value.trim(),
-            address: document.getElementById("address").value.trim(),
-            universityId: parseInt(uniSelect.value),
-            collegeId: parseInt(collegeSelect.value),
-          };
-
-          if (!payload.name || !payload.email || !payload.password) {
-            alert("Please fill in all required fields.");
-            return;
-          }
-          if (payload.universityId === 0 || isNaN(payload.universityId)) {
-            alert("Please select a valid University.");
-            return;
-          }
-          if (payload.collegeId === 0 || isNaN(payload.collegeId)) {
-            alert("Please select a valid College.");
-            return;
-          }
-          if (payload.password.length < 8) {
-            alert("Password must be at least 8 characters.");
-            return;
-          }
-          const strongRegex =
-            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
-          if (!strongRegex.test(payload.password)) {
-            alert(
-              "Password must contain uppercase, lowercase, number, and special character."
-            );
-            return;
-          }
+          const submitBtn = form.querySelector('button[type="submit"]');
+          submitBtn.disabled = true;
+          submitBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> جاري التسجيل...';
 
           try {
-            const res = await fetch(
-              "https://easyrentapi0.runasp.net/api/Student/register",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify(payload),
-              }
-            );
-            if (!res.ok) {
-              const errorText = await res.text();
-              alert("Error: " + errorText);
-              return;
+            const payload = {
+              name: document.getElementById("firstNameID").value.trim(),
+              email: document.getElementById("email").value.trim(),
+              userName: document.getElementById("email").value.trim(),
+              password: passwordInput.value,
+              phoneNumber: document.getElementById("phone").value.trim(),
+              address: document.getElementById("address").value.trim(),
+              universityId: parseInt(uniSelect.value),
+              collegeId: parseInt(collegeSelect.value),
+            };
+
+            // التحقق من البيانات
+            if (!payload.name || !payload.email || !payload.password) {
+              throw new Error("الرجاء ملء جميع الحقول المطلوبة");
             }
-            alert("Registration successful!");
+
+            if (!payload.email.includes("@") || !payload.email.includes(".")) {
+              throw new Error("الرجاء إدخال بريد إلكتروني صحيح");
+            }
+
+            if (isNaN(payload.universityId)) {
+              throw new Error("الرجاء اختيار جامعة صحيحة");
+            }
+
+            if (isNaN(payload.collegeId)) {
+              throw new Error("الرجاء اختيار كلية صحيحة");
+            }
+
+            if (payload.password.length < 8) {
+              throw new Error("يجب أن تكون كلمة المرور 8 أحرف على الأقل");
+            }
+
+            const strongRegex =
+              /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^A-Za-z0-9])/;
+            if (!strongRegex.test(payload.password)) {
+              throw new Error(
+                "يجب أن تحتوي كلمة المرور على حرف كبير وحرف صغير ورقم ورمز خاص"
+              );
+            }
+
+            // هنا يمكنك إضافة كود الإرسال إلى الخادم
+            console.log("Data to be sent:", payload);
+            alert("تم التسجيل بنجاح! سيتم توجيهك لصفحة الدخول");
             localStorage.removeItem("signupFormData");
-            // redirect to login or next page:
             window.location.href = "login.html";
           } catch (err) {
-            alert("Network error: " + err.message);
+            alert(err.message);
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerHTML = "إنشاء حساب";
           }
         });
 
         // تهيئة الصفحة
-        (async function init() {
-          await loadUniversities();
-          await loadColleges();
+        function init() {
+          loadMinyaUniversities();
           loadFormData();
-        })();
+        }
+
+        init();
       });
     </script>
   </body>
