@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Owner Login - EasyRent</title>
+    <title>Log in - EasyRent</title>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -12,6 +12,7 @@
       href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="./room-shapes.css" />
     <style>
       @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap");
 
@@ -47,14 +48,6 @@
         box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
       }
 
-      .welcome-header {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 15px;
-        margin-bottom: 32px;
-      }
-
       .title {
         text-align: center;
         font-size: 28px;
@@ -63,44 +56,6 @@
         color: #1a1a1a;
         display: flex;
         align-items: center;
-      }
-
-      .welcome-logo {
-        position: relative;
-        width: 35px;
-        height: 35px;
-        background: linear-gradient(135deg, #82c9ff 0%, #5aa8e6 100%);
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-top: 2px;
-      }
-
-      .welcome-logo::before {
-        content: "";
-        position: absolute;
-        width: 25px;
-        height: 25px;
-        background: #fff;
-        border-radius: 50%;
-        transform: scale(0.9);
-        transition: transform 0.3s ease;
-      }
-
-      .welcome-logo::after {
-        content: "ER";
-        position: relative;
-        font-size: 14px;
-        font-weight: 700;
-        background: linear-gradient(45deg, #82c9ff, #5aa8e6);
-        -webkit-background-clip: text;
-        background-clip: text;
-        -webkit-text-fill-color: transparent;
-      }
-
-      .welcome-logo:hover::before {
-        transform: scale(0.8);
       }
 
       .input-group {
@@ -190,13 +145,7 @@
 
       .btn-primary:hover {
         background: #5aa8e6;
-        transform: translateY(-3px);
-      }
-
-      .btn-primary:disabled {
-        background: #ccc;
-        cursor: not-allowed;
-        transform: none;
+        transform: translateY(-2px);
       }
 
       .separator {
@@ -238,6 +187,29 @@
         font-weight: 500;
         cursor: pointer;
         transition: all 0.3s ease;
+      }
+      /* Add this to your existing styles */
+      .success-message {
+        display: none;
+        background-color: #4caf50;
+        color: white;
+        padding: 16px;
+        border-radius: 8px;
+        text-align: center;
+        margin-bottom: 20px;
+        animation: slideIn 0.5s ease-out;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      }
+
+      @keyframes slideIn {
+        from {
+          transform: translateY(-20px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
       }
 
       .btn-social:hover {
@@ -292,21 +264,6 @@
       .forgot-password a:hover {
         color: #5aa8e6;
         text-decoration: underline;
-      }
-
-      .success-message {
-        position: fixed;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        background-color: #dff0d8;
-        color: #3c763d;
-        padding: 10px 20px;
-        border-radius: 5px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-      }
-      .success-message i {
-        margin-right: 10px;
       }
 
       .footer {
@@ -558,6 +515,7 @@
 
         .container {
           padding: 20px;
+          border-radius: 12px;
         }
 
         .title {
@@ -662,22 +620,79 @@
           font-size: 20px;
         }
       }
+
+      .welcome-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 15px;
+        margin-bottom: 32px;
+      }
+
+      .welcome-logo {
+        position: relative;
+        width: 35px;
+        height: 35px;
+        background: linear-gradient(135deg, #82c9ff 0%, #5aa8e6 100%);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-top: 2px;
+      }
+
+      .welcome-logo::before {
+        content: "";
+        position: absolute;
+        width: 25px;
+        height: 25px;
+        background: #fff;
+        border-radius: 50%;
+        transform: scale(0.9);
+        transition: transform 0.3s ease;
+      }
+
+      .welcome-logo::after {
+        content: "ER";
+        position: relative;
+        font-size: 14px;
+        font-weight: 700;
+        background: linear-gradient(45deg, #82c9ff, #5aa8e6);
+        -webkit-background-clip: text;
+        background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .welcome-logo:hover::before {
+        transform: scale(0.8);
+      }
+
+      @keyframes pulse {
+        0%,
+        100% {
+          box-shadow: 0 0 0 0 rgba(130, 201, 255, 0.4);
+        }
+      }
     </style>
   </head>
   <body>
     <main>
       <div class="container">
+        <div id="successMessage" class="success-message">
+          <i class="fas fa-check-circle" style="margin-right: 8px"></i>
+          Successfully registered! Welcome to EasyRent.
+        </div>
         <div class="welcome-header">
           <div class="welcome-logo"></div>
-          <h1 class="title">Welcome Owner</h1>
+          <h1 class="title">Welcome Back</h1>
         </div>
         <form id="loginForm">
           <div class="input-group">
-            <label for="emailOrPhone">Email or Phone Number</label>
+            <label for="phone">Phone number or email</label>
             <input
               type="text"
-              id="emailOrPhone"
-              placeholder="Enter your email or phone number"
+              id="phone"
+              placeholder="Enter your phone number or email"
               required
             />
           </div>
@@ -695,12 +710,10 @@
             </div>
           </div>
 
-          <button type="submit" class="btn-primary" id="loginBtn">
-            Sign In
-          </button>
+          <button type="submit" class="btn-primary">Sign In</button>
 
           <div class="forgot-password">
-            <a href="../forgetpass.html">Forgot password?</a>
+            <a href="forgetpass.html">Forgot password?</a>
           </div>
 
           <div class="separator">
@@ -786,7 +799,7 @@
               </a>
             </li>
             <li>
-              <a href="../privacypolicy.html">
+              <a href="privacypolicy.html">
                 <i class="ri-arrow-right-s-line"></i>
                 Privacy Policy
               </a>
@@ -830,7 +843,7 @@
               </span>
               <div class="footer__contact-info">
                 <h5>Email Address</h5>
-                <p>info@easyrent15.com</p>
+                <p>easyrent15@gmail.com</p>
               </div>
             </li>
             <li class="footer__contact-item">
@@ -852,75 +865,85 @@
     </footer>
 
     <script>
-      document
-        .getElementById("loginForm")
-        .addEventListener("submit", async function (e) {
+      document.addEventListener("DOMContentLoaded", () => {
+        const passwordInput = document.getElementById("password");
+        const togglePasswordBtn = document.getElementById("togglePasswordBtn");
+        const loginForm = document.getElementById("loginForm");
+
+        togglePasswordBtn.addEventListener("click", () => {
+          const type = passwordInput.type === "password" ? "text" : "password";
+          passwordInput.type = type;
+          togglePasswordBtn.textContent = type === "password" ? "Show" : "Hide";
+        });
+
+        loginForm.addEventListener("submit", async (e) => {
           e.preventDefault();
 
-          const emailOrPhone = document
-            .getElementById("emailOrPhone")
-            .value.trim();
-          const password = document.getElementById("password").value;
-          const togglePasswordBtn =
-            document.getElementById("togglePasswordBtn");
-          const passwordInput = document.getElementById("password");
-          togglePasswordBtn.addEventListener("click", () => {
-            const isPassword = passwordInput.type === "password";
-            passwordInput.type = isPassword ? "text" : "password";
-            togglePasswordBtn.textContent = isPassword ? "Hide" : "Show";
-          });
+          const input = document.getElementById("phone").value.trim();
+          const password = passwordInput.value;
 
-          if (!emailOrPhone || !password) {
-            alert("يرجى ملء جميع الحقول.");
+          if (!input || !password) {
+            alert("Please fill in all fields");
             return;
           }
 
-          const loginBtn = document.getElementById("loginBtn");
-          loginBtn.disabled = true;
-          loginBtn.textContent = "جارٍ تسجيل الدخول...";
-
           try {
-            const response = await fetch(
+            const res = await fetch(
               "https://easyrentapi0.runasp.net/api/Student/login",
               {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ emailOrPhone, password }),
+                body: JSON.stringify({
+                  emailOrPhone: input,
+                  password,
+                }),
               }
             );
 
-            if (!response.ok) {
-              let errorMessage = "فشل تسجيل الدخول.";
-              try {
-                const text = await response.text();
-                const json = JSON.parse(text);
-                errorMessage = json.message || errorMessage;
-              } catch {
-                errorMessage = await response.text();
-              }
-              if (response.status === 401)
-                errorMessage = "البريد الإلكتروني أو كلمة المرور غير صحيحة";
-              alert(errorMessage);
+            if (!res.ok) {
+              const errorText = await res.text();
+              alert(
+                errorText || "Login failed. Please check your credentials."
+              );
               return;
             }
 
-            const data = await response.json();
-            if (data.token) {
-              localStorage.setItem("authToken", data.token);
-              localStorage.setItem("ownerId", data.ownerId);
-
-              window.location.href = "room2.html"; // بعد تسجيل الدخول
+            const contentType = res.headers.get("content-type");
+            if (contentType && contentType.includes("application/json")) {
+              // Handle JSON response
+              const data = await res.json();
+              localStorage.setItem("token", data.token);
+              localStorage.setItem("user", JSON.stringify(data));
             } else {
-              throw new Error("لم يتم استلام رمز المصادقة.");
+              // Handle text response
+              const text = await res.text();
+              if (text.includes("Login successful")) {
+                // If no token is provided in text response, you might want to set some default values
+                localStorage.setItem("token", "default_token");
+                localStorage.setItem(
+                  "user",
+                  JSON.stringify({ message: "Login successful" })
+                );
+              }
             }
+
+            // Redirect after successful login
+            window.location.href = "index.html";
           } catch (err) {
-            console.error("Login error:", err);
-            alert("خطأ في الاتصال بالسيرفر.");
-          } finally {
-            loginBtn.disabled = false;
-            loginBtn.textContent = "تسجيل الدخول";
+            console.error("Login Error:", err);
+            alert("An error occurred. Please try again later.");
           }
         });
+      });
+      function showSuccessMessage() {
+        const successMessage = document.getElementById("successMessage");
+        successMessage.style.display = "block";
+
+        // Automatically hide the message after 5 seconds
+        setTimeout(() => {
+          successMessage.style.display = "none";
+        }, 5000);
+      }
     </script>
   </body>
 </html>

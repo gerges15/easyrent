@@ -864,6 +864,7 @@
           const togglePasswordBtn =
             document.getElementById("togglePasswordBtn");
           const passwordInput = document.getElementById("password");
+
           togglePasswordBtn.addEventListener("click", () => {
             const isPassword = passwordInput.type === "password";
             passwordInput.type = isPassword ? "text" : "password";
@@ -898,16 +899,21 @@
               } catch {
                 errorMessage = await response.text();
               }
+
               if (response.status === 401)
                 errorMessage = "البريد الإلكتروني أو كلمة المرور غير صحيحة";
+
               alert(errorMessage);
               return;
             }
 
             const data = await response.json();
+
             if (data.token) {
+              // ✅ نحفظ البيانات في localStorage
               localStorage.setItem("authToken", data.token);
               localStorage.setItem("ownerId", data.ownerId);
+              localStorage.setItem("ownerName", data.ownerName); // <-- لازم backend يرجعها
 
               window.location.href = "myproparty.html"; // بعد تسجيل الدخول
             } else {
