@@ -424,6 +424,34 @@
           }
         }
       }
+      function renderUnits(units) {
+        const container = document.getElementById("roomsContainer");
+
+        // تصفية الوحدات المعتمدة فقط
+        const approvedUnits = units.filter((unit) => unit.isApproved);
+
+        if (approvedUnits.length === 0) {
+          container.innerHTML = `
+                <div class="no-results">
+                    <p>لا توجد وحدات سكنية معتمدة متاحة حالياً.</p>
+                </div>
+            `;
+          return;
+        }
+
+        // عرض الوحدات المعتمدة
+        container.innerHTML = approvedUnits
+          .map(
+            (unit) => `
+            <div class="room-card">
+                <h3>${unit.name}</h3>
+                <p>${unit.location}</p>
+                <!-- باقي التفاصيل -->
+            </div>
+        `
+          )
+          .join("");
+      }
     </script>
   </body>
 </html>
