@@ -23,14 +23,14 @@ export function initNavigation() {
 
 // Function to update navigation based on authentication state
 export function updateNavigation() {
-  const isLoggedIn = localStorage.getItem('token') !== null;
+  const isLoggedIn = localStorage.getItem("token") !== null;
   const navLinks = document.getElementById("nav__links");
-  
+
   if (navLinks) {
     const loginLink = navLinks.querySelector('[data-action="login"]');
     const signupLink = navLinks.querySelector('[data-action="signup"]');
     const logoutLink = navLinks.querySelector('[onclick*="handleLogout"]');
-    const userMenuItems = navLinks.querySelectorAll('.user-menu-item');
+    const userMenuItems = navLinks.querySelectorAll(".user-menu-item");
 
     if (isLoggedIn) {
       // Hide login/signup and Add Property, show logout
@@ -38,8 +38,12 @@ export function updateNavigation() {
       if (signupLink) signupLink.style.display = 'none';
       if (logoutLink) logoutLink.style.display = 'block';
       userMenuItems.forEach(item => {
+        // Always show Contact link
+        if (item.querySelector('a[href="#contact"]')) {
+          item.style.display = 'block';
+        }
         // Hide Add Property link after login
-        if (item.querySelector('a[href="./owner/choses.html"]')) {
+        else if (item.querySelector('a[href="./owner/choses.html"]')) {
           item.style.display = 'none';
         } else {
           item.style.display = 'block';
@@ -51,8 +55,12 @@ export function updateNavigation() {
       if (signupLink) signupLink.style.display = 'block';
       if (logoutLink) logoutLink.style.display = 'none';
       userMenuItems.forEach(item => {
+        // Always show Contact link
+        if (item.querySelector('a[href="#contact"]')) {
+          item.style.display = 'block';
+        }
         // Show Add Property link before login
-        if (item.querySelector('a[href="./owner/choses.html"]')) {
+        else if (item.querySelector('a[href="./owner/choses.html"]')) {
           item.style.display = 'block';
         } else {
           item.style.display = 'none';
@@ -63,14 +71,14 @@ export function updateNavigation() {
 }
 
 // Call updateNavigation when the page loads
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener("DOMContentLoaded", () => {
   initNavigation();
   updateNavigation();
 });
 
 // Update navigation when login state changes
-window.addEventListener('storage', (e) => {
-  if (e.key === 'token') {
+window.addEventListener("storage", (e) => {
+  if (e.key === "token") {
     updateNavigation();
   }
 });
