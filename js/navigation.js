@@ -33,17 +33,31 @@ export function updateNavigation() {
     const userMenuItems = navLinks.querySelectorAll('.user-menu-item');
 
     if (isLoggedIn) {
-      // Hide login/signup, show logout and user menu items
+      // Hide login/signup and Add Property, show logout
       if (loginLink) loginLink.style.display = 'none';
       if (signupLink) signupLink.style.display = 'none';
       if (logoutLink) logoutLink.style.display = 'block';
-      userMenuItems.forEach(item => item.style.display = 'block');
+      userMenuItems.forEach(item => {
+        // Hide Add Property link after login
+        if (item.querySelector('a[href="./owner/choses.html"]')) {
+          item.style.display = 'none';
+        } else {
+          item.style.display = 'block';
+        }
+      });
     } else {
-      // Show login/signup, hide logout and user menu items
+      // Show login/signup and Add Property, hide logout
       if (loginLink) loginLink.style.display = 'block';
       if (signupLink) signupLink.style.display = 'block';
       if (logoutLink) logoutLink.style.display = 'none';
-      userMenuItems.forEach(item => item.style.display = 'none');
+      userMenuItems.forEach(item => {
+        // Show Add Property link before login
+        if (item.querySelector('a[href="./owner/choses.html"]')) {
+          item.style.display = 'block';
+        } else {
+          item.style.display = 'none';
+        }
+      });
     }
   }
 }
