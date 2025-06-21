@@ -125,53 +125,97 @@
       }
 
       /* Property Listing Styles */
-      .properties-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
-        margin-bottom: 30px;
-      }
-
       .property-card {
-        background: white;
-        border-radius: 12px;
-        overflow: hidden;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        padding: 16px;
+        margin-bottom: 20px;
+        background-color: #fff;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
       }
 
-      .property-card:hover {
-        transform: translateY(-5px);
-      }
-
-      .property-image {
+      .property-images {
         width: 100%;
-        height: 200px;
+      }
+
+      .main-image {
+        width: 100%;
+        height: 250px;
         object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+      }
+
+      .other-images {
+        display: none;
+        margin-top: 12px;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 10px;
+      }
+
+      .extra-image {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 6px;
+        border: 1px solid #ccc;
       }
 
       .property-details {
-        padding: 15px;
+        margin-top: 16px;
       }
 
       .property-title {
-        font-size: 18px;
-        margin: 0 0 10px;
-        color: var(--success-color);
+        font-size: 1.2rem;
+        font-weight: bold;
+        color: #333;
+        margin-bottom: 8px;
       }
 
       .property-info {
-        display: flex;
-        justify-content: space-between;
         color: #666;
-        font-size: 14px;
-        margin-bottom: 10px;
+        font-size: 0.95rem;
+        margin-bottom: 6px;
       }
 
       .property-price {
-        font-weight: bold;
-        color: #007aff;
-        font-size: 16px;
+        color: #007bff;
+        font-size: 1.05rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+      }
+
+      .action-btn {
+        padding: 8px 14px;
+        background-color: #dc3545;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        font-size: 0.95rem;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      .action-btn:hover {
+        background-color: #b02a37;
+      }
+
+      .toggle-btn {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 6px 12px;
+        background-color: #6c757d;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 0.85rem;
+        transition: background-color 0.3s;
+      }
+
+      .toggle-btn:hover {
+        background-color: #5a6268;
       }
 
       .property-actions {
@@ -359,8 +403,9 @@
 
       async function fetchAllUnits() {
         const headers = getAuthHeader();
-        if (!headers) throw new Error("Unauthorized – login required");
-
+        if (!headers) {
+          throw new Error("Unauthorized – login required");
+        }
         const res = await fetch(
           "https://easyrentapi0.runasp.net/api/Unit/GetAllUnits",
           { headers }
@@ -370,7 +415,6 @@
             throw new Error("Unauthorized – login required");
           throw new Error("Failed to fetch units");
         }
-
         const { $values } = await res.json();
         return $values;
       }
@@ -382,15 +426,11 @@
           window.location.href = "loginowner.html";
           return;
         }
-
         if (!confirm("هل أنت متأكد أنك تريد حذف هذه الوحدة؟")) return;
 
         const res = await fetch(
           `https://easyrentapi0.runasp.net/api/Unit/${unitId}`,
-          {
-            method: "DELETE",
-            headers,
-          }
+          { method: "DELETE", headers }
         );
 
         if (res.ok) {
@@ -412,12 +452,10 @@
       async function loadAndRenderUnits() {
         const container = document.getElementById("propertiesContainer");
         const total = document.getElementById("totalListings");
-
         try {
           const allUnits = await fetchAllUnits();
           const userIdStr = localStorage.getItem("ownerId");
           const userId = userIdStr ? Number(userIdStr) : null;
-
           if (!userId) {
             alert("يرجى تسجيل الدخول.");
             window.location.href = "loginowner.html";
@@ -435,51 +473,57 @@
           container.innerHTML = "";
           units.forEach((u) => {
             const urls = u.photoUrls?.$values;
-            let imagesHtml = "";
+            const mainImage =
+              Array.isArray(urls) && urls.length > 0
+                ? `<img src="https://easyrentapi0.runasp.net/${urls[0]}" alt="${u.title}" class="main-image" style="width:100%; height:220px; object-fit:cover; border-radius:8px; margin-bottom:10px;"/>`
+                : "";
 
-            if (Array.isArray(urls) && urls.length > 0) {
-              const mainImage = `<img src="https://easyrentapi0.runasp.net/${urls[0]}" alt="${u.title}" class="property-image"/>`;
-
-              const extraImages = urls
-                .slice(1)
-                .map(
-                  (photo) =>
-                    `<img src="https://easyrentapi0.runasp.net/${photo}" alt="${u.title}" class="property-image"/>`
-                )
-                .join("");
-
-              imagesHtml = `
-                <div class="property-images">
-                  ${mainImage}
-                  ${
-                    urls.length > 1
-                      ? `
-                    <button class="toggle-images-btn" onclick="this.nextElementSibling.classList.toggle('hidden'); this.textContent = this.textContent === 'عرض باقي الصور' ? 'إخفاء الصور' : 'عرض باقي الصور';">
-                      عرض باقي الصور
-                    </button>`
-                      : ""
-                  }
-                  <div class="extra-images hidden">
-                    ${extraImages}
-                  </div>
-                </div>
-              `;
-            }
+            const otherImages =
+              Array.isArray(urls) && urls.length > 1
+                ? urls
+                    .slice(1)
+                    .map(
+                      (photo) =>
+                        `<img src="https://easyrentapi0.runasp.net/${photo}" class="extra-image" style="width:100%; max-width:100%; height:auto; object-fit:contain; margin-bottom:8px; border-radius:6px;"/>`
+                    )
+                    .join("")
+                : "";
 
             const card = document.createElement("div");
             card.className = "property-card";
+            card.style.border = "1px solid #ddd";
+            card.style.padding = "16px";
+            card.style.borderRadius = "12px";
+            card.style.marginBottom = "20px";
+            card.style.backgroundColor = "#fff";
             card.innerHTML = `
-              ${imagesHtml}
+              ${mainImage}
               <div class="property-details">
                 <h3 class="property-title">${u.title}</h3>
-                <div class="property-info"><i class="fas fa-map-marker-alt"></i> ${u.address}</div>
-                <div class="property-price">$${u.priceForMonth}/mo</div>
-                <button class="action-btn delete-btn" data-id="${u.id}">
+                <div class="property-info"><i class="fas fa-map-marker-alt"></i> ${
+                  u.address
+                }</div>
+                <div class="property-price">السعر: ${
+                  u.priceForMonth
+                } ج / شهرياً</div>
+                <button class="action-btn delete-btn" data-id="${
+                  u.id
+                }" style="margin-top:12px; background:#dc3545; color:white; padding:6px 12px; border:none; border-radius:6px; cursor:pointer;">
                   <i class="fas fa-trash"></i> حذف
                 </button>
+                ${
+                  otherImages
+                    ? `<button class="toggle-images-btn" style="margin-top:12px; background:#0d6efd; color:white; padding:6px 12px; border:none; border-radius:6px; cursor:pointer;"
+                        onclick="const imgs = this.nextElementSibling; imgs.classList.toggle('hidden'); this.textContent = this.textContent === 'عرض باقي الصور' ? 'إخفاء الصور' : 'عرض باقي الصور';">
+                        عرض باقي الصور
+                      </button>
+                      <div class="other-images hidden" style="margin-top:12px;">
+                        ${otherImages}
+                      </div>`
+                    : ""
+                }
               </div>
             `;
-
             container.appendChild(card);
           });
         } catch (err) {
@@ -492,31 +536,6 @@
             window.location.href = "loginowner.html";
           }
         }
-      }
-
-      function renderUnits(units) {
-        const container = document.getElementById("roomsContainer");
-        const approvedUnits = units.filter((unit) => unit.isApproved);
-
-        if (approvedUnits.length === 0) {
-          container.innerHTML = `
-            <div class="no-results">
-              <p>لا توجد وحدات سكنية معتمدة متاحة حالياً.</p>
-            </div>
-          `;
-          return;
-        }
-
-        container.innerHTML = approvedUnits
-          .map(
-            (unit) => `
-          <div class="room-card">
-            <h3>${unit.name}</h3>
-            <p>${unit.location}</p>
-          </div>
-        `
-          )
-          .join("");
       }
     </script>
   </body>
