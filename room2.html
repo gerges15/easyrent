@@ -879,127 +879,30 @@
         </form>
       </div>
     </div>
-
-    <script type="module" src="./js/rooms2.js"></script>
+    <script src="./js/rooms2.js"></script>
     <script type="module">
-      // Base API URL
-      const API_BASE_URL = "https://easyrentapi0.runasp.net/api";
+      import {
+        initializePage,
+        submitFeedback,
+        fetchUnits,
+        openRoomDetails,
+        closeModal,
+        bookUnit,
+        openBookingModal,
+        getCurrentRoomId,
+      } from "./js/rooms2.js";
 
-      // Global variables
-      let units = [];
-      let currentRoomId = null;
-
-      // DOM Content Loaded Event
-      document.addEventListener("DOMContentLoaded", function () {
-        fetchUnits();
-        initializePage();
-        setupEventListeners();
-      });
-
-      // Initialize page
-      async function initializePage() {
-        try {
-          const userData = getUserData();
-          if (userData && userData.id) {
-            const studentData = await getStudentData(userData.id);
-            if (studentData) {
-              displayStudentInfo(studentData);
-            }
-          }
-          setupFeedbackForm();
-        } catch (error) {
-          console.error("Error initializing page:", error);
-        }
-      }
-
-      // Setup feedback form
-      function setupFeedbackForm() {
-        const feedbackForm = document.getElementById("feedbackForm");
-        if (!feedbackForm) return;
-
-        feedbackForm.addEventListener("submit", async function (e) {
-          e.preventDefault();
-          const comment = e.target.elements.comment?.value;
-          const rating = e.target.elements.rating?.value || 1;
-
-          if (!comment) {
-            alert("الرجاء إدخال تعليق");
-            return;
-          }
-
-          try {
-            const user = getUserData();
-            if (!user?.id) {
-              alert("يرجى تسجيل الدخول أولاً");
-              window.location.href = "login.html";
-              return;
-            }
-
-            const response = await fetch(`${API_BASE_URL}/Feedback`, {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-              body: JSON.stringify({
-                comment,
-                rating: parseInt(rating),
-                studentId: user.id,
-                unitId: currentRoomId,
-              }),
-            });
-
-            if (!response.ok) throw new Error("فشل إرسال التعليق");
-
-            alert("تم إرسال تعليقك بنجاح!");
-            feedbackForm.reset();
-            await loadFeedbacks(currentRoomId);
-          } catch (error) {
-            console.error("Feedback error:", error);
-            alert(error.message || "حدث خطأ أثناء إرسال التعليق");
-          }
-        });
-      }
-
-      // Setup event listeners
-      function setupEventListeners() {
-        // Search form
-        document
-          .getElementById("searchform")
-          ?.addEventListener("submit", function (e) {
-            e.preventDefault();
-            filterUnits();
-          });
-
-        // Modal close buttons
-        document.querySelectorAll(".close-modal").forEach((btn) => {
-          btn.addEventListener("click", function () {
-            const modalId = this.closest(".modal").id;
-            closeModal(modalId);
-          });
-        });
-
-        // Star rating hover effects
-        setupStarRating();
-      }
-
-      // [Keep all your other existing functions exactly as they were]
-      // fetchUnits(), showErrorMessage(), renderUnits(), filterUnits(),
-      // openRoomDetails(), updateRoomFeatures(), closeModal(), getUserData(),
-      // getStudentData(), displayStudentInfo(), setupStarRating(),
-      // highlightStars(), submitFeedback(), loadFeedbacks(), bookUnit(),
-      // isAuthenticated(), openBookingModal(), getCurrentRoomId()
-
-      // Make sure to include all the remaining functions from your original code
-      // They should work exactly as before, just ensure they're all present
-
-      // Expose functions to global scope
+      // تعريض الدوال للنطاق العام إذا لزم الأمر
+      window.submitFeedback = submitFeedback;
+      window.fetchUnits = fetchUnits;
       window.openRoomDetails = openRoomDetails;
       window.closeModal = closeModal;
-      window.submitFeedback = submitFeedback;
       window.bookUnit = bookUnit;
       window.openBookingModal = openBookingModal;
       window.getCurrentRoomId = getCurrentRoomId;
+
+      // تهيئة الصفحة عند التحميل
+      document.addEventListener("DOMContentLoaded", initializePage);
     </script>
   </body>
 </html>

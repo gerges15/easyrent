@@ -426,7 +426,7 @@
               <li class="user-menu-item"><a href="#contact"><i class="ri-contacts-line"></i> ContactUs</a></li>
               <!-- User menu items that show after login -->
               <li class="user-menu-item"><a href="./owner/choses.html"><i class="ri-add-circle-line"></i> Add Properity</a></li>
-              <li class="user-menu-item"><a href="#contact"><i class="ri-contacts-line"></i> ContactUs</a></li>
+             
               <li class="user-menu-item"><a href="#" onclick="handleLogout(); return false;"><i class="ri-logout-box-r-line"></i> Logout</a></li>
               
               <li>
@@ -457,6 +457,14 @@
         <div class="section__container header__container">
           <p class="section__subheader">ABOUTt US</p>
           <h1 style="color: azure;">The perfect <br />Base for you</h1>
+          <div class="search-container">
+            <div class="search-box">
+              <input type="text" placeholder="Search for properties..." class="search-input">
+              <button class="search-button">
+                <i class="ri-search-line"></i>
+              </button>
+            </div>
+          </div>
           <button class="btn">Get Units</button>
         </div>
       </header>
@@ -1550,5 +1558,67 @@
     <script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
     <script type="module" src="js/main.js"></script>
   </main>
+  
+  <script>
+    // Search functionality
+    document.addEventListener('DOMContentLoaded', function() {
+      const searchButton = document.querySelector('.search-button');
+      const searchInput = document.querySelector('.search-input');
+      
+      if (searchButton && searchInput) {
+        searchButton.addEventListener('click', function() {
+          performSearch(searchInput.value);
+        });
+        
+        searchInput.addEventListener('keypress', function(e) {
+          if (e.key === 'Enter') {
+            performSearch(searchInput.value);
+          }
+        });
+      }
+      
+      function performSearch(query) {
+        if (query.trim() === '') {
+          // Show alert if search is empty
+          Swal.fire({
+            title: 'Empty Search',
+            text: 'Please enter a search term',
+            icon: 'info',
+            confirmButtonColor: '#7c4dff'
+          });
+          return;
+        }
+        
+        // Show search results with animation
+        Swal.fire({
+          title: 'Searching...',
+          text: `Searching for: "${query}"`,
+          icon: 'info',
+          confirmButtonColor: '#7c4dff',
+          showConfirmButton: false,
+          timer: 1500,
+          timerProgressBar: true,
+          didOpen: () => {
+            Swal.showLoading();
+          }
+        }).then(() => {
+          // After loading animation, show results
+          // This would normally connect to a backend search API
+          Swal.fire({
+            title: 'Search Results',
+            text: `Found properties matching "${query}"`,
+            icon: 'success',
+            confirmButtonColor: '#7c4dff'
+          });
+          
+          // Scroll to properties section
+          const propertiesSection = document.getElementById('Properties');
+          if (propertiesSection) {
+            propertiesSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      }
+    });
+  </script>
   </body>
 </html>

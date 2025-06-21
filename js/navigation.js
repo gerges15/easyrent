@@ -32,41 +32,25 @@ export function updateNavigation() {
     const logoutLink = navLinks.querySelector('[onclick*="handleLogout"]');
     const userMenuItems = navLinks.querySelectorAll(".user-menu-item");
 
-    if (isLoggedIn) {
-      // Hide login/signup and Add Property, show logout
-      if (loginLink) loginLink.style.display = 'none';
-      if (signupLink) signupLink.style.display = 'none';
-      if (logoutLink) logoutLink.style.display = 'block';
-      userMenuItems.forEach(item => {
-        // Always show Contact link
-        if (item.querySelector('a[href="#contact"]')) {
-          item.style.display = 'block';
-        }
-        // Hide Add Property link after login
-        else if (item.querySelector('a[href="./owner/choses.html"]')) {
-          item.style.display = 'none';
-        } else {
-          item.style.display = 'block';
-        }
-      });
-    } else {
-      // Show login/signup and Add Property, hide logout
-      if (loginLink) loginLink.style.display = 'block';
-      if (signupLink) signupLink.style.display = 'block';
-      if (logoutLink) logoutLink.style.display = 'none';
-      userMenuItems.forEach(item => {
-        // Always show Contact link
-        if (item.querySelector('a[href="#contact"]')) {
-          item.style.display = 'block';
-        }
-        // Show Add Property link before login
-        else if (item.querySelector('a[href="./owner/choses.html"]')) {
-          item.style.display = 'block';
-        } else {
-          item.style.display = 'none';
-        }
-      });
-    }
+    // Always show login and signup links when not logged in
+    if (loginLink) loginLink.style.display = isLoggedIn ? "none" : "block";
+    if (signupLink) signupLink.style.display = isLoggedIn ? "none" : "block";
+    if (logoutLink) logoutLink.style.display = isLoggedIn ? "block" : "none";
+
+    userMenuItems.forEach((item) => {
+      // Always show Contact link
+      if (item.querySelector('a[href="#contact"]')) {
+        item.style.display = "block";
+      }
+      // Show Add Property link before login, hide after login
+      else if (item.querySelector('a[href="./owner/choses.html"]')) {
+        item.style.display = isLoggedIn ? "none" : "block";
+      }
+      // Show other user menu items only when logged in
+      else {
+        item.style.display = isLoggedIn ? "block" : "none";
+      }
+    });
   }
 }
 

@@ -39,7 +39,7 @@ loginForm.addEventListener("submit", async function (event) {
     ////////////////////////////////////////////////////////////////
     switch (data.userType) {
       case "Admin":
-        window.location.href = "/admin-dashboard.html";
+        window.location.href = "./admin/indexAdmin.html";
         break;
       case "Owner":
         window.location.href = "../owner/dashbord.html";
