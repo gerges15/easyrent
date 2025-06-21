@@ -308,6 +308,7 @@
           .getElementById("propertiesContainer")
           .addEventListener("click", handleDelete);
       });
+
       function getAuthHeader() {
         const token = localStorage.getItem("authToken");
         if (!token) return null;
@@ -317,23 +318,24 @@
         };
       }
 
-      // باقي الدوال كما هي...
-
       async function fetchAllUnits() {
         const headers = getAuthHeader();
         if (!headers) {
           throw new Error("Unauthorized – login required");
         }
+
         const res = await fetch(
           "https://easyrentapi0.runasp.net/api/Unit/GetAllUnits",
           { headers }
         );
         console.log("fetchAllUnits status:", res.status);
+
         if (!res.ok) {
           if (res.status === 401)
             throw new Error("Unauthorized – login required");
           throw new Error("Failed to fetch units");
         }
+
         const { $values } = await res.json();
         return $values;
       }
@@ -346,7 +348,9 @@
           window.location.href = "loginowner.html";
           return;
         }
+
         if (!confirm("هل أنت متأكد أنك تريد حذف هذه الوحدة؟")) return;
+
         console.log("Token before DELETE:", headers?.Authorization);
 
         const res = await fetch(
@@ -354,6 +358,7 @@
           { method: "DELETE", headers }
         );
         console.log("DELETE Status:", res.status);
+
         if (res.ok) {
           alert("تم حذف الوحدة بنجاح");
           loadAndRenderUnits();
@@ -373,16 +378,19 @@
       async function loadAndRenderUnits() {
         const container = document.getElementById("propertiesContainer");
         const total = document.getElementById("totalListings");
+
         try {
           const allUnits = await fetchAllUnits();
           const userIdStr = localStorage.getItem("ownerId");
           const userId = userIdStr ? Number(userIdStr) : null;
           console.log("Parsed ownerId:", userId);
+
           if (!userId) {
             alert("يرجى تسجيل الدخول.");
             window.location.href = "loginowner.html";
             return;
           }
+
           const units = allUnits.filter((u) => u.ownerId_FK === userId);
           total.textContent = units.length;
 
@@ -396,13 +404,20 @@
             const urls = u.photoUrls?.$values;
             const imgTag =
               Array.isArray(urls) && urls.length > 0
-                ? `<img src="https://easyrentapi0.runasp.net/${urls[0]}" alt="${u.title}" class="property-image"/>`
+                ? urls
+                    .map(
+                      (photo) =>
+                        `<img src="https://easyrentapi0.runasp.net/${photo}" alt="${u.title}" class="property-image"/>`
+                    )
+                    .join("")
                 : "";
 
             const card = document.createElement("div");
             card.className = "property-card";
             card.innerHTML = `
-              ${imgTag}
+              <div class="property-images">
+                ${imgTag}
+              </div>
               <div class="property-details">
                 <h3 class="property-title">${u.title}</h3>
                 <div class="property-info"><i class="fas fa-map-marker-alt"></i> ${u.address}</div>
@@ -410,7 +425,8 @@
                 <button class="action-btn delete-btn" data-id="${u.id}">
                   <i class="fas fa-trash"></i> حذف
                 </button>
-              </div>`;
+              </div>
+            `;
             container.appendChild(card);
           });
         } catch (err) {
@@ -424,31 +440,30 @@
           }
         }
       }
+
       function renderUnits(units) {
         const container = document.getElementById("roomsContainer");
 
-        // تصفية الوحدات المعتمدة فقط
         const approvedUnits = units.filter((unit) => unit.isApproved);
 
         if (approvedUnits.length === 0) {
           container.innerHTML = `
-                <div class="no-results">
-                    <p>لا توجد وحدات سكنية معتمدة متاحة حالياً.</p>
-                </div>
-            `;
+            <div class="no-results">
+              <p>لا توجد وحدات سكنية معتمدة متاحة حالياً.</p>
+            </div>
+          `;
           return;
         }
 
-        // عرض الوحدات المعتمدة
         container.innerHTML = approvedUnits
           .map(
             (unit) => `
             <div class="room-card">
-                <h3>${unit.name}</h3>
-                <p>${unit.location}</p>
-                <!-- باقي التفاصيل -->
+              <h3>${unit.name}</h3>
+              <p>${unit.location}</p>
+              <!-- باقي التفاصيل -->
             </div>
-        `
+          `
           )
           .join("");
       }
