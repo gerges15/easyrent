@@ -217,51 +217,45 @@
         font-size: 16px;
         margin: 0;
       }
-      property-images {
+      .property-images {
         display: flex;
         flex-direction: column;
-        gap: 10px;
-        margin-bottom: 1rem;
+        gap: 15px;
       }
 
-      .property-image.main-img {
+      .property-image {
         width: 100%;
-        height: 200px;
+        height: 250px;
         object-fit: cover;
         border-radius: 10px;
         border: 1px solid #ccc;
       }
 
-      .extra-images {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-        margin-top: 10px;
-      }
-
-      .property-image.extra-img {
-        width: 90px;
-        height: 90px;
-        object-fit: cover;
-        border-radius: 6px;
-        border: 1px solid #ddd;
-      }
-
       .toggle-images-btn {
-        margin-top: 12px;
-        padding: 6px 12px;
-        font-size: 0.8rem;
-        background-color: #4895ef;
+        margin-top: 10px;
+        padding: 8px 16px;
+        background-color: #4361ee;
         color: white;
         border: none;
         border-radius: 6px;
         cursor: pointer;
+        font-weight: bold;
         align-self: flex-start;
-        transition: background-color 0.3s ease;
       }
 
       .toggle-images-btn:hover {
         background-color: #3f37c9;
+      }
+
+      .extra-images {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 10px;
+      }
+
+      .extra-images.hidden {
+        display: none;
       }
       /* Stats Card */
       .stats-card {
@@ -369,15 +363,14 @@
 
         const res = await fetch(
           "https://easyrentapi0.runasp.net/api/Unit/GetAllUnits",
-          {
-            headers,
-          }
+          { headers }
         );
         if (!res.ok) {
           if (res.status === 401)
             throw new Error("Unauthorized – login required");
           throw new Error("Failed to fetch units");
         }
+
         const { $values } = await res.json();
         return $values;
       }
@@ -389,6 +382,7 @@
           window.location.href = "loginowner.html";
           return;
         }
+
         if (!confirm("هل أنت متأكد أنك تريد حذف هذه الوحدة؟")) return;
 
         const res = await fetch(
@@ -418,6 +412,7 @@
       async function loadAndRenderUnits() {
         const container = document.getElementById("propertiesContainer");
         const total = document.getElementById("totalListings");
+
         try {
           const allUnits = await fetchAllUnits();
           const userIdStr = localStorage.getItem("ownerId");
@@ -439,54 +434,53 @@
 
           container.innerHTML = "";
           units.forEach((u) => {
-            const urls = u.photoUrls?.$values || [];
-            const firstImg =
-              urls.length > 0
-                ? `<img src="https://easyrentapi0.runasp.net/${urls[0]}" alt="${u.title}" class="property-image main-img" />`
-                : "";
+            const urls = u.photoUrls?.$values;
+            let imagesHtml = "";
 
-            const hiddenImgs = urls
-              .slice(1)
-              .map(
-                (url) =>
-                  `<img src="https://easyrentapi0.runasp.net/${url}" class="property-image extra-img" style="display:none;" />`
-              )
-              .join("");
+            if (Array.isArray(urls) && urls.length > 0) {
+              const mainImage = `<img src="https://easyrentapi0.runasp.net/${urls[0]}" alt="${u.title}" class="property-image"/>`;
+
+              const extraImages = urls
+                .slice(1)
+                .map(
+                  (photo) =>
+                    `<img src="https://easyrentapi0.runasp.net/${photo}" alt="${u.title}" class="property-image"/>`
+                )
+                .join("");
+
+              imagesHtml = `
+                <div class="property-images">
+                  ${mainImage}
+                  ${
+                    urls.length > 1
+                      ? `
+                    <button class="toggle-images-btn" onclick="this.nextElementSibling.classList.toggle('hidden'); this.textContent = this.textContent === 'عرض باقي الصور' ? 'إخفاء الصور' : 'عرض باقي الصور';">
+                      عرض باقي الصور
+                    </button>`
+                      : ""
+                  }
+                  <div class="extra-images hidden">
+                    ${extraImages}
+                  </div>
+                </div>
+              `;
+            }
 
             const card = document.createElement("div");
             card.className = "property-card";
             card.innerHTML = `
-                <div class="property-images">
-                  ${firstImg}
-                  <div class="extra-images">${hiddenImgs}</div>
-                  ${
-                    urls.length > 1
-                      ? `<button class="toggle-images-btn">عرض باقي الصور</button>`
-                      : ""
-                  }
-                </div>
-                <div class="property-details">
-                  <h3 class="property-title">${u.title}</h3>
-                  <div class="property-info"><i class="fas fa-map-marker-alt"></i> ${
-                    u.address
-                  }</div>
-                  <div class="property-price">$${u.priceForMonth}/mo</div>
-                  <button class="action-btn delete-btn" data-id="${u.id}">
-                    <i class="fas fa-trash"></i> حذف
-                  </button>
-                </div>
-              `;
-            container.appendChild(card);
-          });
+              ${imagesHtml}
+              <div class="property-details">
+                <h3 class="property-title">${u.title}</h3>
+                <div class="property-info"><i class="fas fa-map-marker-alt"></i> ${u.address}</div>
+                <div class="property-price">$${u.priceForMonth}/mo</div>
+                <button class="action-btn delete-btn" data-id="${u.id}">
+                  <i class="fas fa-trash"></i> حذف
+                </button>
+              </div>
+            `;
 
-          // زر عرض الصور الإضافية
-          container.querySelectorAll(".toggle-images-btn").forEach((btn) => {
-            btn.addEventListener("click", () => {
-              const extraImgs =
-                btn.parentElement.querySelectorAll(".extra-img");
-              extraImgs.forEach((img) => (img.style.display = "inline-block"));
-              btn.style.display = "none";
-            });
+            container.appendChild(card);
           });
         } catch (err) {
           console.error(err);
@@ -498,6 +492,31 @@
             window.location.href = "loginowner.html";
           }
         }
+      }
+
+      function renderUnits(units) {
+        const container = document.getElementById("roomsContainer");
+        const approvedUnits = units.filter((unit) => unit.isApproved);
+
+        if (approvedUnits.length === 0) {
+          container.innerHTML = `
+            <div class="no-results">
+              <p>لا توجد وحدات سكنية معتمدة متاحة حالياً.</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = approvedUnits
+          .map(
+            (unit) => `
+          <div class="room-card">
+            <h3>${unit.name}</h3>
+            <p>${unit.location}</p>
+          </div>
+        `
+          )
+          .join("");
       }
     </script>
   </body>
