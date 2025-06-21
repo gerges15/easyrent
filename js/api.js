@@ -44,7 +44,13 @@ export default class API {
   async get(endpoint) {
     const res = await fetch(`${this.baseURL}${endpoint}`, {
       method: "GET",
-      headers: this.getHeaders(),
+      headers: {
+        ...this.getHeaders(),
+        Accept: "*/*",
+        "Access-Control-Allow-Origin": "*",
+      },
+      mode: "cors",
+      credentials: "include",
     });
     return this.handleResponse(res);
   }

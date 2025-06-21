@@ -217,7 +217,29 @@
         font-size: 16px;
         margin: 0;
       }
-
+      .property-images {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 1rem;
+      }
+      .property-image {
+        width: 100px;
+        height: 100px;
+        object-fit: cover;
+        border-radius: 8px;
+        border: 1px solid #ccc;
+      }
+      .toggle-images-btn {
+        margin-top: 8px;
+        padding: 5px 10px;
+        font-size: 0.95rem;
+        background-color: #4361ee;
+        color: white;
+        border: none;
+        border-radius: 6px;
+        cursor: pointer;
+      }
       /* Stats Card */
       .stats-card {
         background-color: white;
@@ -320,44 +342,39 @@
 
       async function fetchAllUnits() {
         const headers = getAuthHeader();
-        if (!headers) {
-          throw new Error("Unauthorized – login required");
-        }
+        if (!headers) throw new Error("Unauthorized – login required");
 
         const res = await fetch(
           "https://easyrentapi0.runasp.net/api/Unit/GetAllUnits",
-          { headers }
+          {
+            headers,
+          }
         );
-        console.log("fetchAllUnits status:", res.status);
-
         if (!res.ok) {
           if (res.status === 401)
             throw new Error("Unauthorized – login required");
           throw new Error("Failed to fetch units");
         }
-
         const { $values } = await res.json();
         return $values;
       }
 
       async function deleteUnit(unitId) {
         const headers = getAuthHeader();
-        console.log("Attempt delete with token:", headers?.Authorization);
         if (!headers) {
           alert("يرجى تسجيل الدخول أولًا.");
           window.location.href = "loginowner.html";
           return;
         }
-
         if (!confirm("هل أنت متأكد أنك تريد حذف هذه الوحدة؟")) return;
-
-        console.log("Token before DELETE:", headers?.Authorization);
 
         const res = await fetch(
           `https://easyrentapi0.runasp.net/api/Unit/${unitId}`,
-          { method: "DELETE", headers }
+          {
+            method: "DELETE",
+            headers,
+          }
         );
-        console.log("DELETE Status:", res.status);
 
         if (res.ok) {
           alert("تم حذف الوحدة بنجاح");
@@ -378,12 +395,10 @@
       async function loadAndRenderUnits() {
         const container = document.getElementById("propertiesContainer");
         const total = document.getElementById("totalListings");
-
         try {
           const allUnits = await fetchAllUnits();
           const userIdStr = localStorage.getItem("ownerId");
           const userId = userIdStr ? Number(userIdStr) : null;
-          console.log("Parsed ownerId:", userId);
 
           if (!userId) {
             alert("يرجى تسجيل الدخول.");
@@ -401,33 +416,54 @@
 
           container.innerHTML = "";
           units.forEach((u) => {
-            const urls = u.photoUrls?.$values;
-            const imgTag =
-              Array.isArray(urls) && urls.length > 0
-                ? urls
-                    .map(
-                      (photo) =>
-                        `<img src="https://easyrentapi0.runasp.net/${photo}" alt="${u.title}" class="property-image"/>`
-                    )
-                    .join("")
+            const urls = u.photoUrls?.$values || [];
+            const firstImg =
+              urls.length > 0
+                ? `<img src="https://easyrentapi0.runasp.net/${urls[0]}" alt="${u.title}" class="property-image main-img" />`
                 : "";
+
+            const hiddenImgs = urls
+              .slice(1)
+              .map(
+                (url) =>
+                  `<img src="https://easyrentapi0.runasp.net/${url}" class="property-image extra-img" style="display:none;" />`
+              )
+              .join("");
 
             const card = document.createElement("div");
             card.className = "property-card";
             card.innerHTML = `
-              <div class="property-images">
-                ${imgTag}
-              </div>
-              <div class="property-details">
-                <h3 class="property-title">${u.title}</h3>
-                <div class="property-info"><i class="fas fa-map-marker-alt"></i> ${u.address}</div>
-                <div class="property-price">$${u.priceForMonth}/mo</div>
-                <button class="action-btn delete-btn" data-id="${u.id}">
-                  <i class="fas fa-trash"></i> حذف
-                </button>
-              </div>
-            `;
+                <div class="property-images">
+                  ${firstImg}
+                  <div class="extra-images">${hiddenImgs}</div>
+                  ${
+                    urls.length > 1
+                      ? `<button class="toggle-images-btn">عرض باقي الصور</button>`
+                      : ""
+                  }
+                </div>
+                <div class="property-details">
+                  <h3 class="property-title">${u.title}</h3>
+                  <div class="property-info"><i class="fas fa-map-marker-alt"></i> ${
+                    u.address
+                  }</div>
+                  <div class="property-price">$${u.priceForMonth}/mo</div>
+                  <button class="action-btn delete-btn" data-id="${u.id}">
+                    <i class="fas fa-trash"></i> حذف
+                  </button>
+                </div>
+              `;
             container.appendChild(card);
+          });
+
+          // زر عرض الصور الإضافية
+          container.querySelectorAll(".toggle-images-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const extraImgs =
+                btn.parentElement.querySelectorAll(".extra-img");
+              extraImgs.forEach((img) => (img.style.display = "inline-block"));
+              btn.style.display = "none";
+            });
           });
         } catch (err) {
           console.error(err);
@@ -439,33 +475,6 @@
             window.location.href = "loginowner.html";
           }
         }
-      }
-
-      function renderUnits(units) {
-        const container = document.getElementById("roomsContainer");
-
-        const approvedUnits = units.filter((unit) => unit.isApproved);
-
-        if (approvedUnits.length === 0) {
-          container.innerHTML = `
-            <div class="no-results">
-              <p>لا توجد وحدات سكنية معتمدة متاحة حالياً.</p>
-            </div>
-          `;
-          return;
-        }
-
-        container.innerHTML = approvedUnits
-          .map(
-            (unit) => `
-            <div class="room-card">
-              <h3>${unit.name}</h3>
-              <p>${unit.location}</p>
-              <!-- باقي التفاصيل -->
-            </div>
-          `
-          )
-          .join("");
       }
     </script>
   </body>

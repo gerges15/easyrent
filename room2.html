@@ -733,9 +733,11 @@
         </form>
       </section>
 
-      <div class="rooms-container" id="roomsContainer">
-        <!-- Room cards will be dynamically inserted here -->
-      </div>
+      <!-- Add this in the body where you want to display the rooms -->
+      <div id="rooms-container" class="rooms-container"></div>
+
+      <!-- Add this before closing body tag -->
+      <script type="module" src="js/rooms.js"></script>
     </div>
 
     <!-- Room Details Modal -->

@@ -7,7 +7,7 @@ export function initCookieConsent() {
   const consentBox = document.createElement("div");
   consentBox.className = "cookie-consent";
   consentBox.innerHTML = `
-    <p>نحن نستخدم ملفات تعريف الارتباط (كوكيز) لتحسين تجربتك. باستخدامك للموقع، فأنت توافق على استخدامنا للكوكيز.</p>
+    <p>We use cookies to enhance your experience. By using our site, you agree to our use of cookies.</p>
     <button id="acceptCookies">Accept</button>
   `;
 
