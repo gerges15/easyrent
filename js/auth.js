@@ -27,7 +27,11 @@ loginForm.addEventListener("submit", async function (event) {
   const response = await _post(`/api/${userType}/login`, data);
 
   if (response.ok) {
-    // redirect or show success message
+    // Store token and update navigation
+    localStorage.setItem('token', response.token);
+    if (typeof updateNavigation === 'function') {
+      updateNavigation();
+    }
     document.getElementById("successMessage").style.display = "block";
 
     ////////////////////////////////////////////////////////////////

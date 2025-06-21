@@ -985,7 +985,16 @@
       </div>
     </footer>
     <script type="module">
-      // JavaScript code will be added here
+      import { initNavigation, updateNavigation } from './js/navigation.js';
+      window.updateNavigation = updateNavigation;
+      
+      // Initialize navigation
+      document.addEventListener('DOMContentLoaded', () => {
+        initNavigation();
+        updateNavigation();
+      });
+
+      // Main signup form handling
       document.addEventListener("DOMContentLoaded", () => {
         const form = document.getElementById("signupForm");
         const uniSelect = document.getElementById("universityId");
@@ -1258,11 +1267,30 @@
               );
             }
 
-            // هنا يمكنك إضافة كود الإرسال إلى الخادم
-            console.log("Data to be sent:", payload);
-            alert("تم التسجيل بنجاح! سيتم توجيهك لصفحة الدخول");
+            // Send registration request to server
+            const response = await fetch('https://easyrentapi0.runasp.net/api/Student/register', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+              throw new Error('فشل التسجيل. الرجاء المحاولة مرة أخرى.');
+            }
+
+            const data = await response.json();
+            
+            // Store token and update navigation
+            localStorage.setItem('token', data.token);
+            if (typeof updateNavigation === 'function') {
+              updateNavigation();
+            }
+
             localStorage.removeItem("signupFormData");
-            window.location.href = "login.html";
+            alert("تم التسجيل بنجاح! سيتم توجيهك للصفحة الرئيسية");
+            window.location.href = "index.html";
           } catch (err) {
             alert(err.message);
           } finally {

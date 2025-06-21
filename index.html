@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
     <!-- Favicons -->
     <link rel="shortcut icon" href="images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" >
     <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
     <link rel="manifest" href="site.webmanifest">
@@ -24,6 +24,18 @@
 <link rel="stylesheet" href="./styles.css" />
 <link rel="stylesheet" href="./room-shapes.css" />
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script type="module">
+  import { handleLogout } from './js/logout.js';
+  import { initNavigation, updateNavigation } from './js/navigation.js';
+  window.handleLogout = handleLogout;
+  window.updateNavigation = updateNavigation;
+  
+  // Initialize navigation when the page loads
+  document.addEventListener('DOMContentLoaded', () => {
+    initNavigation();
+    updateNavigation();
+  });
+</script>
 
     <style>
       :root {
@@ -409,13 +421,12 @@
               <li><a href="#About US"><i class="ri-information-line"></i> About US</a></li>
               <li><a href="#units"><i class="ri-home-4-line"></i> Units</a></li>
               <li><a href="#Properties"><i class="ri-building-2-line"></i> Properties</a></li>
-              <li><a href="./login.html"><i class="ri-login-circle-line"></i> Login</a></li>
-              <li><a href="./singnupst.html"><i class="ri-user-add-line"></i> Sign Up</a></li>
-
-           
-              <li><a href="./owner/choses.html"><i class="ri-add-circle-line"></i> Add Properity</a></li>
-              <li><a href="#contact"><i class="ri-contacts-line"></i> Contact</a></li>
-              <li><a href="#" onclick="handleLogout(); return false;"><i class="ri-logout-box-r-line"></i> Logout</a></li>
+              <li><a href="./login.html" data-action="login"><i class="ri-login-circle-line"></i> Login</a></li>
+              <li><a href="./singnupst.html" data-action="signup"><i class="ri-user-add-line"></i> Sign Up</a></li>
+              <!-- User menu items that show after login -->
+              <li class="user-menu-item"><a href="./owner/choses.html"><i class="ri-add-circle-line"></i> Add Properity</a></li>
+              <li class="user-menu-item"><a href="#contact"><i class="ri-contacts-line"></i> Contact</a></li>
+              <li class="user-menu-item"><a href="#" onclick="handleLogout(); return false;"><i class="ri-logout-box-r-line"></i> Logout</a></li>
               
               <li>
                 <label class="switch">
@@ -1099,20 +1110,25 @@
 
     <!-- Cookie Consent Banner -->
     <div id="cookieConsent" class="cookie-card">
-      <h3 class="cookie-heading">Cookie Preferences</h3>
-      <p class="cookie-description">
-        We use cookies and similar technologies to help personalize content, enhance your experience, and analyze our traffic. By clicking "Accept All", you consent to our use of cookies.
-        <a href="privacypolicy.html">Privacy Policy</a>
-      </p>
-      <div class="cookie-buttons">
-        <button class="cookie-button accept-button" onclick="acceptCookies()">
-          <i class="ri-check-line"></i>
-          Accept All
-        </button>
-        <button class="cookie-button reject-button" onclick="rejectCookies()">
-          <i class="ri-close-line"></i>
-          Reject All
-        </button>
+      <div class="cookie-content">
+        <div class="cookie-header">
+          <i class="ri-shield-check-line"></i>
+          <h3 class="cookie-heading">إعدادات الخصوصية</h3>
+        </div>
+        <p class="cookie-description">
+          نحن نستخدم ملفات تعريف الارتباط لتحسين تجربتك وتخصيص المحتوى وتحليل حركة المرور. باختيارك "قبول الكل"، فإنك توافق على استخدامنا لملفات تعريف الارتباط.
+          <a href="privacypolicy.html" class="privacy-link">سياسة الخصوصية</a>
+        </p>
+        <div class="cookie-buttons">
+          <button class="cookie-button accept-button" onclick="acceptCookies()">
+            <i class="ri-check-line"></i>
+            قبول الكل
+          </button>
+          <button class="cookie-button reject-button" onclick="rejectCookies()">
+            <i class="ri-close-line"></i>
+            رفض الكل
+          </button>
+        </div>
       </div>
     </div>
 
@@ -1513,7 +1529,23 @@
       }
     </style>
 
-    <script type="module" src="js/cookie-consent.js"></script>
+    
+<script>
+  // Show cookie consent if not already accepted
+  document.addEventListener('DOMContentLoaded', function() {
+    if (!localStorage.getItem('cookiesAccepted')) {
+      setTimeout(() => {
+        document.getElementById('cookieConsent').style.display = 'block';
+      }, 1000);
+    }
+  });
+
+  function acceptCookies() {
+    localStorage.setItem('cookiesAccepted', 'true');
+    document.getElementById('cookieConsent').style.display = 'none';
+    // Load cookie-dependent services here (e.g., Google Analytics)
+  }
+</script>
     <script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
     <script type="module" src="js/main.js"></script>
   </main>

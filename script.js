@@ -270,8 +270,122 @@ document.addEventListener("DOMContentLoaded", function () {
   }
 });
 // اجعلها متاحة عالميًا
-window.handleLogout = function () {
+window.handleLogout = async function () {
+  const studentId = localStorage.getItem("studentId");
+  
+  const result = await showConfirmDialog({
+    title: "Logout Confirmation",
+    message: "Would you like to delete your account permanently?",
+    confirmText: "Yes, Delete My Account",
+    cancelText: "No, Just Logout"
+  });
+
+  if (result === "delete") {
+    try {
+      const response = await fetch(`https://easyrentapi0.runasp.net/api/Student/${studentId}`, {
+        method: "DELETE",
+        headers: {
+          "Authorization": `Bearer ${localStorage.getItem("token")}`,
+          "Content-Type": "application/json"
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete account");
+      }
+
+      alert("Your account has been successfully deleted");
+    } catch (error) {
+      console.error("Error deleting account:", error);
+      alert("An error occurred while deleting your account");
+    }
+  }
+
   localStorage.clear();
   window.location.href = "login.html";
 };
+
+function showConfirmDialog({ title, message, confirmText, cancelText }) {
+  return new Promise((resolve) => {
+    const dialogHTML = `
+      <div class="confirm-dialog" id="logoutDialog">
+        <div class="confirm-dialog-content">
+          <h3>${title}</h3>
+          <p>${message}</p>
+          <div class="confirm-dialog-buttons">
+            <button class="delete-btn" onclick="document.getElementById('logoutDialog').remove(); window.confirmDialogCallback('delete')">
+              ${confirmText}
+            </button>
+            <button class="cancel-btn" onclick="document.getElementById('logoutDialog').remove(); window.confirmDialogCallback('logout')">
+              ${cancelText}
+            </button>
+          </div>
+        </div>
+      </div>
+    `;
+
+    const styleSheet = `
+      <style>
+        .confirm-dialog {
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0, 0, 0, 0.5);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 9999;
+        }
+        .confirm-dialog-content {
+          background: white;
+          padding: 20px;
+          border-radius: 8px;
+          max-width: 400px;
+          width: 90%;
+          text-align: center;
+        }
+        .confirm-dialog h3 {
+          margin: 0 0 15px;
+          color: #333;
+        }
+        .confirm-dialog p {
+          margin: 0 0 20px;
+          color: #666;
+        }
+        .confirm-dialog-buttons {
+          display: flex;
+          gap: 10px;
+          justify-content: center;
+        }
+        .delete-btn {
+          background: #dc3545;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .delete-btn:hover {
+          background: #c82333;
+        }
+        .cancel-btn {
+          background: #6c757d;
+          color: white;
+          border: none;
+          padding: 10px 20px;
+          border-radius: 4px;
+          cursor: pointer;
+        }
+        .cancel-btn:hover {
+          background: #5a6268;
+        }
+      </style>
+    `;
+
+    document.body.insertAdjacentHTML('beforeend', dialogHTML + styleSheet);
+    window.confirmDialogCallback = resolve;
+  });
+}
 window.handleSignup = handleSignup;
