@@ -140,3 +140,179 @@ window.initializePage = initializePage;
 
 // بدء التطبيق عند تحميل الصفحة
 document.addEventListener("DOMContentLoaded", initializePage);
+
+// Global variables
+
+let currentRoomPrice = null;
+
+// Function to open modal with room details
+function openBookingModal(roomId, title, price) {
+  currentRoomId = roomId;
+  currentRoomPrice = price;
+
+  // Set room details
+  document.getElementById("bookingRoomTitle").textContent = title;
+  document.getElementById("bookingRoomPrice").textContent = price;
+  document.getElementById("roomId").value = roomId;
+
+  // Reset form
+  document.getElementById("bookingForm").reset();
+  document.getElementById("customDurationGroup").style.display = "none";
+
+  // Show modal
+  document.getElementById("bookingModal").style.display = "block";
+  document.body.style.overflow = "hidden"; // Prevent scrolling
+}
+
+// Function to close modal
+function closeModal(modalId) {
+  document.getElementById(modalId).style.display = "none";
+  document.body.style.overflow = "auto"; // Re-enable scrolling
+}
+
+// Calculate end date based on duration
+function calculateEndDate(startDate, duration, customMonths = 1) {
+  const date = new Date(startDate);
+
+  switch (duration) {
+    case "academic_year":
+      date.setMonth(date.getMonth() + 9);
+      break;
+    case "two_semesters":
+      date.setMonth(date.getMonth() + 8);
+      break;
+    case "one_semester":
+      date.setMonth(date.getMonth() + 4);
+      break;
+    case "custom":
+      date.setMonth(date.getMonth() + parseInt(customMonths));
+      break;
+    default:
+      date.setMonth(date.getMonth() + 1);
+  }
+
+  return date.toISOString();
+}
+
+// Show notification
+function showNotification(message, isSuccess = true) {
+  const notification = document.getElementById("notification");
+  const messageEl = document.getElementById("notification-message");
+  const icon = notification.querySelector("i");
+
+  // Set message and style
+  messageEl.textContent = message;
+  notification.className = isSuccess
+    ? "notification success"
+    : "notification error";
+  icon.className = isSuccess
+    ? "fas fa-check-circle"
+    : "fas fa-exclamation-circle";
+
+  // Show notification
+  notification.style.display = "flex";
+  setTimeout(() => {
+    notification.classList.add("show");
+  }, 10);
+
+  // Hide after 5 seconds
+  setTimeout(() => {
+    notification.classList.remove("show");
+    setTimeout(() => {
+      notification.style.display = "none";
+    }, 300);
+  }, 5000);
+}
+
+// Handle form submission
+document
+  .getElementById("bookingForm")
+  .addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    const submitBtn = this.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+    submitBtn.innerHTML =
+      '<i class="fas fa-spinner fa-spin"></i> Processing...';
+
+    try {
+      // Validate form
+      const moveInDate = document.getElementById("moveInDate").value;
+      if (!moveInDate) {
+        throw new Error("Please select a move-in date");
+      }
+
+      const duration = document.getElementById("duration").value;
+      let customMonths = 1;
+
+      if (duration === "custom") {
+        customMonths = document.getElementById("customMonths").value;
+        if (!customMonths || customMonths < 1) {
+          throw new Error("Please enter a valid number of months");
+        }
+      }
+
+      // Prepare booking data
+      const bookingData = {
+        studentId: parseInt(document.getElementById("studentId").value),
+        unitId: parseInt(currentRoomId),
+        startDate: moveInDate,
+        endDate: calculateEndDate(moveInDate, duration, customMonths),
+      };
+
+      // Get auth token
+      const token = localStorage.getItem("authToken");
+      if (!token) {
+        throw new Error("Please log in to book a room");
+      }
+
+      // Send booking request
+      const response = await fetch(
+        "https://easyrentapi0.runasp.net/api/Booking/BookUnit",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(bookingData),
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({}));
+        throw new Error(
+          errorData.message || "Booking failed. Please try again."
+        );
+      }
+
+      // Show success and close modal
+      showNotification("Booking successful! We will contact you soon.");
+      closeModal("bookingModal");
+    } catch (error) {
+      console.error("Booking error:", error);
+      showNotification(error.message, false);
+    } finally {
+      submitBtn.disabled = false;
+      submitBtn.textContent = "Submit Booking";
+    }
+  });
+
+// Toggle custom duration field
+document.getElementById("duration").addEventListener("change", function () {
+  const customDurationGroup = document.getElementById("customDurationGroup");
+  customDurationGroup.style.display =
+    this.value === "custom" ? "block" : "none";
+});
+
+// Close modal when clicking outside
+window.addEventListener("click", function (event) {
+  if (event.target.className === "modal") {
+    closeModal("bookingModal");
+  }
+});
+
+// Set minimum date to today
+document.getElementById("moveInDate").min = new Date()
+  .toISOString()
+  .split("T")[0];

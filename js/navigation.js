@@ -30,39 +30,36 @@ export function updateNavigation() {
     const loginLink = navLinks.querySelector('[data-action="login"]');
     const signupLink = navLinks.querySelector('[data-action="signup"]');
     const logoutLink = navLinks.querySelector('[onclick*="handleLogout"]');
-    const userMenuItems = navLinks.querySelectorAll(".user-menu-item");
+    const addPropertyLink = navLinks.querySelector(
+      'a[href="./owner/choses.html"]'
+    );
 
-    // Always show login and signup links when not logged in
-    if (loginLink) loginLink.style.display = isLoggedIn ? "none" : "block";
-    if (signupLink) signupLink.style.display = isLoggedIn ? "none" : "block";
-    if (logoutLink) logoutLink.style.display = isLoggedIn ? "block" : "none";
+    // إخفاء روابط تسجيل الدخول والتسجيل وإضافة العقار عند تسجيل الدخول
+    if (loginLink)
+      loginLink.parentElement.style.display = isLoggedIn ? "none" : "block";
+    if (signupLink)
+      signupLink.parentElement.style.display = isLoggedIn ? "none" : "block";
+    if (addPropertyLink)
+      addPropertyLink.parentElement.style.display = isLoggedIn
+        ? "none"
+        : "block";
 
-    userMenuItems.forEach((item) => {
-      // Always show Contact link
-      if (item.querySelector('a[href="#contact"]')) {
-        item.style.display = "block";
-      }
-      // Show Add Property link before login, hide after login
-      else if (item.querySelector('a[href="./owner/choses.html"]')) {
-        item.style.display = isLoggedIn ? "none" : "block";
-      }
-      // Show other user menu items only when logged in
-      else {
-        item.style.display = isLoggedIn ? "block" : "none";
-      }
-    });
+    // إظهار زر تسجيل الخروج فقط عند تسجيل الدخول
+    if (logoutLink)
+      logoutLink.parentElement.style.display = isLoggedIn ? "block" : "none";
   }
 }
+
+// تحديث القائمة عند تحميل الصفحة وعند تغيير حالة تسجيل الدخول
+document.addEventListener("DOMContentLoaded", updateNavigation);
+window.addEventListener("storage", (e) => {
+  if (e.key === "token") {
+    updateNavigation();
+  }
+});
 
 // Call updateNavigation when the page loads
 document.addEventListener("DOMContentLoaded", () => {
   initNavigation();
   updateNavigation();
-});
-
-// Update navigation when login state changes
-window.addEventListener("storage", (e) => {
-  if (e.key === "token") {
-    updateNavigation();
-  }
 });

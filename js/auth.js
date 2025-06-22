@@ -24,19 +24,14 @@ loginForm.addEventListener("submit", async function (event) {
   console.log("Login data:", data);
 
   // Example request
+  // إرسال طلب تسجيل الدخول إلى API
   const response = await _post(`/api/${userType}/login`, data);
 
   if (response.ok) {
-    // Store token and update navigation
-    localStorage.setItem('token', response.token);
-    if (typeof updateNavigation === 'function') {
-      updateNavigation();
-    }
-    document.getElementById("successMessage").style.display = "block";
+    // تخزين رمز المصادقة
+    localStorage.setItem("token", response.token);
 
-    ////////////////////////////////////////////////////////////////
-    // Redirect based on role
-    ////////////////////////////////////////////////////////////////
+    // توجيه المستخدم حسب نوعه
     switch (data.userType) {
       case "Admin":
         window.location.href = "./admin/indexAdmin.html";

@@ -661,6 +661,52 @@
         .logo-text {
           font-size: 20px;
         }
+
+        .notification {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          padding: 15px 25px;
+          border-radius: 8px;
+          color: white;
+          font-weight: 500;
+          box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          z-index: 1000;
+          transform: translateX(150%);
+          transition: transform 0.3s ease-out;
+        }
+
+        .notification.show {
+          transform: translateX(0);
+        }
+
+        .notification.success {
+          background-color: #4caf50;
+          border-left: 5px solid #2e7d32;
+        }
+
+        .notification.error {
+          background-color: #f44336;
+          border-left: 5px solid #c62828;
+        }
+
+        .notification i {
+          font-size: 20px;
+        }
+
+        .notification {
+          top: 10px;
+          right: 10px;
+          left: 10px;
+          transform: translateY(-150%);
+        }
+
+        .notification.show {
+          transform: translateY(0);
+        }
       }
     </style>
   </head>
@@ -850,7 +896,44 @@
         Copyright © 2025 EasyRent. All rights reserved.
       </div>
     </footer>
+    <!-- Add this notification container at the end of body -->
+    <div id="notification" class="notification" style="display: none">
+      <i class="fas fa-check-circle"></i>
+      <span id="notification-message">Successfully logged in!</span>
+    </div>
+
     <script>
+      // Notification function
+      function showNotification(message, isSuccess = true) {
+        const notification = document.getElementById("notification");
+        const messageEl = document.getElementById("notification-message");
+        const icon = notification.querySelector("i");
+
+        // Set message and style
+        messageEl.textContent = message;
+        notification.className = isSuccess
+          ? "notification success"
+          : "notification error";
+        icon.className = isSuccess
+          ? "fas fa-check-circle"
+          : "fas fa-exclamation-circle";
+
+        // Show notification
+        notification.style.display = "flex";
+        setTimeout(() => {
+          notification.classList.add("show");
+        }, 10);
+
+        // Hide after 5 seconds
+        setTimeout(() => {
+          notification.classList.remove("show");
+          setTimeout(() => {
+            notification.style.display = "none";
+          }, 300);
+        }, 5000);
+      }
+
+      // Modified login form handler
       document
         .getElementById("loginForm")
         .addEventListener("submit", async function (e) {
@@ -860,24 +943,16 @@
             .getElementById("emailOrPhone")
             .value.trim();
           const password = document.getElementById("password").value;
-          const togglePasswordBtn =
-            document.getElementById("togglePasswordBtn");
-          const passwordInput = document.getElementById("password");
-
-          togglePasswordBtn.addEventListener("click", () => {
-            const isPassword = passwordInput.type === "password";
-            passwordInput.type = isPassword ? "text" : "password";
-            togglePasswordBtn.textContent = isPassword ? "Hide" : "Show";
-          });
+          const loginBtn = document.getElementById("loginBtn");
 
           if (!emailOrPhone || !password) {
-            alert("يرجى ملء جميع الحقول.");
+            showNotification("Please fill in all fields", false);
             return;
           }
 
-          const loginBtn = document.getElementById("loginBtn");
           loginBtn.disabled = true;
-          loginBtn.textContent = "جارٍ تسجيل الدخول...";
+          loginBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Signing In...';
 
           try {
             const response = await fetch(
@@ -890,41 +965,66 @@
             );
 
             if (!response.ok) {
-              let errorMessage = "فشل تسجيل الدخول.";
+              let errorMessage = "Login failed";
               try {
-                const text = await response.text();
-                const json = JSON.parse(text);
-                errorMessage = json.message || errorMessage;
+                const errorData = await response.json();
+                errorMessage = errorData.message || errorMessage;
+
+                // Specific messages for common status codes
+                if (response.status === 401) {
+                  errorMessage = "Invalid email/phone or password";
+                } else if (response.status === 400) {
+                  errorMessage =
+                    "Validation error: " +
+                    (errorData.errors
+                      ? Object.values(errorData.errors).join(", ")
+                      : errorMessage);
+                }
               } catch {
                 errorMessage = await response.text();
               }
 
-              if (response.status === 401)
-                errorMessage = "البريد الإلكتروني أو كلمة المرور غير صحيحة";
-
-              alert(errorMessage);
+              showNotification(errorMessage, false);
               return;
             }
 
             const data = await response.json();
 
             if (data.token) {
-              // ✅ نحفظ البيانات في localStorage
+              // Store authentication data
               localStorage.setItem("authToken", data.token);
               localStorage.setItem("ownerId", data.ownerId);
-              localStorage.setItem("ownerName", data.ownerName); // <-- لازم backend يرجعها
+              localStorage.setItem("ownerName", data.ownerName || "Owner");
 
-              window.location.href = "myproparty.html"; // بعد تسجيل الدخول
+              // Show success message
+              showNotification("Login successful! Redirecting...");
+
+              // Redirect after delay
+              setTimeout(() => {
+                window.location.href = "myproparty.html";
+              }, 1500);
             } else {
-              throw new Error("لم يتم استلام رمز المصادقة.");
+              throw new Error("Authentication token not received");
             }
           } catch (err) {
             console.error("Login error:", err);
-            alert("خطأ في الاتصال بالسيرفر.");
+            showNotification("Network error. Please try again.", false);
           } finally {
             loginBtn.disabled = false;
-            loginBtn.textContent = "تسجيل الدخول";
+            loginBtn.textContent = "Sign In";
           }
+        });
+
+      // Password toggle functionality
+      document
+        .getElementById("togglePasswordBtn")
+        .addEventListener("click", () => {
+          const passwordInput = document.getElementById("password");
+          const isPassword = passwordInput.type === "password";
+          passwordInput.type = isPassword ? "text" : "password";
+          document.getElementById("togglePasswordBtn").textContent = isPassword
+            ? "Hide"
+            : "Show";
         });
     </script>
   </body>

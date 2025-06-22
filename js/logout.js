@@ -2,29 +2,29 @@
 export function handleLogout() {
   // Show confirmation dialog
   Swal.fire({
-    title: 'Logout Confirmation',
-    text: 'Are you sure you want to logout?',
-    icon: 'question',
+    title: "تأكيد تسجيل الخروج",
+    text: "هل أنت متأكد أنك تريد تسجيل الخروج؟",
+    icon: "question",
     showCancelButton: true,
-    confirmButtonColor: '#7c4dff',
-    cancelButtonColor: '#d33',
-    confirmButtonText: 'Yes, logout',
-    cancelButtonText: 'Cancel'
+    confirmButtonColor: "#7c4dff",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "نعم",
+    cancelButtonText: "لا",
   }).then((result) => {
     if (result.isConfirmed) {
       // Clear local storage
       localStorage.clear();
-      
+
       // Show success message
       Swal.fire({
-        title: 'Logged Out!',
-        text: 'You have been successfully logged out.',
-        icon: 'success',
+        title: "تم تسجيل الخروج!",
+        text: "تم تسجيل خروجك بنجاح.",
+        icon: "success",
         timer: 1500,
-        showConfirmButton: false
+        showConfirmButton: false,
       }).then(() => {
         // Redirect to login page
-        window.location.href = 'login.html';
+        window.location.href = "loginowner.html";
       });
     }
   });
