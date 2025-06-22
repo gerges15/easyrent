@@ -148,6 +148,12 @@
         width: 100%;
         height: 200px;
         object-fit: cover;
+        cursor: pointer;
+        transition: transform 0.2s;
+      }
+
+      .property-image:hover {
+        transform: scale(1.02);
       }
 
       .property-details {
@@ -217,46 +223,58 @@
         font-size: 16px;
         margin: 0;
       }
-      .property-images {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
+
+      /* New Thumbnail Styles */
+      .thumbnail-container {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        margin-top: 10px;
       }
 
-      .property-image {
+      .thumbnail {
         width: 100%;
-        height: 250px;
+        height: 80px;
         object-fit: cover;
-        border-radius: 10px;
-        border: 1px solid #ccc;
-      }
-
-      .toggle-images-btn {
-        margin-top: 10px;
-        padding: 8px 16px;
-        background-color: #4361ee;
-        color: white;
-        border: none;
-        border-radius: 6px;
+        border-radius: 4px;
         cursor: pointer;
-        font-weight: bold;
-        align-self: flex-start;
+        transition: transform 0.2s;
       }
 
-      .toggle-images-btn:hover {
-        background-color: #3f37c9;
+      .thumbnail:hover {
+        transform: scale(1.05);
       }
 
-      .extra-images {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        margin-top: 10px;
-      }
-
-      .extra-images.hidden {
+      /* Modal Styles */
+      .modal {
         display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.9);
       }
+
+      .modal-content {
+        display: block;
+        margin: auto;
+        max-width: 90%;
+        max-height: 90%;
+        margin-top: 5vh;
+      }
+
+      .close {
+        position: absolute;
+        top: 20px;
+        right: 30px;
+        color: white;
+        font-size: 35px;
+        font-weight: bold;
+        cursor: pointer;
+      }
+
       /* Stats Card */
       .stats-card {
         background-color: white;
@@ -331,6 +349,7 @@
         </p>
       </div>
     </div>
+
     <script type="module">
       document.addEventListener("DOMContentLoaded", () => {
         const token = localStorage.getItem("authToken");
@@ -438,23 +457,25 @@
             let imagesHtml = "";
 
             if (Array.isArray(urls) && urls.length > 0) {
-              const mainImage = `<img src="https://easyrentapi0.runasp.net/${urls[0]}" alt="${u.title}" class="property-image"/>`;
-              const extraImages = urls
-                .slice(1)
+              const thumbnails = urls
                 .map(
-                  (photo) =>
-                    `<img src="https://easyrentapi0.runasp.net/${photo}" alt="${u.title}" class="property-image"/>`
+                  (photo, index) => `
+                <img src="https://easyrentapi0.runasp.net/${photo}" 
+                     alt="${u.title}" 
+                     class="thumbnail"
+                     onclick="openImageModal('https://easyrentapi0.runasp.net/${photo}')">
+              `
                 )
                 .join("");
 
               imagesHtml = `
                 <div class="property-images">
-                  ${mainImage}
-                  <button class="toggle-images-btn">
-                    <span class="btn-text">عرض باقي الصور</span>
-                  </button>
-                  <div class="extra-images hidden">
-                    ${extraImages}
+                  <img src="https://easyrentapi0.runasp.net/${urls[0]}" 
+                       alt="${u.title}" 
+                       class="property-image"
+                       onclick="openImageModal('https://easyrentapi0.runasp.net/${urls[0]}')">
+                  <div class="thumbnail-container">
+                    ${thumbnails}
                   </div>
                 </div>
               `;
@@ -475,21 +496,6 @@
             `;
             container.appendChild(card);
           });
-
-          // تفعيل زر عرض/إخفاء الصور لكل بطاقة
-          document.querySelectorAll(".toggle-images-btn").forEach((btn) => {
-            btn.addEventListener("click", () => {
-              const extra = btn.nextElementSibling;
-              const textSpan = btn.querySelector(".btn-text");
-              extra.classList.toggle("hidden");
-
-              if (extra.classList.contains("hidden")) {
-                textSpan.textContent = "عرض باقي الصور";
-              } else {
-                textSpan.textContent = "إخفاء الصور";
-              }
-            });
-          });
         } catch (err) {
           console.error(err);
           const msg = err.message.includes("Unauthorized")
@@ -501,6 +507,35 @@
           }
         }
       }
+
+      // Image Modal Functions
+      function openImageModal(src) {
+        const modal = document.createElement("div");
+        modal.className = "modal";
+        modal.innerHTML = `
+          <span class="close" onclick="closeModal()">&times;</span>
+          <img class="modal-content" src="${src}">
+        `;
+        document.body.appendChild(modal);
+        modal.style.display = "block";
+
+        // Close when clicking outside image
+        modal.addEventListener("click", (e) => {
+          if (e.target === modal) closeModal();
+        });
+      }
+
+      function closeModal() {
+        const modal = document.querySelector(".modal");
+        if (modal) {
+          modal.style.display = "none";
+          setTimeout(() => modal.remove(), 300);
+        }
+      }
+
+      // Make functions available globally
+      window.openImageModal = openImageModal;
+      window.closeModal = closeModal;
     </script>
   </body>
 </html>
