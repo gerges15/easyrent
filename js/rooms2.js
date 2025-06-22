@@ -1,6 +1,8 @@
 // 1. استيراد الدوال من ملف apiclient.js
 import { _get } from "./apiclient.js";
 
+console.log("Login Page");
+
 // 2. بيانات افتراضية للطوارئ
 const FALLBACK_DATA = [
   {
@@ -16,15 +18,14 @@ const FALLBACK_DATA = [
     type: "single",
   },
 ];
-
 // 3. المتغيرات العامة
-let units = [];
 let currentRoomId = null;
 
 // 4. وظائف API
 async function fetchUnits() {
   try {
-    units = await _get("/api/Unit/GetAllUnits");
+    units = await _get("/api/Colleges");
+    console.log(units);
     renderUnits(units);
   } catch (error) {
     console.error("خطأ في جلب البيانات:", error);
