@@ -16,11 +16,18 @@ async function _post(urlPath, data) {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
-      accept: "*/*",
+      Accept: "*/*",
     },
     body: JSON.stringify(data),
   });
-  return await response.json();
+
+  const text = await response.text();
+
+  try {
+    return JSON.parse(text);
+  } catch {
+    return text || null;
+  }
 }
 
 async function _put(urlPath, data) {

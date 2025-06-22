@@ -1,13 +1,126 @@
-import { _get } from "./apiClint.js";
+import { _get, _post } from "./apiClint.js";
 
-async function displayRooms() {
+let selectedRating = 1;
+
+function getCurrentRoomId() {
+  const modal = document.getElementById("roomDetailsModal");
+  return Number(modal.dataset.roomId);
+}
+
+function updateStarSelection(rating) {
+  const stars = document.querySelectorAll(".stars .star");
+  stars.forEach((star) => {
+    const starValue = Number(star.getAttribute("data-value"));
+    star.classList.toggle("active", starValue <= rating);
+  });
+}
+
+window.submitFeedback = async function (event) {
+  event.preventDefault();
+
+  const comment = document.getElementById("commentInput").value.trim();
+  const unitId = getCurrentRoomId();
+  const studentId = 1; // Placeholder. Replace with actual student ID logic.
+
+  if (!comment) {
+    alert("Please write a review.");
+    return;
+  }
+
+  const ratingMap = {
+    1: "VeryBad",
+    2: "Bad",
+    3: "Good",
+    4: "VeryGood",
+    5: "Excellent",
+  };
+
+  try {
+    const body = {
+      comment,
+      rating: ratingMap[selectedRating] || "VeryBad",
+      studentId,
+      unitId,
+    };
+
+    await _post("/api/Feedback", body);
+
+    alert("Thank you for your feedback!");
+    document.getElementById("commentInput").value = "";
+    selectedRating = 1;
+    updateStarSelection(selectedRating);
+  } catch (error) {
+    console.error("Failed to submit feedback:", error);
+    alert("Something went wrong. Please try again.");
+  }
+};
+
+window.viewRoomDetails = function (roomId) {
+  const roomCard = document.querySelector(`.room-card[data-id='${roomId}']`);
+  if (!roomCard) return;
+
+  const title = roomCard.dataset.title;
+  const address = roomCard.dataset.address;
+  const price = roomCard.dataset.price;
+  const status = roomCard.dataset.status;
+  const photos = JSON.parse(roomCard.dataset.photos || "[]");
+
+  document.getElementById("modalRoomTitle").innerText = title;
+  document.getElementById("modalRoomLocation").innerText = address;
+  document.getElementById("modalRoomPrice").innerText = `${price} EGP`;
+  document.getElementById("modalRoomDescription").innerText =
+    "Modern and secure room. Details will be dynamically filled later.";
+
+  const gallery = document.querySelector(".room-gallery");
+  gallery.innerHTML = photos
+    .map(
+      (photo) => `
+      <img class="gallery-img"
+        src="https://easyrentapi0.runasp.net/${photo}"
+        alt="Room image"
+        onerror="this.onerror=null; this.src='images/default-room.jpg';"
+      />`
+    )
+    .join("");
+
+  const features = document.getElementById("modalRoomFeatures");
+  features.innerHTML = `
+    <div class="feature"><i class="fas fa-wifi"></i> Free Wi-Fi</div>
+    <div class="feature"><i class="fas fa-bed"></i> 1 Bed</div>
+    <div class="feature"><i class="fas fa-bath"></i> Private Bathroom</div>
+  `;
+
+  const modal = document.getElementById("roomDetailsModal");
+  modal.dataset.roomId = roomId;
+  modal.style.display = "flex";
+};
+
+window.openBookingModal = function (roomId) {
+  const bookingModal = document.getElementById("bookingModal");
+  const titleEl = document.getElementById("bookingRoomTitle");
+  const priceEl = document.getElementById("bookingRoomPrice");
+  const idInput = document.getElementById("roomId");
+
+  const selectedRoom = document.querySelector(
+    `.room-card[data-id='${roomId}']`
+  );
+
+  titleEl.innerText = selectedRoom?.dataset.title || "Room";
+  priceEl.innerText = `${selectedRoom?.dataset.price || "EGP"}/month`;
+  idInput.value = roomId;
+
+  bookingModal.style.display = "flex";
+  bookingModal.dataset.roomId = roomId;
+};
+
+window.closeModal = function (modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) modal.style.display = "none";
+};
+
+document.addEventListener("DOMContentLoaded", async () => {
   try {
     const roomsContainer = document.getElementById("rooms-container");
-    if (!roomsContainer) {
-      console.error("Rooms container not found");
-      return;
-    }
-
     roomsContainer.innerHTML = `<div class="loading">Loading rooms...</div>`;
 
     const response = await _get("/api/Unit/GetAllUnits");
@@ -18,7 +131,9 @@ async function displayRooms() {
       return;
     }
 
-    const roomsHTML = rooms
+    const visibleRooms = rooms.filter((room) => room.status !== "Pending");
+
+    const roomsHTML = visibleRooms
       .map((room) => {
         const imageUrl =
           room?.photoUrls?.$values?.[0] && room.photoUrls.$values[0] !== ""
@@ -35,10 +150,10 @@ async function displayRooms() {
             data-price="${room.priceForMonth}"
             data-status="${room.status}"
             data-photos='${JSON.stringify(photoUrls)}'>
-            
+
             <img class="room-image" src="${imageUrl}" alt="${room.title}"
               onerror="this.onerror=null; this.src='images/default-room.jpg';"/>
-            
+
             <div class="room-details">
               <h3 class="room-title">${room.title}</h3>
               <p class="room-location"><i class="fas fa-map-marker-alt"></i> ${
@@ -72,71 +187,11 @@ async function displayRooms() {
     document.getElementById("rooms-container").innerHTML = `
       <div class="error">Error loading rooms. Please try again later.</div>`;
   }
-}
+});
 
-// Handle room detail modal
-window.viewRoomDetails = function (roomId) {
-  const roomCard = document.querySelector(`.room-card[data-id='${roomId}']`);
-  if (!roomCard) return;
-
-  const title = roomCard.dataset.title;
-  const address = roomCard.dataset.address;
-  const price = roomCard.dataset.price;
-  const status = roomCard.dataset.status;
-  const photos = JSON.parse(roomCard.dataset.photos || "[]");
-
-  // Modal elements
-  document.getElementById("modalRoomTitle").innerText = title;
-  document.getElementById("modalRoomLocation").innerText = address;
-  document.getElementById("modalRoomPrice").innerText = `${price} EGP`;
-  document.getElementById("modalRoomDescription").innerText =
-    "Modern and secure room. Details will be dynamically filled later.";
-
-  const gallery = document.querySelector(".room-gallery");
-  gallery.innerHTML = photos
-    .map(
-      (photo) => `
-      <img class="gallery-img"
-        src="https://easyrentapi0.runasp.net/${photo}"
-        alt="Room image"
-        onerror="this.onerror=null; this.src='images/default-room.jpg';"
-      />`
-    )
-    .join("");
-
-  const features = document.getElementById("modalRoomFeatures");
-  features.innerHTML = `
-    <div class="feature"><i class="fas fa-wifi"></i> Free Wi-Fi</div>
-    <div class="feature"><i class="fas fa-bed"></i> 1 Bed</div>
-    <div class="feature"><i class="fas fa-bath"></i> Private Bathroom</div>
-  `;
-
-  document.getElementById("roomDetailsModal").style.display = "flex";
-};
-
-// Handle booking modal
-window.openBookingModal = function (roomId) {
-  const bookingModal = document.getElementById("bookingModal");
-  const titleEl = document.getElementById("bookingRoomTitle");
-  const priceEl = document.getElementById("bookingRoomPrice");
-  const idInput = document.getElementById("roomId");
-
-  const selectedRoom = document.querySelector(
-    `.room-card[data-id='${roomId}']`
-  );
-
-  titleEl.innerText = selectedRoom?.dataset.title || "Room";
-  priceEl.innerText = `${selectedRoom?.dataset.price || "EGP"}/month`;
-  idInput.value = roomId;
-
-  bookingModal.style.display = "flex";
-};
-
-// Close any modal by ID
-window.closeModal = function (modalId) {
-  const modal = document.getElementById(modalId);
-  if (modal) modal.style.display = "none";
-};
-
-// Init display
-document.addEventListener("DOMContentLoaded", displayRooms);
+document.querySelectorAll(".star").forEach((star) => {
+  star.addEventListener("click", () => {
+    selectedRating = Number(star.dataset.value);
+    updateStarSelection(selectedRating);
+  });
+});
