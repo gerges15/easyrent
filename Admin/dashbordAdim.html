@@ -12,6 +12,15 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <link
+      href="https://cdn.jsdelivr.net/npm/remixicon@4.1.0/fonts/remixicon.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+    />
+
     <style>
       :root {
         --primary-color: #294777;
@@ -483,12 +492,57 @@
         cursor: pointer;
         display: none;
       }
-      /* Add to your existing CSS */
-      .modal-content {
-        max-height: 90vh;
-        overflow-y: auto;
+
+      /* Unit Details Modal Styles */
+      #unitDetailsModal .modal-content {
+        max-width: 800px;
+        padding: 30px;
       }
 
+      #unitDetailsModal .form-group {
+        margin-bottom: 15px;
+        padding: 10px;
+        background: #f8f9fa;
+        border-radius: 8px;
+      }
+
+      #unitDetailsModal .form-group label {
+        font-weight: bold;
+        color: var(--primary-color);
+      }
+
+      #unitDetailsModal .form-group div {
+        padding: 5px 0;
+      }
+
+      /* Photo grid styles */
+      #unitModalPhotos {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 10px;
+        max-height: 400px;
+        overflow-y: auto;
+        padding: 10px;
+      }
+
+      /* Lightbox animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+        }
+        to {
+          opacity: 1;
+        }
+      }
+
+      /* Responsive layout */
+      @media (max-width: 768px) {
+        #unitDetailsModal .modal-content > div {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      /* Status classes for modal */
       .status-pending {
         background: #fef3c7;
         color: #92400e;
@@ -514,30 +568,6 @@
         border-radius: 20px;
         font-size: 0.75rem;
         font-weight: 500;
-      }
-
-      .no-data {
-        text-align: center;
-        padding: 20px;
-        color: #6b7280;
-      }
-
-      /* Lightbox animation */
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
-
-      img {
-        transition: transform 0.3s ease;
-      }
-
-      img:hover {
-        transform: scale(1.02);
       }
     </style>
   </head>
@@ -822,6 +852,81 @@
       </div>
     </div>
 
+    <!-- Unit Details Modal -->
+    <div class="modal" id="unitDetailsModal">
+      <div class="modal-content" style="max-width: 800px">
+        <div
+          style="
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+          "
+        >
+          <h2 id="unitModalTitle">Unit Details</h2>
+          <button
+            class="btn"
+            onclick="closeModal()"
+            style="
+              background: none;
+              color: var(--dark-color);
+              font-size: 1.5rem;
+            "
+          >
+            &times;
+          </button>
+        </div>
+        <div
+          style="
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-top: 20px;
+          "
+        >
+          <div>
+            <div class="form-group">
+              <label><strong>ID:</strong></label>
+              <div id="unitModalId">-</div>
+            </div>
+            <div class="form-group">
+              <label><strong>Price:</strong></label>
+              <div id="unitModalPrice">-</div>
+            </div>
+            <div class="form-group">
+              <label><strong>Address:</strong></label>
+              <div id="unitModalAddress">-</div>
+            </div>
+            <div class="form-group">
+              <label><strong>Status:</strong></label>
+              <div id="unitModalStatus">-</div>
+            </div>
+            <div class="form-group">
+              <label><strong>Owner:</strong></label>
+              <div id="unitModalOwner">-</div>
+            </div>
+          </div>
+          <div>
+            <h3 style="margin-bottom: 15px">Photos</h3>
+            <div
+              id="unitModalPhotos"
+              style="
+                max-height: 400px;
+                overflow-y: auto;
+                display: grid;
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 10px;
+              "
+            >
+              <!-- Photos will be inserted here -->
+            </div>
+          </div>
+        </div>
+        <div class="form-actions" style="margin-top: 20px">
+          <button class="btn" onclick="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+
     <script>
       // Global variables
       let units = [];
@@ -895,7 +1000,9 @@
                                 <button class="btn btn-success btn-sm" onclick="approveUnit(${unit.id})">
                                     <i class="fas fa-check"></i> Approve
                                 </button>
-                               
+                                <button class="btn btn-danger btn-sm" onclick="openRejectModal(${unit.id})">
+                                    <i class="fas fa-times"></i> Reject
+                                </button>
                             `
                                 : ""
                             }
@@ -936,7 +1043,7 @@
                 <img src="https://easyrentapi0.runasp.net/${photo}" 
                      class="unit-photo-thumbnail" 
                      title="Click to view larger"
-                     onclick="viewPhoto('${photo}')">
+                     onclick="viewPhotoInLightbox('${photo}')">
             `
             )
             .join("") +
@@ -1078,46 +1185,96 @@
         }
       }
 
-      // View unit details
+      // View unit details in modal
       function viewUnitDetails(unitId) {
         const unit = units.find((u) => u.id === unitId);
-        if (unit) {
-          const photosHtml = unit.photoUrls.$values
-            .map(
-              (photo) => `
-                    <img src="https://easyrentapi0.runasp.net/${photo}" style="max-width: 100%; margin-bottom: 10px;">
-                `
-            )
-            .join("");
+        if (!unit) return;
 
-          const modalContent = `
-                    <h3>${unit.title || "Untitled Unit"}</h3>
-                    <p><strong>ID:</strong> ${unit.id}</p>
-                    <p><strong>Price:</strong> ${
-                      unit.priceForMonth
-                    } EGP/month</p>
-                    <p><strong>Address:</strong> ${unit.address || "N/A"}</p>
-                    <p><strong>Status:</strong> <span class="status status-${unit.status.toLowerCase()}">
-                        ${unit.status}
-                    </span></p>
-                    <p><strong>Owner:</strong> ${
-                      unit.ownerName || "N/A"
-                    } (ID: ${unit.ownerId_FK || "N/A"})</p>
-                    <div style="margin-top: 20px;">
-                        <h4>Photos:</h4>
-                        <div style="max-height: 400px; overflow-y: auto;">
-                            ${photosHtml}
-                        </div>
-                    </div>
-                `;
+        // Fill modal with unit data
+        document.getElementById("unitModalTitle").textContent =
+          unit.title || "Untitled Unit";
+        document.getElementById("unitModalId").textContent = unit.id;
+        document.getElementById(
+          "unitModalPrice"
+        ).textContent = `${unit.priceForMonth} EGP/month`;
+        document.getElementById("unitModalAddress").textContent =
+          unit.address || "N/A";
 
-          alert(modalContent); // For simplicity, replace with a proper modal
+        // Status with colored badge
+        const statusElement = document.getElementById("unitModalStatus");
+        statusElement.innerHTML = "";
+        const statusBadge = document.createElement("span");
+        statusBadge.className = `status status-${unit.status.toLowerCase()}`;
+        statusBadge.textContent = unit.status;
+        statusElement.appendChild(statusBadge);
+
+        document.getElementById("unitModalOwner").textContent = `${
+          unit.ownerName || "N/A"
+        } (ID: ${unit.ownerId_FK || "N/A"})`;
+
+        // Load photos
+        const photosContainer = document.getElementById("unitModalPhotos");
+        photosContainer.innerHTML = "";
+
+        if (
+          unit.photoUrls &&
+          unit.photoUrls.$values &&
+          unit.photoUrls.$values.length > 0
+        ) {
+          unit.photoUrls.$values.forEach((photo) => {
+            const imgWrapper = document.createElement("div");
+            imgWrapper.style.position = "relative";
+            imgWrapper.style.paddingBottom = "100%";
+            imgWrapper.style.overflow = "hidden";
+            imgWrapper.style.borderRadius = "8px";
+
+            const img = document.createElement("img");
+            img.src = `https://easyrentapi0.runasp.net/${photo}`;
+            img.style.position = "absolute";
+            img.style.top = "0";
+            img.style.left = "0";
+            img.style.width = "100%";
+            img.style.height = "100%";
+            img.style.objectFit = "cover";
+            img.style.cursor = "pointer";
+            img.onclick = () => viewPhotoInLightbox(photo);
+
+            imgWrapper.appendChild(img);
+            photosContainer.appendChild(imgWrapper);
+          });
+        } else {
+          photosContainer.innerHTML =
+            '<div class="no-data"><i class="material-icons">photo_camera</i> No photos available</div>';
         }
+
+        // Show modal
+        document.getElementById("unitDetailsModal").style.display = "flex";
       }
 
-      // View photo in larger size
-      function viewPhoto(photoUrl) {
-        window.open(`https://easyrentapi0.runasp.net/${photoUrl}`, "_blank");
+      // View photo in lightbox
+      function viewPhotoInLightbox(photoUrl) {
+        const lightbox = document.createElement("div");
+        lightbox.style.position = "fixed";
+        lightbox.style.top = "0";
+        lightbox.style.left = "0";
+        lightbox.style.width = "100%";
+        lightbox.style.height = "100%";
+        lightbox.style.backgroundColor = "rgba(0,0,0,0.9)";
+        lightbox.style.display = "flex";
+        lightbox.style.alignItems = "center";
+        lightbox.style.justifyContent = "center";
+        lightbox.style.zIndex = "2000";
+        lightbox.style.cursor = "zoom-out";
+        lightbox.onclick = () => lightbox.remove();
+
+        const img = document.createElement("img");
+        img.src = `https://easyrentapi0.runasp.net/${photoUrl}`;
+        img.style.maxWidth = "90%";
+        img.style.maxHeight = "90%";
+        img.style.objectFit = "contain";
+
+        lightbox.appendChild(img);
+        document.body.appendChild(lightbox);
       }
 
       // Show add unit modal
@@ -1127,8 +1284,9 @@
 
       // Close modal
       function closeModal() {
-        document.getElementById("rejectModal").style.display = "none";
-        document.getElementById("addUnitModal").style.display = "none";
+        document.querySelectorAll(".modal").forEach((modal) => {
+          modal.style.display = "none";
+        });
         currentUnitId = null;
         document.getElementById("rejectionReason").value = "";
       }
@@ -1270,106 +1428,6 @@
             }
           });
       });
-      // View unit details in modal
-      function viewUnitDetails(unitId) {
-        const unit = units.find((u) => u.id === unitId);
-        if (!unit) return;
-
-        // Fill modal with unit data
-        document.getElementById("unitModalTitle").textContent =
-          unit.title || "Untitled Unit";
-        document.getElementById("unitModalId").textContent = unit.id;
-        document.getElementById(
-          "unitModalPrice"
-        ).textContent = `${unit.priceForMonth} EGP/month`;
-        document.getElementById("unitModalAddress").textContent =
-          unit.address || "N/A";
-
-        // Status with colored badge
-        const statusElement = document.getElementById("unitModalStatus");
-        statusElement.innerHTML = "";
-        const statusBadge = document.createElement("span");
-        statusBadge.className = `status status-${unit.status.toLowerCase()}`;
-        statusBadge.textContent = unit.status;
-        statusElement.appendChild(statusBadge);
-
-        document.getElementById("unitModalOwner").textContent = `${
-          unit.ownerName || "N/A"
-        } (ID: ${unit.ownerId_FK || "N/A"})`;
-
-        // Load photos
-        const photosContainer = document.getElementById("unitModalPhotos");
-        photosContainer.innerHTML = "";
-
-        if (
-          unit.photoUrls &&
-          unit.photoUrls.$values &&
-          unit.photoUrls.$values.length > 0
-        ) {
-          unit.photoUrls.$values.forEach((photo) => {
-            const imgWrapper = document.createElement("div");
-            imgWrapper.style.position = "relative";
-            imgWrapper.style.paddingBottom = "100%";
-            imgWrapper.style.overflow = "hidden";
-            imgWrapper.style.borderRadius = "8px";
-
-            const img = document.createElement("img");
-            img.src = `https://easyrentapi0.runasp.net/${photo}`;
-            img.style.position = "absolute";
-            img.style.top = "0";
-            img.style.left = "0";
-            img.style.width = "100%";
-            img.style.height = "100%";
-            img.style.objectFit = "cover";
-            img.style.cursor = "pointer";
-            img.onclick = () => viewPhotoInLightbox(photo);
-
-            imgWrapper.appendChild(img);
-            photosContainer.appendChild(imgWrapper);
-          });
-        } else {
-          photosContainer.innerHTML =
-            '<div class="no-data"><i class="material-icons">photo_camera</i> No photos available</div>';
-        }
-
-        // Show modal
-        document.getElementById("unitModal").style.display = "flex";
-      }
-
-      // View photo in lightbox
-      function viewPhotoInLightbox(photoUrl) {
-        const lightbox = document.createElement("div");
-        lightbox.style.position = "fixed";
-        lightbox.style.top = "0";
-        lightbox.style.left = "0";
-        lightbox.style.width = "100%";
-        lightbox.style.height = "100%";
-        lightbox.style.backgroundColor = "rgba(0,0,0,0.9)";
-        lightbox.style.display = "flex";
-        lightbox.style.alignItems = "center";
-        lightbox.style.justifyContent = "center";
-        lightbox.style.zIndex = "2000";
-        lightbox.style.cursor = "zoom-out";
-        lightbox.onclick = () => lightbox.remove();
-
-        const img = document.createElement("img");
-        img.src = `https://easyrentapi0.runasp.net/${photoUrl}`;
-        img.style.maxWidth = "90%";
-        img.style.maxHeight = "90%";
-        img.style.objectFit = "contain";
-
-        lightbox.appendChild(img);
-        document.body.appendChild(lightbox);
-      }
-
-      // Update closeModal function to handle all modals
-      function closeModal() {
-        document.querySelectorAll(".modal").forEach((modal) => {
-          modal.style.display = "none";
-        });
-        currentUnitId = null;
-        document.getElementById("rejectionReason").value = "";
-      }
     </script>
   </body>
 </html>
