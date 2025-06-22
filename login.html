@@ -188,7 +188,7 @@
         cursor: pointer;
         transition: all 0.3s ease;
       }
-      /* Add this to your existing styles */
+
       .success-message {
         display: none;
         background-color: #4caf50;
@@ -264,6 +264,16 @@
       .forgot-password a:hover {
         color: #5aa8e6;
         text-decoration: underline;
+      }
+
+      .remember-me {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+      }
+
+      .remember-me input {
+        margin-right: 8px;
       }
 
       .footer {
@@ -678,15 +688,16 @@
   <body>
     <main>
       <div class="container">
-        <div id="successMessage" class="success-message">
-          <i class="fas fa-check-circle" style="margin-right: 8px"></i>
-          Successfully registered! Welcome to EasyRent.
-        </div>
-        <div class="welcome-header">
-          <div class="welcome-logo"></div>
-          <h1 class="title">Welcome Back</h1>
-        </div>
         <form id="loginForm">
+          <div id="successMessage" class="success-message">
+            <i class="fas fa-check-circle" style="margin-right: 8px"></i>
+            Successfully logged in! Welcome to EasyRent.
+          </div>
+          <div class="welcome-header">
+            <div class="welcome-logo"></div>
+            <h1 class="title">Welcome Back</h1>
+          </div>
+
           <div class="input-group">
             <label for="phone">Phone number or email</label>
             <input
@@ -708,6 +719,11 @@
               />
               <button type="button" id="togglePasswordBtn">Show</button>
             </div>
+          </div>
+
+          <div class="remember-me">
+            <input type="checkbox" id="rememberMe" />
+            <label for="rememberMe">Remember me</label>
           </div>
 
           <button type="submit" class="btn-primary">Sign In</button>
@@ -863,86 +879,185 @@
         Copyright © 2025 EasyRent. All rights reserved.
       </div>
     </footer>
-
     <script>
-      document.addEventListener("DOMContentLoaded", () => {
+      document.addEventListener("DOMContentLoaded", function () {
+        // API Configuration
+        const API_BASE_URL = "https://easyrentapi0.runasp.net";
+
+        // DOM Elements
+        const loginForm = document.getElementById("loginForm");
+        const emailPhoneInput = document.getElementById("phone");
         const passwordInput = document.getElementById("password");
         const togglePasswordBtn = document.getElementById("togglePasswordBtn");
-        const loginForm = document.getElementById("loginForm");
+        const submitBtn = document.querySelector(".btn-primary");
+        const userTypeRadios = document.querySelectorAll(
+          'input[name="userType"]'
+        );
 
-        togglePasswordBtn.addEventListener("click", () => {
+        // Create error display element
+        const errorDiv = document.createElement("div");
+        errorDiv.className = "error-message";
+        loginForm.insertBefore(errorDiv, loginForm.firstChild);
+
+        // Add styles for error message and user type selector
+        const style = document.createElement("style");
+        style.textContent = `
+          .error-message {
+              color: #d32f2f;
+              background: #fde8e8;
+              padding: 12px;
+              border-radius: 8px;
+              margin-bottom: 20px;
+              display: none;
+              border-left: 4px solid #d32f2f;
+          }
+          .user-type-container {
+              display: flex;
+              gap: 15px;
+              margin-bottom: 20px;
+          }
+          .user-type-option {
+              flex: 1;
+              border: 2px solid #e1e5ee;
+              border-radius: 8px;
+              padding: 12px;
+              cursor: pointer;
+              transition: all 0.3s ease;
+              background: #f8fafd;
+          }
+          .user-type-option.selected {
+              border-color: #82c9ff;
+              background: #fff;
+              box-shadow: 0 0 0 2px rgba(130, 201, 255, 0.2);
+          }
+          .user-type-option input {
+              display: none;
+          }
+      `;
+        document.head.appendChild(style);
+
+        // Add user type selector if not present
+        if (!document.querySelector(".user-type-container")) {
+          const typeContainer = document.createElement("div");
+          typeContainer.className = "user-type-container";
+          typeContainer.innerHTML = `
+              <label class="user-type-option" onclick="selectUserType(this, 'student')">
+                  <input type="radio" name="userType" value="student" checked>
+                  <i class="fas fa-user-graduate"></i> Student
+              </label>
+              <label class="user-type-option" onclick="selectUserType(this, 'admin')">
+                  <input type="radio" name="userType" value="admin">
+                  <i class="fas fa-user-shield"></i> Admin
+              </label>
+          `;
+          loginForm.insertBefore(typeContainer, emailPhoneInput.parentElement);
+        }
+
+        // Password visibility toggle
+        togglePasswordBtn.addEventListener("click", function (e) {
+          e.preventDefault();
           const type = passwordInput.type === "password" ? "text" : "password";
           passwordInput.type = type;
           togglePasswordBtn.textContent = type === "password" ? "Show" : "Hide";
         });
 
-        loginForm.addEventListener("submit", async (e) => {
+        // Form submission
+        loginForm.addEventListener("submit", async function (e) {
           e.preventDefault();
+          errorDiv.style.display = "none";
 
-          const input = document.getElementById("phone").value.trim();
-          const password = passwordInput.value;
+          // Get selected user type
+          const userType = document.querySelector(
+            'input[name="userType"]:checked'
+          ).value;
+          const credentials = {
+            emailOrPhone: emailPhoneInput.value.trim(),
+            password: passwordInput.value,
+          };
 
-          if (!input || !password) {
-            alert("Please fill in all fields");
+          // Validate inputs
+          if (!credentials.emailOrPhone || !credentials.password) {
+            showError("Please fill in all fields");
             return;
           }
 
+          submitBtn.disabled = true;
+          submitBtn.innerHTML =
+            '<i class="fas fa-spinner fa-spin"></i> Signing in...';
+
           try {
-            const res = await fetch(
-              "https://easyrentapi0.runasp.net/api/Student/login",
-              {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  emailOrPhone: input,
-                  password,
-                }),
-              }
+            const endpoint = `/${userType}/login`;
+            console.log(
+              `Attempting ${userType} login at ${API_BASE_URL}${endpoint}`
             );
 
-            if (!res.ok) {
-              const errorText = await res.text();
-              alert(
-                errorText || "Login failed. Please check your credentials."
-              );
-              return;
-            }
+            const response = await fetch(`${API_BASE_URL}/api${endpoint}`, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              body: JSON.stringify(credentials),
+            });
 
-            const contentType = res.headers.get("content-type");
-            if (contentType && contentType.includes("application/json")) {
-              // Handle JSON response
-              const data = await res.json();
-              localStorage.setItem("token", data.token);
-              localStorage.setItem("user", JSON.stringify(data));
-            } else {
-              // Handle text response
-              const text = await res.text();
-              if (text.includes("Login successful")) {
-                // If no token is provided in text response, you might want to set some default values
-                localStorage.setItem("token", "default_token");
-                localStorage.setItem(
-                  "user",
-                  JSON.stringify({ message: "Login successful" })
-                );
+            if (!response.ok) {
+              const errorData = await response.json().catch(() => ({}));
+              console.error("Login error:", errorData);
+
+              let errorMessage = "Login failed. Please check your credentials.";
+              if (response.status === 401) {
+                errorMessage = `Invalid ${userType} credentials`;
+              } else if (errorData.message) {
+                errorMessage = errorData.message;
               }
+
+              throw new Error(errorMessage);
             }
 
-            // Redirect after successful login
-            window.location.href = "room2.html";
-          } catch (err) {
-            console.error("Login Error:", err);
-            alert("An error occurred. Please try again later.");
+            const data = await response.json();
+            console.log("Login successful:", data);
+
+            // Store authentication data
+            localStorage.setItem("userType", userType);
+            localStorage.setItem("authToken", data.token || data.accessToken);
+            localStorage.setItem("userData", JSON.stringify(data.user || data));
+
+            // Show success message
+            document.getElementById("successMessage").style.display = "block";
+
+            // Redirect based on user type
+            setTimeout(() => {
+              window.location.href =
+                userType === "admin"
+                  ? "./Admin/dashbordAdim.html"
+                  : "room2.html";
+            }, 1500);
+          } catch (error) {
+            console.error("Login error:", error);
+            showError(error.message);
+          } finally {
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Sign In";
           }
         });
-      });
-      function showSuccessMessage() {
-        const successMessage = document.getElementById("successMessage");
-        successMessage.style.display = "block";
 
-        // Automatically hide the message after 5 seconds
-        setTimeout(() => {
-          successMessage.style.display = "none";
-        }, 5000);
+        // Helper function to show error messages
+        function showError(message) {
+          errorDiv.textContent = message;
+          errorDiv.style.display = "block";
+          setTimeout(() => {
+            errorDiv.style.display = "none";
+          }, 5000);
+        }
+      });
+
+      // Function to handle user type selection
+      function selectUserType(element, type) {
+        document.querySelectorAll(".user-type-option").forEach((opt) => {
+          opt.classList.remove("selected");
+        });
+        element.classList.add("selected");
+        document.querySelector(`input[value="${type}"]`).checked = true;
       }
     </script>
   </body>

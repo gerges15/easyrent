@@ -422,163 +422,116 @@
         const LOGIN_ENDPOINT = "/api/Admin/login";
         const ADMIN_ENDPOINT = "/api/Admin";
 
-        // DOM Elements
+        // DOM elements
         const loginForm = document.getElementById("loginForm");
         const emailInput = document.getElementById("email");
         const passwordInput = document.getElementById("password");
         const rememberMe = document.getElementById("rememberMe");
         const loginButton = document.getElementById("loginButton");
-        const togglePassword = document.getElementById("togglePassword");
         const errorElements = {
           email: document.getElementById("emailError"),
           password: document.getElementById("passwordError"),
         };
-
-        // Check for saved credentials
-        checkSavedCredentials();
 
         // Redirect if already logged in
         if (
           localStorage.getItem("adminToken") &&
           localStorage.getItem("adminId")
         ) {
-          window.location.href = "dashbordAdmin.html";
+          window.location.href = "./dashbord.html";
+          return;
         }
 
-        // Toggle password visibility
-        togglePassword.addEventListener("click", () => {
-          const type = passwordInput.type === "password" ? "text" : "password";
-          passwordInput.type = type;
-          togglePassword.innerHTML =
-            type === "password"
-              ? '<i class="fas fa-eye"></i>'
-              : '<i class="fas fa-eye-slash"></i>';
-        });
-
-        // Form submission
         loginForm.addEventListener("submit", async (e) => {
           e.preventDefault();
           clearErrors();
 
           const email = emailInput.value.trim();
           const password = passwordInput.value;
-          const shouldRemember = rememberMe.checked;
-
-          // Validate inputs
-          if (!validateEmail(email)) {
-            showError("email", "Please enter a valid email address");
-            return;
-          }
-
-          if (password.length < 6) {
-            showError("password", "Password must be at least 6 characters");
-            return;
-          }
-
-          try {
-            setLoadingState(true);
-
-            // First authenticate with login endpoint
-            const loginResponse = await fetch(
-              `${API_BASE_URL}${LOGIN_ENDPOINT}`,
-              {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Accept: "application/json",
-                },
-                body: JSON.stringify({
-                  emailOrPhone: email,
-                  password: password,
-                }),
-              }
+          if (!validateEmail(email)) return showError("email", "Invalid email");
+          if (password.length < 6)
+            return showError(
+              "password",
+              "Password must be at least 6 characters"
             );
 
+          setLoadingState(true);
+
+          try {
+            // 1️⃣ طلب تسجيل الدخول
+            const loginResponse = await fetch(API_BASE_URL + LOGIN_ENDPOINT, {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+                Accept: "application/json",
+              },
+              body: JSON.stringify({ emailOrPhone: email, password }),
+            });
+
             if (!loginResponse.ok) {
-              const errorData = await loginResponse.json();
-              throw new Error(
-                errorData.message ||
-                  "Login failed. Please check your credentials."
-              );
+              const err = await loginResponse.json().catch(() => ({}));
+              throw new Error(err.message || "Login failed");
             }
 
             const token = await loginResponse.text();
+            console.log("🔐 token:", token);
+            if (!token || token.length < 10)
+              throw new Error("Empty or invalid token");
 
-            // Now fetch admin details
-            const adminResponse = await fetch(
-              `${API_BASE_URL}${ADMIN_ENDPOINT}`,
-              {
-                headers: {
-                  Authorization: `Bearer ${token}`,
-                  Accept: "application/json",
-                },
-              }
-            );
+            // 2️⃣ طلب بيانات المشرف باستخدام التوكين
+            const adminResponse = await fetch(API_BASE_URL + ADMIN_ENDPOINT, {
+              method: "GET",
+              headers: {
+                Authorization: `Bearer ${token}`,
+                Accept: "application/json",
+              },
+            });
 
-            if (!adminResponse.ok) {
+            console.log("➡️ adminResponse status:", adminResponse.status);
+
+            if (adminResponse.status === 401)
+              throw new Error("Unauthorized – invalid or expired token");
+
+            if (!adminResponse.ok)
               throw new Error("Failed to fetch admin details");
-            }
 
             const adminData = await adminResponse.json();
-            const admin = adminData.$values[0];
+            const admin = adminData.$values?.[0];
+            if (!admin?.id) throw new Error("Invalid admin data received");
 
-            if (!admin || !admin.id) {
-              throw new Error("Invalid admin data received");
-            }
-
-            // Store authentication data
+            // ✅ تخزين بيانات الدخول
             localStorage.setItem("adminToken", token);
             localStorage.setItem("adminId", admin.id);
             localStorage.setItem("adminName", admin.name || "Admin");
-            localStorage.setItem("adminEmail", admin.email || "");
-            localStorage.setItem("adminPhone", admin.phoneNumber || "");
 
-            // Save credentials if "Remember me" is checked
-            if (shouldRemember) {
-              saveCredentials(email);
-            } else {
-              clearSavedCredentials();
-            }
+            if (rememberMe.checked)
+              localStorage.setItem("savedAdminEmail", email);
+            else localStorage.removeItem("savedAdminEmail");
 
-            // Show success state
             loginButton.innerHTML = '<i class="fas fa-check"></i> Success!';
             loginButton.style.background = "var(--success)";
-
-            // Redirect to dashboard
             setTimeout(() => {
-              window.location.href = "dashbordAdmin.html";
+              window.location.href = "./dashbordAdmin.html";
             }, 1000);
           } catch (error) {
-            handleLoginError(error);
+            console.error(error.message);
+            const msg = error.message.includes("401")
+              ? "Invalid email or session expired."
+              : error.message;
+            showError("password", msg);
           } finally {
             setLoadingState(false);
           }
         });
 
-        // Forgot password handler
-        document
-          .getElementById("forgotPassword")
-          .addEventListener("click", (e) => {
-            e.preventDefault();
-            alert(
-              "Please contact system administrator to reset your password."
-            );
-          });
+        // —======== المساعدون ========—
 
-        // Helper functions
         function validateEmail(email) {
-          const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-          return re.test(email);
+          return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
 
-        function setLoadingState(isLoading) {
-          loginButton.disabled = isLoading;
-          document.getElementById("loginBtnText").style.display = isLoading
-            ? "none"
-            : "inline";
-          document.getElementById("loginSpinner").style.display = isLoading
-            ? "inline-block"
-            : "none";
+        function setLoadingState(state) {
+          loginButton.disabled = state;
         }
 
         function clearErrors() {
@@ -586,45 +539,11 @@
             el.textContent = "";
             el.classList.remove("show");
           });
-          loginForm.classList.remove("shake");
         }
 
-        function showError(field, message) {
-          errorElements[field].textContent = message;
+        function showError(field, msg) {
+          errorElements[field].textContent = msg;
           errorElements[field].classList.add("show");
-          loginForm.classList.add("shake");
-          setTimeout(() => loginForm.classList.remove("shake"), 500);
-        }
-
-        function handleLoginError(error) {
-          let errorMessage = error.message;
-
-          if (error.message.includes("Failed to fetch")) {
-            errorMessage = "Network error. Please check your connection.";
-          } else if (error.message.includes("401")) {
-            errorMessage = "Invalid email or password.";
-          }
-
-          showError("password", errorMessage);
-        }
-
-        // Security improvement: Only store email, not password
-        function saveCredentials(email) {
-          localStorage.setItem("savedAdminEmail", email);
-          // Don't store password in localStorage
-        }
-
-        function clearSavedCredentials() {
-          localStorage.removeItem("savedAdminEmail");
-          localStorage.removeItem("savedAdminPassword");
-        }
-
-        function checkSavedCredentials() {
-          const savedEmail = localStorage.getItem("savedAdminEmail");
-          if (savedEmail) {
-            emailInput.value = savedEmail;
-            rememberMe.checked = true;
-          }
         }
       });
     </script>
