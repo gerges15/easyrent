@@ -1,7 +1,5 @@
-// 1. المتغيرات العامة
-const API_BASE_URL = "https://easyrentapi0.runasp.net/api";
-let units = [];
-let currentRoomId = null;
+// 1. استيراد الدوال من ملف apiclient.js
+import { _get } from "./apiclient.js";
 
 // 2. بيانات افتراضية للطوارئ
 const FALLBACK_DATA = [
@@ -19,16 +17,14 @@ const FALLBACK_DATA = [
   },
 ];
 
-// 3. وظائف API
+// 3. المتغيرات العامة
+let units = [];
+let currentRoomId = null;
+
+// 4. وظائف API
 async function fetchUnits() {
   try {
-    const response = await fetch(`${API_BASE_URL}/Unit/GetAllUnits`);
-
-    if (!response.ok) {
-      throw new Error("فشل جلب البيانات");
-    }
-
-    units = await response.json();
+    units = await _get("/api/Unit/GetAllUnits");
     renderUnits(units);
   } catch (error) {
     console.error("خطأ في جلب البيانات:", error);
@@ -40,7 +36,7 @@ async function fetchUnits() {
   }
 }
 
-// 4. عرض الوحدات
+// 5. عرض الوحدات
 function renderUnits(unitsToRender) {
   const container = document.getElementById("roomsContainer");
   if (!container) return;
@@ -69,7 +65,7 @@ function renderUnits(unitsToRender) {
     .join("");
 }
 
-// 5. فتح تفاصيل الغرفة
+// 6. فتح تفاصيل الغرفة
 function openRoomDetails(unitId) {
   const unit = units.find((u) => u.id === unitId);
   if (!unit) return;
@@ -83,12 +79,12 @@ function openRoomDetails(unitId) {
   document.getElementById("roomDetailsModal").style.display = "flex";
 }
 
-// 6. إغلاق النافذة المنبثقة
+// 7. إغلاق النافذة المنبثقة
 function closeModal(modalId) {
   document.getElementById(modalId).style.display = "none";
 }
 
-// 7. تصفية النتائج
+// 8. تصفية النتائج
 function filterUnits() {
   const location = document.getElementById("location").value;
   const minPrice = parseInt(document.getElementById("min-price").value) || 0;
@@ -108,7 +104,7 @@ function filterUnits() {
   renderUnits(filtered);
 }
 
-// 8. عرض رسائل الخطأ
+// 9. عرض رسائل الخطأ
 function showErrorMessage(message) {
   const container = document.getElementById("roomsContainer");
   if (!container) return;
@@ -122,7 +118,7 @@ function showErrorMessage(message) {
   container.appendChild(errorDiv);
 }
 
-// 9. تهيئة الصفحة
+// 10. تهيئة الصفحة
 function initializePage() {
   fetchUnits();
 
@@ -135,7 +131,7 @@ function initializePage() {
     });
 }
 
-// 10. جعل الدوال متاحة عالمياً
+// 11. جعل الدوال متاحة عالمياً
 window.openRoomDetails = openRoomDetails;
 window.closeModal = closeModal;
 window.filterUnits = filterUnits;
