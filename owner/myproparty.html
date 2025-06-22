@@ -439,7 +439,6 @@
 
             if (Array.isArray(urls) && urls.length > 0) {
               const mainImage = `<img src="https://easyrentapi0.runasp.net/${urls[0]}" alt="${u.title}" class="property-image"/>`;
-
               const extraImages = urls
                 .slice(1)
                 .map(
@@ -451,14 +450,9 @@
               imagesHtml = `
                 <div class="property-images">
                   ${mainImage}
-                  ${
-                    urls.length > 1
-                      ? `
-                    <button class="toggle-images-btn" onclick="this.nextElementSibling.classList.toggle('hidden'); this.textContent = this.textContent === 'عرض باقي الصور' ? 'إخفاء الصور' : 'عرض باقي الصور';">
-                      عرض باقي الصور
-                    </button>`
-                      : ""
-                  }
+                  <button class="toggle-images-btn">
+                    <span class="btn-text">عرض باقي الصور</span>
+                  </button>
                   <div class="extra-images hidden">
                     ${extraImages}
                   </div>
@@ -479,8 +473,22 @@
                 </button>
               </div>
             `;
-
             container.appendChild(card);
+          });
+
+          // تفعيل زر عرض/إخفاء الصور لكل بطاقة
+          document.querySelectorAll(".toggle-images-btn").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              const extra = btn.nextElementSibling;
+              const textSpan = btn.querySelector(".btn-text");
+              extra.classList.toggle("hidden");
+
+              if (extra.classList.contains("hidden")) {
+                textSpan.textContent = "عرض باقي الصور";
+              } else {
+                textSpan.textContent = "إخفاء الصور";
+              }
+            });
           });
         } catch (err) {
           console.error(err);
@@ -492,31 +500,6 @@
             window.location.href = "loginowner.html";
           }
         }
-      }
-
-      function renderUnits(units) {
-        const container = document.getElementById("roomsContainer");
-        const approvedUnits = units.filter((unit) => unit.isApproved);
-
-        if (approvedUnits.length === 0) {
-          container.innerHTML = `
-            <div class="no-results">
-              <p>لا توجد وحدات سكنية معتمدة متاحة حالياً.</p>
-            </div>
-          `;
-          return;
-        }
-
-        container.innerHTML = approvedUnits
-          .map(
-            (unit) => `
-          <div class="room-card">
-            <h3>${unit.name}</h3>
-            <p>${unit.location}</p>
-          </div>
-        `
-          )
-          .join("");
       }
     </script>
   </body>
