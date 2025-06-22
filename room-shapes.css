@@ -278,7 +278,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #7c4dff 0%, #448aff 100%);
+  background: linear-gradient(135deg, #b69dfc 0%, #7fb7f3 100%);
   clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
   transition: all 0.4s ease;
   cursor: pointer;
@@ -299,7 +299,7 @@
   position: absolute;
   font-size: 20px;
   font-weight: 800;
-  background: linear-gradient(45deg, #7c4dff, #448aff);
+  background: linear-gradient(45deg, #a586fa, #88b4ff);
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -326,7 +326,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: linear-gradient(135deg, #7c4dff 0%, #448aff 100%);
+  background: linear-gradient(135deg, #a98bfc 0%, #79a3eb 100%);
   border-radius: 50%;
   transition: all 0.4s ease;
   cursor: pointer;
