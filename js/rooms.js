@@ -1,6 +1,4 @@
-import API from "./api.js";
-
-const api = new API("http://easyrentapi0.runasp.net");
+import { _get } from "./apiClint.js";
 
 async function displayRooms() {
   try {
@@ -12,7 +10,7 @@ async function displayRooms() {
 
     roomsContainer.innerHTML = '<div class="loading">Loading rooms...</div>';
 
-    const response = await api.get("/api/Unit/GetAllUnits");
+    const response = await _get("/api/Unit/GetAllUnits");
     const rooms = response.$values || [];
 
     if (!rooms || rooms.length === 0) {
