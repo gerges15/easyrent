@@ -422,17 +422,6 @@
         const LOGIN_ENDPOINT = "/api/Admin/login";
         const ADMIN_ENDPOINT = "/api/Admin";
 
-        // Check for saved credentials
-        checkSavedCredentials();
-
-        // Redirect if already logged in
-        if (
-          localStorage.getItem("adminToken") &&
-          localStorage.getItem("adminId")
-        ) {
-          window.location.href = "dashboard.html";
-        }
-
         // DOM Elements
         const loginForm = document.getElementById("loginForm");
         const emailInput = document.getElementById("email");
@@ -444,6 +433,17 @@
           email: document.getElementById("emailError"),
           password: document.getElementById("passwordError"),
         };
+
+        // Check for saved credentials
+        checkSavedCredentials();
+
+        // Redirect if already logged in
+        if (
+          localStorage.getItem("adminToken") &&
+          localStorage.getItem("adminId")
+        ) {
+          window.location.href = "dashbordAdmin.html";
+        }
 
         // Toggle password visibility
         togglePassword.addEventListener("click", () => {
@@ -502,7 +502,7 @@
               );
             }
 
-            const token = await loginResponse.text(); // Get the token as text
+            const token = await loginResponse.text();
 
             // Now fetch admin details
             const adminResponse = await fetch(
@@ -520,7 +520,7 @@
             }
 
             const adminData = await adminResponse.json();
-            const admin = adminData.$values[0]; // Get the first admin from array
+            const admin = adminData.$values[0];
 
             if (!admin || !admin.id) {
               throw new Error("Invalid admin data received");
@@ -535,7 +535,7 @@
 
             // Save credentials if "Remember me" is checked
             if (shouldRemember) {
-              saveCredentials(email, password);
+              saveCredentials(email);
             } else {
               clearSavedCredentials();
             }
@@ -546,7 +546,7 @@
 
             // Redirect to dashboard
             setTimeout(() => {
-              window.location.href = "dashboard.html";
+              window.location.href = "dashbordAdmin.html";
             }, 1000);
           } catch (error) {
             handleLoginError(error);
@@ -608,11 +608,10 @@
           showError("password", errorMessage);
         }
 
-        // Cookie functions for saving credentials
-        function saveCredentials(email, password) {
-          // Use localStorage for simplicity (more secure than cookies)
+        // Security improvement: Only store email, not password
+        function saveCredentials(email) {
           localStorage.setItem("savedAdminEmail", email);
-          localStorage.setItem("savedAdminPassword", password);
+          // Don't store password in localStorage
         }
 
         function clearSavedCredentials() {
@@ -622,11 +621,8 @@
 
         function checkSavedCredentials() {
           const savedEmail = localStorage.getItem("savedAdminEmail");
-          const savedPassword = localStorage.getItem("savedAdminPassword");
-
-          if (savedEmail && savedPassword) {
+          if (savedEmail) {
             emailInput.value = savedEmail;
-            passwordInput.value = savedPassword;
             rememberMe.checked = true;
           }
         }

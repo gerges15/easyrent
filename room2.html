@@ -6,376 +6,197 @@
     <title>Minia Student Housing</title>
     <style>
       :root {
-        --primary-color: #2c3e50;
-        --secondary-color: #3498db;
-        --accent-color: #d62612;
-        --light-color: #ecf0f1;
-        --dark-color: #2c3e50;
-        --success-color: #2ecc71;
-        --text-color: #34495e;
-        --border-radius: 8px;
-        --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-        --transition: all 0.3s ease;
-      }
-
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-        font-family: "Poppins", sans-serif;
-      }
-
-      body {
-        background-color: #f8f9fa;
-        color: var(--text-color);
-        line-height: 1.6;
+        --primary-gradient: linear-gradient(135deg, #6eb5e4, #d36ded);
+        --secondary-gradient: linear-gradient(135deg, #8e2de2, #4a00e0);
+        --accent-gradient: linear-gradient(135deg, #f12711, #f5af19);
+        --primary-color: #215ab0;
+        --secondary-color: #8e2de2;
+        --accent-color: #f12711;
+        --light-color: #f8f9fa;
+        --dark-color: #1a1a1a;
+        --text-color: #2c3e50;
+        --border-radius: 12px;
+        --box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        --transition: all 0.4s ease;
       }
 
       header {
-        background: linear-gradient(135deg, #6f42c1, #0d6efd);
-        color: white;
-        padding: 2rem 0;
-        margin-bottom: 2rem;
-        box-shadow: var(--box-shadow);
-      }
-
-      .logo-container {
-        text-align: center;
-        padding: 1rem 0;
+        background: var(--primary-gradient);
+        padding: 2.5rem 0;
+        margin-bottom: 3rem;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
       }
 
       .logo {
-        color: white;
-        font-size: 2.5rem;
-        font-weight: 700;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 15px;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        font-size: 2.8rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
       }
 
       .logo i {
-        color: #0dcaf0;
-        font-size: 2.8rem;
-        transition: transform 0.3s ease;
-      }
-
-      .logo:hover i {
-        transform: scale(1.1);
-      }
-
-      .container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
+        color: #fff;
+        font-size: 3rem;
+        filter: drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.2));
       }
 
       .search-section {
-        background-color: white;
-        padding: 2rem;
+        background: #ffffff;
+        padding: 2.5rem;
         border-radius: var(--border-radius);
         box-shadow: var(--box-shadow);
-        margin: 2rem 0;
-      }
-
-      .search-section h2 {
-        color: var(--primary-color);
-        margin-bottom: 1.5rem;
-        font-size: 1.8rem;
-        font-weight: 600;
+        margin: 2.5rem 0;
+        border: 1px solid rgba(0, 0, 0, 0.05);
       }
 
       .search-form {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-        gap: 1.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
       }
 
       .form-group {
-        margin-bottom: 1rem;
+        position: relative;
+        margin-bottom: 1.5rem;
       }
 
-      label {
-        display: block;
-        margin-bottom: 0.5rem;
+      .form-group label {
         font-weight: 500;
+        margin-bottom: 0.5rem;
         color: var(--text-color);
+        display: block;
       }
 
-      input,
-      select {
+      .form-group input,
+      .form-group select {
         width: 100%;
-        padding: 0.8rem;
+        padding: 12px 16px;
         border: 2px solid #e1e1e1;
         border-radius: var(--border-radius);
         font-size: 1rem;
         transition: var(--transition);
+        background: #fff;
       }
 
-      input:focus,
-      select:focus {
-        border-color: var(--secondary-color);
+      .form-group input:focus,
+      .form-group select:focus {
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 4px rgba(33, 147, 176, 0.1);
         outline: none;
-        box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
-      }
-
-      button {
-        background-color: var(--secondary-color);
-        color: white;
-        border: none;
-        padding: 1rem 2rem;
-        border-radius: var(--border-radius);
-        cursor: pointer;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        transition: var(--transition);
-      }
-
-      button:hover {
-        background-color: var(--primary-color);
-        transform: translateY(-2px);
       }
 
       .search-btn {
+        background: var(--secondary-gradient);
+        color: white;
+        border: none;
+        padding: 14px 28px;
+        border-radius: var(--border-radius);
+        font-size: 1.1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: var(--transition);
+        text-transform: uppercase;
+        letter-spacing: 1px;
         width: 100%;
         margin-top: 1rem;
       }
 
-      .rooms-container {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 1.5rem;
-        margin: 2rem 0;
+      .search-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 15px rgba(142, 45, 226, 0.2);
       }
 
-      .room-card {
-        background-color: white;
+      .property-card {
+        background: #fff;
         border-radius: var(--border-radius);
         overflow: hidden;
         box-shadow: var(--box-shadow);
         transition: var(--transition);
-        position: relative;
-        max-width: 100%;
+        border: 1px solid rgba(0, 0, 0, 0.05);
       }
 
-      .room-card:hover {
+      .property-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
       }
 
-      .room-image {
-        height: 180px;
+      .property-image {
+        position: relative;
+        overflow: hidden;
+        height: 250px;
+      }
+
+      .property-image img {
         width: 100%;
+        height: 100%;
         object-fit: cover;
+        transition: transform 0.5s ease;
       }
 
-      .room-details {
-        padding: 1rem;
+      .property-card:hover .property-image img {
+        transform: scale(1.1);
       }
 
-      .room-title {
-        font-size: 1.1rem;
+      .property-details {
+        padding: 1.5rem;
+      }
+
+      .property-title {
+        font-size: 1.4rem;
         font-weight: 600;
-        color: var(--primary-color);
+        color: var(--dark-color);
         margin-bottom: 0.5rem;
       }
 
-      .room-location {
-        color: #666;
-        margin-bottom: 0.5rem;
+      .property-location {
+        color: var(--text-color);
+        font-size: 1rem;
+        margin-bottom: 1rem;
         display: flex;
         align-items: center;
-        font-size: 0.85rem;
+        gap: 0.5rem;
       }
 
-      .room-location i {
-        color: var(--accent-color);
-        margin-right: 0.5rem;
-      }
-
-      .room-price {
-        font-size: 1.4rem;
-        font-weight: 700;
-        color: var(--secondary-color);
-        margin: 0.5rem 0;
-      }
-
-      .price-period {
-        font-size: 0.9rem;
-        color: #666;
-        font-weight: normal;
-      }
-
-      .room-features {
+      .property-features {
         display: flex;
-        flex-wrap: wrap;
-        gap: 0.8rem;
-        margin: 0.8rem 0;
-        padding: 0.8rem 0;
-        border-top: 1px solid #eee;
-        border-bottom: 1px solid #eee;
+        gap: 1.5rem;
+        margin: 1rem 0;
+        padding: 1rem 0;
+        border-top: 1px solid rgba(0, 0, 0, 0.05);
+        border-bottom: 1px solid rgba(0, 0, 0, 0.05);
       }
 
       .feature {
         display: flex;
         align-items: center;
-        font-size: 0.8rem;
+        gap: 0.5rem;
         color: var(--text-color);
       }
 
-      .feature i {
-        color: var(--secondary-color);
-        margin-right: 0.3rem;
-        font-size: 0.9rem;
-      }
-
-      .room-actions {
-        display: flex;
-        gap: 0.8rem;
+      .property-price {
+        font-size: 1.5rem;
+        font-weight: 700;
+        color: var(--primary-color);
         margin-top: 1rem;
       }
 
-      .btn-book,
-      .btn-view {
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
-      }
-
-      .btn-book {
-        background-color: var(--secondary-color);
-        flex: 2;
-      }
-
-      .btn-view {
-        background-color: transparent;
-        border: 2px solid var(--secondary-color);
-        color: var(--secondary-color);
-        flex: 1;
-      }
-
-      .btn-view:hover {
-        background-color: var(--secondary-color);
-        color: white;
-      }
-
-      .btn-danger {
-        background-color: #e74c3c;
+      .view-details-btn {
+        background: var(--primary-gradient);
         color: white;
         border: none;
-        padding: 0.8rem 1.5rem;
+        padding: 12px 24px;
         border-radius: var(--border-radius);
-        cursor: pointer;
         font-weight: 600;
+        cursor: pointer;
         transition: var(--transition);
+        width: 100%;
+        text-align: center;
+        margin-top: 1rem;
+        text-decoration: none;
+        display: inline-block;
       }
 
-      .btn-danger:hover {
-        background-color: #c0392b;
+      .view-details-btn:hover {
         transform: translateY(-2px);
-      }
-
-      .btn-danger:active {
-        transform: translateY(0);
-      }
-
-      /* Modal Styles */
-      .modal {
-        display: none;
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        z-index: 1000;
-        justify-content: center;
-        align-items: center;
-      }
-
-      .modal-content {
-        background-color: white;
-        padding: 1.5rem;
-        border-radius: var(--border-radius);
-        max-width: 600px;
-        width: 90%;
-        max-height: 90vh;
-        overflow-y: auto;
-        position: relative;
-      }
-
-      .close-modal {
-        position: absolute;
-        top: 1rem;
-        right: 1rem;
-        font-size: 1.5rem;
-        cursor: pointer;
-        color: var(--text-color);
-        transition: var(--transition);
-      }
-
-      .close-modal:hover {
-        color: var(--accent-color);
-      }
-
-      /* Feedback Section Styles */
-      #feedbackSection {
-        background-color: white;
-        padding: 2rem;
-        border-radius: var(--border-radius);
-        box-shadow: var(--box-shadow);
-        margin-top: 2rem;
-      }
-
-      .star-rating {
-        margin: 1rem 0;
-      }
-
-      #commentInput {
-        width: 100%;
-        padding: 1rem;
-        border: 2px solid #e1e1e1;
-        border-radius: var(--border-radius);
-        margin: 1rem 0;
-        min-height: 100px;
-        resize: vertical;
-      }
-
-      #ratingStars {
-        display: flex;
-        gap: 0.5rem;
-        margin: 1rem 0;
-      }
-
-      .star {
-        font-size: 2rem;
-        cursor: pointer;
-        color: #ddd;
-        transition: var(--transition);
-      }
-
-      .star.active {
-        color: #ffd700;
-      }
-
-      .feedback-item {
-        background-color: var(--light-color);
-        border-radius: var(--border-radius);
-        padding: 1rem;
-        margin-bottom: 1rem;
-      }
-
-      .feedback-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 0.5rem;
-      }
-
-      .feedback-rating {
-        color: #ffd700;
+        box-shadow: 0 8px 15px rgba(33, 147, 176, 0.2);
       }
 
       @media (max-width: 768px) {
@@ -383,298 +204,221 @@
           grid-template-columns: 1fr;
         }
 
-        .room-actions {
+        .property-features {
           flex-direction: column;
-        }
-
-        .modal-content {
-          padding: 1rem;
-        }
-
-        .rooms-container {
-          grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
           gap: 1rem;
         }
-
-        .room-image {
-          height: 160px;
-        }
-
-        .room-details {
-          padding: 0.8rem;
-        }
-
-        .room-title {
-          font-size: 1rem;
-        }
-
-        .room-price {
-          font-size: 1.2rem;
-        }
-
-        .room-features {
-          gap: 0.6rem;
-          margin: 0.6rem 0;
-          padding: 0.6rem 0;
-        }
-
-        .feature {
-          font-size: 0.75rem;
-        }
-
-        .btn-book,
-        .btn-view {
-          padding: 0.5rem 0.8rem;
-          font-size: 0.85rem;
-        }
-      }
-
-      .room-gallery {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 10px;
-        margin: 15px 0;
-      }
-
-      .gallery-img {
-        height: 80px;
-        width: 100%;
-        object-fit: cover;
-        cursor: pointer;
-        border-radius: 4px;
-      }
-
-      .no-results {
-        text-align: center;
-        padding: 40px;
-        grid-column: 1 / -1;
-        font-size: 1.2rem;
-        color: #666;
-      }
-
-      /* Feedback Section Styles */
-      .feedback-section {
-        margin-top: 30px;
-        padding-top: 20px;
-        border-top: 1px solid #eee;
-      }
-
-      .feedback-form {
-        background: #f8f9fa;
-        padding: 20px;
-        border-radius: 8px;
-        margin: 20px 0;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-      }
-
-      .rating-container {
-        margin-bottom: 20px;
-      }
-
-      .rating-container label {
-        display: block;
-        margin-bottom: 8px;
-        font-weight: 500;
-        color: #333;
-      }
-
-      #commentInput {
-        width: 100%;
-        padding: 12px;
-        border: 2px solid #e1e1e1;
-        border-radius: 8px;
-        resize: vertical;
-        min-height: 100px;
-        font-family: inherit;
-        transition: border-color 0.3s ease;
-      }
-
-      #commentInput:focus {
-        border-color: var(--secondary-color);
-        outline: none;
-      }
-
-      .submit-feedback {
-        background-color: var(--primary-color);
-        color: white;
-        border: none;
-        padding: 12px 24px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: 600;
-        transition: all 0.3s ease;
-        width: 100%;
-        margin-top: 15px;
-      }
-
-      .submit-feedback:hover {
-        background-color: var(--secondary-color);
-        transform: translateY(-2px);
-      }
-
-      .submit-feedback:active {
-        transform: translateY(0);
-      }
-
-      .feedbacks-list {
-        margin-top: 20px;
-      }
-
-      .feedback-item {
-        background: white;
-        padding: 15px;
-        border-radius: 8px;
-        margin-bottom: 15px;
-        border: 1px solid #e1e1e1;
-      }
-
-      .feedback-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-      }
-
-      .feedback-rating {
-        color: #ffd700;
-        font-size: 18px;
-      }
-
-      .feedback-date {
-        color: #666;
-        font-size: 0.9em;
-      }
-
-      .feedback-comment {
-        color: #333;
-        line-height: 1.5;
-      }
-
-      @media (max-width: 768px) {
-        .feedback-section {
-          padding: 15px;
-        }
-
-        .feedback-form {
-          padding: 15px;
-        }
-
-        .star {
-          font-size: 20px;
-        }
-      }
-
-      /* تصميم النجوم */
-      .stars {
-        display: flex;
-        flex-direction: row-reverse;
-        gap: 5px;
-        margin: 10px 0;
-      }
-
-      .star {
-        font-size: 28px;
-        cursor: pointer;
-        transition: color 0.2s ease, transform 0.2s ease;
-        color: #ddd;
-        user-select: none;
-      }
-
-      .star:hover {
-        transform: scale(1.1);
-      }
-
-      .star:hover ~ .star,
-      .star:hover {
-        color: #ffd700;
-      }
-
-      /* تصميم حالة الحجز */
-      .booking-status {
-        padding: 8px 12px;
-        border-radius: 4px;
-        margin: 10px 0;
-        font-size: 0.9rem;
-        text-align: center;
-      }
-
-      .booking-status.available {
-        background-color: #d4efdf;
-        color: #196f3d;
-        border: 1px solid #196f3d;
-      }
-
-      .booking-status.booked {
-        background-color: #f2d7d5;
-        color: #c0392b;
-        border: 1px solid #c0392b;
-      }
-
-      /* تصميم أزرار التعليقات */
-      .feedback-content {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        gap: 1rem;
-      }
-
-      .feedback-actions {
-        display: flex;
-        gap: 0.5rem;
-      }
-
-      .btn-sm {
-        padding: 0.4rem 0.8rem;
-        font-size: 0.9rem;
-      }
-
-      .feedback-item {
-        position: relative;
-        padding: 1rem;
-        margin-bottom: 1rem;
-        background-color: #f8f9fa;
-        border-radius: var(--border-radius);
-        border: 1px solid #e1e1e1;
-      }
-
-      .feedback-comment {
-        flex: 1;
-      }
-
-      .student-info {
-        background-color: #f8f9fa;
-        border-radius: 8px;
-        padding: 20px;
-        margin: 20px 0;
-        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      }
-
-      .student-header {
-        margin-bottom: 15px;
-        border-bottom: 2px solid #e9ecef;
-        padding-bottom: 10px;
-      }
-
-      .student-header h3 {
-        color: #2c3e50;
-        margin: 0;
-        font-size: 1.2rem;
-      }
-
-      .student-details p {
-        margin: 8px 0;
-        color: #495057;
-      }
-
-      .student-details strong {
-        color: #0d6efd;
-        margin-right: 5px;
       }
     </style>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <link rel="stylesheet" href="room-shapes.css" />
+    <style>
+      /* تحسين تصميم عرض الغرف */
+      .rooms-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 2rem;
+        padding: 2rem 0;
+      }
+
+      .room-card {
+        background: #fff;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+        position: relative;
+      }
+
+      .room-card:hover {
+        transform: translateY(-10px);
+        box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      }
+
+      .room-image {
+        position: relative;
+        height: 250px;
+        overflow: hidden;
+      }
+
+      .room-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+      }
+
+      .room-card:hover .room-image img {
+        transform: scale(1.1);
+      }
+
+      .room-type-badge {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        background: rgba(33, 147, 176, 0.9);
+        color: white;
+        padding: 0.5rem 1rem;
+        border-radius: 20px;
+        font-weight: 500;
+        backdrop-filter: blur(5px);
+      }
+
+      .room-details {
+        padding: 1.5rem;
+      }
+
+      .room-title {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #2c3e50;
+        margin-bottom: 0.5rem;
+      }
+
+      .room-location {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: #666;
+        margin-bottom: 1rem;
+      }
+
+      .room-features {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1rem;
+        padding: 1rem 0;
+        border-top: 1px solid #eee;
+        border-bottom: 1px solid #eee;
+        margin: 1rem 0;
+      }
+
+      .feature {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.9rem;
+        color: #555;
+      }
+
+      .feature i {
+        color: #2193b0;
+        font-size: 1.1rem;
+      }
+
+      .room-price {
+        font-size: 1.8rem;
+        font-weight: 700;
+        color: #2193b0;
+        margin: 1rem 0;
+      }
+
+      .price-period {
+        font-size: 1rem;
+        color: #666;
+        font-weight: normal;
+      }
+
+      .room-actions {
+        display: flex;
+        gap: 1rem;
+        margin-top: 1rem;
+      }
+
+      .view-details-btn {
+        flex: 1;
+        padding: 0.8rem;
+        border: none;
+        border-radius: 8px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-align: center;
+        text-decoration: none;
+      }
+
+      .view-details-btn.primary {
+        background: linear-gradient(135deg, #2193b0, #6dd5ed);
+        color: white;
+      }
+
+      .view-details-btn.secondary {
+        background: white;
+        color: #2193b0;
+        border: 2px solid #2193b0;
+      }
+
+      .view-details-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(33, 147, 176, 0.2);
+      }
+
+      /* تحسين تصميم النافذة المنبثقة */
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(5px);
+        z-index: 1000;
+      }
+
+      .modal-content {
+        background: white;
+        width: 90%;
+        max-width: 800px;
+        margin: 2rem auto;
+        padding: 2rem;
+        border-radius: 15px;
+        position: relative;
+        animation: modalSlideIn 0.3s ease;
+      }
+
+      @keyframes modalSlideIn {
+        from {
+          transform: translateY(-50px);
+          opacity: 0;
+        }
+        to {
+          transform: translateY(0);
+          opacity: 1;
+        }
+      }
+
+      .close-modal {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 2rem;
+        color: #666;
+        cursor: pointer;
+        transition: color 0.3s ease;
+      }
+
+      .close-modal:hover {
+        color: #2193b0;
+      }
+
+      @media (max-width: 768px) {
+        .rooms-container {
+          grid-template-columns: 1fr;
+        }
+
+        .room-features {
+          grid-template-columns: repeat(2, 1fr);
+        }
+
+        .room-actions {
+          flex-direction: column;
+        }
+      }
+    </style>
   </head>
   <body>
     <header>
