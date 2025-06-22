@@ -359,9 +359,8 @@
 
       async function fetchAllUnits() {
         const headers = getAuthHeader();
-        if (!headers) {
-          throw new Error("Unauthorized – login required");
-        }
+        if (!headers) throw new Error("Unauthorized – login required");
+
         const res = await fetch(
           "https://easyrentapi0.runasp.net/api/Unit/GetAllUnits",
           { headers }
@@ -371,6 +370,7 @@
             throw new Error("Unauthorized – login required");
           throw new Error("Failed to fetch units");
         }
+
         const { $values } = await res.json();
         return $values;
       }
@@ -382,11 +382,15 @@
           window.location.href = "loginowner.html";
           return;
         }
+
         if (!confirm("هل أنت متأكد أنك تريد حذف هذه الوحدة؟")) return;
 
         const res = await fetch(
           `https://easyrentapi0.runasp.net/api/Unit/${unitId}`,
-          { method: "DELETE", headers }
+          {
+            method: "DELETE",
+            headers,
+          }
         );
 
         if (res.ok) {
@@ -408,10 +412,12 @@
       async function loadAndRenderUnits() {
         const container = document.getElementById("propertiesContainer");
         const total = document.getElementById("totalListings");
+
         try {
           const allUnits = await fetchAllUnits();
           const userIdStr = localStorage.getItem("ownerId");
           const userId = userIdStr ? Number(userIdStr) : null;
+
           if (!userId) {
             alert("يرجى تسجيل الدخول.");
             window.location.href = "loginowner.html";
@@ -429,57 +435,51 @@
           container.innerHTML = "";
           units.forEach((u) => {
             const urls = u.photoUrls?.$values;
-            const mainImage =
-              Array.isArray(urls) && urls.length > 0
-                ? `<img src="https://easyrentapi0.runasp.net/${urls[0]}" alt="${u.title}" class="main-image" style="width:100%; height:220px; object-fit:cover; border-radius:8px; margin-bottom:10px;"/>`
-                : "";
+            let imagesHtml = "";
 
-            const otherImages =
-              Array.isArray(urls) && urls.length > 1
-                ? urls
-                    .slice(1)
-                    .map(
-                      (photo) =>
-                        `<img src="https://easyrentapi0.runasp.net/${photo}" class="extra-image" style="width:100%; max-width:100%; height:auto; object-fit:contain; margin-bottom:8px; border-radius:6px;"/>`
-                    )
-                    .join("")
-                : "";
+            if (Array.isArray(urls) && urls.length > 0) {
+              const mainImage = `<img src="https://easyrentapi0.runasp.net/${urls[0]}" alt="${u.title}" class="property-image"/>`;
+
+              const extraImages = urls
+                .slice(1)
+                .map(
+                  (photo) =>
+                    `<img src="https://easyrentapi0.runasp.net/${photo}" alt="${u.title}" class="property-image"/>`
+                )
+                .join("");
+
+              imagesHtml = `
+                <div class="property-images">
+                  ${mainImage}
+                  ${
+                    urls.length > 1
+                      ? `
+                    <button class="toggle-images-btn" onclick="this.nextElementSibling.classList.toggle('hidden'); this.textContent = this.textContent === 'عرض باقي الصور' ? 'إخفاء الصور' : 'عرض باقي الصور';">
+                      عرض باقي الصور
+                    </button>`
+                      : ""
+                  }
+                  <div class="extra-images hidden">
+                    ${extraImages}
+                  </div>
+                </div>
+              `;
+            }
 
             const card = document.createElement("div");
             card.className = "property-card";
-            card.style.border = "1px solid #ddd";
-            card.style.padding = "16px";
-            card.style.borderRadius = "12px";
-            card.style.marginBottom = "20px";
-            card.style.backgroundColor = "#fff";
             card.innerHTML = `
-          ${mainImage}
-          <div class="property-details">
-            <h3 class="property-title">${u.title}</h3>
-            <div class="property-info"><i class="fas fa-map-marker-alt"></i> ${
-              u.address
-            }</div>
-            <div class="property-price">السعر: ${
-              u.priceForMonth
-            } ج / شهرياً</div>
-            <button class="action-btn delete-btn" data-id="${
-              u.id
-            }" style="margin-top:12px; background:#dc3545; color:white; padding:6px 12px; border:none; border-radius:6px; cursor:pointer;">
-              <i class="fas fa-trash"></i> حذف
-            </button>
-            ${
-              otherImages
-                ? `<button class="toggle-images-btn" style="margin-top:12px; background:#0d6efd; color:white; padding:6px 12px; border:none; border-radius:6px; cursor:pointer;"
-                    onclick="const imgs = this.nextElementSibling; imgs.classList.toggle('hidden'); this.textContent = this.textContent === 'عرض باقي الصور' ? 'إخفاء الصور' : 'عرض باقي الصور';">
-                    عرض باقي الصور
-                  </button>
-                  <div class="other-images hidden" style="margin-top:12px;">
-                    ${otherImages}
-                  </div>`
-                : ""
-            }
-          </div>
-        `;
+              ${imagesHtml}
+              <div class="property-details">
+                <h3 class="property-title">${u.title}</h3>
+                <div class="property-info"><i class="fas fa-map-marker-alt"></i> ${u.address}</div>
+                <div class="property-price">$${u.priceForMonth}/mo</div>
+                <button class="action-btn delete-btn" data-id="${u.id}">
+                  <i class="fas fa-trash"></i> حذف
+                </button>
+              </div>
+            `;
+
             container.appendChild(card);
           });
         } catch (err) {
@@ -492,6 +492,31 @@
             window.location.href = "loginowner.html";
           }
         }
+      }
+
+      function renderUnits(units) {
+        const container = document.getElementById("roomsContainer");
+        const approvedUnits = units.filter((unit) => unit.isApproved);
+
+        if (approvedUnits.length === 0) {
+          container.innerHTML = `
+            <div class="no-results">
+              <p>لا توجد وحدات سكنية معتمدة متاحة حالياً.</p>
+            </div>
+          `;
+          return;
+        }
+
+        container.innerHTML = approvedUnits
+          .map(
+            (unit) => `
+          <div class="room-card">
+            <h3>${unit.name}</h3>
+            <p>${unit.location}</p>
+          </div>
+        `
+          )
+          .join("");
       }
     </script>
   </body>
