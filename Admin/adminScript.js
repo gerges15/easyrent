@@ -3,31 +3,6 @@ let units = [];
 let currentUnitId = null;
 let bookings = [];
 
-// Mock bookings data (replace with API if available)
-const mockBookings = [
-  {
-    id: 1,
-    student: "John Doe",
-    unit: "Apartment 101",
-    period: "2025-01-01 to 2025-06-01",
-    status: "Confirmed",
-  },
-  {
-    id: 2,
-    student: "Jane Smith",
-    unit: "Studio 202",
-    period: "2025-02-01 to 2025-07-01",
-    status: "Pending",
-  },
-  {
-    id: 3,
-    student: "Ali Ahmed",
-    unit: "Room 303",
-    period: "2025-03-01 to 2025-08-01",
-    status: "Cancelled",
-  },
-];
-
 // ====================== Fetch & Render ======================
 
 async function fetchUnits() {
@@ -54,8 +29,13 @@ async function fetchUnits() {
 async function fetchBookings() {
   try {
     showLoading("recentBookingsTable", "Loading bookings...");
-    bookings = mockBookings; // Mock data
-    renderBookingsTable();
+    const data = await _get("/api/Booking/GetAllBookings");
+    bookings = data?.$values || [];
+    if (bookings.length === 0) {
+      showNoData("recentBookingsTable", "No bookings found");
+    } else {
+      renderBookingsTable();
+    }
     showNotification("Bookings loaded successfully", true);
   } catch (error) {
     console.error("Fetch bookings error:", error);
@@ -137,23 +117,53 @@ function renderBookingsTable() {
     return;
   }
 
+  const formatter = new Intl.DateTimeFormat("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+  const now = new Date();
+
   container.innerHTML = bookings
-    .map(
-      (booking) => `
+    .map((booking) => {
+      const startDate = new Date(booking.startDate);
+      const endDate = new Date(booking.endDate);
+      const bookingDate = new Date(booking.bookingDate);
+      const status = endDate > now ? "Active" : "Expired";
+      const price =
+        booking.unitPriceForMonth > 0
+          ? `${booking.unitPriceForMonth.toFixed(2)} EGP/month`
+          : "Free";
+
+      return `
         <div class="booking-card">
           <div class="card-header">
-            <h3 class="card-title">Booking #${booking.id}</h3>
-            <span class="card-status status-${booking.status.toLowerCase()}">${
-        booking.status
-      }</span>
+            <h3 class="card-title">Booking #${booking.bookingId}</h3>
+            <span class="card-status status-${status.toLowerCase()}">${status}</span>
           </div>
           <div class="card-details">
-            <span><i class="fas fa-user"></i> ${booking.student}</span>
-            <span><i class="fas fa-home"></i> ${booking.unit}</span>
-            <span><i class="fas fa-calendar"></i> ${booking.period}</span>
+            <span><i class="fas fa-user"></i> ${
+              booking.studentName || "N/A"
+            }</span>
+            <span><i class="fas fa-home"></i> ${
+              booking.unitTitle || "N/A"
+            }</span>
+            <span><i class="fas fa-map-marker-alt"></i> ${
+              booking.unitLocation || "N/A"
+            }</span>
+            <span><i class="fas fa-money-bill-wave"></i> ${price}</span>
+            <span><i class="fas fa-calendar"></i> ${formatter.format(
+              startDate
+            )} to ${formatter.format(endDate)}</span>
+            <span><i class="fas fa-check-circle"></i> Available: ${
+              booking.isUnitAvailable ? "Yes" : "No"
+            }</span>
+            <span class="booking-date"><i class="fas fa-clock"></i> Booked on ${formatter.format(
+              bookingDate
+            )}</span>
           </div>
-        </div>`
-    )
+        </div>`;
+    })
     .join("");
 }
 
