@@ -1,12 +1,20 @@
 {
   "name": "easyrent",
-  "version": "1.0.0",
-  "description": "EasyRent website",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "generate-favicons": "node generate-favicons.js"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "twd": "npx @tailwindcss/cli -i ./src/input.css -o ./src/output.css --watch"
+  },
+  "devDependencies": {
+    "vite": "^7.0.0"
   },
   "dependencies": {
-    "sharp": "^0.32.6",
-    "sharp-ico": "^0.1.5"
+    "@tailwindcss/cli": "^4.1.10",
+    "tailwind": "^4.0.0",
+    "tailwindcss": "^4.1.10"
   }
 }

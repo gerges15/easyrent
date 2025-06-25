@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, maximum-scale=1.0, minimum-scale=1.0">
     <!-- Favicons -->
     <link rel="shortcut icon" href="images/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32x32.png" >
-    <link rel="icon" type="image/png" sizes="16x16" href="images/favicon-16x16.png">
+  
     <link rel="apple-touch-icon" sizes="180x180" href="images/apple-touch-icon.png">
     <link rel="manifest" href="site.webmanifest">
     <meta name="theme-color" content="#7c4dff">
@@ -21,9 +20,73 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
     />
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
-<link rel="stylesheet" href="./styles.css" />
+
 <link rel="stylesheet" href="./room-shapes.css" />
+<link rel="stylesheet" href="./src/output.css">
+<script defer type="module" src="./src/main.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+<script>
+  // Search functionality
+  document.addEventListener('DOMContentLoaded', function() {
+    const searchButton = document.querySelector('.search-button');
+    const searchInput = document.querySelector('.search-input');
+    
+    if (searchButton && searchInput) {
+      searchButton.addEventListener('click', function() {
+        performSearch(searchInput.value);
+      });
+      
+      searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+          performSearch(searchInput.value);
+        }
+      });
+    }
+    
+    function performSearch(query) {
+      if (query.trim() === '') {
+        // Show alert if search is empty
+        Swal.fire({
+          title: 'Empty Search',
+          text: 'Please enter a search term',
+          icon: 'info',
+          confirmButtonColor: '#7c4dff'
+        });
+        return;
+      }
+      
+      // Show search results with animation
+      Swal.fire({
+        title: 'Searching...',
+        text: `Searching for: "${query}"`,
+        icon: 'info',
+        confirmButtonColor: '#7c4dff',
+        showConfirmButton: false,
+        timer: 1500,
+        timerProgressBar: true,
+        didOpen: () => {
+          Swal.showLoading();
+        }
+      }).then(() => {
+        // After loading animation, show results
+        // This would normally connect to a backend search API
+        Swal.fire({
+          title: 'Search Results',
+          text: `Found properties matching "${query}"`,
+          icon: 'success',
+          confirmButtonColor: '#7c4dff'
+        });
+        
+        // Scroll to properties section
+        const propertiesSection = document.getElementById('Properties');
+        if (propertiesSection) {
+          propertiesSection.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    }
+  });
+</script>
 <script type="module">
   import { handleLogout } from './js/logout.js';
   import { initNavigation, updateNavigation } from './js/navigation.js';
@@ -37,1642 +100,11 @@
   });
 </script>
 
-    <style>
-      :root {
-        --logo-gradient-1: #7c4dff;
-        --logo-gradient-2: #448aff;
-      }
 
-      /* Hero Section Styles */
-      .hero-section {
-        position: relative;
-        min-height: 85vh;
-        background-image: url('images/home-2404521_1920.jpg');
-        background-size: cover;
-        background-position: center;
-        background-attachment: fixed;
-        display: flex;
-        flex-direction: column;
-      }
+<script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
+<script type="module" src="js/main.js"></script>
 
-      .hero-overlay {
-        position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6));
-      }
 
-      .hero-content {
-        position: relative;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        text-align: center;
-        color: white;
-        padding: 2rem;
-        margin-top: 2rem;
-      }
-
-      .hero-title {
-        font-size: 3.5rem;
-        font-weight: 800;
-        margin-bottom: 1.5rem;
-        line-height: 1.2;
-        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        animation: fadeInDown 0.8s ease;
-      }
-
-      .hero-subtitle {
-        font-size: 1.25rem;
-        margin-bottom: 2rem;
-        max-width: 600px;
-        line-height: 1.6;
-        text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-        animation: fadeInUp 0.8s ease 0.2s;
-        opacity: 0.9;
-      }
-
-      .hero-buttons {
-        display: flex;
-        gap: 1rem;
-        animation: fadeInUp 0.8s ease 0.4s;
-      }
-
-      .btn {
-        padding: 1rem 2rem;
-        border-radius: 50px;
-        font-weight: 600;
-        text-decoration: none;
-        transition: all 0.3s ease;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-      }
-
-      .btn-primary {
-        background: linear-gradient(135deg, var(--logo-gradient-1), var(--logo-gradient-2));
-        color: white;
-        box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
-      }
-
-      .btn-outline {
-        border: 2px solid white;
-        color: white;
-      }
-
-      .btn-primary:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(124, 77, 255, 0.4);
-      }
-
-      .btn-outline:hover {
-        background: white;
-        color: var(--logo-gradient-1);
-        transform: translateY(-2px);
-      }
-
-      @keyframes fadeInDown {
-        from {
-          opacity: 0;
-          transform: translateY(-20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @keyframes fadeInUp {
-        from {
-          opacity: 0;
-          transform: translateY(20px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      @media (max-width: 768px) {
-        .hero-title {
-          font-size: 2.5rem;
-        }
-        
-        .hero-subtitle {
-          font-size: 1.1rem;
-        }
-        
-        .hero-buttons {
-          flex-direction: column;
-          width: 100%;
-          max-width: 300px;
-        }
-        
-        .btn {
-          width: 100%;
-          text-align: center;
-        }
-      }
-
-      .logo {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        text-decoration: none;
-      }
-
-      .logo-icon {
-        background: linear-gradient(135deg, var(--logo-gradient-1) 0%, var(--logo-gradient-2) 100%);
-        color: var(--white);
-        width: 48px;
-        height: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        border-radius: 12px;
-        font-weight: bold;
-        font-size: 24px;
-        box-shadow: 0 4px 15px rgba(124, 77, 255, 0.3);
-        position: relative;
-        overflow: hidden;
-        transition: all 0.3s ease;
-      }
-
-      .nav__logo .logo-icon::before {
-        content: "";
-        position: absolute;
-        width: 24px;
-        height: 24px;
-        background: linear-gradient(45deg, #ffffff, #e0e7ff);
-        border-radius: 4px;
-        transform: rotate(45deg);
-      }
-
-      .nav__logo .logo-icon::after {
-        content: "";
-        position: absolute;
-        width: 16px;
-        height: 16px;
-        background: linear-gradient(135deg, var(--logo-gradient-1), var(--logo-gradient-2));
-        border-radius: 3px;
-        transform: rotate(45deg);
-      }
-
-      .logo-text {
-        font-size: 24px;
-        font-weight: 800;
-        background: linear-gradient(45deg, var(--logo-gradient-1), var(--logo-gradient-2));
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        line-height: 1.2;
-        letter-spacing: -0.5px;
-      }
-
-      @media (max-width: 768px) {
-        .logo-icon {
-          width: 40px;
-          height: 40px;
-          font-size: 20px;
-        }
-
-        .logo-icon::before {
-          font-size: 22px;
-        }
-
-        .logo-text {
-          font-size: 20px;
-        }
-      }
-
-      .footer {
-        position: relative;
-        background: linear-gradient(135deg, #1a193f 0%, #242263 100%);
-        padding: 120px 0 0;
-        margin-top: 100px;
-        color: #fff;
-      }
-
-      .footer::before {
-        content: "";
-        position: absolute;
-        top: -70px;
-        left: 0;
-        width: 100%;
-        height: 70px;
-        background: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNDQwIDEwMCI+PHBhdGggZmlsbD0iIzFhMTkzZiIgZmlsbC1vcGFjaXR5PSIxIiBkPSJNMCwwIEMxNTAsMjAgNDUwLDgwIDcyMCw4MCBDOTkwLDgwIDEyOTAsMjAgMTQ0MCwwIEwxNDQwLDEwMCBMMCwxMDAgWiI+PC9wYXRoPjwvc3ZnPg==");
-        background-size: cover;
-        background-repeat: no-repeat;
-      }
-
-      .footer__container {
-        max-width: 1200px;
-        margin: 0 auto;
-        padding: 0 20px;
-        display: grid;
-        grid-template-columns: 2fr 1fr 1.5fr;
-        gap: 60px;
-      }
-
-      .footer__col {
-        position: relative;
-      }
-
-      .footer__col::after {
-        content: "";
-        position: absolute;
-        right: -30px;
-        top: 0;
-        height: 100%;
-        width: 1px;
-        background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1), transparent);
-      }
-
-      .footer__col:last-child::after {
-        display: none;
-      }
-
-      .footer__logo {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        margin-bottom: 32px;
-      }
-
-      .footer__logo .logo-icon::before {
-        content: "ER";
-        background: linear-gradient(45deg, #ffffff, #e0e7ff);
-        -webkit-background-clip: text;
-        background-clip: text;
-        color: transparent;
-        font-size: 26px;
-        font-weight: 800;
-        transform: none;
-      }
-
-      .footer__logo .logo-icon::after {
-        display: none;
-      }
-
-      .footer__description {
-        color: rgba(255, 255, 255, 0.7);
-        line-height: 1.8;
-        margin-bottom: 32px;
-        font-size: 15px;
-      }
-
-      .footer__socials {
-        list-style: none;
-        display: flex;
-        gap: 16px;
-      }
-
-      .footer__social-link {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.1);
-        color: #fff;
-        font-size: 20px;
-        transition: all 0.3s ease;
-      }
-
-      .footer__social-link:hover {
-        background: var(--logo-gradient-1);
-        transform: translateY(-3px);
-      }
-
-      .footer__col h4 {
-        color: #fff;
-        font-size: 20px;
-        font-weight: 600;
-        margin-bottom: 24px;
-        position: relative;
-        padding-bottom: 12px;
-      }
-
-      .footer__col h4::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        bottom: 0;
-        width: 40px;
-        height: 2px;
-        background: var(--logo-gradient-1);
-      }
-
-      .footer__links {
-        list-style: none;
-      }
-
-      .footer__links li {
-        margin-bottom: 16px;
-      }
-
-      .footer__links a {
-        color: rgba(255, 255, 255, 0.7);
-        text-decoration: none;
-        font-size: 15px;
-        transition: all 0.3s ease;
-        display: inline-flex;
-        align-items: center;
-        gap: 8px;
-      }
-
-      .footer__links a:hover {
-        color: #fff;
-        transform: translateX(5px);
-      }
-
-      .footer__links a i {
-        font-size: 18px;
-        color: var(--logo-gradient-1);
-      }
-
-      .footer__contact-item {
-        display: flex;
-        align-items: flex-start;
-        gap: 16px;
-        margin-bottom: 24px;
-      }
-
-      .footer__contact-icon {
-        width: 40px;
-        height: 40px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.1);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 20px;
-        color: var(--logo-gradient-1);
-        flex-shrink: 0;
-      }
-
-      .footer__contact-info h5 {
-        color: #fff;
-        font-size: 16px;
-        margin-bottom: 4px;
-      }
-
-      .footer__contact-info p {
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 15px;
-        line-height: 1.6;
-      }
-
-      .footer__bar {
-        position: relative;
-        text-align: center;
-        padding: 25px 0;
-        color: rgba(255, 255, 255, 0.7);
-        font-size: 15px;
-        margin-top: 60px;
-      }
-
-      .footer__bar::before {
-        content: "";
-        position: absolute;
-        top: 0;
-        left: 50%;
-        transform: translateX(-50%);
-        width: 80%;
-        height: 1px;
-        background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
-      }
-
-      @media (max-width: 992px) {
-        .footer__container {
-          grid-template-columns: 1fr 1fr;
-        }
-        
-        .footer__col:first-child {
-          grid-column: 1 / -1;
-        }
-      }
-
-      @media (max-width: 768px) {
-        .footer {
-          padding: 80px 0 0;
-        }
-
-        .footer__container {
-          grid-template-columns: 1fr;
-          gap: 40px;
-        }
-
-        .footer__col::after {
-          display: none;
-        }
-
-        .footer__col {
-          text-align: center;
-        }
-
-        .footer__col h4::after {
-          left: 50%;
-          transform: translateX(-50%);
-        }
-
-        .footer__logo {
-          justify-content: center;
-        }
-
-        .footer__socials {
-          justify-content: center;
-        }
-
-        .footer__contact-item {
-          flex-direction: column;
-          align-items: center;
-          text-align: center;
-        }
-      }
-
-      .map-section {
-        padding: 50px 0;
-        background-color: #f8f8f8;
-        text-align: center;
-      }
-      .map-section h2 {
-        font-size: 2rem;
-        margin-bottom: 20px;
-        color: #333;
-      }
-      .map-container {
-        max-width: 1200px;
-        margin: 0 auto;
-        display: flex;
-        flex-wrap: wrap;
-        gap: 30px;
-        justify-content: center;
-        align-items: center;
-      }
-      .map-container iframe {
-        width: 100%;
-        max-width: 600px;
-        height: 400px;
-        border: 0;
-      }
-      .contact-info {
-        max-width: 500px;
-        text-align: left;
-      }
-      .contact-info p {
-        font-size: 1.1rem;
-        color: #555;
-        margin: 10px 0;
-      }
-      .contact-info strong {
-        color: #333;
-      }
-    </style>
-    <title>Website eayrent</title>
-  </head>
-  <body>
-    <header>
-      <nav>
-        <div class="nav__bar">
-          <div class="nav__header">
-            <a href="#" class="logo nav__logo">
-              <div class="logo-creative"></div>
-              <span class="logo-text">EASY<br />RENT</span>
-            </a>
-            <button class="nav__menu__btn" id="menu-btn">
-              <i class="ri-menu-line"></i>
-            </button>
-          </div>
-
-          <div class="nav-right-items">
-            <ul class="nav__links" id="nav__links">
-              <li><a href="#home"><i class="ri-home-heart-line"></i> Home</a></li>
-              <li><a href="#About US"><i class="ri-information-line"></i> About US</a></li>
-              <li><a href="#units"><i class="ri-home-4-line"></i> Units</a></li>
-              <li><a href="#Properties"><i class="ri-building-2-line"></i> Properties</a></li>
-              <li><a href="./login.html" data-action="login"><i class="ri-login-circle-line"></i> Login</a></li>
-              <li><a href="./singnupst.html" data-action="signup"><i class="ri-user-add-line"></i> Sign Up</a></li>
-              <li class="user-menu-item"><a href="#contact"><i class="ri-contacts-line"></i> ContactUs</a></li>
-              <!-- User menu items that show after login -->
-              <li class="user-menu-item"><a href="./owner/choses.html"><i class="ri-add-circle-line"></i> Add Properity</a></li>
-             
-              <li class="user-menu-item"><a href="#" onclick="handleLogout(); return false;"><i class="ri-logout-box-r-line"></i> Logout</a></li>
-              
-              <li>
-                <label class="switch">
-                  <input checked="true" id="checkbox" type="checkbox" />
-                  <span class="slider">
-                    <div class="star star_1"></div>
-                    <div class="star star_3"></div>
-                    <div class="star star_2"></div>
-                    <svg viewBox="0 0 16 16" class="cloud_1 cloud">
-                      <path
-                        transform="matrix(.77976 0 0 .78395-299.99-418.63)"
-                        fill="#fff"
-                        d="m391.84 540.91c-.421-.329-.949-.524-1.523-.524-1.351 0-2.451 1.084-2.485 2.435-1.395.526-2.388 1.88-2.388 3.466 0 1.874 1.385 3.423 3.182 3.667v.034h12.73v-.006c1.775-.104 3.182-1.584 3.182-3.395 0-1.747-1.309-3.186-2.994-3.379.007-.106.011-.214.011-.322 0-2.707-2.271-4.901-5.072-4.901-2.073 0-3.856 1.202-4.643 2.925"
-                      ></path>
-                    </svg>
-                  </span>
-                </label>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </header>
-
-    <main>
-      <header class="header" id="home">
-        <div class="section__container header__container">
-          <p class="section__subheader">ABOUTt US</p>
-          <h1 style="color: azure;">The perfect <br />Base for you</h1>
-          <div class="search-container">
-            <div class="search-box">
-              <input type="text" placeholder="Search for properties..." class="search-input">
-              <button class="search-button">
-                <i class="ri-search-line"></i>
-              </button>
-            </div>
-          </div>
-          <button class="btn">Get Units</button>
-        </div>
-      </header>
-
-      <section class="booking">
-        <div class="section__container booking__container">
-          <form action="/">
-            <div class="input__group">
-              <label for="arrival">Arrival Date</label>
-              <input type="text" placeholder="Your Arrival Date" />
-            </div>
-            <div class="input__group">
-              <label for="departure">Departure Date</label>
-              <input type="text" placeholder="Your Departure Date" />
-            </div>
-            <div class="input__group">
-              <label for="gusts">Guests Number</label>
-              <input type="text" placeholder="Your Guests Number" />
-            </div>
-            <button class="btn">check Availability</button>
-          </form>
-        </div>
-      </section>
-
-
-      <section class="about" id="About US">
-        <div class="section__container about__container">
-          <div class="about__grid">
-            <!-- الصف الأول -->
-            <div class="about__card about__card--team">
-              <div class="about__card-icon">
-                <i class="ri-team-line"></i>
-              </div>
-              <div class="about__card-content">
-                <h3>Strong Team</h3>
-                <p>Unlocking Hospitality Excellence And Ensures Your Perfect Stay</p>
-              </div>
-            </div>
-            
-            <!-- الصورة الأولى -->
-            <div class="about__image about__image--main">
-              <img src="./images/table-4222263_1280.jpg" alt="Luxury apartment interior view" loading="lazy" />
-            </div>
-            
-            <!-- الصف الثاني -->
-            <div class="about__card about__card--luxury">
-              <div class="about__card-icon">
-                <i class="ri-hotel-bed-line"></i>
-              </div>
-              <div class="about__card-content">
-                <h3>Luxury Room</h3>
-                <p>Experience Unrivaled Luxury at our Exquisite Rooms</p>
-              </div>
-            </div>
-            
-            <!-- الصورة الثانية -->
-            <div class="about__image about__image--secondary">
-              <img src="images/brick-wall.jpg" alt="Underground hotel architecture" loading="lazy" />
-            </div>
-          </div>
-
-          <!-- محتوى النص -->
-          <div class="about__content">
-            <p class="section__subheader">ABOUT US</p>
-            <h2 class="section__header">Discover Our Dorms</h2>
-            <p class="section__description">
-              Welcome to our realm of extraordinary accommodation where Comfort, Affordability and Availability 
-                offer an unparalleled escape from the ordinary, helpingyou to find your most suitable Stay
-              .
-            </p>
-            <button class="btn" onclick="window.location.href='./student/payment.html'">BOOK NOW</button>
-          </div>
-        </div>
-      </section>
-
-      <section class="room__container" id="units">
-        <p class="section__subheader">Units</p>
-        <h2 class="section__header">Hand picked Units</h2>
-        <div class="room__grid">
-          <!-- Single Room -->
-          <div class="room__card" data-room-id="double-room" onclick="window.location.href='room2.html'">
-            <div class="room__image-container">
-              <img src="images/1,hrud.jpg" alt="Modern single bedroom" class="room__image" loading="lazy" />
-              <div class="room__overlay">
-                <span class="room__view-btn">View Details</span>
-              </div>
-            </div>
-            <div class="room__card__details">
-              <div class="room__info">
-                <h4>Single Room</h4>
-                <div class="room__features">
-                  <span><i class="ri-user-line"></i> 1 Guest</span>
-                  <span><i class="ri-ruler-line"></i> 25 feet square</span>
-                </div>
-                <p>Well-appointed rooms with modern amenities and relaxing decor</p>
-              </div>
-              <div class="room__price">
-                <h3>€15,000<span>/year</span></h3>
-                <button class="btn btn--small" onclick="window.location.href='./student/payment.html'" ondblclick="event.stopPropagation();">
-                  Book Now
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Double Room -->
-          <div class="room__card" data-room-id="double-room" onclick="window.location.href='room2.html'">
-            <div class="room__image-container">
-              <img src="images/K2S115.webp" alt="Luxury double bedroom" class="room__image" loading="lazy" />
-              <div class="room__overlay">
-                <span class="room__view-btn">View Details</span>
-              </div>
-            </div>
-            <div class="room__card__details">
-              <div class="room__info">
-                <h4>Double Room</h4>
-                <div class="room__features">
-                  <span><i class="ri-user-line"></i> 2 Guests</span>
-                  <span><i class="ri-ruler-line"></i> 35 feet square </span>
-                </div>
-                <p>Spacious room with premium amenities </p>
-              </div>
-              <div class="room__price">
-                <h3>€ 7,500<span>/day</span></h3>
-                <button class="btn btn--small" onclick="window.location.href='./student/payment.html'" ondblclick="event.stopPropagation();">
-                  Book Now
-                </button>
-              </div>
-            </div>
-          </div>
-
-          <!-- Triple Room -->
-          <div class="room__card" data-room-id="double-room" onclick="window.location.href='room2.html'">
-            <div class="room__image-container">
-              <img src="images/SZC08-2.webp" alt="Comfortable triple bedroom" class="room__image" loading="lazy" />
-              <div class="room__overlay">
-                <span class="room__view-btn">View Details</span>
-              </div>
-            </div>
-            <div class="room__card__details">
-              <div class="room__info">
-                <h4>Triple Room</h4>
-                <div class="room__features">
-                  <span><i class="ri-user-line"></i> 3 Guests</span>
-                  <span><i class="ri-ruler-line"></i> 45 m²</span>
-                </div>
-                <p>Perfect for small groups with three single beds</p>
-              </div>
-              <div class="room__price">
-                <h3>€5,000<span>/year</span></h3>
-                <button class="btn btn--small" onclick="window.location.href='./student/payment.html'" ondblclick="event.stopPropagation();">
-                  Book Now
-                </button>
-              </div>
-            </div>
-            
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="intro">
-        <div class="section__contanier intro__contanier">
-          <div class="intro__content">
-            <p class="section__subheader">INTRO VIDEO</p>
-            <h2 class="section__header" style="color:white;">Meet With Our Rooms</h2>
-            <p class="section__description">
-              Explore your temporary home with our virtual tours ! our virtual tours let you explore rooms from the comfort of your device , no need to vist in person . start your virtual tour today and find your perfect space .
-            </p>
-            <button class="btn" onclick='window.location.href="./student/payment.html"'>BOOK NOW</button>
-          </div>
-          <div class="intro__video">
-            <video autoplay muted loop playsinline style="border-radius: 10px; width: 100%; max-width: 1200px; height: auto; min-height: 500px; object-fit: cover;">
-              <source src="./images/rooms.mov" type="video/mp4">
-              المتصفح لا يدعم عرض الفيديو.
-            </video>
-        </div>
-      </section>
-
-      <section class="section__contanier feature__contanier" id="feature">
-        <p class="section__subheader">FACILITIES</p>
-        <h2 class="section__header">Core Features</h2>
-        <div class="feature__grid">
-          <div class="feature__card" data-page="feature1.html">
-            <span><i class="ri-thumb-up-line"></i></span>
-            <h4>Have High Rating</h4>
-            <p>
-              We take pride in curating a selection of rooms that consistanily
-              recive high rating and positive revivews.
-            </p>
-          </div>
-
-          <div class="feature__card" data-page="feature2.html">
-            <span><i class="ri-time-line"></i></span>
-            <h4>Quite Hours</h4>
-            <p>
-              We understand that paeace and uniterupted time are essintial for a
-              fullfiling experience.
-            </p>
-          </div>
-
-          <div class="feature__card" data-page="feature3.html">
-            <span><i class="ri-map-pin-line"></i></span>
-            <h4>Best Location</h4>
-            <p>
-              At our  website we take  pride in offering accommandations
-              in the most prime and thought-after locations.
-            </p>
-          </div>
-
-          <div class="feature__card" data-page="feature4.html">
-            <span><i class="ri-close-circle-line"></i></span>
-            <h4>free Cancellation</h4>
-            <p>
-              We understand that can change unexpectedly which is why we
-              offeer the flexibility of free cancelling.
-            </p>
-          </div>
-
-          <div class="feature__card" data-page="feature5.html">
-            <span><i class="ri-wallet-line"></i></span>
-            <h4>Payment options</h4>
-            <p>
-              Our  website offer a range of convenient payment options to
-              suit your perferences.
-            </p>
-          </div>
-
-          <div class="feature__card" data-page="feature6.html">
-            <span><i class="ri-coupon-line"></i></span>
-            <h4>Search criteria</h4>
-            <p>Filter units based on location or description to refine your search results effectively</p>
-          </div>
-        </div>
-      </section>
-
-      <section class="menu">
-        <ul class="menu__banner">
-          <li>
-            <span><i class="ri-file-text-line"></i></span>
-            <h4>250</h4>
-            <p>Units are available</p>
-          </li>
-          <li>
-            <span><i class="ri-user-line"></i></span>
-            <h4>600</h4>
-            <p>Active locations around Minya</p>
-          </li>
-          <li>
-            <span><i class="ri-function-line"></i></span>
-            <h4>02K</h4>
-            <p>categories served</p>
-          </li>
-          <li>
-            <span><i class="ri-lightbulb-flash-line"></i></span>
-            <h4>100</h4>
-            <p>New clients each month </p>
-          </li>
-        </ul>
-      </div>
-    </section>
-
-    <!-- Add this section after the booking section and before the about section -->
-    <section class="property-section" id="Properties">
-      <div class="section-header">
-        <h2>Explore Property</h2>
-      </div>
-      
-      <div class="search-filters">
-        <div class="filter-group">
-          <label for="location">Location</label>
-          <select id="location">
-            <option value="all">All Locations</option>
-            <option value="antalya">Minya taha_hessen</option>
-            <option value="antalya">Adnan st </option>
-            <option value="antalya">Alhseny st </option>
-            <option value="antalya">New Minya city</option>
-            <option value="antalya">Abo-helal st </option>
-            <option value="antalya">Shalby square</option>
-            <option value="antalya">ElAmery</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label for="price">Price</label>
-          <select id="price">
-            <option value="all">Any Price</option>
-            <option value="3000-2000">€2000- €3000</option>
-            <option value="10000-13000">€10000 - €13000</option>
-            <option value="13000+">€13000+</option>
-          </select>
-        </div>
-        <div class="filter-group">
-          <label for="type">Property Type</label>
-          <select id="type">
-            <option value="all">All Types</option>
-            <option value="apartment">Single</option>
-            <option value="apartment">Double</option>
-            <option value="apartment">Triple</option>
-          </select>
-        </div>
-        
-        <div class="filter-group">
-          <label>More Details</label>
-          <button class="dropdown-btn" id="more-details-btn">
-            <span>Additional Filters</span>
-            <i class="ri-arrow-down-s-line"></i>
-          </button>
-          
-          <div class="more-content" id="more-content">
-            <div class="filter-sections">
-              <!-- Property Size Section -->
-              <div class="filter-section">
-                <h4 class="filter-section-title">
-                  <i class="ri-ruler-2-line"></i>
-                  Property Size
-                </h4>
-                <div class="size-row">
-                  <div class="size-option">
-                    <label class="size-label">Min Size</label>
-                    <select id="minSize" class="styled-select">
-                      <option value="">Select Min</option>
-                      <option value="70">70 m²</option>
-                      <option value="150">150 m²</option>
-                      <option value="200">200 m²</option>
-                      <option value="350">350 m²</option>
-                      <option value="450">450 m²</option>
-                      <option value="500">500 m²</option>
-                    </select>
-                  </div>
-                  <div class="size-option">
-                    <label class="size-label">Max Size</label>
-                    <select id="maxSize" class="styled-select">
-                      <option value="">Select Max</option>
-                      <option value="500">500 m²</option>
-                      <option value="1000">1000 m²</option>
-                      <option value="2000">2000 m²</option>
-                      <option value="5000">5000 m²</option>
-                      <option value="10000">10000 m²</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Price Range Section -->
-              <div class="filter-section">
-                <h4 class="filter-section-title">
-                  <i class="ri-money-euro-circle-line"></i>
-                  Price Range
-                </h4>
-                <div class="price-range-container">
-                  <input 
-                    type="range" 
-                    id="priceRange" 
-                    class="price-range-slider"
-                    min="0" 
-                    max="20000" 
-                    step="100" 
-                    value="10000"
-                  >
-                  <div class="price-display">
-                    <span id="priceValue">€10,000</span>
-                </div>
-                </div>
-              </div>
-              </div>
-              
-              <!-- Rooms Configuration -->
-              <div class="filter-section">
-                <h4 class="filter-section-title">
-                  <i class="ri-home-4-line"></i>
-                  Rooms
-                </h4>
-                <div class="rooms-grid">
-                  <div class="room-counter">
-                    <label>
-                      <i class="ri-hotel-bed-line"></i>
-                      Bedrooms
-                    </label>
-                    <div class="counter-controls">
-                      <button type="button" class="counter-btn" onclick="decrement('bedrooms')">
-                        <i class="ri-subtract-line"></i>
-                      </button>
-                      <span id="bedroomsCount" class="counter-value">1</span>
-                      <button type="button" class="counter-btn" onclick="increment('bedrooms')">
-                        <i class="ri-add-line"></i>
-                      </button>
-                    </div>
-                  </div>
-                  <div class="room-counter">
-                    <label>
-                      <i class="ri-shower-line"></i>
-                      Bathrooms
-                    </label>
-                    <div class="counter-controls">
-                      <button type="button" class="counter-btn" onclick="decrement('bathrooms')">
-                        <i class="ri-subtract-line"></i>
-                      </button>
-                      <span id="bathroomsCount" class="counter-value">1</span>
-                      <button type="button" class="counter-btn" onclick="increment('bathrooms')">
-                        <i class="ri-add-line"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <!-- Amenities Section -->
-              <div class="filter-section">
-                <h4 class="filter-section-title">
-                  <i class="ri-function-line"></i>
-                  Amenities
-                </h4>
-                <div class="amenities-grid">
-                  <label class="amenity-checkbox">
-                    <input type="checkbox" name="amenities" value="wifi">
-                    <i class="ri-wifi-line"></i>
-                    Wi-Fi
-                  </label>
-                  <label class="amenity-checkbox">
-                    <input type="checkbox" name="amenities" value="parking">
-                    <i class="ri-parking-line"></i>
-                    Parking
-                  </label>
-                  <label class="amenity-checkbox">
-                    <input type="checkbox" name="amenities" value="ac">
-                    <i class="ri-temp-hot-line"></i>
-                    AC
-                  </label>
-                  <label class="amenity-checkbox">
-                    <input type="checkbox" name="amenities" value="kitchen">
-                    <i class="ri-restaurant-2-line"></i>
-                    Kitchen
-                  </label>
-              </div>
-              </div>
-
-              <!-- Action Buttons -->
-              <div class="filter-actions">
-                <button class="reset-btn" id="reset-filters">
-                  <i class="ri-refresh-line"></i>
-                  Reset
-                </button>
-                <button class="apply-btn" id="apply-filters">
-                  <i class="ri-check-line"></i>
-                  Apply Filters
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-        <button class="search-btn" id="execute-search">
-          <i class="ri-search-line"></i> Search
-        </button>
-      </div>
-
-      <div class="property-grid" id="property-grid">
-        <!-- Property 1 -->  
-        <div class="property-card">
-          <div class="property-image" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80')"></div>
-          <div class="property-price">€2,850</div>
-          <div class="property-details">
-            <h3>Unit no. 411 Admiral Elite Premium Residence</h3>
-            <p class="property-location">
-              <i class="ri-map-pin-line"></i> Adnan, Minya, Egypt
-            </p>
-            <div class="property-type">
-              <span class="property-bed-icon">
-                <i class="ri-hotel-bed-line"></i> 1
-              </span>
-              APARTMENTS
-            </div>
-            <div class="property-size">899 sq feet</div>
-          </div>
-        </div>
-
-        <!-- Property 2 -->
-        <div class="property-card">
-          <div class="property-image" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80')"></div>
-          <div class="property-price">€ 9000</div>
-          <div class="property-details">
-            <h3>Unit no. 410 Admiral Elite Premium Residence</h3>
-            <p class="property-location">
-              <i class="ri-map-pin-line"></i> New Minya City, Eygpt
-            </p>
-            <div class="property-type">APARTMENTS</div>
-            <div class="property-size">1237 sq feet</div>
-          </div>
-        </div>
-
-        <!-- Property 3 -->
-        <div class="property-card">
-          <div class="property-image" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80')"></div>
-          <div class="property-price">€ 900</div>
-          <div class="property-details">
-            <h3>Unit no. 409 Admiral Elite Premium Residence</h3>
-            <p class="property-location">
-              <i class="ri-map-pin-line"></i> palace square, Minya, Eygpt
-            </p>
-            <div class="property-type">APARTMENTS</div>
-            <div class="property-size">473 sq feet</div>
-          </div>
-        </div>
-        <div class="property-grid">
-          <div class="property-card">
-            <div class="property-image" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=600&q=80')"></div>
-            <div class="property-price">€ 12000</div>
-            <div class="property-details">
-              <h3>Unit no. 411 Admiral Elite Premium Residence</h3>
-              <p class="property-location">
-                <i class="ri-map-pin-line"></i> Taha-Heseen st , Minya, Eygpt
-              </p>
-              <div class="property-type">APARTMENTS</div>
-              <div class="property-features">
-                <span class="feature-item">
-                  <i class="ri-bed-line"></i>
-                  <span class="feature-value">3</span>
-                </span>
-                <span class="property-size">
-                  <i class="ri-ruler-line"></i> 473 sq feet
-                </span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    </main>
-
-    <section class="map-section">
-      <h2>Find Us</h2>
-      <div class="map-container">
-        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3458.896159614735!2d30.83112301508591!3d28.115123982625896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145b7e6b8f3c4d3f%3A0x8f0b8f8b6e6b7d9a!2sTaha%20Hussein%20St%2C%20Minya%2C%20Minya%20Governorate%2C%20Egypt!5e0!3m2!1sen!2seg!4v1697056789012!5m2!1sen!2seg" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
-        <div class="contact-info">
-          <p><strong>Address:</strong> Minya st. Taha-Hessien, Minya, Egypt</p>
-          <p><strong>Phone:</strong> +20 1224170048</p>
-          <p><strong>Email:</strong> [easyrent15@gmail.com]</p>
-          <p><strong>Office Hours:</strong> Mon-Fri, 9 AM - 5 PM</p>
-        </div>
-      </div>
-    </section>
-
-    <footer class="footer">
-      <div class="footer__container">
-        <div class="footer__col">
-          <div class="footer__logo">
-            <div class="logo-icon"></div>
-            <span class="logo-text">EASY<br />RENT</span>
-          </div>
-          <p class="footer__description">
-            Easy rent is dedicated to simplifying the process of finding student accommodations. 
-            We enable seamless connections between students and property owners, making your 
-            housing search experience smooth and efficient.
-          </p>
-          <ul class="footer__socials">
-            <li>
-              <a href="#" class="footer__social-link">
-                <i class="ri-facebook-fill"></i>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="footer__social-link">
-                <i class="ri-instagram-fill"></i>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="footer__social-link">
-                <i class="ri-linkedin-fill"></i>
-              </a>
-            </li>
-            <li>
-              <a href="#" class="footer__social-link">
-                <i class="ri-twitter-fill"></i>
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <div class="footer__col">
-          <h4>Quick Links</h4>
-          <ul class="footer__links">
-            <li>
-              <a href="#">
-                <i class="ri-arrow-right-s-line"></i>
-                Online Booking
-              </a>
-            </li>
-            <li>
-              <a href="privacypolicy.html">
-                <i class="ri-arrow-right-s-line"></i>
-                Privacy Policy
-              </a>
-            </li>
-        
-              <a href="#">
-                <i class="ri-arrow-right-s-line"></i>
-                Special Offers
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i class="ri-arrow-right-s-line"></i>
-                Room Customization
-              </a>
-            </li>
-            <li>
-              <a href="#">
-                <i class="ri-arrow-right-s-line"></i>
-                Customer Support
-              </a>
-            </li>
-          </ul>
-        </div>
-
-        <div class="footer__col">
-          <h4>Contact Info</h4>
-          <ul class="footer__links">
-            <li class="footer__contact-item">
-              <span class="footer__contact-icon">
-                <i class="ri-phone-fill"></i>
-              </span>
-              <div class="footer__contact-info">
-                <h5>Phone Number</h5>
-                <p>+20 1224170048</p>
-              </div>
-            </li>
-            <li class="footer__contact-item">
-              <span class="footer__contact-icon">
-                <i class="ri-mail-fill"></i>
-              </span>
-              <div class="footer__contact-info">
-                <h5>Email Address</h5>
-                <p>info@easyrent15.com</p>
-              </div>
-            </li>
-            <li class="footer__contact-item">
-              <span class="footer__contact-icon">
-                <i class="ri-map-pin-fill"></i>
-              </span>
-              <div class="footer__contact-info">
-                <h5>Office Location</h5>
-                <p>Minya st. Taha-Hessien</p>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </div>
-
-      <div class="footer__bar">
-        Copyright © 2025 EasyRent. All rights reserved.
-      </div>
-    </footer>
-
-    <!-- Cookie Consent Banner -->
-    <div id="cookieConsent" class="cookie-card">
-      <div class="cookie-content">
-        <div class="cookie-header">
-          <i class="ri-shield-check-line"></i>
-          <h3 class="cookie-heading">إعدادات الخصوصية</h3>
-        </div>
-        <p class="cookie-description">
-          نحن نستخدم ملفات تعريف الارتباط لتحسين تجربتك وتخصيص المحتوى وتحليل حركة المرور. باختيارك "قبول الكل"، فإنك توافق على استخدامنا لملفات تعريف الارتباط.
-          <a href="privacypolicy.html" class="privacy-link">سياسة الخصوصية</a>
-        </p>
-        <div class="cookie-buttons">
-          <button class="cookie-button accept-button" onclick="acceptCookies()">
-            <i class="ri-check-line"></i>
-            قبول الكل
-          </button>
-          <button class="cookie-button reject-button" onclick="rejectCookies()">
-            <i class="ri-close-line"></i>
-            رفض الكل
-          </button>
-        </div>
-      </div>
-    </div>
-
-    <style>
-      .cookie-card {
-        position: fixed;
-        bottom: 20px;
-        left: 20px;
-        max-width: 320px;
-        padding: 20px;
-        background: linear-gradient(to right, #7a12a3, #6bb8ff);
-        color: white;
-        border-radius: 10px;
-        box-shadow: 0 5px 15px rgba(0,0,0,0.2);
-        z-index: 9999;
-        font-family: 'Arial', sans-serif;
-        display: none;
-        animation: slideUp 0.5s ease-out;
-      }
-      
-      @keyframes slideUp {
-        from { transform: translateY(100px); opacity: 0; }
-        to { transform: translateY(0); opacity: 1; }
-      }
-      
-      .cookie-heading {
-        font-weight: 600;
-        margin-bottom: 10px;
-      }
-      
-      .accept-button {
-        padding: 8px 16px;
-        background: white;
-        color: #9c71fa;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-top: 10px;
-        font-weight: 600;
-      }
-      .accept-button:hover {
-      background-color: #72aaff;
-      transition-duration: .2s;
-    }
-    .reject-button{
-       padding: 8px 16px;
-        background: #dc9df7;
-        color: #3604a3;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-top: 10px;
-        font-weight: 600;
-    }
-    .reject-button:hover {
-      background-color: #72aaf8;
-      transition-duration: .2s; 
-    }
-    </style>
-
-    <!-- Add new styles for More Details section -->
-    <style>
-      .filter-group {
-        position: relative;
-        margin-bottom: 15px;
-      }
-
-      .dropdown-btn {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        width: 100%;
-        padding: 10px 15px;
-        background: #fff;
-        border: 1px solid #e0e0e0;
-        border-radius: 5px;
-        cursor: pointer;
-        font-size: 14px;
-        color: #333;
-        transition: all 0.3s ease;
-      }
-
-      .dropdown-btn:hover {
-        border-color: #7c4dff;
-        box-shadow: 0 2px 8px rgba(124, 77, 255, 0.1);
-      }
-
-      .dropdown-btn i {
-        transition: transform 0.3s ease;
-      }
-
-      .dropdown-btn.active i {
-        transform: rotate(180deg);
-      }
-
-      .more-content {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        width: 300px;
-        background: #fff;
-        border: 1px solid #e0e0e0;
-        border-radius: 5px;
-        padding: 15px;
-        margin-top: 5px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-        display: none;
-        z-index: 1000;
-      }
-
-      .more-content.active {
-        display: block;
-        animation: fadeIn 0.3s ease;
-      }
-
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(-10px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
-      }
-
-      .size-options {
-        display: flex;
-        flex-direction: column;
-        gap: 15px;
-      }
-
-      .size-row {
-        display: flex;
-        gap: 10px;
-      }
-
-      .size-option {
-        flex: 1;
-      }
-
-      .size-option select,
-      .filter-group select {
-        width: 100%;
-        padding: 8px 12px;
-        border: 1px solid #e0e0e0;
-        border-radius: 4px;
-        font-size: 14px;
-        color: #333;
-      }
-
-      .button-group {
-        display: flex;
-        gap: 10px;
-        margin-top: 15px;
-      }
-
-      .reset-btn,
-      .apply-btn {
-        flex: 1;
-        padding: 8px;
-        border: none;
-        border-radius: 4px;
-        cursor: pointer;
-        font-weight: 500;
-        transition: all 0.3s ease;
-      }
-
-      .reset-btn {
-        background: #f5f5f5;
-        color: #666;
-      }
-
-      .apply-btn {
-        background: #7c4dff;
-        color: #fff;
-      }
-
-      .reset-btn:hover {
-        background: #e0e0e0;
-      }
-
-      .apply-btn:hover {
-        background: #6b42e8;
-      }
-
-      .currency-area {
-        display: flex;
-        gap: 10px;
-          }
-
-      .currency-area .filter-group {
-        flex: 1;
-      }
-
-      /* New Additional Filters Styles */
-      .filter-sections {
-        padding: 15px;
-      }
-
-      .filter-section {
-        padding: 15px;
-        border-bottom: 1px solid #eee;
-      }
-
-      .filter-section:last-child {
-        border-bottom: none;
-      }
-
-      .filter-section-title {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: #333;
-        font-size: 16px;
-        margin-bottom: 15px;
-      }
-
-      .filter-section-title i {
-        color: #7c4dff;
-        font-size: 18px;
-      }
-
-      .styled-select {
-        appearance: none;
-        background: #f8f9fa url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24'%3E%3Cpath fill='%23333' d='M7 10l5 5 5-5z'/%3E%3C/svg%3E") no-repeat right 10px center;
-        padding-right: 30px;
-      }
-
-      .size-label {
-        display: block;
-        color: #666;
-        font-size: 13px;
-        margin-bottom: 5px;
-      }
-
-      /* Price Range Slider */
-      .range-slider {
-        position: relative;
-        padding: 10px 0;
-      }
-
-      .range-slider input[type="range"] {
-        width: 100%;
-        height: 5px;
-        background: #e0e0e0;
-        border-radius: 5px;
-        outline: none;
-       
-      }
-
-      .range-slider input[type="range"]::-webkit-slider-thumb {
-        -webkit-appearance: none;
-        width: 20px;
-        height: 20px;
-        background: #7c4dff;
-        border-radius: 50%;
-        cursor: pointer;
-        box-shadow: 0 2px 5px rgba(124, 77, 255, 0.2);
-      }
-
-      .range-value {
-        text-align: center;
-        margin-top: 10px;
-        color: #333;
-        font-weight: 500;
-      }
-
-      /* Rooms Counter */
-      .rooms-grid {
-        display: grid;
-        gap: 15px;
-      }
-
-      .room-counter {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 10px;
-        background: #f8f9fa;
-        border-radius: 8px;
-      }
-
-      .room-counter label {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        color: #333;
-        }
-
-      .room-counter label i {
-        color: #7c4dff;
-      }
-
-      .counter-controls {
-        display: flex;
-        align-items: center;
-        gap: 15px;
-      }
-
-      .counter-btn {
-        width: 28px;
-        height: 28px;
-        border: 1px solid #e0e0e0;
-        background: white;
-        border-radius: 50%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        color: #333;
-        transition: all 0.2s ease;
-      }
-
-      .counter-btn:hover {
-        background: #7c4dff;
-        color: white;
-        border-color: #7c4dff;
-      }
-
-      /* Amenities Grid */
-      .amenities-grid {
-        display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        gap: 10px;
-      }
-
-      .amenity-checkbox {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px;
-        background: #f8f9fa;
-        border-radius: 6px;
-        cursor: pointer;
-        transition: all 0.2s ease;
-      }
-
-      .amenity-checkbox:hover {
-        background: #f0f0f0;
-      }
-
-      .amenity-checkbox input[type="checkbox"] {
-        width: 16px;
-        height: 16px;
-        border: 2px solid #7c4dff;
-        border-radius: 4px;
-        cursor: pointer;
-      }
-
-      .amenity-checkbox i {
-        color: #7c4dff;
-      }
-
-      /* Action Buttons */
-      .filter-actions {
-        display: flex;
-        gap: 10px;
-        padding: 15px;
-        border-top: 1px solid #eee;
-        margin-top: 15px;
-      }
-
-      .filter-actions button {
-        flex: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        padding: 12px;
-        border-radius: 8px;
-        font-weight: 500;
-        transition: all 0.3s ease;
-      }
-
-      .filter-actions button i {
-        font-size: 18px;
-      }
-
-      .more-content {
-        width: 350px;
-      }
-
-      @media (max-width: 768px) {
-        .more-content {
-          width: 100%;
-          position: fixed;
-          bottom: 0;
-          left: 0;
-          border-radius: 20px 20px 0 0;
-          max-height: 80vh;
-          overflow-y: auto;
-      }
-
-        .amenities-grid {
-          grid-template-columns: 1fr;
-        }
-      }
-    </style>
-
-    
 <script>
   // Show cookie consent if not already accepted
   document.addEventListener('DOMContentLoaded', function() {
@@ -1689,70 +121,641 @@
     // Load cookie-dependent services here (e.g., Google Analytics)
   }
 </script>
-    <script src="https://unpkg.com/scrollreveal@4.0.9/dist/scrollreveal.min.js"></script>
-    <script type="module" src="js/main.js"></script>
-  </main>
-  
-  <script>
-    // Search functionality
-    document.addEventListener('DOMContentLoaded', function() {
-      const searchButton = document.querySelector('.search-button');
-      const searchInput = document.querySelector('.search-input');
+
+
+    <link rel="stylesheet" href="./styles/index.css">
+    <title>EasyRent</title>
+    <link rel="icon" href="/icon.png" />
+    <link rel="stylesheet" href="./src/output.css">
+  </head>
+
+
+
+
+
+
+
+  <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white" >
+
+    <div id="app" class=""></div>
+    <script type="module" src="/src/main.js"></script>
+
+
+    <main>
+
+      <section id="about-us" class="py-20 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-6">
+          <!-- Grid Section -->
+          <div class="grid lg:grid-cols-4 md:grid-cols-2 gap-8 mb-16">
+            <!-- Card 1: Strong Team -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center flex flex-col items-center gap-4">
+              <div class="text-indigo-500 text-4xl">
+                <i class="ri-team-line"></i>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Strong Team</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300">
+                Unlocking Hospitality Excellence And Ensures Your Perfect Stay
+              </p>
+            </div>
       
-      if (searchButton && searchInput) {
-        searchButton.addEventListener('click', function() {
-          performSearch(searchInput.value);
-        });
-        
-        searchInput.addEventListener('keypress', function(e) {
-          if (e.key === 'Enter') {
-            performSearch(searchInput.value);
-          }
-        });
-      }
+            <!-- Image 1 -->
+            <div class="overflow-hidden rounded-lg shadow-md">
+              <img src="./images/table-4222263_1280.jpg" alt="Luxury apartment interior" loading="lazy" class="w-full h-full object-cover" />
+            </div>
       
-      function performSearch(query) {
-        if (query.trim() === '') {
-          // Show alert if search is empty
-          Swal.fire({
-            title: 'Empty Search',
-            text: 'Please enter a search term',
-            icon: 'info',
-            confirmButtonColor: '#7c4dff'
-          });
-          return;
-        }
-        
-        // Show search results with animation
-        Swal.fire({
-          title: 'Searching...',
-          text: `Searching for: "${query}"`,
-          icon: 'info',
-          confirmButtonColor: '#7c4dff',
-          showConfirmButton: false,
-          timer: 1500,
-          timerProgressBar: true,
-          didOpen: () => {
-            Swal.showLoading();
-          }
-        }).then(() => {
-          // After loading animation, show results
-          // This would normally connect to a backend search API
-          Swal.fire({
-            title: 'Search Results',
-            text: `Found properties matching "${query}"`,
-            icon: 'success',
-            confirmButtonColor: '#7c4dff'
-          });
+            <!-- Card 2: Luxury Room -->
+            <div class="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center flex flex-col items-center gap-4">
+              <div class="text-indigo-500 text-4xl">
+                <i class="ri-hotel-bed-line"></i>
+              </div>
+              <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Luxury Room</h3>
+              <p class="text-sm text-gray-600 dark:text-gray-300">
+                Experience Unrivaled Luxury at our Exquisite Rooms
+              </p>
+            </div>
+      
+            <!-- Image 2 -->
+            <div class="overflow-hidden rounded-lg shadow-md">
+              <img src="images/brick-wall.jpg" alt="Underground hotel architecture" loading="lazy" class="w-full h-full object-cover" />
+            </div>
+          </div>
+      
+          <!-- Text Content -->
+          <div class="text-center max-w-3xl mx-auto">
+            <p class="text-sm font-medium text-indigo-500 uppercase tracking-wide mb-2">About Us</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-4">Discover Our Dorms</h2>
+            <p class="text-gray-700 dark:text-gray-300 mb-6">
+              Welcome to our realm of extraordinary accommodation where Comfort, Affordability and Availability
+              offer an unparalleled escape from the ordinary, helping you to find your most suitable Stay.
+            </p>
+            <button
+              onclick="window.location.href='./student/payment.html'"
+              class="bg-indigo-600 text-white px-6 py-3 rounded-md hover:bg-indigo-700 transition font-semibold"
+            >
+              Book Now
+            </button>
+          </div>
+        </div>
+      </section>
+      
+      <section id="units" class="py-16 bg-white dark:bg-gray-900">
+        <div class="max-w-6xl mx-auto px-4">
+          <p class="text-sm uppercase tracking-widest text-indigo-600 dark:text-indigo-300 text-center mb-2">Units</p>
+          <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-10">Hand Picked Units</h2>
+      
+          <div class="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
+            <!-- Room Card Template -->
+            <div
+              onclick="window.location.href='room2.html'"
+              class="group cursor-pointer bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
+            >
+              <!-- Image -->
+              <div class="relative">
+                <img
+                  src="images/1,hrud.jpg"
+                  alt="Modern single bedroom"
+                  class="w-full h-56 object-cover transition-transform duration-300 group-hover:scale-105"
+                  loading="lazy"
+                />
+                <!-- Overlay -->
+                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                  <span class="text-white bg-indigo-600 px-4 py-2 rounded-md text-sm">View Details</span>
+                </div>
+              </div>
+      
+              <!-- Details -->
+              <div class="p-4 flex flex-col justify-between space-y-4">
+                <div>
+                  <h4 class="text-lg font-semibold text-gray-800 dark:text-white">Single Room</h4>
+                  <div class="flex items-center text-sm text-gray-600 dark:text-gray-300 gap-4 mt-1">
+                    <span><i class="ri-user-line align-middle"></i> 1 Guest</span>
+                    <span><i class="ri-ruler-line align-middle"></i> 25 ft²</span>
+                  </div>
+                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                    Well-appointed rooms with modern amenities and relaxing decor
+                  </p>
+                </div>
+                <div class="flex justify-between items-center">
+                  <h3 class="text-xl font-bold text-indigo-600 dark:text-indigo-400">€15,000<span class="text-sm font-medium">/year</span></h3>
+                  <button
+                    onclick="event.stopPropagation(); window.location.href='./student/payment.html';"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-md shadow-md transition"
+                  >
+                    Book Now
+                  </button>
+                </div>
+              </div>
+            </div>
+      
+            <!-- 🔁 Repeat the card for other rooms, updating content -->
+            <div
+              onclick="window.location.href='room2.html'"
+              class="group cursor-pointer bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
+            >
+              <div class="relative">
+                <img src="images/K2S115.webp" alt="Luxury double bedroom" class="w-full h-56 object-cover group-hover:scale-105 transition" loading="lazy" />
+                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                  <span class="text-white bg-indigo-600 px-4 py-2 rounded-md text-sm">View Details</span>
+                </div>
+              </div>
+              <div class="p-4 flex flex-col justify-between space-y-4">
+                <div>
+                  <h4 class="text-lg font-semibold text-gray-800 dark:text-white">Double Room</h4>
+                  <div class="flex items-center text-sm text-gray-600 dark:text-gray-300 gap-4 mt-1">
+                    <span><i class="ri-user-line align-middle"></i> 2 Guests</span>
+                    <span><i class="ri-ruler-line align-middle"></i> 35 ft²</span>
+                  </div>
+                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Spacious room with premium amenities</p>
+                </div>
+                <div class="flex justify-between items-center">
+                  <h3 class="text-xl font-bold text-indigo-600 dark:text-indigo-400">€7,500<span class="text-sm font-medium">/day</span></h3>
+                  <button
+                    onclick="event.stopPropagation(); window.location.href='./student/payment.html';"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-md shadow-md transition"
+                  >
+                    Book Now
+                  </button>
+                </div>
+              </div>
+            </div>
+      
+            <!-- Triple Room -->
+            <div
+              onclick="window.location.href='room2.html'"
+              class="group cursor-pointer bg-gray-50 dark:bg-gray-800 rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-all duration-300"
+            >
+              <div class="relative">
+                <img src="images/SZC08-2.webp" alt="Comfortable triple bedroom" class="w-full h-56 object-cover group-hover:scale-105 transition" loading="lazy" />
+                <div class="absolute inset-0 bg-black/30 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity">
+                  <span class="text-white bg-indigo-600 px-4 py-2 rounded-md text-sm">View Details</span>
+                </div>
+              </div>
+              <div class="p-4 flex flex-col justify-between space-y-4">
+                <div>
+                  <h4 class="text-lg font-semibold text-gray-800 dark:text-white">Triple Room</h4>
+                  <div class="flex items-center text-sm text-gray-600 dark:text-gray-300 gap-4 mt-1">
+                    <span><i class="ri-user-line align-middle"></i> 3 Guests</span>
+                    <span><i class="ri-ruler-line align-middle"></i> 45 m²</span>
+                  </div>
+                  <p class="text-sm text-gray-600 dark:text-gray-400 mt-2">Perfect for small groups with three single beds</p>
+                </div>
+                <div class="flex justify-between items-center">
+                  <h3 class="text-xl font-bold text-indigo-600 dark:text-indigo-400">€5,000<span class="text-sm font-medium">/year</span></h3>
+                  <button
+                    onclick="event.stopPropagation(); window.location.href='./student/payment.html';"
+                    class="bg-indigo-600 hover:bg-indigo-700 text-white text-sm px-4 py-2 rounded-md shadow-md transition"
+                  >
+                    Book Now
+                  </button>
+                </div>
+              </div>
+            </div>
+      
+          </div>
+        </div>
+      </section>
+      
+      <section class="bg-gray-100 dark:bg-gray-900 py-16">
+        <div class="max-w-6xl mx-auto px-4 flex flex-col md:flex-row items-center gap-10">
           
-          // Scroll to properties section
-          const propertiesSection = document.getElementById('Properties');
-          if (propertiesSection) {
-            propertiesSection.scrollIntoView({ behavior: 'smooth' });
-          }
-        });
-      }
-    });
-  </script>
+          <!-- Content -->
+          <div class="w-full md:w-1/2 space-y-5 text-center md:text-left">
+            <p class="text-sm uppercase tracking-widest text-indigo-600 dark:text-indigo-300">Intro Video</p>
+            <h2 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white">Meet With Our Rooms</h2>
+            <p class="text-gray-600 dark:text-gray-300">
+              Explore your temporary home with our virtual tours! No need to visit in person—
+              tour rooms from your device and find your perfect space today.
+            </p>
+            <button
+              onclick="window.location.href='./student/payment.html'"
+              class="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-3 px-6 rounded-md transition"
+            >
+              Book Now
+            </button>
+          </div>
+      
+          <!-- Video -->
+          <div class="w-full md:w-1/2">
+            <div class="overflow-hidden rounded-xl shadow-lg">
+              <video
+                autoplay
+                muted
+                loop
+                playsinline
+                class="w-full h-auto min-h-[300px] object-cover"
+              >
+                <source src="./images/rooms.mov" type="video/mp4" />
+                Your browser does not support the video tag.
+              </video>
+            </div>
+          </div>
+        </div>
+      </section>
+      <section id="feature" class="py-20 bg-gray-100 dark:bg-gray-900">
+        <div class="max-w-6xl mx-auto px-4 text-center">
+          <p class="text-sm uppercase tracking-widest text-indigo-600 dark:text-indigo-300 mb-2">Facilities</p>
+          <h2 class="text-3xl md:text-4xl font-bold text-gray-800 dark:text-white mb-10">Core Features</h2>
+      
+          <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <!-- Feature Card -->
+            <div onclick="location.href='feature1.html'" class="cursor-pointer group p-6 rounded-lg shadow hover:shadow-xl bg-white dark:bg-gray-800 transition">
+              <span class="text-indigo-600 dark:text-indigo-400 text-3xl mb-4 inline-block">
+                <i class="ri-thumb-up-line"></i>
+              </span>
+              <h4 class="text-xl font-semibold text-gray-800 dark:text-white group-hover:text-indigo-600">High Ratings</h4>
+              <p class="text-gray-600 dark:text-gray-300 mt-2">Curated rooms that consistently receive high ratings and positive reviews.</p>
+            </div>
+      
+            <div onclick="location.href='feature2.html'" class="cursor-pointer group p-6 rounded-lg shadow hover:shadow-xl bg-white dark:bg-gray-800 transition">
+              <span class="text-indigo-600 dark:text-indigo-400 text-3xl mb-4 inline-block">
+                <i class="ri-time-line"></i>
+              </span>
+              <h4 class="text-xl font-semibold text-gray-800 dark:text-white group-hover:text-indigo-600">Quiet Hours</h4>
+              <p class="text-gray-600 dark:text-gray-300 mt-2">Peace and uninterrupted time are essential for a fulfilling stay.</p>
+            </div>
+      
+            <div onclick="location.href='feature3.html'" class="cursor-pointer group p-6 rounded-lg shadow hover:shadow-xl bg-white dark:bg-gray-800 transition">
+              <span class="text-indigo-600 dark:text-indigo-400 text-3xl mb-4 inline-block">
+                <i class="ri-map-pin-line"></i>
+              </span>
+              <h4 class="text-xl font-semibold text-gray-800 dark:text-white group-hover:text-indigo-600">Prime Location</h4>
+              <p class="text-gray-600 dark:text-gray-300 mt-2">Stay in top-tier, highly sought-after locations around the city.</p>
+            </div>
+      
+            <div onclick="location.href='feature4.html'" class="cursor-pointer group p-6 rounded-lg shadow hover:shadow-xl bg-white dark:bg-gray-800 transition">
+              <span class="text-indigo-600 dark:text-indigo-400 text-3xl mb-4 inline-block">
+                <i class="ri-close-circle-line"></i>
+              </span>
+              <h4 class="text-xl font-semibold text-gray-800 dark:text-white group-hover:text-indigo-600">Free Cancellation</h4>
+              <p class="text-gray-600 dark:text-gray-300 mt-2">Plans change—cancel freely without extra charges.</p>
+            </div>
+      
+            <div onclick="location.href='feature5.html'" class="cursor-pointer group p-6 rounded-lg shadow hover:shadow-xl bg-white dark:bg-gray-800 transition">
+              <span class="text-indigo-600 dark:text-indigo-400 text-3xl mb-4 inline-block">
+                <i class="ri-wallet-line"></i>
+              </span>
+              <h4 class="text-xl font-semibold text-gray-800 dark:text-white group-hover:text-indigo-600">Payment Options</h4>
+              <p class="text-gray-600 dark:text-gray-300 mt-2">Choose from multiple convenient payment methods.</p>
+            </div>
+      
+            <div onclick="location.href='feature6.html'" class="cursor-pointer group p-6 rounded-lg shadow hover:shadow-xl bg-white dark:bg-gray-800 transition">
+              <span class="text-indigo-600 dark:text-indigo-400 text-3xl mb-4 inline-block">
+                <i class="ri-coupon-line"></i>
+              </span>
+              <h4 class="text-xl font-semibold text-gray-800 dark:text-white group-hover:text-indigo-600">Advanced Search</h4>
+              <p class="text-gray-600 dark:text-gray-300 mt-2">Refine your results using filters like location or keywords.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+      
+
+      <section class="py-16 bg-white dark:bg-gray-900">
+        <div class="max-w-6xl mx-auto px-4">
+          <ul class="grid grid-cols-2 sm:grid-cols-4 gap-6 text-center">
+            
+            <li class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition">
+              <span class="text-3xl text-indigo-600 dark:text-indigo-400">
+                <i class="ri-file-text-line"></i>
+              </span>
+              <h4 class="text-2xl font-bold text-gray-800 dark:text-white mt-2">250</h4>
+              <p class="text-gray-600 dark:text-gray-300 text-sm">Units are available</p>
+            </li>
+            
+            <li class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition">
+              <span class="text-3xl text-indigo-600 dark:text-indigo-400">
+                <i class="ri-user-line"></i>
+              </span>
+              <h4 class="text-2xl font-bold text-gray-800 dark:text-white mt-2">600</h4>
+              <p class="text-gray-600 dark:text-gray-300 text-sm">Active locations around Minya</p>
+            </li>
+            
+            <li class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition">
+              <span class="text-3xl text-indigo-600 dark:text-indigo-400">
+                <i class="ri-function-line"></i>
+              </span>
+              <h4 class="text-2xl font-bold text-gray-800 dark:text-white mt-2">2K</h4>
+              <p class="text-gray-600 dark:text-gray-300 text-sm">Categories served</p>
+            </li>
+            
+            <li class="p-6 bg-gray-50 dark:bg-gray-800 rounded-lg shadow hover:shadow-md transition">
+              <span class="text-3xl text-indigo-600 dark:text-indigo-400">
+                <i class="ri-lightbulb-flash-line"></i>
+              </span>
+              <h4 class="text-2xl font-bold text-gray-800 dark:text-white mt-2">100</h4>
+              <p class="text-gray-600 dark:text-gray-300 text-sm">New clients each month</p>
+            </li>
+      
+          </ul>
+        </div>
+      </section>
+      
+
+      <section id="Properties" class="py-16 bg-gray-50 dark:bg-gray-900">
+        <div class="max-w-7xl mx-auto px-4">
+          
+          <!-- Section Header -->
+          <div class="text-center mb-10">
+            <h2 class="text-3xl font-bold text-gray-800 dark:text-white">Explore Property</h2>
+          </div>
+      
+          <!-- Filters -->
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
+            <!-- Location -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Location</label>
+              <select class="w-full p-2 rounded-md bg-white dark:bg-gray-700 border dark:border-gray-600">
+                <option>All Locations</option>
+                <option>Minya Taha_Hessen</option>
+                <option>Adnan St</option>
+                <option>Alhseny St</option>
+                <option>New Minya City</option>
+                <option>Abo-Helal St</option>
+                <option>Shalby Square</option>
+                <option>ElAmery</option>
+              </select>
+            </div>
+      
+            <!-- Price -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Price</label>
+              <select class="w-full p-2 rounded-md bg-white dark:bg-gray-700 border dark:border-gray-600">
+                <option>Any Price</option>
+                <option>€2000 - €3000</option>
+                <option>€10000 - €13000</option>
+                <option>€13000+</option>
+              </select>
+            </div>
+      
+            <!-- Type -->
+            <div>
+              <label class="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">Property Type</label>
+              <select class="w-full p-2 rounded-md bg-white dark:bg-gray-700 border dark:border-gray-600">
+                <option>All Types</option>
+                <option>Single</option>
+                <option>Double</option>
+                <option>Triple</option>
+              </select>
+            </div>
+      
+            <!-- Search Button -->
+            <div class="flex items-end">
+              <button class="w-full bg-indigo-600 text-white py-2 rounded-md hover:bg-indigo-700 transition">
+                <i class="ri-search-line mr-1"></i> Search
+              </button>
+            </div>
+          </div>
+      
+          <!-- Properties Grid -->
+          <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Property Card -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition overflow-hidden">
+              <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=600&q=80');"></div>
+              <div class="p-5">
+                <h3 class="font-semibold text-lg text-gray-800 dark:text-white mb-1">Unit no. 411 Admiral Elite</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3 flex items-center gap-1">
+                  <i class="ri-map-pin-line"></i> Adnan, Minya, Egypt
+                </p>
+                <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300 mb-3">
+                  <span><i class="ri-hotel-bed-line mr-1"></i>1 Bed</span>
+                  <span><i class="ri-ruler-line mr-1"></i>899 ft²</span>
+                </div>
+                <div class="text-indigo-600 font-bold text-lg">€2,850</div>
+              </div>
+            </div>
+      
+            <!-- Property Card 2 -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition overflow-hidden">
+              <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=600&q=80');"></div>
+              <div class="p-5">
+                <h3 class="font-semibold text-lg text-gray-800 dark:text-white mb-1">Unit no. 410 Admiral Elite</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3 flex items-center gap-1">
+                  <i class="ri-map-pin-line"></i> New Minya City, Egypt
+                </p>
+                <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300 mb-3">
+                  <span><i class="ri-hotel-bed-line mr-1"></i>2 Bed</span>
+                  <span><i class="ri-ruler-line mr-1"></i>1237 ft²</span>
+                </div>
+                <div class="text-indigo-600 font-bold text-lg">€9,000</div>
+              </div>
+            </div>
+      
+            <!-- Property Card 3 -->
+            <div class="bg-white dark:bg-gray-800 rounded-lg shadow hover:shadow-lg transition overflow-hidden">
+              <div class="h-48 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=600&q=80');"></div>
+              <div class="p-5">
+                <h3 class="font-semibold text-lg text-gray-800 dark:text-white mb-1">Unit no. 409 Admiral Elite</h3>
+                <p class="text-sm text-gray-500 dark:text-gray-400 mb-3 flex items-center gap-1">
+                  <i class="ri-map-pin-line"></i> Palace Square, Minya
+                </p>
+                <div class="flex items-center justify-between text-sm text-gray-600 dark:text-gray-300 mb-3">
+                  <span><i class="ri-hotel-bed-line mr-1"></i>1 Bed</span>
+                  <span><i class="ri-ruler-line mr-1"></i>473 ft²</span>
+                </div>
+                <div class="text-indigo-600 font-bold text-lg">€900</div>
+              </div>
+            </div>
+          </div>
+      
+        </div>
+      </section>
+      
+    </main>
+    <section id="contact" class="py-16 bg-white dark:bg-gray-900">
+      <div class="max-w-6xl mx-auto px-4">
+        <!-- Heading -->
+        <h2 class="text-3xl font-bold text-center text-gray-800 dark:text-white mb-8">Find Us</h2>
+    
+        <!-- Map + Info Container -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+          <!-- Google Map -->
+          <div class="rounded-lg overflow-hidden shadow-lg">
+            <iframe
+              class="w-full h-96 border-0"
+              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3458.896159614735!2d30.83112301508591!3d28.115123982625896!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x145b7e6b8f3c4d3f%3A0x8f0b8f8b6e6b7d9a!2sTaha%20Hussein%20St%2C%20Minya%2C%20Minya%20Governorate%2C%20Egypt!5e0!3m2!1sen!2seg!4v1697056789012!5m2!1sen!2seg"
+              allowfullscreen=""
+              loading="lazy"
+              referrerpolicy="no-referrer-when-downgrade"
+            ></iframe>
+          </div>
+    
+          <!-- Contact Info -->
+          <div class="space-y-4 text-gray-700 dark:text-gray-300">
+            <p class="flex items-start gap-2">
+              <i class="ri-map-pin-line text-xl text-indigo-500"></i>
+              <span><strong>Address:</strong> Taha-Hussein St, Minya, Egypt</span>
+            </p>
+            <p class="flex items-start gap-2">
+              <i class="ri-phone-line text-xl text-indigo-500"></i>
+              <span><strong>Phone:</strong> +20 1224170048</span>
+            </p>
+            <p class="flex items-start gap-2">
+              <i class="ri-mail-line text-xl text-indigo-500"></i>
+              <span><strong>Email:</strong> easyrent15@gmail.com</span>
+            </p>
+            <p class="flex items-start gap-2">
+              <i class="ri-time-line text-xl text-indigo-500"></i>
+              <span><strong>Office Hours:</strong> Mon–Fri, 9 AM – 5 PM</span>
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+    
+    <footer class="bg-gray-100 dark:bg-gray-900 text-gray-700 dark:text-gray-300 py-12">
+      <div class="max-w-7xl mx-auto px-6 grid grid-cols-1 md:grid-cols-3 gap-12">
+        
+        <!-- Logo & Description -->
+        <div>
+          <div class="flex items-center gap-3 mb-4">
+            <div class="w-8 h-8 bg-gradient-to-br from-white to-indigo-100 rotate-45 rounded-md relative">
+              <div class="absolute top-1 left-1 w-6 h-6 bg-gradient-to-br from-indigo-500 to-indigo-700 rotate-45 rounded-sm"></div>
+            </div>
+            <h2 class="text-xl font-extrabold bg-gradient-to-r from-indigo-500 to-blue-500 bg-clip-text text-transparent leading-tight">
+              EASY<br />RENT
+            </h2>
+          </div>
+          <p class="text-sm leading-relaxed">
+            Easy Rent is dedicated to simplifying the process of finding student accommodations.
+            We connect students and property owners to make housing seamless and efficient.
+          </p>
+          <div class="flex gap-3 mt-4">
+            <a href="#" class="hover:text-indigo-500 text-lg"><i class="ri-facebook-fill"></i></a>
+            <a href="#" class="hover:text-pink-500 text-lg"><i class="ri-instagram-fill"></i></a>
+            <a href="#" class="hover:text-blue-500 text-lg"><i class="ri-linkedin-fill"></i></a>
+            <a href="#" class="hover:text-sky-500 text-lg"><i class="ri-twitter-fill"></i></a>
+          </div>
+        </div>
+    
+        <!-- Quick Links -->
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Quick Links</h4>
+          <ul class="space-y-2 text-sm">
+            <li>
+              <a href="#" class="flex items-center gap-2 hover:text-indigo-500">
+                <i class="ri-arrow-right-s-line"></i> Online Booking
+              </a>
+            </li>
+            <li>
+              <a href="privacypolicy.html" class="flex items-center gap-2 hover:text-indigo-500">
+                <i class="ri-arrow-right-s-line"></i> Privacy Policy
+              </a>
+            </li>
+            <li>
+              <a href="#" class="flex items-center gap-2 hover:text-indigo-500">
+                <i class="ri-arrow-right-s-line"></i> Special Offers
+              </a>
+            </li>
+            <li>
+              <a href="#" class="flex items-center gap-2 hover:text-indigo-500">
+                <i class="ri-arrow-right-s-line"></i> Room Customization
+              </a>
+            </li>
+            <li>
+              <a href="#" class="flex items-center gap-2 hover:text-indigo-500">
+                <i class="ri-arrow-right-s-line"></i> Customer Support
+              </a>
+            </li>
+          </ul>
+        </div>
+    
+        <!-- Contact Info -->
+        <div>
+          <h4 class="text-lg font-semibold mb-4">Contact Info</h4>
+          <ul class="space-y-4 text-sm">
+            <li class="flex items-start gap-3">
+              <i class="ri-phone-fill text-indigo-500 text-xl"></i>
+              <div>
+                <h5 class="font-semibold">Phone Number</h5>
+                <p>+20 1224170048</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="ri-mail-fill text-indigo-500 text-xl"></i>
+              <div>
+                <h5 class="font-semibold">Email Address</h5>
+                <p>info@easyrent15.com</p>
+              </div>
+            </li>
+            <li class="flex items-start gap-3">
+              <i class="ri-map-pin-fill text-indigo-500 text-xl"></i>
+              <div>
+                <h5 class="font-semibold">Office Location</h5>
+                <p>Minya st. Taha-Hessien</p>
+              </div>
+            </li>
+          </ul>
+        </div>
+    
+      </div>
+    
+      <!-- Bottom Bar -->
+      <div class="mt-12 border-t border-gray-200 dark:border-gray-700 pt-6 text-center text-sm text-gray-500 dark:text-gray-400">
+        © 2025 EasyRent. All rights reserved.
+      </div>
+    </footer>
+    
+
+   <!-- Cookie Consent Banner -->
+<div id="cookieConsent" dir="rtl" class="fixed bottom-6 right-6 z-50 max-w-md w-full bg-white dark:bg-gray-900 text-gray-800 dark:text-gray-200 border border-gray-200 dark:border-gray-700 rounded-xl shadow-xl p-6 space-y-4 transition transform animate-fade-in">
+  <!-- Header -->
+  <div class="flex items-center gap-3">
+    <i class="ri-shield-check-line text-indigo-600 text-2xl"></i>
+    <h3 class="text-lg font-semibold">إعدادات الخصوصية</h3>
+  </div>
+
+  <!-- Description -->
+  <p class="text-sm leading-relaxed">
+    نحن نستخدم ملفات تعريف الارتباط لتحسين تجربتك وتخصيص المحتوى وتحليل حركة المرور. باختيارك "قبول الكل"، فإنك توافق على استخدامنا لملفات تعريف الارتباط.
+    <a href="privacypolicy.html" class="text-indigo-600 underline hover:text-indigo-800 transition">سياسة الخصوصية</a>
+  </p>
+
+  <!-- Buttons -->
+  <div class="flex flex-col sm:flex-row gap-3">
+    <button
+      onclick="acceptCookies()"
+      class="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-md transition"
+    >
+      <i class="ri-check-line text-lg"></i>
+      قبول الكل
+    </button>
+    <button
+      onclick="rejectCookies()"
+      class="w-full sm:w-auto flex items-center justify-center gap-2 px-4 py-2 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-white rounded-md transition"
+    >
+      <i class="ri-close-line text-lg"></i>
+      رفض الكل
+    </button>
+  </div>
+</div>
+
+  </main>
+
+  <!-- Scroll to Top Button -->
+<button id="scrollToTopBtn"
+class="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-indigo-600 text-white shadow-lg hover:bg-indigo-700 transition-opacity opacity-0 pointer-events-none"
+aria-label="Scroll to top"
+>
+<i class="ri-arrow-up-line text-xl"></i>
+</button>
+<script>
+  const scrollBtn = document.getElementById("scrollToTopBtn");
+
+  // Show/hide button on scroll
+  window.addEventListener("scroll", () => {
+    if (window.scrollY > 300) {
+      scrollBtn.classList.remove("opacity-0", "pointer-events-none");
+      scrollBtn.classList.add("opacity-100");
+    } else {
+      scrollBtn.classList.add("opacity-0", "pointer-events-none");
+      scrollBtn.classList.remove("opacity-100");
+    }
+  });
+
+  // Scroll to top on click
+  scrollBtn.addEventListener("click", () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+</script>
   </body>
 </html>

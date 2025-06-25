@@ -32,8 +32,6 @@ async function checkUserType() {
   }
 }
 
-// استدعاء تهيئة الإضافات
-initCookieConsent();
 initNavigation();
 initFilter();
 
