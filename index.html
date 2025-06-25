@@ -8,6 +8,7 @@
     />
     <!-- Favicons -->
     <link rel="shortcut icon" href="images/favicon-32x32.png" />
+    <link rel="icon" href="./public/icon.png" />
 
     <link
       rel="apple-touch-icon"
@@ -33,7 +34,7 @@
       rel="stylesheet"
       href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"
     />
-
+    <title>EasyRent</title>
     <link rel="stylesheet" href="./room-shapes.css" />
     <link rel="stylesheet" href="./src/output.css" />
     <script defer type="module" src="./src/main.js"></script>
@@ -56,7 +57,18 @@
     </script>
   </head>
   <body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white">
-    <div id="app" class=""></div>
+    <header
+      id="navbar"
+      class="bg-white dark:bg-gray-900 shadow-md w-full"
+    ></header>
+    <main id="main" class=""></main>
     <script type="module" src="/src/main.js"></script>
+
+    <button
+      id="scrollToTopBtn"
+      class="fixed bottom-4 right-4 opacity-0 pointer-events-none transition-opacity bg-indigo-600 text-white px-4 py-2 rounded-full shadow-md z-50"
+    >
+      ↑ Top
+    </button>
   </body>
 </html>
