@@ -7,7 +7,7 @@ import Intro from "./components/Sections/Intro";
 import Statistics from "./components/Sections/Statistics";
 import Properties from "./components/Sections/Properties";
 import Contact from "./components/Sections/Contact";
-import Footer from "./components/Footer";
+
 export default function Home() {
   return `
     <main id="home" class="mt-6">
@@ -20,7 +20,6 @@ export default function Home() {
     ${Statistics()}
     ${Properties()}
     ${Contact()}
-    ${Footer()}
     </main>
   `;
 }

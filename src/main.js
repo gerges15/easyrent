@@ -1,6 +1,8 @@
 import "./output.css";
 import Navbar from "./components/Navbar.js";
+import Footer from "./components/Footer.js";
 import Home from "./Home.js";
+
 import { createThemeToggle } from "./components/themeToggle.js";
 import {
   initCookieConsent,
@@ -15,10 +17,13 @@ function render(path) {
   const Page = routes[path] || Home;
 
   // Render navbar
-  document.getElementById("navbar").innerHTML = Navbar();
+  const header = document.getElementById("navbar");
+  header.innerHTML = Navbar();
 
   // Render page
   document.getElementById("main").innerHTML = Page();
+  const footer = document.getElementById("footer");
+  footer.innerHTML = Footer();
 
   // Re-attach theme toggle if needed
   const mountPoint = document.querySelector("#theme-toggle");
@@ -26,6 +31,13 @@ function render(path) {
 
   if (path === "/signUp") {
     initSignUpEvents();
+  }
+  if (path === "/admin") {
+    footer.innerHTML = "";
+    header.innerHTML = "";
+
+    const mountPoint = document.querySelector("#theme-toggle");
+    if (mountPoint) mountPoint.appendChild(createThemeToggle());
   }
 }
 
