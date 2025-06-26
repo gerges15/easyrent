@@ -1,6 +1,6 @@
 import { axiosClient } from "../apiClint";
 
-export function addNewOwner(data) {
+export function registerOwner(data) {
   return axiosClient.post(`/api/Owner/register`, JSON.stringify(data));
 }
 

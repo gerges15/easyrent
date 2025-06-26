@@ -11,16 +11,19 @@ import Home from "./Home.js";
 import Navbar from "./components/Navbar.js";
 import routes from "./routes.js";
 import Login from "./pages/login.js";
-import Units from "./components/Sections/Units.js"; // <-- Make sure this is default async Units()
+import Units from "./components/Sections/Units.js";
+import { getAllColleges } from "./services/lib/colleges.js";
+import { getAllUniversities } from "./services/lib/university.js";
 
-function navigate(path) {
+// ---- Navigation ----
+export function navigate(path) {
   history.pushState({}, "", path);
   render(path);
 }
+window.navigate = navigate; // Make it accessible globally
 
-window.onpopstate = () => {
-  render(window.location.pathname);
-};
+// ---- Routing Logic ----
+window.onpopstate = () => render(window.location.pathname);
 
 document.addEventListener("click", (e) => {
   const link = e.target.closest("a[data-link]");
@@ -30,20 +33,23 @@ document.addEventListener("click", (e) => {
   }
 });
 
+// ---- Page Rendering ----
 async function render(path) {
   const Page = routes[path] || Home;
 
-  // Render navbar
+  // Navbar
   const header = document.getElementById("navbar");
   header.innerHTML = Navbar();
 
-  // Render main page
-  document.getElementById("main").innerHTML = Page();
+  // Render Page (sync or async)
+  const main = document.getElementById("main");
+  const result = Page();
+  main.innerHTML = result instanceof Promise ? await result : result;
 
-  // Render dynamic unit cards if on Home page
+  // Render dynamic units if on home page
   if (path === "/" || path === "#units") {
     try {
-      const unitsHtml = await Units(); // Wait for unit cards to be fetched and created
+      const unitsHtml = await Units();
       const unitContainer = document.getElementById("unitCards");
       if (unitContainer) {
         unitContainer.innerHTML = unitsHtml;
@@ -53,24 +59,22 @@ async function render(path) {
     }
   }
 
-  // Render footer
+  // Footer
   const footer = document.getElementById("footer");
   footer.innerHTML = Footer();
 
-  // Re-attach theme toggle if needed
+  // Theme toggle
   const mountPoint = document.querySelector("#theme-toggle");
   if (mountPoint) mountPoint.appendChild(createThemeToggle());
 
-  // Extra logic for specific routes
-  if (path === "/signUp") {
-    initSignUpEvents();
-  }
+  // Route-specific scripts
+  if (path === "/signUp") initSignUpEvents();
 
   if (path === "/login") {
     const form = document.querySelector("#loginForm");
     if (form) {
       const fields = ["username", "password"];
-      const validator = new Login(form, fields);
+      new Login(form, fields);
     }
   }
 
@@ -82,12 +86,13 @@ async function render(path) {
   }
 }
 
-// Handle scroll-to-top button
+// ---- DOM Ready ----
 window.addEventListener("DOMContentLoaded", () => {
   render(window.location.pathname);
   initCookieConsent();
 
   const scrollBtn = document.getElementById("scrollToTopBtn");
+  if (!scrollBtn) return;
 
   window.addEventListener("scroll", () => {
     if (window.scrollY > 300) {
@@ -104,6 +109,9 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-// Expose cookie methods globally
+// ---- Expose cookie handlers globally ----
 window.acceptCookies = acceptCookies;
 window.rejectCookies = rejectCookies;
+
+console.log(await getAllColleges());
+console.log(await getAllUniversities());

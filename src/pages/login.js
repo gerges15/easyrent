@@ -1,6 +1,6 @@
 export default function Login() {
   return `
-  <main class="min-h-screen bg-gray-50 dark:bg-gray-900 flex items-center justify-center px-4">
+  <main class=" min-h-screen bg-gray-50 py-16 dark:bg-gray-900 flex items-center justify-center px-4">
     <div class="w-full max-w-md p-8 bg-white dark:bg-gray-800 rounded-2xl shadow-xl space-y-6">
       <!-- Success Message -->
       <div id="successMessage" class="hidden text-green-600 flex items-center text-sm bg-green-50 dark:bg-green-900 dark:text-green-200 p-3 rounded-lg">

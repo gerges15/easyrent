@@ -1,6 +1,6 @@
 import { axiosClient } from "../apiClint";
 
-export function addNewStudent(data) {
+export function registerStudent(data) {
   return axiosClient.post(`/api/Student/register`, JSON.stringify(data));
 }
 export function loginStudent(data) {
