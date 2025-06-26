@@ -1,4 +1,3 @@
-import { _post } from "../../js/apiClint";
 import { getAllColleges } from "../services/lib/colleges";
 import { getAllUniversities } from "../services/lib/university";
 import { navigate } from "../main";

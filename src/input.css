@@ -89,3 +89,16 @@
   color: #4338ca;
   font-weight: bold;
 }
+.role-selected {
+  border-color: #6366f1 !important; /* indigo-500 */
+  background-color: #eef2ff !important; /* indigo-50 */
+}
+.sidebar li.active {
+  background-color: #e0e7ff; /* light indigo */
+  color: #4f46e5;
+}
+
+.dark .sidebar li.active {
+  background-color: #3730a3; /* dark indigo */
+  color: #a5b4fc;
+}

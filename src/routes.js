@@ -4,6 +4,7 @@ import { UnitsSectionSkeleton } from "./components/Sections/Units.js";
 import Home from "./Home.js";
 import Admin from "./pages/admin.js";
 import Login from "./pages/login.js";
+import OwnerDashboard from "./pages/owner.js";
 import SignUp from "./pages/signUp.js";
 
 // Key = URL path, Value = Component function
@@ -11,10 +12,11 @@ const routes = {
   "/": Home,
   "/login": Login,
   "/signUp": SignUp,
-  "#units": UnitsSectionSkeleton,
-  "#about-us": About,
-  "#properties": Properties,
-  "/admin": Admin,
+  "/units": UnitsSectionSkeleton,
+  "/about-us": About,
+  "/properties": Properties,
+  "/admin/dashboard": Admin,
+  "/owner/dashboard": OwnerDashboard,
 };
 
 export default routes;

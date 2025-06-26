@@ -11,8 +11,8 @@ import {
 
 export const navLinks = [
   { label: "Home", path: "/", icon: homeIcon },
-  { label: "About Us", path: "#about-us", icon: infoIcon },
-  { label: "Units", path: "#units", icon: unitsIcon },
+  { label: "About Us", path: "/about-us", icon: infoIcon },
+  { label: "Units", path: "/units", icon: unitsIcon },
   {
     label: "Login",
     path: "/login",

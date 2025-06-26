@@ -6,6 +6,9 @@ import {
   acceptCookies,
   rejectCookies,
 } from "./utils/cookie.js";
+import { loginOwner } from "./services/lib/owner.js";
+import { loginAdmin } from "./services/lib/admin.js";
+import { loginStudent } from "./services/lib/student.js";
 import Footer from "./components/Footer.js";
 import Home from "./Home.js";
 import Navbar from "./components/Navbar.js";
@@ -14,6 +17,8 @@ import Login from "./pages/login.js";
 import Units from "./components/Sections/Units.js";
 import { getAllColleges } from "./services/lib/colleges.js";
 import { getAllUniversities } from "./services/lib/university.js";
+import { initAdminDashboard } from "./auth/login.js";
+import { initOwnerDashboard } from "./utils/initOwnerDashBoard.js";
 
 // ---- Navigation ----
 export function navigate(path) {
@@ -47,7 +52,7 @@ async function render(path) {
   main.innerHTML = result instanceof Promise ? await result : result;
 
   // Render dynamic units if on home page
-  if (path === "/" || path === "#units") {
+  if (path === "/" || path === "/units") {
     try {
       const unitsHtml = await Units();
       const unitContainer = document.getElementById("unitCards");
@@ -70,19 +75,100 @@ async function render(path) {
   // Route-specific scripts
   if (path === "/signUp") initSignUpEvents();
 
-  if (path === "/login") {
-    const form = document.querySelector("#loginForm");
-    if (form) {
-      const fields = ["username", "password"];
-      new Login(form, fields);
-    }
-  }
-
-  if (path === "/admin") {
+  if (path === "/admin/dashboard") {
+    console.log("I'm Inside admin");
     footer.innerHTML = "";
     header.innerHTML = "";
-    const mountPoint = document.querySelector("#theme-toggle");
-    if (mountPoint) mountPoint.appendChild(createThemeToggle());
+  }
+  if (path === "/owner/dashboard") {
+    console.log("I'm Inside owner");
+    footer.innerHTML = "";
+    header.innerHTML = "";
+    initOwnerDashboard();
+  }
+  if (path === "/student/dashboard") {
+    console.log("I'm Inside owner");
+    footer.innerHTML = "";
+    header.innerHTML = "";
+  }
+
+  if (path === "/login") {
+    const form = document.querySelector("#loginForm");
+
+    if (form) {
+      const fields = ["phone", "password"];
+      new Login(form, fields); // reuse validation
+
+      // Handle login submission
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const role = form.querySelector(
+          'input[name="userType"]:checked'
+        )?.value;
+        const identifier = document.getElementById("phone").value;
+        const password = document.getElementById("password").value;
+
+        if (!role) return alert("Please select a role.");
+
+        const credentials = { emailOrPhone: identifier, password };
+
+        try {
+          let res;
+
+          // Call correct endpoint based on role
+          if (role === "student") {
+            res = await loginStudent(credentials);
+          } else if (role === "owner") {
+            res = await loginOwner(credentials);
+          } else if (role === "admin") {
+            res = await loginAdmin(credentials);
+          }
+
+          localStorage.setItem("auth", "1");
+          localStorage.setItem("token", res.data.token); // optional
+          localStorage.setItem("role", role);
+
+          // Show success message
+          const msg = document.getElementById("successMessage");
+          if (msg) msg.classList.remove("hidden");
+
+          // Redirect after short delay
+          setTimeout(() => {
+            if (role === "student") navigate("/student/dashboard");
+            if (role === "owner") navigate("/owner/dashboard");
+            if (role === "admin") navigate("/admin/dashboard");
+          }, 800);
+        } catch (err) {
+          console.error("Login failed:", err);
+          alert("Invalid credentials or login error.");
+        }
+      });
+
+      // Toggle password visibility
+      const toggleBtn = document.getElementById("togglePasswordBtn");
+      const passwordInput = document.getElementById("password");
+      toggleBtn?.addEventListener("click", () => {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+        toggleBtn.textContent = isPassword ? "Hide" : "Show";
+      });
+
+      // 🔵 Highlight selected role visually
+      const roleInputs = form.querySelectorAll('input[name="userType"]');
+      roleInputs.forEach((input) => {
+        input.addEventListener("change", () => {
+          roleInputs.forEach((el) =>
+            el
+              .closest("label")
+              .classList.remove("ring-2", "ring-indigo-500", "bg-indigo-100")
+          );
+          input
+            .closest("label")
+            .classList.add("ring-2", "ring-indigo-500", "bg-indigo-100");
+        });
+      });
+    }
   }
 }
 
@@ -100,6 +186,7 @@ window.addEventListener("DOMContentLoaded", () => {
       scrollBtn.classList.add("opacity-100");
     } else {
       scrollBtn.classList.add("opacity-0", "pointer-events-none");
+
       scrollBtn.classList.remove("opacity-100");
     }
   });
