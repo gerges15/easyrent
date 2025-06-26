@@ -209,7 +209,7 @@ export function initSignUpEvents() {
       phoneNumber: document.getElementById("ownerPhone").value,
       address: document.getElementById("ownerLocation").value,
     };
-
+    console.log(ownerData);
     try {
       await registerOwner(ownerData);
       alert("Owner registered successfully!");
