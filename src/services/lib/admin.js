@@ -4,7 +4,7 @@ export function addAdminPassword(id) {
   return axiosClient.post(`/api/Admin/encrypt-password/${id}`, "");
 }
 
-export function addAdminLogin(data) {
+export function loginAdmin(data) {
   return axiosClient.post("/api/Admin/login", JSON.stringify(data));
 }
 
