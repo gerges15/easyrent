@@ -1,11 +1,10 @@
+import { UnitsSectionSkeleton } from "./components/Sections/Units";
 import HeroSection from "./components/Sections/Hero";
 import Booking from "./components/Sections/Booking";
 import About from "./components/Sections/About";
-import Units from "./components/Sections/Units";
 import CoreFeatures from "./components/Sections/CoreFeatures";
 import Intro from "./components/Sections/Intro";
 import Statistics from "./components/Sections/Statistics";
-import Properties from "./components/Sections/Properties";
 import Contact from "./components/Sections/Contact";
 
 export default function Home() {
@@ -14,11 +13,10 @@ export default function Home() {
     ${HeroSection()} 
     ${Booking()}
     ${About()}
-    ${Units()}
+    ${UnitsSectionSkeleton()}
     ${Intro()}
     ${CoreFeatures()}
     ${Statistics()}
-    ${Properties()}
     ${Contact()}
     </main>
   `;

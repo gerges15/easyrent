@@ -7,7 +7,7 @@ export default function HeroSection() {
 
   <!-- Background Image -->
   <img
-    src="./../../../public/images/hero-bg.webp"
+    src="./../../../public/images/home.webp"
     alt="Modern apartment background"
     class="absolute inset-0 w-full h-full object-cover z-0"
     loading="lazy"

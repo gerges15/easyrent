@@ -6,7 +6,7 @@ export function addNewUnit(data) {
 export function getAllUnits() {
   return axiosClient.get(`/api/Unit/GetAllUnits`);
 }
-export function getAllUnit(id) {
+export function getUnit(id) {
   return axiosClient.get(`/api/Unit/${id}`);
 }
 export function uploadUnitPhoto(unitId) {

@@ -2,7 +2,6 @@ import {
   homeIcon,
   infoIcon,
   unitsIcon,
-  propertiesIcon,
   loginIcon,
   signupIcon,
   contactIcon,
@@ -14,7 +13,6 @@ export const navLinks = [
   { label: "Home", path: "/", icon: homeIcon },
   { label: "About Us", path: "#about-us", icon: infoIcon },
   { label: "Units", path: "#units", icon: unitsIcon },
-  { label: "Properties", path: "#properties", icon: propertiesIcon },
   {
     label: "Login",
     path: "/login",
