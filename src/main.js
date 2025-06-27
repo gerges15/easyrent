@@ -20,6 +20,7 @@ import { initOwnerDashboard } from "./utils/initOwnerDashBoard.js";
 import cookies from "js-cookie";
 import { getAllUnits } from "./services/lib/unit.js";
 import { initAdminDashboard } from "./utils/initAdminDashboard.js";
+import { getAllBookUnits } from "./services/lib/booking.js";
 
 // ---- Navigation ----
 export function navigate(path) {
@@ -178,8 +179,6 @@ async function render(path) {
       });
     }
   }
-
-  console.log(await getAllUnits());
 }
 
 // ---- DOM Ready ----
