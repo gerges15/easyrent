@@ -3,8 +3,9 @@ import addPropertyView from "../components/views/addPropertyView.js";
 import myPropertiesView from "../components/views/myPropertiesView.js";
 import OwnerDashboard from "../pages/owner.js";
 import { createThemeToggle } from "../components/themeToggle.js";
-
+import Cookies from "js-cookie";
 import { logoutUser } from "./logout.js";
+import { addNewUnit, getAllUnits } from "../services/lib/unit.js";
 
 export function initOwnerDashboard() {
   // Render the base layout first
@@ -16,14 +17,13 @@ export function initOwnerDashboard() {
       logoutUser();
     });
   }
-
-  const token = localStorage.getItem("authToken");
-  const ownerId = localStorage.getItem("ownerId");
+  const userData = JSON.parse(Cookies.get("userData"));
+  const token = localStorage.getItem("token");
+  const ownerId = userData.id;
 
   const main = document.querySelector("main");
   const authStatus = document.getElementById("auth-status");
   const themeMount = document.querySelector("#theme-toggle");
-
   // Mount theme toggle
   if (themeMount) themeMount.appendChild(createThemeToggle());
 
@@ -37,6 +37,33 @@ export function initOwnerDashboard() {
     },
     add: () => {
       main.innerHTML = addPropertyView();
+
+      const form = document.getElementById("addPropertyForm");
+      if (form) {
+        form.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const data = {
+            title: document.getElementById("title").value,
+            priceForMonth: Number(document.getElementById("price").value),
+            address: document.getElementById("address").value,
+            status: document.getElementById("status").value,
+            photoUrls: [document.getElementById("photoUrls").value],
+            ownerName: userData.name,
+            ownerId_FK: ownerId,
+          };
+
+          try {
+            await addNewUnit(data);
+            alert("✅ Property added successfully!");
+            form.reset();
+            console.log(getAllUnits());
+          } catch (error) {
+            console.error("❌ Error adding property:", error);
+            alert("Error adding property. Please try again.");
+          }
+        });
+      }
     },
     myprops: () => {
       main.innerHTML = myPropertiesView();
@@ -76,7 +103,7 @@ export function initOwnerDashboard() {
   routes.dashboard();
 
   // Auth indicator
-  if (token && ownerId) {
+  /*if (token && ownerId) {
     authStatus.innerHTML = `
       <span class='flex items-center gap-2 text-green-700 dark:text-green-400'>
         <i class="fas fa-user-check"></i> Owner ID: ${ownerId}
@@ -88,21 +115,15 @@ export function initOwnerDashboard() {
         <i class="fas fa-user-slash"></i> Not Authenticated
       </span>
     `;
-  }
-
+  }*/
   // ========== Dashboard Data ==========
   async function loadOwnerData(ownerId, token) {
     try {
-      const res = await fetch(
-        "https://easyrentapi0.runasp.net/api/Unit/GetAllUnits",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+      const res = await getAllUnits();
+      const data = res;
+      const units = res.data["$values"].filter(
+        (property) => property.id == ownerId
       );
-      const data = await res.json();
-      const units =
-        data["$values"]?.filter((u) => u.ownerId_FK == ownerId) || [];
-
       document.getElementById("total-property").textContent = units.length;
       document.getElementById("to-rent").textContent = units.filter(
         (u) => u.status === "Pending"

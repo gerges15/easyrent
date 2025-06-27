@@ -12,3 +12,6 @@ export function getStudent(id) {
 export function deleteStudent(id) {
   return axiosClient.delete(`/api/Student/${id}`);
 }
+export function getAllStudents() {
+  return axiosClient.get(`/api/Student/all-students`);
+}

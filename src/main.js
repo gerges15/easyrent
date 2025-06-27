@@ -1,4 +1,5 @@
 import "./output.css";
+
 import { createThemeToggle } from "./components/themeToggle.js";
 import { initSignUpEvents } from "./pages/signUp.js";
 import {
@@ -15,10 +16,10 @@ import Navbar from "./components/Navbar.js";
 import routes from "./routes.js";
 import Login from "./pages/login.js";
 import Units from "./components/Sections/Units.js";
-import { getAllColleges } from "./services/lib/colleges.js";
-import { getAllUniversities } from "./services/lib/university.js";
-import { initAdminDashboard } from "./auth/login.js";
 import { initOwnerDashboard } from "./utils/initOwnerDashBoard.js";
+import cookies from "js-cookie";
+import { getAllUnits } from "./services/lib/unit.js";
+import { initAdminDashboard } from "./utils/initAdminDashboard.js";
 
 // ---- Navigation ----
 export function navigate(path) {
@@ -79,6 +80,7 @@ async function render(path) {
     console.log("I'm Inside admin");
     footer.innerHTML = "";
     header.innerHTML = "";
+    await initAdminDashboard();
   }
   if (path === "/owner/dashboard") {
     console.log("I'm Inside owner");
@@ -115,20 +117,26 @@ async function render(path) {
 
         try {
           let res;
+          const userData = {};
 
           // Call correct endpoint based on role
           if (role === "student") {
             res = await loginStudent(credentials);
           } else if (role === "owner") {
             res = await loginOwner(credentials);
+            userData.id = res.data.ownerId;
+            userData.name = res.data.ownerName;
           } else if (role === "admin") {
             res = await loginAdmin(credentials);
           }
 
           localStorage.setItem("auth", "1");
+          userData.email = res.data.email;
+          userData.role = res.data.role;
+          localStorage.setItem("userData", userData);
           localStorage.setItem("token", res.data.token); // optional
           localStorage.setItem("role", role);
-
+          cookies.set("userData", JSON.stringify(userData));
           // Show success message
           const msg = document.getElementById("successMessage");
           if (msg) msg.classList.remove("hidden");
@@ -170,6 +178,8 @@ async function render(path) {
       });
     }
   }
+
+  console.log(await getAllUnits());
 }
 
 // ---- DOM Ready ----
@@ -199,6 +209,3 @@ window.addEventListener("DOMContentLoaded", () => {
 // ---- Expose cookie handlers globally ----
 window.acceptCookies = acceptCookies;
 window.rejectCookies = rejectCookies;
-
-console.log(await getAllColleges());
-console.log(await getAllUniversities());

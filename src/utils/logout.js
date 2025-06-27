@@ -11,7 +11,6 @@ export function logoutUser() {
       .replace(/^ +/, "")
       .replace(/=.*/, "=;expires=" + new Date().toUTCString() + ";path=/");
   });
-
   // Redirect or reload to login
   window.location.href = "/login"; // Adjust route if needed
 }
